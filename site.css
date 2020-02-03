@@ -45,8 +45,9 @@ body {
   float: left;
   display: block;
   color: #fff;  /* #666; */
+  width: 5em;
   vertical-align: middle;
-  margin: 0.2em 1em 0.2em 1em;
+  margin: 0.2em 0.75em 0.2em 0.75em;
   padding: 0.2em 0.5em 0.2em 0.5em;
   border-radius: 1em;
   text-decoration: none;
@@ -148,8 +149,6 @@ pre {
   border: 1px solid #ccc;  
   border-radius: 4px;
   padding-left: 0.5em;
-  /*border-left: 2px solid #666;
-  padding-left: 6px;*/
   white-space: pre;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -280,10 +279,17 @@ table td {
 div.features p {
   display: block;
   float: left;
-  margin: 0 0.3em 0 0.3em;
-  width:11em;
+  background: #435ce3;
+  border-radius: 4px;
+  padding: 0.6em 0 0.6em 0;
+  margin-right: 1.2em;
+  width: 10em;
   text-align: center;
   font-size: 110%;
+}
+
+div.features p a {
+  color: #fff;
 }
 
 @media only screen and (min-width: 768px) {
