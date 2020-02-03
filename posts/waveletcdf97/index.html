@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Pascal Getreuer" />
+  <title>Wavelet CDF 9/7 Implementation</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../site.css" type="text/css" />
+<link rel="icon" 
+      type="image/png" 
+      href="../../favicon.png">
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet">
+<script type="text/javascript" src="../../site.js" ></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+
+<div id="content">
+
+<div id="navbar">
+  <a href="../../index.html">&blacktriangle; Home</a>
+  <a href="../../papers/index.html">&blacksquare; Papers</a>
+  <a href="../../posts/index.html">&blacksquare; Posts</a>
+  <a href="../../cv/index.html">&blacksquare; CV</a>
+</div>
+
+<div id="header">
+<h1 class="title">Wavelet CDF 9/7 Implementation</h1>
+<h2 class="author">Pascal Getreuer</h2>
+</div>
+<div class="features">
+<p>
+<a href="waveletcdf97.zip">Download</a>
+</p>
+</div>
+<div style="clear: both">
+ 
+</div>
+<p>The Matlab function waveletcdf97.m included in this package is a self-contained M-function for applying the Cohen–Daubechies–Feauveau 9/7 (CDF 9/7) wavelet transform. This wavelet is an especially effective biorthogonal wavelet, used by the FBI for fingerprint compression and selected for the JPEG2000 standard [1].</p>
+<h2 id="function-usage">Function Usage</h2>
+<p><code>Y = waveletcdf97(X, L)</code> decomposes <code>X</code> with <code>L</code> stages of the CDF 9/7 wavelet. For the inverse transform, <code>waveletcdf97(X, -L)</code> inverts <code>L</code> stages. Filter boundary handling is half-sample symmetric.</p>
+<p><code>X</code> may be of any size; it need not have size divisible by <code>2L</code>. For example, if <code>X</code> has length 9, one stage of decomposition produces a lowpass subband of length 5 and a highpass subband of length 4. Transforms of any length have perfect reconstruction (exact inversion).</p>
+<p>If <code>X</code> is a matrix, <code>waveletcdf97</code> performs a (tensor) 2D wavelet transform. If <code>X</code> has three dimensions, the 2D transform is applied along the first two dimensions.</p>
+<h2 id="demos">Demos</h2>
+<p>This package includes a demo program, <code>waveletcdf97_demo</code>, that uses <code>waveletcdf97</code> for signal approximation. Signal approximation is the problem of representing a signal with as few components as possible. This is similar to lossy image compression, but ignoring the problems of quantization and encoding.</p>
+<p>Wavelets are particularly efficient for approximating piecewise-smooth signals. This first demo uses the CDF 9/7 wavelet to represent a piecewise-smooth signal.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb1-1" title="1">NumComponents = <span class="fl">40</span>;              <span class="co">% Approximation with 40 components</span></a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co">%%% Construct the test signal %%%</span></a>
+<a class="sourceLine" id="cb1-4" title="4">N = <span class="fl">512</span>;                         <span class="co">% Signal length</span></a>
+<a class="sourceLine" id="cb1-5" title="5">t = linspace(-<span class="fl">1.7</span>,<span class="fl">1.7</span>,N);</a>
+<a class="sourceLine" id="cb1-6" title="6">X = sign(t).*exp(-t.^<span class="fl">4</span>);</a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co">%%% Wavelet approximation %%%</span></a>
+<a class="sourceLine" id="cb1-9" title="9">Level = <span class="fl">9</span>;                       <span class="co">% Use 9 levels of decomposition</span></a>
+<a class="sourceLine" id="cb1-10" title="10">Y = waveletcdf97(X,Level);       <span class="co">% Transform the signal</span></a>
+<a class="sourceLine" id="cb1-11" title="11">Y = keep(Y,NumComponents);       <span class="co">% Keep only 40 components</span></a>
+<a class="sourceLine" id="cb1-12" title="12"></a>
+<a class="sourceLine" id="cb1-13" title="13">R = waveletcdf97(Y,-Level);      <span class="co">% Invert to obtain the approximation</span></a>
+<a class="sourceLine" id="cb1-14" title="14">norm(X-R)                        <span class="co">% Compute error</span></a>
+<a class="sourceLine" id="cb1-15" title="15"></a>
+<a class="sourceLine" id="cb1-16" title="16"><span class="co">%%% Fourier approximation %%%</span></a>
+<a class="sourceLine" id="cb1-17" title="17">Y = fft(X);                      <span class="co">% Transform</span></a>
+<a class="sourceLine" id="cb1-18" title="18">Y = keep(Y,NumComponents);       <span class="co">% Keep only 40 components</span></a>
+<a class="sourceLine" id="cb1-19" title="19">R2 = real(ifft(Y));              <span class="co">% Invert</span></a>
+<a class="sourceLine" id="cb1-20" title="20"></a>
+<a class="sourceLine" id="cb1-21" title="21">norm(X-R2)                       <span class="co">% Compute error</span></a></code></pre></div>
+<p>The figure below shows the resulting wavelet approximation using only 40 out of 512 components. Fourier approximation with 40 components is shown for comparison. The wavelet approximation has <span class="math inline">\(L^2\)</span> error of 0.014 while the Fourier approximation has error of 2.244.</p>
+<p><img src="waveletcdf97_01.png" /></p>
+<p>The second demo applies waveletcdf97 to image approximation. First, the input image is converted from RGB to the JPEG Y’CbCr colorspace. The Y’CbCr image is transformed using waveletcdf97, all but the largest transform coefficients are set to zero, and then inverse transformed.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb2-1" title="1">X = double(imread(<span class="st">&#39;palm.jpg&#39;</span>))/<span class="fl">255</span>;   <span class="co">% Load the demo image</span></a>
+<a class="sourceLine" id="cb2-2" title="2">subplot(<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">1</span>);</a>
+<a class="sourceLine" id="cb2-3" title="3">image(X);</a>
+<a class="sourceLine" id="cb2-4" title="4">axis image</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">X = RGBToYCbCr(X);                    <span class="co">% Convert to Y&#39;CbCr</span></a>
+<a class="sourceLine" id="cb2-7" title="7">L = <span class="fl">6</span>;</a>
+<a class="sourceLine" id="cb2-8" title="8">Y = waveletcdf97(X,L);                <span class="co">% Transform the image</span></a>
+<a class="sourceLine" id="cb2-9" title="9"></a>
+<a class="sourceLine" id="cb2-10" title="10">R = waveletcdf97(keep(Y,<span class="fl">1</span>/<span class="fl">40</span>),-L);    <span class="co">% 40:1 approximation</span></a>
+<a class="sourceLine" id="cb2-11" title="11">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">3</span>);</a>
+<a class="sourceLine" id="cb2-12" title="12">image(YCbCrToRGB(R));</a>
+<a class="sourceLine" id="cb2-13" title="13">axis image</a>
+<a class="sourceLine" id="cb2-14" title="14"></a>
+<a class="sourceLine" id="cb2-15" title="15">R = waveletcdf97(keep(Y,<span class="fl">1</span>/<span class="fl">80</span>),-L);    <span class="co">% 80:1 approximation</span></a>
+<a class="sourceLine" id="cb2-16" title="16">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">4</span>);</a>
+<a class="sourceLine" id="cb2-17" title="17">image(YCbCrToRGB(R));</a>
+<a class="sourceLine" id="cb2-18" title="18">axis image</a></code></pre></div>
+<p><img src="waveletcdf97_02.jpg" /></p>
+<h2 id="tests">Tests</h2>
+<p>In the first test, a random signal <code>X</code> is transformed one stage, then inverse transformed, and the result is compared to the original. Mathematically, the transform is exactly inverted—the scheme is said to have perfect reconstruction. This test verifies that this property holds to machine precision.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb3-1" title="1">Runs = <span class="fl">100</span>;                    <span class="co">% Number of runs to average</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3">N = ceil(logspace(...          <span class="co">% Lengths to test</span></a>
+<a class="sourceLine" id="cb3-4" title="4">   log10(<span class="fl">15</span>),log10(<span class="fl">300</span>),<span class="fl">15</span>));  </a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6">for k = <span class="fl">1</span>:length(N)     </a>
+<a class="sourceLine" id="cb3-7" title="7">   <span class="co">% Create random input matrices</span></a>
+<a class="sourceLine" id="cb3-8" title="8">   X = rand(N(k),<span class="fl">1</span>,Runs);</a>
+<a class="sourceLine" id="cb3-9" title="9">   <span class="co">% Forward transform followed by inverse</span></a>
+<a class="sourceLine" id="cb3-10" title="10">   R = waveletcdf97(waveletcdf97(X,<span class="fl">1</span>),-<span class="fl">1</span>);</a>
+<a class="sourceLine" id="cb3-11" title="11">   <span class="co">% Compute the average error</span></a>
+<a class="sourceLine" id="cb3-12" title="12">   AvgError(k) = mean(max(abs(permute(X - R,[<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">2</span>])),[],<span class="fl">1</span>));</a>
+<a class="sourceLine" id="cb3-13" title="13">   fprintf(<span class="st">&#39;%3d: Error = %.2e\n&#39;</span>,N(k),AvgError(k));</a>
+<a class="sourceLine" id="cb3-14" title="14">end</a>
+<a class="sourceLine" id="cb3-15" title="15"></a>
+<a class="sourceLine" id="cb3-16" title="16">plot(N,AvgError,<span class="st">&#39;.-&#39;</span>);</a></code></pre></div>
+<p>Code output:</p>
+<p><img src="waveletcdf97_03.png" /></p>
+<pre><code> 15: Error = 3.34e-016
+ 19: Error = 3.45e-016
+ 24: Error = 4.25e-016
+ 29: Error = 4.30e-016
+ 36: Error = 4.63e-016
+ 44: Error = 4.91e-016
+ 55: Error = 5.00e-016
+ 68: Error = 5.53e-016
+ 84: Error = 5.55e-016
+103: Error = 5.99e-016
+128: Error = 5.90e-016
+158: Error = 6.58e-016
+196: Error = 6.90e-016
+243: Error = 7.17e-016
+300: Error = 7.00e-016</code></pre>
+<p>The CDF 9/7 wavelet is designed such that where the input signal is locally a polynomial of cubic degree or lower, the resulting detail (highpass) coefficients are equal to zero. A wavelet is said to have “N vanishing moments” if it has this property on polynomials up to degree N-1, so CDF 9/7 has 4 vanishing moments. This test transforms a piecewise polynomial signal and displays the largest detail coefficient magnitudes, verifying that the vanishing moments hold to reasonable accuracy.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb5-1" title="1">N = <span class="fl">64</span>;</a>
+<a class="sourceLine" id="cb5-2" title="2">t = (<span class="fl">0</span>:N-<span class="fl">1</span>)/N;</a>
+<a class="sourceLine" id="cb5-3" title="3">X = [t.^<span class="fl">0</span>,t.^<span class="fl">1</span>,t.^<span class="fl">2</span>,t.^<span class="fl">3</span>];</a>
+<a class="sourceLine" id="cb5-4" title="4">Y = waveletcdf97(X,<span class="fl">1</span>);</a>
+<a class="sourceLine" id="cb5-5" title="5"></a>
+<a class="sourceLine" id="cb5-6" title="6">norm(Y(<span class="fl">2</span>*N+<span class="fl">2</span>:<span class="fl">2.5</span>*N-<span class="fl">2</span>),inf)   <span class="co">% Largest detail coefficient from t^0</span></a>
+<a class="sourceLine" id="cb5-7" title="7">norm(Y(<span class="fl">2.5</span>*N+<span class="fl">2</span>:<span class="fl">3</span>*N-<span class="fl">2</span>),inf)   <span class="co">% Largest detail coefficient from t^1</span></a>
+<a class="sourceLine" id="cb5-8" title="8">norm(Y(<span class="fl">3</span>*N+<span class="fl">2</span>:<span class="fl">3.5</span>*N-<span class="fl">2</span>),inf)   <span class="co">% Largest detail coefficient from t^2</span></a>
+<a class="sourceLine" id="cb5-9" title="9">norm(Y(<span class="fl">3.5</span>*N+<span class="fl">2</span>:<span class="fl">4</span>*N-<span class="fl">2</span>),inf)   <span class="co">% Largest detail coefficient from t^3</span></a>
+<a class="sourceLine" id="cb5-10" title="10"></a>
+<a class="sourceLine" id="cb5-11" title="11">subplot(<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">1</span>);</a>
+<a class="sourceLine" id="cb5-12" title="12">plot(X);</a>
+<a class="sourceLine" id="cb5-13" title="13">subplot(<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span>);</a>
+<a class="sourceLine" id="cb5-14" title="14">plot(Y(<span class="fl">2</span>*N+<span class="fl">1</span>:<span class="fl">4</span>*N));</a></code></pre></div>
+<p>Code output:</p>
+<p><img src="waveletcdf97_04.png" /></p>
+<pre><code>  Locally constant    Largest detail coefficient = 1.41e-012
+  Locally linear      Largest detail coefficient = 1.30e-012
+  Locally quadratic   Largest detail coefficient = 1.20e-012
+  Locally cubic       Largest detail coefficient = 1.11e-012</code></pre>
+<h2 id="implementation">Implementation</h2>
+<p>The code is written specialized for the CDF 9/7 wavelet in lifting scheme implementation. Sweldens’ lifting scheme [2] represents a wavelet transform as a sequence of predict and update steps. Let <span class="math inline">\(X=[X(1), X(2), \ldots, X(2N)]\)</span> be an array of length <span class="math inline">\(2N\)</span>. The lifting scheme begins with the “polyphase decomposition,” splitting <span class="math inline">\(X\)</span> into two subbands, each of length <span class="math inline">\(N\)</span>:</p>
+<p><span class="math display">\[ X_o = [X(1), X(3), X(5), \ldots, X(2N-1)], \quad 
+X_e = [X(2), X(4), X(6), ... X(2N)]. \]</span></p>
+<p>Since <span class="math inline">\(X_o\)</span> and <span class="math inline">\(X_e\)</span> can be merged to recover <span class="math inline">\(X\)</span>, no information has been lost.</p>
+<p>Next, the scheme performs lifting steps on the subbands <span class="math inline">\(X_o\)</span> and <span class="math inline">\(X_e\)</span>. Let <span class="math inline">\(p\)</span> be a filter, then</p>
+<p><span class="math display">\[ X_e&#39; = X_e + p * X_o \]</span></p>
+<p>is called a prediction step, where ∗ denotes convolution. Similarly, <span class="math inline">\(X_o&#39; = X_o + u * X_e\)</span> is called an update step. Notice that <span class="math inline">\(X_e\)</span> can always be recovered from <span class="math inline">\(X_e&#39;\)</span> with</p>
+<p><span class="math display">\[ X_e&#39; = X_e - p * X_o. \]</span></p>
+<p>This simple relationship between a forward step and an inverse step is the key to the lifting scheme: any sequence of prediction and update steps can be undone to recover <span class="math inline">\(X_o\)</span> and <span class="math inline">\(X_e\)</span>.</p>
+<p>Any FIR wavelet transform can be factored into a sequence of lifting steps [3]. For the CDF 9/7 wavelet, the lifting scheme decomposition used in waveletcdf97 is <span class="math display">\[\begin{aligned}
+X_o &amp;= [X(1),X(3),X(5), ... X(2N-1)] \\ 
+X_e &amp;= [X(2),X(4),X(6), ... X(2N)] \\
+X_e^1(n) &amp;= X_e(n) + \alpha (X_o(n+1) + X_o(n)) \\ 
+X_o^1(n) &amp;= X_o(n) + \beta (X_e^1(n) + X_e^1(n-1)) \\
+X_e^2(n) &amp;= X_e^1(n) + \delta (X_o^1(n+1) + X_o^1(n)) \\
+X_o^2(n) &amp;= X_o^2(n) + \gamma (X_e^2(n) + X_e^2(n-1))
+\end{aligned}\]</span> The subbands are then normalized with <span class="math inline">\(X_o^3 = \kappa X_o^2\)</span> and <span class="math inline">\(X_e^3 = (\kappa - 1) X_e^2\)</span>. For a multi-level decomposition, the algorithm above is repeated with <span class="math inline">\(X = X_o^3\)</span>. Coefficients α, β, δ, γ, κ are irrational values, approximately</p>
+<p><span class="math display">\[\begin{aligned}
+\alpha &amp;\approx -1.58613432, \\
+\beta &amp;\approx -0.05298011854, \\
+\delta &amp;\approx 0.8829110762, \\
+\gamma &amp;\approx 0.4435068522, \\
+\kappa &amp;\approx 1.149604398.
+\end{aligned}\]</span></p>
+<p>The inverse transform is done by performing the lifting steps in the reverse order and with α, β, δ, γ negated.</p>
+<p>What if <span class="math inline">\(X\)</span> has odd length <span class="math inline">\(2N-1\)</span>? The trick is to extrapolate one extra element <span class="math inline">\(X(2N)=x\)</span> in such a way that transforming the augmented <span class="math inline">\(X\)</span> has <span class="math inline">\(X_e^3(N)=0\)</span>. This zero element can then be thrown away without losing information. The result is a decomposition with <span class="math inline">\(N\)</span> elements in <span class="math inline">\(X_o^3\)</span> and <span class="math inline">\(N-1\)</span> elements in <span class="math inline">\(X_e^3\)</span> for a total of <span class="math inline">\(2N-1\)</span> elements; the decomposition is nonredundant. To invert an odd-length transform, append the zero element <span class="math inline">\(X_e^3(N)=0\)</span> and proceed with the usual even-length inverse transform.</p>
+<p>The formula for the extrapolated element <span class="math inline">\(x\)</span> such that <span class="math inline">\(X_e^3(N)=0\)</span> is a linear function of the elements of <span class="math inline">\(X\)</span> that depends on the filter boundary handling. For the half-sample symmetric boundary handling used in <code>waveletcdf97</code>, the extrapolation is <span class="math display">\[ x = \frac{-2}{1 + 2\beta\delta} [
+\alpha\beta\delta X(2N-3) + \beta\delta X(2N-2) + 
+(\alpha + 3\alpha\beta\delta + \delta) X(2N-1) ]. \]</span></p>
+<h2 id="references">References</h2>
+<ol type="1">
+<li><p>M. Unser and T. Blu. “Mathematical Properties of the JPEG2000 Wavelet Filters.” IEEE Trans. on Image Proc., vol. 12, no. 9, Sep. 2003.</p></li>
+<li><p>W. Sweldens. “The Lifting Scheme: A Construction of Second Generation Wavelets.” SIAM J. Mathematical Analysis, vol. 29, no. 2, pp. 511-546, 1997.</p></li>
+<li><p>I. Daubechies and W. Sweldens. “Factoring Wavelet Transforms into Lifting Steps.” 1996.</p></li>
+</ol>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>

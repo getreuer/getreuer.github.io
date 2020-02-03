@@ -63,7 +63,16 @@ body {
   background-color: #444;
   color: #ccc;
   margin: 0;
-  padding: 2em 0 1em 0;
+  padding: 0;
+}
+
+#footer p {
+  margin: 0 0 2em 0;
+}
+
+#footer p a {
+  margin-left: 1.7em;
+  color: #fff;
 }
 
 a {
