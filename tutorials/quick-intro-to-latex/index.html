@@ -1,0 +1,816 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Pascal Getreuer" />
+  <title>A Quick Introduction to LaTeX</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../site.css" type="text/css" />
+<link rel="icon" 
+      type="image/png" 
+      href="../../favicon.png">
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet">
+<script type="text/javascript" src="../../site.js" ></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+
+<div id="content">
+
+<div id="navbar">
+  <a href="../../index.html">🏠 Home</a>
+  <a>🗐 Papers</a>
+  <a>🗈 Posts</a>
+  <a href="../../cv.html">&lowast; CV</a>
+</div>
+
+<div id="header">
+<h1 class="title">A Quick Introduction to LaTeX</h1>
+<h2 class="author">Pascal Getreuer</h2>
+</div>
+<h2 id="introduction">Introduction</h2>
+<h3 id="what-is-latex">What is LaTeX?</h3>
+<p>LaTeX, pronounced “la-tek,” is a text formatter. Unlike word processors like Microsoft Word, LaTeX is not a “what you see is what you get” editor. Instead, the user writes LaTeX code representing the content and desired formatting. LaTeX then compiles this code to produce a formatted document. The typical writing and editing cycle with LaTeX is</p>
+<ol type="1">
+<li>Write LaTeX code</li>
+<li>Compile</li>
+<li>View output</li>
+<li>Return to Step 1 for editing</li>
+</ol>
+<h3 id="why-should-i-use-it">Why should I use it?</h3>
+<p><em>Disadvantages:</em></p>
+<ul>
+<li>Less intuitive than word processors</li>
+<li>Many commands to learn</li>
+<li>Time lost to debugging LaTeX code</li>
+</ul>
+<p><em>Advantages:</em></p>
+<ul>
+<li>Automatic numbering of sections, citations</li>
+<li>Beautiful math formulas with fine control</li>
+<li>Fine control over spacing</li>
+<li>Packages and user-defined macros</li>
+</ul>
+<p>LaTeX is a professional typesetting tool providing great control, particularly with math formulas. However, it does take patience to learn. If none of this is appealing, LaTeX is not for you.</p>
+<h3 id="what-tools-does-this-require">What tools does this require?</h3>
+<p>LaTeX code is plain text, so any text editor is fine. There are editors specifically designed for LaTeX, if you prefer, see for instance <a href="https://github.com/TeXworks/texworks">TeXworks</a> or <a href="http://www.xm1math.net/texmaker/">Texmaker</a>—both are available on Windows, MacOs, and Linux.</p>
+<p>To compile LaTeX code, a TeX system with LaTeX is necessary. Two free TeX systems available for download are MikTeX for Windows and TeXLive for Linux. Third, a viewer program is necessary to view the output. LaTeX typically outputs DVI, PS, or PDF format files. Adobe Reader can view PDF files and the Ghostscript + Ghostview system can view all three formats.</p>
+<p>Although not strictly necessary, it is a good idea to use a spell checker. Two free spell checkers are Aspell and Ispell.</p>
+<h2 id="latex-basics">LaTeX Basics</h2>
+<p>The structure of a LaTeX document is a preamble followed by a body:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb1-1" title="1"><span class="bu">\documentclass</span>[options]{<span class="ex">class</span>}</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co">% Preamble: Global commands, settings, and macro definitions </span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">\begin</span>{<span class="ex">document</span>}</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">% Body: Text and local commands </span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">\end</span>{<span class="ex">document</span>}</a></code></pre></div>
+<p>The <code>\documentclass</code> line specifies the general options like paper size and default font size and the type or “class” of document. The preamble is used to include packages, set global parameters like margin widths, and define macros. The body is mostly plain text with occasional commands for special symbols, changing fonts, or other formatting.</p>
+<p>All characters may be used directly except <code># $ &amp; ~ _ ^ % { } \</code>, which have special meaning. The special characters <code># $ &amp; ~ _ ^ % { }</code> may be printed by prefixing <code>\</code>, for example, <code>\&amp;</code> to print &amp;. All commands are <code>\</code> followed by a sequence of letters, for example, <code>\textbf</code> for writing in bold face. For example, the body text</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">\textbf</span>{Please refrigerate} the half <span class="fu">\&amp;</span> half!</a></code></pre></div>
+<p>compiles to</p>
+<blockquote>
+<p><strong>Please refridgerate</strong> the half &amp; half!</p>
+</blockquote>
+<h2 id="hello-latex-world">Hello, LaTeX World!</h2>
+<p>The best learning is through experience. Get started with this exercise:</p>
+<p><strong>demo.tex</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb3-1" title="1"><span class="bu">\documentclass</span>[12pt]{<span class="ex">article</span>}</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">\begin</span>{<span class="ex">document</span>}</a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4">The <span class="fu">\#</span>1 story is that this article was compiled today (<span class="fu">\today</span>) with</a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="fu">\LaTeX</span>. To try some commands, it includes <span class="fu">\textit</span>{a few fancy}</a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="fu">\textbf</span>{fonts}.</a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="kw">\end</span>{<span class="ex">document</span>}</a></code></pre></div>
+<p>Copy the code above into a text editor and save it as <code>demo.tex</code>. Compile by running the shell command <code>pdflatex demo.tex</code> (alternative: <code>latex demo.tex</code> followed by <code>dvipdf demo.dvi</code>). View the resulting <code>demo.pdf</code> file.</p>
+<h2 id="fonts">Fonts</h2>
+<p>As demonstrated above with <code>textbf</code>, text is written in another face by using a command with the text enclosed in curly braces +{ }+.</p>
+<ul>
+<li><code>\textbf{...}</code> <strong>Bold face</strong></li>
+<li><code>\texttt{...}</code> <code>Typewriter</code></li>
+<li><code>\textit{...}</code> <em>Italics</em></li>
+<li><code>\textsl{...}</code> <em>Slanted</em></li>
+<li><code>\underline{...}</code> <u>Underlined</u></li>
+</ul>
+<p>These commands may be nested: <code>\textbf{super \textit{stylish}}</code> yields <b>super <i>stylish</i></b>.</p>
+<h2 id="line-paragraph-and-page-breaks">Line, Paragraph, and Page Breaks</h2>
+<p>LaTeX ignores single line breaks in the code. To indicate a paragraph break, use two line breaks. To force a line break within a paragraph, use two backslashes <code>\\</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb4-1" title="1">In 1812, Bessel was elected to the Berlin Academy and won an award from the</a>
+<a class="sourceLine" id="cb4-2" title="2">academy a few years later for estimations of precession and aberration</a>
+<a class="sourceLine" id="cb4-3" title="3">constants. In 1825, he was elected as a Fellow of the Royal Society.</a>
+<a class="sourceLine" id="cb4-4" title="4"></a>
+<a class="sourceLine" id="cb4-5" title="5">In 1830, Bessel published his calculations for the positions of 38 stars over</a>
+<a class="sourceLine" id="cb4-6" title="6">the years 1750--1850. In 1838, he determined that the star Sirius has a</a>
+<a class="sourceLine" id="cb4-7" title="7">companion star, Cygni, and calculated its position. The star was later </a>
+<a class="sourceLine" id="cb4-8" title="8">observed in 1862, verifying his conjecture.</a></code></pre></div>
+<blockquote>
+<p>      In 1812, Bessel was elected to the Berlin Academy and won an award from the academy a few years later for estimations of precession and aberration constants. In 1825, he was elected as a Fellow of the Royal Society.<br>       In 1830, Bessel published his calculations for the positions of 38 stars over the years 1750–1850. In 1838, he determined that the star Sirius has a companion star, Cygni, and calculated its position. The star was later observed in 1862, verifying his conjecture.</p>
+</blockquote>
+<p>To add a blank line between two paragraphs, use <code>\bigskip</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb5-1" title="1">In 1812, Bessel was elected to the Berlin Academy and won an award from the</a>
+<a class="sourceLine" id="cb5-2" title="2">academy a few years later for estimations of precession and aberration</a>
+<a class="sourceLine" id="cb5-3" title="3">constants. In 1825, he was elected as a Fellow of the Royal Society.</a>
+<a class="sourceLine" id="cb5-4" title="4"></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="fu">\bigskip</span></a>
+<a class="sourceLine" id="cb5-6" title="6"></a>
+<a class="sourceLine" id="cb5-7" title="7">In 1830, Bessel published his calculations for the positions of 38 stars over</a>
+<a class="sourceLine" id="cb5-8" title="8">the years 1750--1850. In 1838, he determined that the star Sirius has a</a>
+<a class="sourceLine" id="cb5-9" title="9">companion star, Cygni, and calculated its position. The star was later</a>
+<a class="sourceLine" id="cb5-10" title="10">observed in 1862, verifying his conjecture.</a></code></pre></div>
+<blockquote>
+<p>      In 1812, Bessel was elected to the Berlin Academy and won an award from the academy a few years later for estimations of precession and aberration constants. In 1825, he was elected as a Fellow of the Royal Society.</p>
+<p>      In 1830, Bessel published his calculations for the positions of 38 stars over the years 1750–1850. In 1838, he determined that the star Sirius has a companion star, Cygni, and calculated its position. The star was later observed in 1862, verifying his conjecture.</p>
+</blockquote>
+<p>LaTeX determines intelligent page breaking automatically (avoiding problems like orphan lines), but it is occasionally necessary to manually indicate page breaks. To force a page break, use the command <code>\pagebreak</code>. To prevent a page break, use <code>\nopagebreak</code>.</p>
+<h2 id="math-in-latex">Math in LaTeX</h2>
+<p>A math formula can be written within a line of text (text style), or apart on its own line (display style). Text style math is enclosed with dollar signs: <code>$</code> … <code>$</code>. Display style math is enclosed with either <code>\[</code> … <code>\]</code> or double dollar signs <code>$$</code> … <code>$$</code>.</p>
+<h3 id="basic-symbols">Basic Symbols</h3>
+<p>Many math symbols are intuitively represented in the formula text. For example, <code>$|f(x)| &gt; 2M$</code> produces the formula <span class="math inline">\(|f(x)| &gt; 2M\)</span>.</p>
+<ul>
+<li>Letters, numbers, and the symbols + - / = &lt; &gt; : | ( ) [ ] work directly.</li>
+<li>Spaces between these symbols has no effect. <code>$ x + y $</code> and <code>$x+y$</code> have the same output.</li>
+<li>To produce curly braces { }, use <code>\{</code> and <code>\}</code>.</li>
+</ul>
+<h3 id="superscripts-and-subscripts">Superscripts and Subscripts</h3>
+<p>Superscripts and subscripts are made using <code>^</code> and <code>_</code>. For example, <code>$x^2 + y^2$</code> yields <span class="math inline">\(x^2 + y^2\)</span>. A symbol can have both a superscript and a subscript: <code>$A_n^k$</code> yields <span class="math inline">\(A_n^k\)</span>.</p>
+<p>A superscript or subscript with multiple symbols must be enclosed with <code>{ }</code>. For example, <code>$Y_{2n}$</code> to produce <span class="math inline">\(Y_{2n}\)</span>. If a superscript or subscript is enclosed with <code>{ }</code>, it can itself have superscripts and subscripts.</p>
+<h3 id="fractions">Fractions</h3>
+<p>Graphical fractions are made with <code>\frac{ numerator }{ denominator }</code>. The formula <code>\[ \frac{1}{x^2 + y^2} \]</code> produces</p>
+<p><span class="math display">\[ \frac{1}{x^2 + y^2} \]</span></p>
+<h3 id="sums-products-limits-and-integrals">Sums, Products, Limits, and Integrals</h3>
+<p>Sums, products, limits, and integrals are produced with commands <code>\sum</code>, <code>\prod</code>, <code>\lim</code>, and <code>\int</code>. They may have upper and lower limits, which are added like superscripts and subscripts. For example, <code>\[ \sum_{k=0}^N \]</code> for</p>
+<p><span class="math display">\[ \sum_{k=0}^N \]</span></p>
+<h3 id="functions">Functions</h3>
+<p>LaTeX commands <code>\exp</code>, <code>\log</code>, <code>\cos</code>, <code>\sin</code>, <code>\arccos</code>, <code>\min</code>, <code>\max</code>, <code>\inf</code>, <code>\sup</code>, and others write common functions, which are typeset in Roman font instead of italics.</p>
+<p>For example, <code>$sin(x)$</code> generates <span class="math inline">\(sin(x)\)</span> while <code>$\sin(x)$</code> generates <span class="math inline">\(\sin(x)\)</span>. For other functions not in this list, force Roman font with <code>\mathrm{functionname}</code>.</p>
+<h3 id="parenthesis">Parenthesis</h3>
+<p>The formula text <code>\[ \exp( -\frac{x^2}{2} ) \]</code> has output</p>
+<p><span class="math display">\[ \exp( -\frac{x^2}{2} ) \]</span></p>
+<p>To generate parenthesis with the correct size, use the <code>\left</code> and <code>\right</code> commands. The <code>\left</code> command is placed in front of the opening parenthesis and the <code>\right</code> command is placed with the matching closing parenthesis. Correcting the example, <code>\[ \exp\left( -\frac{x^2}{2} \right) \]</code> has output</p>
+<p><span class="math display">\[ \exp\left( -\frac{x^2}{2} \right) \]</span></p>
+<p>Notes:</p>
+<ul>
+<li><code>\left</code> and <code>\right</code> must appear in pairs.</li>
+<li>They may also be used with other bracket symbols, including [ ] { } |.</li>
+<li>The bracket symbols need not match, for instance <code>\left\{</code> … <code>\right|</code> is legal.</li>
+<li>To produce a single opening or closing bracket, make the other bracket invisible with <code>\left.</code> or <code>\right.</code>.</li>
+</ul>
+<h3 id="greek-and-special-symbols">Greek and Special Symbols</h3>
+<p>LaTeX provides an extensive set of math symbols. Symbols are represented with <code>\</code> followed by the symbol name:</p>
+<table border="0" cellpadding="5" style="margin-left:auto;margin-right:auto;margin-bottom:15px">
+<tbody>
+<tr>
+<td>
+α
+</td>
+<td>
+<tt>\alpha</tt>
+</td>
+<td>
+κ
+</td>
+<td>
+<tt>\kappa </tt>
+</td>
+<td>
+υ
+</td>
+<td>
+<tt>\upsilon </tt>
+</td>
+<td>
+Ξ
+</td>
+<td>
+<tt>\Xi</tt>
+</td>
+</tr>
+<tr>
+<td>
+β
+</td>
+<td>
+<tt>\beta</tt>
+</td>
+<td>
+λ
+</td>
+<td>
+<tt>\lambda</tt>
+</td>
+<td>
+φ
+</td>
+<td>
+<tt>\phi</tt>
+</td>
+<td>
+Π
+</td>
+<td>
+<tt>\Pi</tt>
+</td>
+</tr>
+<tr>
+<td>
+γ
+</td>
+<td>
+<tt>\gamma</tt>
+</td>
+<td>
+μ
+</td>
+<td>
+<tt>\mu</tt>
+</td>
+<td>
+χ
+</td>
+<td>
+<tt>\chi</tt>
+</td>
+<td>
+Σ
+</td>
+<td>
+<tt>\Sigma</tt>
+</td>
+</tr>
+<tr>
+<td>
+δ
+</td>
+<td>
+<tt>\delta</tt>
+</td>
+<td>
+ν
+</td>
+<td>
+<tt>\nu</tt>
+</td>
+<td>
+ψ
+</td>
+<td>
+<tt>\psi</tt>
+</td>
+<td>
+Υ
+</td>
+<td>
+<tt>\Upsilon</tt>
+</td>
+</tr>
+<tr>
+<td>
+ε
+</td>
+<td>
+<tt>\epsilon</tt>
+</td>
+<td>
+ξ
+</td>
+<td>
+<tt>\xi</tt>
+</td>
+<td>
+ω
+</td>
+<td>
+<tt>\omega</tt>
+</td>
+<td>
+Ψ
+</td>
+<td>
+<tt>\Psi</tt>
+</td>
+</tr>
+<tr>
+<td>
+ζ
+</td>
+<td>
+<tt>\zeta</tt>
+</td>
+<td>
+π
+</td>
+<td>
+<tt>\pi</tt>
+</td>
+<td>
+Γ
+</td>
+<td>
+<tt>\Gamma</tt>
+</td>
+<td>
+Φ
+</td>
+<td>
+<tt>\Phi</tt>
+</td>
+</tr>
+<tr>
+<td>
+η
+</td>
+<td>
+<tt>\eta</tt>
+</td>
+<td>
+ρ
+</td>
+<td>
+<tt>\rho</tt>
+</td>
+<td>
+Δ
+</td>
+<td>
+<tt>\Delta</tt>
+</td>
+<td>
+Ω
+</td>
+<td>
+<tt>\Omega</tt>
+</td>
+</tr>
+<tr>
+<td>
+θ
+</td>
+<td>
+<tt>\theta</tt>
+</td>
+<td>
+σ
+</td>
+<td>
+<tt>\sigma</tt>
+</td>
+<td>
+Θ
+</td>
+<td>
+<tt>\Theta</tt>
+</td>
+<td colspan="2" rowspan="2">
+</td>
+</tr>
+<tr>
+<td>
+ι
+</td>
+<td>
+<tt>\iota</tt>
+</td>
+<td>
+τ
+</td>
+<td>
+<tt>\tau</tt>
+</td>
+<td>
+Λ
+</td>
+<td>
+<tt>\Lambda</tt>
+</td>
+</tr>
+<tr>
+<td colspan="8">
+ 
+</td>
+</tr>
+<tr>
+<td>
+±
+</td>
+<td>
+<tt>\pm</tt>
+</td>
+<td>
+→
+</td>
+<td>
+<tt>\rightarrow</tt>
+</td>
+<td>
+≠
+</td>
+<td>
+<tt>\ne</tt>
+</td>
+<td>
+∃
+</td>
+<td>
+<tt>\exists</tt>
+</td>
+</tr>
+<tr>
+<td>
+∞
+</td>
+<td>
+<tt>\infty</tt>
+</td>
+<td>
+⇒
+</td>
+<td>
+<tt>\Rightarrow</tt>
+</td>
+<td>
+≡
+</td>
+<td>
+<tt>\equiv</tt>
+</td>
+<td>
+∀
+</td>
+<td>
+<tt>\forall</tt>
+</td>
+</tr>
+<tr>
+<td>
+≤
+</td>
+<td>
+<tt>\le</tt>
+</td>
+<td>
+⇔
+</td>
+<td>
+<tt>\Leftrightarrow</tt>
+</td>
+<td>
+≈
+</td>
+<td>
+<tt>\approx</tt>
+</td>
+<td>
+∈
+</td>
+<td>
+<tt>\in</tt>
+</td>
+</tr>
+<tr>
+<td>
+≥
+</td>
+<td>
+<tt>\ge</tt>
+</td>
+<td>
+∴
+</td>
+<td>
+<tt>\therefore</tt>
+</td>
+<td>
+∼
+</td>
+<td>
+<tt>\sim</tt>
+</td>
+<td>
+∉
+</td>
+<td>
+<tt>\not\in</tt>
+</td>
+</tr>
+</tbody>
+</table>
+<p>There are many more if you need them.</p>
+<h3 id="spacing">Spacing</h3>
+<p>Sometimes formulas need manual adjustments to space symbols properly. A “quad” is the length equal to the font size, 1 quad = 11 pt with 11 pt font size. These commands add horizontal spacing:</p>
+<table border="0" style="margin-left:auto;margin-right:auto;margin-bottom:15px">
+<tbody>
+<tr>
+<td>
+<tt>\,</tt>
+</td>
+<td>
+3/18 quad space
+</td>
+<td>
+<tt>\quad</tt>
+</td>
+<td>
+1 quad space
+</td>
+</tr>
+<tr>
+<td>
+<tt>\:</tt>
+</td>
+<td>
+4/18 quad space
+</td>
+<td>
+<tt>\qquad</tt>
+</td>
+<td>
+2 quad space
+</td>
+</tr>
+<tr>
+<td>
+<tt>\;</tt>
+</td>
+<td>
+5/18 quad space
+</td>
+<td colspan="2" rowspan="2">
+ 
+</td>
+</tr>
+<tr>
+<td>
+<tt>\!</tt>
+</td>
+<td>
+−3/18 quad negative space
+</td>
+</tr>
+</tbody>
+</table>
+<p>Use the small space command <code>\,</code> to adjust where symbols are a little too close. Use the negative space command <code>\!</code> to squeeze together symbols that are otherwise too far apart. Multiple negative spaces <code>\!\!\!</code> can be used to squeeze further. For larger spaces, use <code>\quad</code> and <code>\qquad</code>.</p>
+<h3 id="normal-text-within-a-formula">Normal Text within a Formula</h3>
+<p>It is frequently necessary to write normal text within a math formula, particularly single words and short phrases like “if” and “such that.” This can be done with <code>\mbox{ normal text }</code>. For example, <code>\[ f(x_0) = f(x_1) \qquad \mbox{if and only if} \qquad x_0 = x_1 \]</code> produces</p>
+<p><span class="math display">\[ f(x_0) = f(x_1) \qquad \mbox{if and only if} \qquad x_0 = x_1 \]</span></p>
+<h3 id="math-fonts">Math Fonts</h3>
+<p>It is sometimes useful for notation to use another font, say, writing vectors in boldface. The following commands change the font of the math they enclose</p>
+<table border="0" style="margin-left:auto;margin-right:auto;margin-bottom:15px">
+<tbody>
+<tr>
+<td>
+Roman
+</td>
+<td>
+<tt>\mathrm{</tt>…<tt>} </tt>
+</td>
+<td>
+<b>Bold </b>
+</td>
+<td>
+<tt>\mathbf{</tt>…<tt>} </tt>
+</td>
+</tr>
+<tr>
+<td>
+Sans serif
+</td>
+<td>
+<tt>\mathsf{</tt>…<tt>}</tt>
+</td>
+<td>
+<i>Italic</i>
+</td>
+<td>
+<tt>\mathit{</tt>…<tt>}</tt>
+</td>
+</tr>
+<tr>
+<td>
+<span style="font-family:monospace">Typewriter</span>
+</td>
+<td>
+<tt>\mathtt{</tt>…<tt>}</tt>
+</td>
+<td>
+<b><i>Calligraphic </i></b>
+</td>
+<td>
+<tt>\mathcal{</tt>…<tt>}</tt>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The normal math font is forced with <code>\mathnormal{</code> … <code>}</code>.</p>
+<h3 id="typesetting-differentials">Typesetting differentials</h3>
+<p>When a differential precedes or follows other symbols, insert a small space with <code>\,</code>. For example, <code>$\int \phi(x) \,dx$</code> to produce <span class="math inline">\(\int \phi(x)\, dx\)</span> rather than <span class="math inline">\(\int \phi(x) dx\)</span>.</p>
+<h3 id="exercise">Exercise</h3>
+<p>See if you can reproduce the following formula:</p>
+<p><span class="math display">\[ f(x) = \sum_{k=-\infty}^{+\infty} \frac{1}{2\pi} 
+\int_{-\pi}^\pi f(\xi) \mathrm{e}^{-ik\xi} \, d\xi \, \mathrm{e}^{ikx},
+\quad f \in L^2[-\pi, \pi] \]</span></p>
+<h2 id="document-structure">Document Structure</h2>
+<p>LaTeX offers commands for creating title pages, numbered sections, bibliography, and other features necessary in a structured document.</p>
+<h3 id="title-page">Title Page</h3>
+<p>To create a title page, write the following commands at the beginning of the body text:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">\title</span>{title text}</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="fu">\author</span>{author <span class="fu">\\</span> institute <span class="fu">\\</span> address}</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="fu">\maketitle</span></a></code></pre></div>
+<h3 id="abstract">Abstract</h3>
+<p>Write an abstract with</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">\begin</span>{<span class="ex">abstract</span>} abstract text <span class="kw">\end</span>{<span class="ex">abstract</span>}</a></code></pre></div>
+<h3 id="sections">Sections</h3>
+<p>Sections headings are defined and automatically numbered with the commands</p>
+<p><code>\part     \chapter     \section     \subsection     \subsubsection</code></p>
+<p>Use for instance <code>\section{Methodology}</code> to create a section with heading text “Methodology”. Use <code>\section*{title}</code> to omit numbering. For example, a research article might be structured as</p>
+<table border="0" style="margin-left:8px;margin-bottom:15px">
+<tbody>
+<tr>
+<td valign="top">
+Code:<br /> <tt>\section{Introduction} </tt><br /> …<br /> <tt>\subsection{Previous Work}</tt><br /> …<br /> <tt>\section{Background}</tt><br /> …<br /> <tt>\section{Theory}</tt><br /> …<br /> <tt>\subsection{Main Theorem}</tt><br /> …<br /> <tt>\subsection{Implications}</tt><br /> …<br /> <tt>\section{Experiments}</tt><br /> …<br /> <tt>\section{Conclusion}</tt><br /> …
+</td>
+<td valign="top">
+Outline:
+<ol>
+<li>
+Introduction
+<ol>
+<li>
+Previous Work
+</li>
+</ol>
+</li>
+<li>
+Background
+</li>
+<li>
+Theory
+<ol>
+<li>
+Main Theorem
+</li>
+<li>
+Implications
+</li>
+</ol>
+</li>
+<li>
+Experiments
+</li>
+<li>
+Conclusion
+</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="table-of-contents">Table of Contents</h3>
+<p>The command <code>\tableofcontents</code> produces a table of contents based on the section commands. When sections are added, change order, or if a section heading appears on a different page, the LaTeX code must be compiled twice to create the table of contents correctly.</p>
+<h3 id="bibliography-and-citations">Bibliography and Citations</h3>
+<p>A bibliography is structured</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">\begin</span>{<span class="ex">thebibliography</span>}{samplelabel}</a>
+<a class="sourceLine" id="cb8-2" title="2">     <span class="fu">\bibitem</span>{key 1}entry text 1</a>
+<a class="sourceLine" id="cb8-3" title="3">     <span class="fu">\bibitem</span>{key 2}entry text 2</a>
+<a class="sourceLine" id="cb8-4" title="4">     ...</a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="kw">\end</span>{<span class="ex">thebibliography</span>}</a></code></pre></div>
+<p>Each <code>\bibitem</code> command represents an entry in the bibliography. The entry text is the actual bibliographic information (author, title, publication, etc.). The key argument is a keyword for referring to the entry. To cite the entry within the text, use the command <code>\cite{key}</code>. The samplelabel argument is simply to indicate the number of digits in the largest label. If there are between 10 and 99 entries, use 99.</p>
+<p>For example, the bibliography code</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">\begin</span>{<span class="ex">thebibliography</span>}{99}</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="fu">\bibitem</span>{Heijmans} H. Heijmans and J. Goutsias. ``Nonlinear Multiresolution</a>
+<a class="sourceLine" id="cb9-3" title="3">Signal Decomposition Schemes--Part II: Morphological Wavelets.&#39;&#39; </a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="fu">\textsl</span>{IEEE Transactions on Image Processing}, 2000. </a>
+<a class="sourceLine" id="cb9-5" title="5"></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="fu">\bibitem</span>{Do} M. Do, <span class="fu">\textsl</span>{Directional Multiresolution Image</a>
+<a class="sourceLine" id="cb9-7" title="7">Representations}, Ph.D. Thesis, Department of Communication Systems, Swiss</a>
+<a class="sourceLine" id="cb9-8" title="8">Federal Institute of Technology Lausanne, 2001. </a>
+<a class="sourceLine" id="cb9-9" title="9"></a>
+<a class="sourceLine" id="cb9-10" title="10">...</a>
+<a class="sourceLine" id="cb9-11" title="11"></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="kw">\end</span>{<span class="ex">thebibliography</span>} </a></code></pre></div>
+<p>produces</p>
+<blockquote>
+<p><strong>References</strong></p>
+<p>[1] H. Heijmans and J. Goutsias. “Nonlinear Multiresolution Signal Decomposition Schemes–Part II: Morphological Wavelets.” <em>IEEE Transactions on Image Processing</em>, 2000.</p>
+<p>[2] M. Do, <em>Directional Multiresolution Image Representations</em>, Ph.D. Thesis, Department of Communication Systems, Swiss Federal Institute of Technology Lausanne, 2001.</p>
+</blockquote>
+<p>The text</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode latex"><code class="sourceCode latex"><a class="sourceLine" id="cb10-1" title="1">For background on contourlets, see <span class="kw">\cite</span>{<span class="ex">Do</span>}.</a></code></pre></div>
+<p>produces</p>
+<blockquote>
+<p>For background on contourlets, see [2].</p>
+</blockquote>
+<h2 id="closing">Closing</h2>
+<p>You now have the foundation to begin writing documents with LaTeX. This guide is only a quick introduction to some of the most useful features of LaTeX. Beyond this guide, other LaTeX features and package features you may want are</p>
+<table>
+<tr>
+<td>
+Importing images
+</td>
+<td>
+→ <a href="https://ctan.org/pkg/graphicx">graphicx package</a>
+</td>
+</tr>
+<tr>
+<td>
+AmS-LaTeX math extensions
+</td>
+<td>
+→ <a href="https://ctan.org/pkg/amsmath">amsmath package</a>
+</td>
+</tr>
+<tr>
+<td>
+Listing code with syntax highlighting
+</td>
+<td>
+→ <a href="https://ctan.org/pkg/listings">listings package</a>
+</td>
+</tr>
+<tr>
+<td>
+Hyperlinks
+</td>
+<td>
+→ <a href="https://ctan.org/pkg/hyperref">hyperref package</a>
+</td>
+</tr>
+<tr>
+<td>
+Tables, lists, figures
+</td>
+<td>
+→ see the tabular, itemize, and figure environments
+</td>
+</tr>
+</table>
+</div>
+
+<div id="footer">
+&nbsp;
+</div>
+</body>
+</html>
