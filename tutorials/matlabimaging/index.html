@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Pascal Getreuer" />
+  <title>Image Processing with Matlab</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../site.css" type="text/css" />
+<link rel="icon" 
+      type="image/png" 
+      href="../../favicon.png">
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet">
+<script type="text/javascript" src="../../site.js" ></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+
+<div id="content">
+
+<div id="navbar">
+  <a href="../../index.html">🏠 Home</a>
+  <a>🗐 Papers</a>
+  <a>🗈 Posts</a>
+  <a href="../../cv.html">&lowast; CV</a>
+</div>
+
+<div id="header">
+<h1 class="title">Image Processing with Matlab</h1>
+<h2 class="author">Pascal Getreuer</h2>
+</div>
+<p>This tutorial discusses how to use Matlab for image processing. Some familiarity with Matlab is assumed (you should know how to use matrices and write an M-file).</p>
+<p>It is helpful to have the <a href="https://www.mathworks.com/products/image.html">Matlab Image Processing Toolbox</a>, but fortunately, no toolboxes are needed for most operations. Commands requiring the Image Toolbox are indicated with <strong><code>[Image Toolbox]</code></strong>.</p>
+<h2 id="image-representation">Image representation</h2>
+<p>There are five types of images in Matlab.</p>
+<ul>
+<li><p><strong>Grayscale.</strong> A grayscale image <span class="math inline">\(M\)</span> pixels tall and <span class="math inline">\(N\)</span> pixels wide is represented as a matrix of double datatype of size <span class="math inline">\(M\times N\)</span>. Element values (e.g., <code>MyImage(m, n)</code>) denote the pixel grayscale intensities in [0, 1] with 0=black and 1=white.</p></li>
+<li><p><strong>Truecolor RGB.</strong> A truecolor red-green-blue (RGB) image is represented as a three-dimensional <span class="math inline">\(M\times N \times 3\)</span> double matrix. Each pixel has red, green, blue components along the third dimension with values in [0, 1], for example, the color components of pixel (m, n) are <code>MyImage(m, n, 1)</code> = red, <code>MyImage(m, n, 2)</code> = green, <code>MyImage(m, n, 3)</code> = blue.</p></li>
+<li><p><strong>Indexed.</strong> Indexed (palette based) images are represented with an index matrix of size <span class="math inline">\(M\times N\)</span> and a colormap matrix of size <span class="math inline">\(K\times 3\)</span>. The colormap holds all colors used in the image and the index matrix represents the pixels by referring to colors in the colormap. For example, if the 22nd color is magenta <code>MyColormap(22, :)</code> = <code>[1, 0, 1]</code>, then <code>MyImage(m, n) = 22</code> is a magenta-colored pixel.</p></li>
+<li><p><strong>Binary.</strong> A binary image is represented by an <span class="math inline">\(M\times N\)</span> logical matrix where pixel values are 1 (true) or 0 (false).</p></li>
+<li><p><strong>uint8.</strong> This type uses less memory and some operations compute faster than with double types. For simplicity, this tutorial does not discuss uint8 further.</p></li>
+</ul>
+<p>When possible, it is convenient to work with grayscale format for image processing. In cases requiring color, an RGB color image can be decomposed and handled as three separate grayscale images. Indexed images must be converted to grayscale or RGB for most operations.</p>
+<p>Below are some common manipulations and conversions. A few commands require the Image Toolbox and are indicated with <strong><code>[Image Toolbox]</code></strong>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb1-1" title="1"><span class="co">% Display a grayscale or binary image</span></a>
+<a class="sourceLine" id="cb1-2" title="2">image(MyGray * <span class="fl">255</span>);</a>
+<a class="sourceLine" id="cb1-3" title="3">axis image</a>
+<a class="sourceLine" id="cb1-4" title="4">colormap(gray(<span class="fl">256</span>));</a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co">% Display an RGB image (error if any element outside of [0, 1])</span></a>
+<a class="sourceLine" id="cb1-7" title="7">image(MyRGB);</a>
+<a class="sourceLine" id="cb1-8" title="8">axis image</a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">% Display an RGB image (clips elements to [0, 1])</span></a>
+<a class="sourceLine" id="cb1-10" title="10">image(min(max(MyRGB, <span class="fl">0</span>), <span class="fl">1</span>));</a>
+<a class="sourceLine" id="cb1-11" title="11">axis image</a>
+<a class="sourceLine" id="cb1-12" title="12"></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="co">% Display an indexed image</span></a>
+<a class="sourceLine" id="cb1-14" title="14">image(MyIndexed);</a>
+<a class="sourceLine" id="cb1-15" title="15">axis image</a>
+<a class="sourceLine" id="cb1-16" title="16">colormap(MyColormap);</a>
+<a class="sourceLine" id="cb1-17" title="17"></a>
+<a class="sourceLine" id="cb1-18" title="18"><span class="co">% Separate the channels of an RGB image</span></a>
+<a class="sourceLine" id="cb1-19" title="19">MyRed = MyRGB(:, :, <span class="fl">1</span>);</a>
+<a class="sourceLine" id="cb1-20" title="20">MyGreen = MyRGB(:, :, <span class="fl">2</span>);</a>
+<a class="sourceLine" id="cb1-21" title="21">MyBlue = MyRGB(:, :, <span class="fl">3</span>);</a>
+<a class="sourceLine" id="cb1-22" title="22"><span class="co">% Put the channels back together</span></a>
+<a class="sourceLine" id="cb1-23" title="23">MyRGB = cat(<span class="fl">3</span>, MyRed, MyGreen, MyBlue);</a>
+<a class="sourceLine" id="cb1-24" title="24"></a>
+<a class="sourceLine" id="cb1-25" title="25"><span class="co">% Convert grayscale to RGB</span></a>
+<a class="sourceLine" id="cb1-26" title="26">MyRGB = cat(<span class="fl">3</span>, MyGray, MyGray, MyGray);</a>
+<a class="sourceLine" id="cb1-27" title="27"></a>
+<a class="sourceLine" id="cb1-28" title="28"><span class="co">% Convert RGB to grayscale using simple average</span></a>
+<a class="sourceLine" id="cb1-29" title="29">MyGray = mean(MyRGB, <span class="fl">3</span>);</a>
+<a class="sourceLine" id="cb1-30" title="30"><span class="co">% Convert RGB to grayscale using NTSC weighting [Image Toolbox]</span></a>
+<a class="sourceLine" id="cb1-31" title="31">MyGray = rgb2gray(MyRGB);</a>
+<a class="sourceLine" id="cb1-32" title="32"><span class="co">% Convert RGB to grayscale using NTSC weighting</span></a>
+<a class="sourceLine" id="cb1-33" title="33">MyGray = <span class="fl">0.299</span>*MyRGB(:, :, <span class="fl">1</span>) + <span class="fl">0.587</span>*MyRGB(:, :, <span class="fl">2</span>) + <span class="fl">0.114</span>*MyRGB(:, :, <span class="fl">3</span>);</a>
+<a class="sourceLine" id="cb1-34" title="34"></a>
+<a class="sourceLine" id="cb1-35" title="35"><span class="co">% Convert indexed image to RGB [Image Toolbox]</span></a>
+<a class="sourceLine" id="cb1-36" title="36">MyRGB = ind2rgb(MyIndexed, MyColormap);</a>
+<a class="sourceLine" id="cb1-37" title="37"><span class="co">% Convert indexed image to RGB</span></a>
+<a class="sourceLine" id="cb1-38" title="38">MyRGB = reshape(cat(<span class="fl">3</span>, MyColormap(MyIndexed, <span class="fl">1</span>), MyColormap(MyIndexed, <span class="fl">2</span>),...</a>
+<a class="sourceLine" id="cb1-39" title="39">    MyColormap(MyIndexed, <span class="fl">3</span>)), size(MyIndexed, <span class="fl">1</span>), size(MyIndexed, <span class="fl">2</span>), <span class="fl">3</span>);</a>
+<a class="sourceLine" id="cb1-40" title="40"></a>
+<a class="sourceLine" id="cb1-41" title="41"><span class="co">% Convert an RGB image to indexed using K colors [Image Toolbox]</span></a>
+<a class="sourceLine" id="cb1-42" title="42">[MyIndexed, MyColormap] = rgb2ind(MyRGB, K);</a>
+<a class="sourceLine" id="cb1-43" title="43"></a>
+<a class="sourceLine" id="cb1-44" title="44"><span class="co">% Convert binary to grayscale</span></a>
+<a class="sourceLine" id="cb1-45" title="45">MyGray = double(MyBinary);</a>
+<a class="sourceLine" id="cb1-46" title="46"></a>
+<a class="sourceLine" id="cb1-47" title="47"><span class="co">% Convert grayscale to binary</span></a>
+<a class="sourceLine" id="cb1-48" title="48">MyBinary = (MyGray &gt; <span class="fl">0.5</span>);</a></code></pre></div>
+<h2 id="reading-and-writing-image-files">Reading and writing image files</h2>
+<p>Matlab can read and write images with the <a href="https://www.mathworks.com/help/matlab/ref/imread.html"><code>imread</code></a> and <a href="https://www.mathworks.com/help/matlab/ref/imwrite.html"><code>imwrite</code></a> commands. Although a fair number of file formats are supported, some are not. Use <code>imformats</code> to see what your installation supports:</p>
+<pre><code>&gt;&gt; imformats
+EXT   ISA     READ      WRITE     ALPHA  DESCRIPTION
+--------------------------------------------------------------------------
+bmp   isbmp   readbmp   writebmp  0      Windows Bitmap (BMP)
+gif   isgif   readgif   writegif  0      Graphics Interchange Format (GIF)
+pbm   ispbm   readpnm   writepnm  0      Portable Bitmap (PBM)
+pcx   ispcx   readpcx   writepcx  0      Windows Paintbrush (PCX)
+pgm   ispgm   readpnm   writepnm  0      Portable Graymap (PGM)
+png   ispng   readpng   writepng  1      Portable Network Graphics (PNG)
+pnm   ispnm   readpnm   writepnm  0      Portable Any Map (PNM)
+ppm   isppm   readpnm   writepnm  0      Portable Pixmap (PPM)
+...</code></pre>
+<p>When reading images, an inconvenience is that <code>imread</code> returns the image data in uint8 datatype, which must be converted to double and rescaled before use. So instead of calling <code>imread</code> directly, I use the following M-file function to read and convert images:</p>
+<p><strong><code>getimage.m</code></strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb3-1" title="1">function Img = getimage(Filename)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">%GETIMAGE  Read an image given a filename</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">%   V = GETIMAGE(FILENAME) where FILENAME is an image file.  The image is</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">%   returned either as an MxN double matrix for a grayscale image or as an</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">%   MxNx3 double matrix for a color image, with elements in [0,1].</span></a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">% Pascal Getreuer 2008-2009</span></a>
+<a class="sourceLine" id="cb3-8" title="8"></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">% Read the file</span></a>
+<a class="sourceLine" id="cb3-10" title="10">[Img, Map, Alpha] = imread(Filename);</a>
+<a class="sourceLine" id="cb3-11" title="11">Img = double(Img);</a>
+<a class="sourceLine" id="cb3-12" title="12"></a>
+<a class="sourceLine" id="cb3-13" title="13">if ~isempty(Map)    <span class="co">% Convert indexed image to RGB.</span></a>
+<a class="sourceLine" id="cb3-14" title="14">    Img = Img + <span class="fl">1</span>;</a>
+<a class="sourceLine" id="cb3-15" title="15">    Img = reshape(cat(<span class="fl">3</span>, Map(Img, <span class="fl">1</span>), Map(Img, <span class="fl">2</span>), Map(Img, <span class="fl">3</span>)), ...</a>
+<a class="sourceLine" id="cb3-16" title="16">                  size(Img, <span class="fl">1</span>), size(Img, <span class="fl">2</span>), <span class="fl">3</span>);</a>
+<a class="sourceLine" id="cb3-17" title="17">else</a>
+<a class="sourceLine" id="cb3-18" title="18">    Img = Img / <span class="fl">255</span>;  <span class="co">% Rescale to [0, 1].</span></a>
+<a class="sourceLine" id="cb3-19" title="19">end</a></code></pre></div>
+<p>Save this code as getimage.m to use this M-function. If image baboon.png is in the current directory (or somewhere in the Matlab search path), you can read it with <code class="sourceCode matlab">MyImage = getimage(<span class="st">&#39;baboon.png&#39;</span>)</code>. You can also use partial paths, for example if the image is in <code>&lt;current directory&gt;/images/</code> with <code class="sourceCode matlab">getimage(<span class="st">&#39;images/baboon.png&#39;</span>)</code>.</p>
+<p>To write a grayscale or RGB image, use</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb4-1" title="1">imwrite(MyImage, <span class="st">&#39;myimage.png&#39;</span>);</a></code></pre></div>
+<p>Take care that <code>MyImage</code> is a double matrix with elements in [0, 1]—if improperly scaled, the saved file will probably be blank.</p>
+<p>When writing image files, I highly recommend using the PNG file format. This format is a reliable choice since it is lossless, supports truecolor RGB, and compresses pretty well. Use other formats with caution.</p>
+<h2 id="basic-operations">Basic operations</h2>
+<p>Below are some basic operations on a grayscale image <code>u</code>. Commands requiring the Image Toolbox are indicated with <strong><code>[Image Toolbox]</code></strong>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb5-1" title="1"><span class="co">% Statistics</span></a>
+<a class="sourceLine" id="cb5-2" title="2">uMax = max(u(:));                            <span class="co">% Compute the maximum value</span></a>
+<a class="sourceLine" id="cb5-3" title="3">uMin = min(u(:));                            <span class="co">% Minimum</span></a>
+<a class="sourceLine" id="cb5-4" title="4">uPower = sum(u(:).^<span class="fl">2</span>);                       <span class="co">% Power</span></a>
+<a class="sourceLine" id="cb5-5" title="5">uAvg = mean(u(:));                           <span class="co">% Average</span></a>
+<a class="sourceLine" id="cb5-6" title="6">uVar = var(u(:));                            <span class="co">% Variance</span></a>
+<a class="sourceLine" id="cb5-7" title="7">uMed = median(u(:));                         <span class="co">% Median</span></a>
+<a class="sourceLine" id="cb5-8" title="8">hist(u(:), linspace(<span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">256</span>));             <span class="co">% Plot histogram</span></a>
+<a class="sourceLine" id="cb5-9" title="9"></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">% Basic manipulations</span></a>
+<a class="sourceLine" id="cb5-11" title="11">uClip = min(max(u, <span class="fl">0</span>), <span class="fl">1</span>);                   <span class="co">% Clip elements to [0,1]</span></a>
+<a class="sourceLine" id="cb5-12" title="12">uPad = u([<span class="fl">1</span>, <span class="fl">1</span>:end, end], [<span class="fl">1</span>, <span class="fl">1</span>:end, end]);  <span class="co">% Pad with one-pixel margin</span></a>
+<a class="sourceLine" id="cb5-13" title="13">uPad = padarray(u, [k, k], <span class="st">&#39;replicate&#39;</span>);     <span class="co">% Pad of size k [Image Toolbox]</span></a>
+<a class="sourceLine" id="cb5-14" title="14">uCrop = u(RowStart:RowEnd, ColStart:ColEnd); <span class="co">% Crop image</span></a>
+<a class="sourceLine" id="cb5-15" title="15">uFlip = flipud(u);                           <span class="co">% Flip up/down</span></a>
+<a class="sourceLine" id="cb5-16" title="16">uFlip = fliplr(u);                           <span class="co">% Flip left/right</span></a>
+<a class="sourceLine" id="cb5-17" title="17">uResize = imresize(u, ScaleFactor);          <span class="co">% Resize [Image Toolbox]</span></a>
+<a class="sourceLine" id="cb5-18" title="18">uRot = rot90(u, k);                          <span class="co">% Rotate by k*90 degrees</span></a>
+<a class="sourceLine" id="cb5-19" title="19">uRot = imrotate(u, Angle);                   <span class="co">% Rotate [Image Toolbox]</span></a>
+<a class="sourceLine" id="cb5-20" title="20">uc = (u - min(u(:))/(max(u(:)) - min(u(:))); <span class="co">% Stretch contrast to [0, 1]</span></a>
+<a class="sourceLine" id="cb5-21" title="21">uq = round(u * (K - <span class="fl">1</span>))/(K - <span class="fl">1</span>);             <span class="co">% Quantize to K graylevels</span></a>
+<a class="sourceLine" id="cb5-22" title="22"></a>
+<a class="sourceLine" id="cb5-23" title="23"><span class="co">% Add white Gaussian noise of standard deviation sigma.</span></a>
+<a class="sourceLine" id="cb5-24" title="24">uNoisy = u + randn(size(u)) * sigma;</a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="co">% Simluate salt and pepper noise.</span></a>
+<a class="sourceLine" id="cb5-26" title="26">uNoisy = u; uNoisy(rand(size(u)) &lt; p) = round(rand(size(u)));</a>
+<a class="sourceLine" id="cb5-27" title="27"></a>
+<a class="sourceLine" id="cb5-28" title="28"><span class="co">% Debugging</span></a>
+<a class="sourceLine" id="cb5-29" title="29">any(~isfinite(u(:)))  <span class="co">% Are any elements are infinite or NaN?</span></a>
+<a class="sourceLine" id="cb5-30" title="30">nnz(u &gt; <span class="fl">0.5</span>)          <span class="co">% Count elements satisfying some condition.</span></a></code></pre></div>
+<p><em>(Note: For any array, the syntax <code>u(:)</code> means “unroll <code>u</code> into a column vector.” For example, if <code>u = [1,5;0,2]</code>, then <code>u(:)</code> is <code>[1;0;5;2]</code>.)</em></p>
+<p>For example, image signal power is used in computing signal-to-noise ratio (SNR) and peak signal-to-noise ratio (PSNR). Given clean image <code>uclean</code> and noise-contaminated image <code>u</code>,</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb6-1" title="1"><span class="co">% Compute SNR</span></a>
+<a class="sourceLine" id="cb6-2" title="2">snr = -<span class="fl">10</span> * log10( sum((uclean(:) - u(:)).^<span class="fl">2</span>) / sum(uclean(:).^<span class="fl">2</span>) );</a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co">% Compute PSNR (where the maximum possible value of uclean is 1)</span></a>
+<a class="sourceLine" id="cb6-5" title="5">psnr = -<span class="fl">10</span> * log10( mean((uclean(:) - u(:)).^<span class="fl">2</span>) );</a></code></pre></div>
+<p><strong>Be careful with <code>norm</code>:</strong> the behavior is <code>norm(v)</code> on vector <code>v</code> computes <code>sqrt(sum(v.^2))</code>, but <code>norm(A)</code> on matrix <code>A</code> computes the induced <span class="math inline">\(L^2\)</span> matrix norm,</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb7-1" title="1">norm(A) = sqrt(max(eig(A&#39; * A)))   <span class="co">% gaah!</span></a></code></pre></div>
+<p>So <code>norm(A)</code> is certainly not <code>sqrt(sum(A(:).^2))</code>. It is nevertheless an easy mistake to use <code>norm(A)</code> where it should have been <code>norm(A(:))</code>.</p>
+<h2 id="linear-filters">Linear filters</h2>
+<p>Linear filtering is the cornerstone technique of signal processing. To briefly introduce, a linear filter is an operation where at every pixel <span class="math inline">\(x_{m,n}\)</span> of an image, a linear function is evaluated on the pixel and its neighbors to compute a new pixel value <span class="math inline">\(y_{m,n}\)</span>.</p>
+<p>A linear filter in two dimensions has the general form <span class="math display">\[ y_{m,n} = \sum_j \sum_k h_{j,k} x_{m-j,n-k} \]</span> where <span class="math inline">\(x\)</span> is the input, <span class="math inline">\(y\)</span> is the output, and <span class="math inline">\(h\)</span> is the filter impulse response. Different choices of <span class="math inline">\(h\)</span> lead to filters that smooth, sharpen, and detect edges, to name a few applications. The right-hand side of the above equation is denoted concisely as <span class="math inline">\(h*x\)</span> and is called the “convolution of <span class="math inline">\(h\)</span> and <span class="math inline">\(x\)</span>.”</p>
+<h3 id="spatial-domain-filtering">Spatial-domain filtering</h3>
+<p>Two-dimensional linear filtering is implemented in Matlab with <a href="https://www.mathworks.com/help/matlab/ref/conv2.html"><code>conv2</code></a>. Unfortunately, <code>conv2</code> can only handle filtering near the image boundaries by zero-padding, which for images is usually inappropriate. To work around this, we can pad the input image and then use the <code class="sourceCode matlab"><span class="st">&#39;valid&#39;</span></code> option when calling <code>conv2</code>. The following M-function does this.</p>
+<p><strong><code>conv2padded.m</code></strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb8-1" title="1">function x = conv2padded(varargin)</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">%CONV2PADDED  Two-dimensional convolution with padding.</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">%   Y = CONV2PADDED(X,H) applies 2D filter H to X with constant</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">%   extension padding.</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">%</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">%   Y = CONV2PADDED(H1,H2,X) first applies 1D filter H1 along the rows</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">%   and then applies 1D filter H2 along the columns.</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">%</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">%   If X is a 3D array, filtering is done separately on each channel.</span></a>
+<a class="sourceLine" id="cb8-10" title="10"></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">% Pascal Getreuer 2009</span></a>
+<a class="sourceLine" id="cb8-12" title="12"></a>
+<a class="sourceLine" id="cb8-13" title="13">if nargin == <span class="fl">2</span>       <span class="co">% Function was called as &quot;conv2padded(x,h)&quot;</span></a>
+<a class="sourceLine" id="cb8-14" title="14">    x = varargin{<span class="fl">1</span>};</a>
+<a class="sourceLine" id="cb8-15" title="15">    h = varargin{<span class="fl">2</span>};</a>
+<a class="sourceLine" id="cb8-16" title="16">    top = ceil(size(h, <span class="fl">1</span>)/<span class="fl">2</span>) - <span class="fl">1</span>;</a>
+<a class="sourceLine" id="cb8-17" title="17">    bottom = floor(size(h, <span class="fl">1</span>)/<span class="fl">2</span>);</a>
+<a class="sourceLine" id="cb8-18" title="18">    left = ceil(size(h, <span class="fl">2</span>)/<span class="fl">2</span>) - <span class="fl">1</span>;</a>
+<a class="sourceLine" id="cb8-19" title="19">    right = floor(size(h, <span class="fl">2</span>)/<span class="fl">2</span>);</a>
+<a class="sourceLine" id="cb8-20" title="20">elseif nargin == <span class="fl">3</span>   <span class="co">% Function was called as &quot;conv2padded(h1,h2,x)&quot;</span></a>
+<a class="sourceLine" id="cb8-21" title="21">    h1 = varargin{<span class="fl">1</span>};</a>
+<a class="sourceLine" id="cb8-22" title="22">    h2 = varargin{<span class="fl">2</span>};</a>
+<a class="sourceLine" id="cb8-23" title="23">    x = varargin{<span class="fl">3</span>};</a>
+<a class="sourceLine" id="cb8-24" title="24">    top = ceil(length(h1)/<span class="fl">2</span>) - <span class="fl">1</span>;</a>
+<a class="sourceLine" id="cb8-25" title="25">    bottom = floor(length(h1)/<span class="fl">2</span>);</a>
+<a class="sourceLine" id="cb8-26" title="26">    left = ceil(length(h2)/<span class="fl">2</span>) - <span class="fl">1</span>;</a>
+<a class="sourceLine" id="cb8-27" title="27">    right = floor(length(h2)/<span class="fl">2</span>);</a>
+<a class="sourceLine" id="cb8-28" title="28">else</a>
+<a class="sourceLine" id="cb8-29" title="29">    error(<span class="st">&#39;Wrong number of arguments.&#39;</span>);</a>
+<a class="sourceLine" id="cb8-30" title="30">end</a>
+<a class="sourceLine" id="cb8-31" title="31"></a>
+<a class="sourceLine" id="cb8-32" title="32"><span class="co">% Pad the input image</span></a>
+<a class="sourceLine" id="cb8-33" title="33">xPadded = x([ones(<span class="fl">1</span>, top), <span class="fl">1</span>:size(x, <span class="fl">1</span>), size(x, <span class="fl">1</span>) + zeros(<span class="fl">1</span>, bottom)],...</a>
+<a class="sourceLine" id="cb8-34" title="34">      [ones(<span class="fl">1</span>, left), <span class="fl">1</span>:size(x, <span class="fl">2</span>), size(x, <span class="fl">2</span>) + zeros(<span class="fl">1</span>, right)], :);</a>
+<a class="sourceLine" id="cb8-35" title="35"></a>
+<a class="sourceLine" id="cb8-36" title="36"><span class="co">% Since conv2 cannot handle 3D inputs, do filtering channel by channel</span></a>
+<a class="sourceLine" id="cb8-37" title="37">for p = <span class="fl">1</span>:size(x, <span class="fl">3</span>)</a>
+<a class="sourceLine" id="cb8-38" title="38">    if nargin == <span class="fl">2</span></a>
+<a class="sourceLine" id="cb8-39" title="39">        x(:, :, p) = conv2(xPadded(:, :, p), h, <span class="st">&#39;valid&#39;</span>);      <span class="co">% Call conv2</span></a>
+<a class="sourceLine" id="cb8-40" title="40">    else</a>
+<a class="sourceLine" id="cb8-41" title="41">        x(:, :, p) = conv2(h1, h2, xPadded(:, :, p), <span class="st">&#39;valid&#39;</span>); <span class="co">% Call conv2</span></a>
+<a class="sourceLine" id="cb8-42" title="42">    end</a>
+<a class="sourceLine" id="cb8-43" title="43">end</a></code></pre></div>
+<p>Save this code as <code>conv2padded.m</code> to use this M-function. Here are some examples:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb9-1" title="1"><span class="co">% A light smoothing filter</span></a>
+<a class="sourceLine" id="cb9-2" title="2">h = [<span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>;</a>
+<a class="sourceLine" id="cb9-3" title="3">     <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">1</span>;</a>
+<a class="sourceLine" id="cb9-4" title="4">     <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>];</a>
+<a class="sourceLine" id="cb9-5" title="5">h = h / sum(h(:));  <span class="co">% Normalize the filter</span></a>
+<a class="sourceLine" id="cb9-6" title="6">uSmooth = conv2padded(u, h);</a>
+<a class="sourceLine" id="cb9-7" title="7"></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="co">% A sharpening filter</span></a>
+<a class="sourceLine" id="cb9-9" title="9">h = [<span class="fl">0</span>, -<span class="fl">1</span>, <span class="fl">0</span>;</a>
+<a class="sourceLine" id="cb9-10" title="10">     -<span class="fl">1</span>, <span class="fl">8</span>, -<span class="fl">1</span>;</a>
+<a class="sourceLine" id="cb9-11" title="11">     <span class="fl">0</span>, -<span class="fl">1</span>, <span class="fl">0</span>];</a>
+<a class="sourceLine" id="cb9-12" title="12">h = h / sum(h(:));  <span class="co">% Normalize the filter</span></a>
+<a class="sourceLine" id="cb9-13" title="13">uSharp = conv2padded(u, h);</a>
+<a class="sourceLine" id="cb9-14" title="14"></a>
+<a class="sourceLine" id="cb9-15" title="15"><span class="co">% Sobel edge detection</span></a>
+<a class="sourceLine" id="cb9-16" title="16">hx = [<span class="fl">1</span>, <span class="fl">0</span>, -<span class="fl">1</span>;</a>
+<a class="sourceLine" id="cb9-17" title="17">     <span class="fl">2</span>, <span class="fl">0</span>, -<span class="fl">2</span>;</a>
+<a class="sourceLine" id="cb9-18" title="18">     <span class="fl">1</span>, <span class="fl">0</span>, -<span class="fl">1</span>];</a>
+<a class="sourceLine" id="cb9-19" title="19">hy = rot90(hx, -<span class="fl">1</span>);</a>
+<a class="sourceLine" id="cb9-20" title="20">u_x = conv2padded(u, hx);</a>
+<a class="sourceLine" id="cb9-21" title="21">u_y = conv2padded(u, hy);</a>
+<a class="sourceLine" id="cb9-22" title="22">EdgeStrength = sqrt(u_x.^<span class="fl">2</span> + u_y.^<span class="fl">2</span>);</a>
+<a class="sourceLine" id="cb9-23" title="23"></a>
+<a class="sourceLine" id="cb9-24" title="24"><span class="co">% Moving average</span></a>
+<a class="sourceLine" id="cb9-25" title="25">WindowSize = <span class="fl">5</span>;</a>
+<a class="sourceLine" id="cb9-26" title="26">h1 = ones(WindowSize, <span class="fl">1</span>) / WindowSize;</a>
+<a class="sourceLine" id="cb9-27" title="27">uSmooth = conv2padded(h1, h1, u);</a>
+<a class="sourceLine" id="cb9-28" title="28"></a>
+<a class="sourceLine" id="cb9-29" title="29"><span class="co">% Gaussian filtering</span></a>
+<a class="sourceLine" id="cb9-30" title="30">sigma = <span class="fl">3.5</span>;</a>
+<a class="sourceLine" id="cb9-31" title="31">FilterRadius = ceil(<span class="fl">4</span> * sigma);  <span class="co">% Truncate the Gaussian at 4*sigma</span></a>
+<a class="sourceLine" id="cb9-32" title="32">h1 = exp(-(-FilterRadius:FilterRadius).^<span class="fl">2</span> / (<span class="fl">2</span> * sigma^<span class="fl">2</span>));</a>
+<a class="sourceLine" id="cb9-33" title="33">h1 = h1 / sum(h1);               <span class="co">% Normalize the filter</span></a>
+<a class="sourceLine" id="cb9-34" title="34">uSmooth = conv2padded(h1, h1, u);</a></code></pre></div>
+<p>A 2D filter h is said to be <em>separable</em> if it can be expressed as the outer product of two 1D filters h1 and h2, that is, <code>h = h1(:) * h2(:)'</code>. It is faster to pass h1 and h2 than h, as is done above for the moving average window and the Gaussian filter. In fact, the Sobel filters <code>hx</code> and <code>hy</code> in the above code are also separable—what are h1 and h2?</p>
+<h3 id="fourier-domain-filtering">Fourier-domain filtering</h3>
+<p>For large filters, spatial-domain filtering with <code>conv2</code> is easily a computationally expensive operation. For a K×K filter on an M×N image, <code>conv2</code> costs <span class="math inline">\(O(MNK^2)\)</span> additions and multiplications, or <span class="math inline">\(O(N^4)\)</span> supposing M, N, K are similar magnitudes.</p>
+<p>For large filters, filtering in the Fourier domain is faster since the computational cost is reduced to <span class="math inline">\(O(N^2 \log N)\)</span>. Using the convolution-multiplication property of the Fourier transform, the convolution is equivalently computed by</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb10-1" title="1"><span class="co">% Compute y = h*x with periodic boundary extension</span></a>
+<a class="sourceLine" id="cb10-2" title="2">[k1, k2] = size(h);</a>
+<a class="sourceLine" id="cb10-3" title="3">hpad = zeros(size(x));</a>
+<a class="sourceLine" id="cb10-4" title="4">hpad([end + <span class="fl">1</span> - floor(k1/<span class="fl">2</span>):end, <span class="fl">1</span>:ceil(k1/<span class="fl">2</span>)], ...</a>
+<a class="sourceLine" id="cb10-5" title="5">    [end + <span class="fl">1</span> - floor(k2/<span class="fl">2</span>):end, <span class="fl">1</span>:ceil(k2/<span class="fl">2</span>)]) = h;</a>
+<a class="sourceLine" id="cb10-6" title="6">y = real(ifft2(fft2(hpad) .* fft2(x)));</a></code></pre></div>
+<p>The result is equivalent to <code>conv2padded(x,h)</code> except near the boundary, where the above computation uses periodic boundary extension.</p>
+<p>Fourier-based filtering can also be done with symmetric boundary extension by reflecting the input in each direction:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb11-1" title="1"><span class="co">% Compute y = h*x with symmetric boundary extension</span></a>
+<a class="sourceLine" id="cb11-2" title="2">xSym = [x, fliplr(x)];       <span class="co">% Symmetrize horizontally</span></a>
+<a class="sourceLine" id="cb11-3" title="3">xSym = [xSym; flipud(xSym)]; <span class="co">% Symmetrize vertically</span></a>
+<a class="sourceLine" id="cb11-4" title="4">[k1,k2] = size(h);</a>
+<a class="sourceLine" id="cb11-5" title="5">hpad = zeros(size(xSym));</a>
+<a class="sourceLine" id="cb11-6" title="6">hpad([end + <span class="fl">1</span> - floor(k1/<span class="fl">2</span>):end, <span class="fl">1</span>:ceil(k1/<span class="fl">2</span>)], ...</a>
+<a class="sourceLine" id="cb11-7" title="7">    [end + <span class="fl">1</span> - floor(k2/<span class="fl">2</span>):end, <span class="fl">1</span>:ceil(k2/<span class="fl">2</span>)]) = h;</a>
+<a class="sourceLine" id="cb11-8" title="8">y = real(ifft2(fft2(hpad) .* fft2(xSym)));</a>
+<a class="sourceLine" id="cb11-9" title="9">y = y(<span class="fl">1</span>:size(y, <span class="fl">1</span>)/<span class="fl">2</span>, <span class="fl">1</span>:size(y, <span class="fl">2</span>)/<span class="fl">2</span>);</a></code></pre></div>
+<p><em>(Note: An even more efficient method is FFT overlap-add or overlap-save filtering. The Signal Processing Toolbox implements FFT overlap-add in one-dimension in <code>fftfilt</code>.)</em></p>
+<h2 id="nonlinear-filters">Nonlinear filters</h2>
+<p>A nonlinear filter is an operation where each filtered pixel <span class="math inline">\(y_{m,n}\)</span> is a nonlinear function of <span class="math inline">\(x_{m,n}\)</span> and its neighbors. Here we briefly discuss a few types of nonlinear filters.</p>
+<h3 id="order-statistic-filters">Order statistic filters</h3>
+<p>If you have the Image Toolbox, order statistic filters can be performed with <code>ordfilt2</code> and <code>medfilt2</code>. An order statistic filter sorts the pixel values over a neighborhood and selects the kth largest value. The min, max, and median filters are special cases.</p>
+<h3 id="morphological-filters">Morphological filters</h3>
+<p>If you have the Image Toolbox, <code>bwmorph</code> implements various morphological operations on binary images, like erosion, dilation, open, close, and skeleton. There are also commands available for morphology on grayscale images: <code>imerode</code>, <code>imdilate</code>, and <code>imtophat</code>, among others.</p>
+<h3 id="build-your-own-filter">Build your own filter</h3>
+<p>Occasionally we want to use a new filter that Matlab does not have. The code below is a simple generic template for implementing filters.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb12-1" title="1">[M, N] = size(x);</a>
+<a class="sourceLine" id="cb12-2" title="2">y = zeros(size(x));</a>
+<a class="sourceLine" id="cb12-3" title="3"></a>
+<a class="sourceLine" id="cb12-4" title="4">r = <span class="fl">1</span>;     <span class="co">% Adjust for desired window size</span></a>
+<a class="sourceLine" id="cb12-5" title="5"></a>
+<a class="sourceLine" id="cb12-6" title="6">for n = <span class="fl">1</span>+r:N-r</a>
+<a class="sourceLine" id="cb12-7" title="7">    for m = <span class="fl">1</span>+r:M-r</a>
+<a class="sourceLine" id="cb12-8" title="8">        <span class="co">% Extract a window of size (2r+1)x(2r+1) around (m,n)</span></a>
+<a class="sourceLine" id="cb12-9" title="9">        w = x(m + (-r:r),n + (-r:r));</a>
+<a class="sourceLine" id="cb12-10" title="10"></a>
+<a class="sourceLine" id="cb12-11" title="11">        <span class="co">% ... write the filter here ...</span></a>
+<a class="sourceLine" id="cb12-12" title="12"></a>
+<a class="sourceLine" id="cb12-13" title="13">        y(m, n) = result;</a>
+<a class="sourceLine" id="cb12-14" title="14">    end</a>
+<a class="sourceLine" id="cb12-15" title="15">end</a></code></pre></div>
+<p><em>(Note: A frequent misguided claim is that loops in Matlab are slow and should be avoided. This was once true, back in Matlab 5 and earlier, but loops in modern versions are reasonably fast.)</em></p>
+<p>For example, the alpha-trimmed mean filter ignores the d/2 lowest and d/2 highest values in the window, and averages the remaining values. The filter is a balance between a median filter and a mean filter. The alpha-trimmed mean filter can be implemented in the template as</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb13-1" title="1"><span class="co">% The alpha-trimmed mean filter</span></a>
+<a class="sourceLine" id="cb13-2" title="2">w = sort(w(:));</a>
+<a class="sourceLine" id="cb13-3" title="3">y(m, n) = mean(w(<span class="fl">1</span>+d/<span class="fl">2</span>:end-d/<span class="fl">2</span>));   <span class="co">% Compute the result y(m,n)</span></a></code></pre></div>
+<p>As another example, the bilateral filter is <span class="math display">\[ y_{m,n} = \frac{\sum_{j,k} h_{j,k,m,n} x_{m-j,n-k}}{\sum_{j,k} h_{j,k,m,n}} \]</span> where <span class="math display">\[ h_{j,k,m,n} = \mathrm{e}^{-(j^2 + k^2) / (2\sigma_s^2)} \mathrm{e}^{-(x_{m-j,n-k} - x_{m,n})^2 / (2\sigma_d^2)}\]</span></p>
+<p>The bilateral filter can be implemented as</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb14-1" title="1"><span class="co">% The bilateral filter</span></a>
+<a class="sourceLine" id="cb14-2" title="2">[k, j] = meshgrid(-r:r, -r:r);</a>
+<a class="sourceLine" id="cb14-3" title="3">h = exp( -(j.^<span class="fl">2</span> + k.^<span class="fl">2</span>)/(<span class="fl">2</span>*sigma_s^<span class="fl">2</span>) ) .* ...</a>
+<a class="sourceLine" id="cb14-4" title="4">    exp( -(w - w(r+<span class="fl">1</span>,r+<span class="fl">1</span>)).^<span class="fl">2</span>/(<span class="fl">2</span>*sigma_d^<span class="fl">2</span>) );</a>
+<a class="sourceLine" id="cb14-5" title="5">y(m, n) = h(:)&#39;*w(:) / sum(h(:));</a></code></pre></div>
+<p>If you don’t have the Image Toolbox, the template can be used to write substitutes for missing filters, though they will not be as fast as the Image Toolbox implementations.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb15-1" title="1"><span class="co">% medfilt2</span></a>
+<a class="sourceLine" id="cb15-2" title="2">y(m, n) = median(w(:));</a>
+<a class="sourceLine" id="cb15-3" title="3"></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="co">% ordfilt2</span></a>
+<a class="sourceLine" id="cb15-5" title="5">w = sort(w(:));</a>
+<a class="sourceLine" id="cb15-6" title="6">y(m, n) = w(k); <span class="co">% Select the kth largest element</span></a>
+<a class="sourceLine" id="cb15-7" title="7"></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="co">% imdilate</span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="co">% Define a structure element as a (2r+1)x(2r+1) array</span></a>
+<a class="sourceLine" id="cb15-10" title="10">SE = [<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>;<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>;<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>];</a>
+<a class="sourceLine" id="cb15-11" title="11">y(m, n) = max(w(SE));</a></code></pre></div>
+<h2 id="special-topics">Special topics</h2>
+<p>Up to this point, we have covered those operations that are generally useful in imaging processing. You must look beyond this tutorial for the details on the topic of your interest. A large amount of Matlab code and material is freely available online for filter design, wavelet and multiresolution techniques, PDE-based imaging, morphology, and wherever else researchers have made their code publicly available.</p>
+</div>
+
+<div id="footer">
+&nbsp;
+</div>
+</body>
+</html>
