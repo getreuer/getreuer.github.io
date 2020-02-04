@@ -1,0 +1,511 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Pascal Getreuer" />
+  <title>Convert between RGB, YUV, HSV, CIE Lab, …</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../site.css" type="text/css" />
+<link rel="shortcut icon" href="../../favicon.png" type="image/png" />
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
+<script type="text/javascript" src="../../site.js" ></script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+
+<div id="content">
+
+<div id="navbar">
+  <a href="../../index.html">&blacktriangle; Home</a>
+  <a href="../../papers/index.html">&blacksquare; Papers</a>
+  <a href="../../posts/index.html">&blacksquare; Posts</a>
+  <a href="../../cv/index.html">&blacksquare; CV</a>
+</div>
+
+<div id="header">
+<h1 class="title">Convert between RGB, YUV, HSV, CIE Lab, …</h1>
+<h2 class="author">Pascal Getreuer</h2>
+</div>
+<div class="features">
+<p>
+<a href="colorspace.zip">Download</a>
+</p>
+</div>
+<div style="clear: both">
+ 
+</div>
+<p>This package converts colors between sRGB, Y’P<sub>b</sub>P<sub>r</sub>, Y’C<sub>b</sub>C<sub>r</sub>, JPEG-Y’C<sub>b</sub>C<sub>r</sub>, Y’UV, Y’IQ, Y’D<sub>b</sub>D<sub>r</sub>, HSV, HSL, HSI, CIE XYZ, CIE L*a*b* (CIELAB), CIE L*u*v* (CIELUV), and CIE L*ch (CIELCH), and CIE CAT02 LMS. It can be used either as C/C++ code or compiled as a Matlab MEX function.</p>
+<h2 id="license-bsd">License (BSD)</h2>
+<div style="font-size:85%">
+<p>Copyright © 2005–2010, Pascal Getreuer<br> All rights reserved.</p>
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+<ul>
+<li><p>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</p></li>
+<li><p>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</p></li>
+</ul>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+</div>
+<h2 id="compiling">Compiling</h2>
+<p><code>colorspace</code> can be used either as C/C++ code or compiled as a MATLAB MEX function.</p>
+<p>To demonstrate <code>colorspace</code> for use in C programs, a small command line program <code>colorcalc</code> is included. The program is compiled with GCC by</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">gcc</span> colorcalc.c colorspace.c -lm -o colorcalc</a></code></pre></div>
+<p>This should produce a command line program <code>colorcalc</code> that converts input sRGB values to other representations.</p>
+<p>For use in Matlab, colorspace is compiled as a MEX function by entering</p>
+<pre><code>mex colorspace.c</code></pre>
+<p>on the MATLAB command console. For MEX compiling to work, your system must have a C compiler and MATLAB must be configured to use it. For more information, see the help documentation for the <code>mex</code> command.</p>
+<p>As an alternative to MEX, a pure M-code version <code>colorspace.m</code> is also included.</p>
+<h2 id="use-in-cc">Use in C/C++</h2>
+<p>First call <code>GetColorTransform</code>, specifying the source and destination color spaces as <code>&quot;dest&lt;-src&quot;</code> or <code>&quot;src-&gt;dest&quot;</code>. Then call ApplyColorTransform to perform the transform:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb3-1" title="1">num S[<span class="dv">3</span>] = {<span class="dv">173</span>, <span class="fl">0.8</span>, <span class="fl">0.5</span>};</a>
+<a class="sourceLine" id="cb3-2" title="2">num D[<span class="dv">3</span>];</a>
+<a class="sourceLine" id="cb3-3" title="3">colortransform Trans;</a>
+<a class="sourceLine" id="cb3-4" title="4">       </a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="cf">if</span> (!(GetColorTransform(&amp;Trans, <span class="st">&quot;HSI -&gt; Lab&quot;</span>))) {</a>
+<a class="sourceLine" id="cb3-6" title="6">  printf(<span class="st">&quot;Invalid syntax or unknown color space</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="cf">return</span>;</a>
+<a class="sourceLine" id="cb3-8" title="8">}</a>
+<a class="sourceLine" id="cb3-9" title="9">       </a>
+<a class="sourceLine" id="cb3-10" title="10">ApplyColorTransform(Trans, &amp;D[<span class="dv">0</span>], &amp;D[<span class="dv">1</span>], &amp;D[<span class="dv">2</span>], S[<span class="dv">0</span>], S[<span class="dv">1</span>], S[<span class="dv">2</span>]);</a></code></pre></div>
+<p><code>num</code> is a typedef defined at the beginning of <code>colorspace.h</code> that may be set to either double or float, depending on the application.</p>
+<p>A <code>colortransform</code> may be applied any number of times. To transform the color representation of an entire image, call <code>GetColorTransform</code> once and then call <code>ApplyColorTransform</code> for each pixel.</p>
+<p>Specific transformation routines can also be called directly. The following converts an sRGB color to CIELAB and then back to sRGB:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb4-1" title="1">num R = <span class="fl">0.85</span>, G = <span class="fl">0.32</span>, B = <span class="fl">0.5</span>;</a>
+<a class="sourceLine" id="cb4-2" title="2">num L, a, b;</a>
+<a class="sourceLine" id="cb4-3" title="3">Rgb2Lab(&amp;L, &amp;a, &amp;b, R, G, B);</a>
+<a class="sourceLine" id="cb4-4" title="4">Lab2Rgb(&amp;R, &amp;G, &amp;B, L, a, b);</a></code></pre></div>
+<p>Generally, the calling syntax is</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb5-1" title="1">Src2Dest(&amp;D0, &amp;D1, &amp;D2, S0, S1, S2);</a></code></pre></div>
+<p>where <code>(S0,S1,S2)</code> are coordinates in the source space and <code>(D0,D1,D2)</code> are the transformed coordinates in the destination space. For any transformation routine, its inverse has the analogous syntax.</p>
+<p>Transform routines are named with the first letter of a color space capitalized with following letters in lower case and omitting prime symbols. For example, <code>Rgb2Ydbdr</code> converts sRGB to Y’D<sub>b</sub>D<sub>r</sub>.</p>
+<p>All transformations assume a two degree observer angle and a D65 illuminant. The white point can be changed by modifying the <code>WHITEPOINT_X</code>, <code>WHITEPOINT_Y</code>, <code>WHITEPOINT_Z</code> definitions at the beginning of <code>colorspace.h</code>.</p>
+<p>List of transformation routines:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb6-1" title="1">Rgb2Yuv(num *Y, num *U, num *V, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-2" title="2">Rgb2Ycbcr(num *Y, num *Cb, num *Cr, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-3" title="3">Rgb2Jpegycbcr(num *Y, num *Cb, num *Cr, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-4" title="4">Rgb2Ypbpr(num *Y, num *Pb, num *Pr, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-5" title="5">Rgb2Ydbdr(num *Y, num *Db, num *Dr, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-6" title="6">Rgb2Yiq(num *Y, num *I, num *Q, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-7" title="7">Rgb2Hsv(num *H, num *S, num *V, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-8" title="8">Rgb2Hsl(num *H, num *S, num *L, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-9" title="9">Rgb2Hsi(num *H, num *S, num *I, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-10" title="10">Rgb2Xyz(num *X, num *Y, num *Z, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-11" title="11">Xyz2Lab(num *L, num *a, num *b, num X, num Y, num Z)</a>
+<a class="sourceLine" id="cb6-12" title="12">Xyz2Luv(num *L, num *u, num *v, num X, num Y, num Z)</a>
+<a class="sourceLine" id="cb6-13" title="13">Xyz2Lch(num *L, num *C, num *h, num X, num Y, num Z)</a>
+<a class="sourceLine" id="cb6-14" title="14">Xyz2Cat02lms(num *L, num *M, num *S, num X, num Y, num Z) </a>
+<a class="sourceLine" id="cb6-15" title="15">Rgb2Lab(num *L, num *a, num *b, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-16" title="16">Rgb2Luv(num *L, num *u, num *v, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-17" title="17">Rgb2Lch(num *L, num *C, num *h, num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-18" title="18">Rgb2Cat02lms(num *L, num *M, num *S, num R, num G, num B) </a></code></pre></div>
+<p>(Similarly for the inverse transformations.)</p>
+<p>It is possible to transform between two arbitrary color spaces by first transforming from the source space to sRGB and then transforming from sRGB to the desired destination space. For transformations between CIE color spaces, it is convenient to use XYZ as the intermediate space. This is the strategy used by <code>GetColorTransform</code> and <code>ApplyColorTransform</code>.</p>
+<h2 id="use-in-matlab">Use in Matlab</h2>
+<p><code>B = colorspace(S,A)</code> converts the color representation of image <code>A</code> where <code>S</code> is a string specifying the conversion. <code>S</code> tells the source and destination color spaces, <code>S = 'dest&lt;-src'</code>, or alternatively, <code>S = 'src-&gt;dest'</code>. Supported color spaces are</p>
+<table>
+<tr>
+<td>
+<code>'RGB'</code>
+</td>
+<td>
+sRGB IEC 61966-2-1
+</td>
+</tr>
+<tr>
+<td>
+<code>'YPbPr'</code>
+</td>
+<td>
+Luma (ITU-R BT.601) + Chroma
+</td>
+</tr>
+<tr>
+<td>
+<code>'YCbCr'</code>
+</td>
+<td>
+Luma + Chroma (digitized version of Y’PbPr)
+</td>
+</tr>
+<tr>
+<td>
+<code>'JPEG-YCbCr'</code>
+</td>
+<td>
+Luma + Chroma space used in JFIF JPEG
+</td>
+</tr>
+<tr>
+<td>
+<code>'YUV'</code>
+</td>
+<td>
+NTSC PAL Y’UV Luma + Chroma
+</td>
+</tr>
+<tr>
+<td>
+<code>'YIQ'</code>
+</td>
+<td>
+NTSC Y’IQ Luma + Chroma
+</td>
+</tr>
+<tr>
+<td>
+<code>'YDbDr'</code>
+</td>
+<td>
+SECAM Luma + Chroma
+</td>
+</tr>
+<tr>
+<td>
+<code>'HSV'</code> or <code>'HSB'</code>
+</td>
+<td>
+Hue Saturation Value/Brightness
+</td>
+</tr>
+<tr>
+<td>
+<code>'HSL'</code> or <code>'HLS'</code>
+</td>
+<td>
+Hue Saturation Luminance
+</td>
+</tr>
+<tr>
+<td>
+<code>'HSI'</code>
+</td>
+<td>
+Hue Saturation Intensity
+</td>
+</tr>
+<tr>
+<td>
+<code>'XYZ'</code>
+</td>
+<td>
+CIE XYZ
+</td>
+</tr>
+<tr>
+<td>
+<code>'Lab'</code>
+</td>
+<td>
+CIE L*a*b* (CIELAB)
+</td>
+</tr>
+<tr>
+<td>
+<code>'Luv'</code>
+</td>
+<td>
+CIE L*u*v* (CIELUV)
+</td>
+</tr>
+<tr>
+<td>
+<code>'LHC'</code>
+</td>
+<td>
+CIE L*u*v* (CIELUV)
+</td>
+</tr>
+<tr>
+<td>
+<code>'CAT02 LMS'</code>
+</td>
+<td>
+CIE CAT02 LMS
+</td>
+</tr>
+</table>
+<p>All conversions assume 2 degree observer and D65 illuminant. Color space names are case insensitive. When sRGB is the source or destination, it can be omitted. For example <code>'yuv&lt;-'</code> is short for <code>'yuv&lt;-rgb'</code>.</p>
+<p>MATLAB uses two standard data formats for sRGB: double data with intensities in the range 0 to 1, and uint8 data with integer-valued intensities from 0 to 255. colorspace expects sRGB data to be scaled between 0 and 1, and only accepts double data.</p>
+<p>If <code>A</code> is an M×3 array, like a colormap, <code>B</code> will also have size M×3.</p>
+<h3 id="typical-usage">Typical Usage</h3>
+<p>How does one get color image data into MATLAB? The function <code>imread</code> imports most formats as a uint8 array of size M×N×3, where the third dimension separates the R’,G’, and B’ color channels.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb7-1" title="1">A = imread(<span class="st">&#39;boats.png&#39;</span>);  <span class="co">% Import data as uint8 in the range [0,255]</span></a>
+<a class="sourceLine" id="cb7-2" title="2">A = double(A)/<span class="fl">255</span>;        <span class="co">% Cast to double in the range [0,1]</span></a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">% View the image</span></a>
+<a class="sourceLine" id="cb7-5" title="5">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">1</span>);</a>
+<a class="sourceLine" id="cb7-6" title="6">image(A);</a>
+<a class="sourceLine" id="cb7-7" title="7">axis image</a></code></pre></div>
+<p>(For images using palette indexing, <code>imread</code> instead returns an array of color indices and a colormap, so palette-based images require other handling.) To view a color image, use image or imshow. The image may either be a uint8 array with intensities in the range [0,255] or a double array with the range [0,1].</p>
+<p>Once an sRGB array is loaded, colorspace can convert it to another color representation. To convert to Y’P<sub>b</sub>P<sub>r</sub>, for example, use</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb8-1" title="1">B = colorspace(<span class="st">&#39;YPbPr&lt;-RGB&#39;</span>, A);</a></code></pre></div>
+<p>Since the resulting array <code>B</code> is not in sRGB representation, it no longer makes sense to visualize it as a single color image, other than transforming it back to sRGB first. Instead, view each of the channels <code>B(:,:,1)</code>, <code>B(:,:,2)</code>, <code>B(:,:,3)</code> individually as gray-scale images:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb9-1" title="1"><span class="co">% View the individual channels</span></a>
+<a class="sourceLine" id="cb9-2" title="2">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">1</span>);</a>
+<a class="sourceLine" id="cb9-3" title="3">imagesc(B(:,:,<span class="fl">1</span>));</a>
+<a class="sourceLine" id="cb9-4" title="4">colormap(gray(<span class="fl">256</span>));</a>
+<a class="sourceLine" id="cb9-5" title="5">axis image</a>
+<a class="sourceLine" id="cb9-6" title="6">title <span class="st">&#39;Y&#39;&#39;&#39;</span></a>
+<a class="sourceLine" id="cb9-7" title="7"></a>
+<a class="sourceLine" id="cb9-8" title="8">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">3</span>);</a>
+<a class="sourceLine" id="cb9-9" title="9">imagesc(B(:,:,<span class="fl">2</span>));</a>
+<a class="sourceLine" id="cb9-10" title="10">colormap(gray(<span class="fl">256</span>));</a>
+<a class="sourceLine" id="cb9-11" title="11">axis image</a>
+<a class="sourceLine" id="cb9-12" title="12">title <span class="st">&#39;P_b&#39;</span></a>
+<a class="sourceLine" id="cb9-13" title="13"></a>
+<a class="sourceLine" id="cb9-14" title="14">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">4</span>);</a>
+<a class="sourceLine" id="cb9-15" title="15">imagesc(B(:,:,<span class="fl">3</span>));</a>
+<a class="sourceLine" id="cb9-16" title="16">colormap(gray(<span class="fl">256</span>));</a>
+<a class="sourceLine" id="cb9-17" title="17">axis image</a>
+<a class="sourceLine" id="cb9-18" title="18">title <span class="st">&#39;P_r&#39;</span></a></code></pre></div>
+<p>To transform <code>B</code> back to sRGB, use colorspace again:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb10-1" title="1">ARecovered = colorspace(<span class="st">&#39;RGB&lt;-YPbPr&#39;</span>, B);</a></code></pre></div>
+<h2 id="discrepancies">Discrepancies</h2>
+<p>While of course effort has been made to make <code>colorspace</code> accurate and in agreement with standards, it is possible to see differences between <code>colorspace</code> and other color transformation software. Potential sources for discrepancy are</p>
+<ul>
+<li>differences in how the components are scaled, for example, sRGB values scaled in [0,255] vs. [0,1];</li>
+<li>different handling of out-of-gamut colors;</li>
+<li>naming confusion over similar but distinct color spaces (e.g., HSV vs. HSL vs. HSI or Y’P<sub>b</sub>P<sub>r</sub> vs. Y’UV vs. Y’IQ);</li>
+<li>for CIE spaces, differences in white point, observer angle, or gamma correction</li>
+<li>(hopefully unlikely!) a bug in <code>colorspace</code>.</li>
+</ul>
+<p>Transformations with <code>colorspace</code> assume a 2-degree observer, D65 illuminant, and using the sRGB gamma correction function described in the Gamma Correction section below.</p>
+<p>Beware that <code>colorspace</code>‘s transformations generally do not constrain colors to be in-gamut. Particularly, transforming from another space to sRGB may obtain R’G’B’ values outside of the [0,1] range. In Matlab, the result should be clamped to [0,1] before displaying:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb11-1" title="1">image(min(max(B, <span class="fl">0</span>), <span class="fl">1</span>));  <span class="co">% Clamp B to [0,1] and display</span></a></code></pre></div>
+<h2 id="challenges-in-color-representation">Challenges in Color Representation</h2>
+<p>Device-independent, quantitative description of color is a surprisingly challenging problem. For example, four shades of gray surrounded by black are perceived differently than the same four shades surrounded by white [1].</p>
+<figure>
+<img src="illumination.png" alt="Surrounding illumination affects the perceived color." /><figcaption>Surrounding illumination affects the perceived color.</figcaption>
+</figure>
+<p>On black background, the lightest shade of gray seems to be almost white. But on white background, the same shade appears significantly darker. This discrepancy suggests that the perceived colors on a monitor depend on the illumination of the surrounding room. So for precise color description, color specifications include the intended viewing conditions.</p>
+<p>The <em>intensity</em> of a color is defined as the watts per unit area rendered by the display device. Another problem is that even under equal intensity, some colors are visually brighter than others.</p>
+<figure>
+<img src="intensity.png" alt="Intensity ≠ Visual Brightness." /><figcaption>Intensity ≠ Visual Brightness.</figcaption>
+</figure>
+<p>To overcome this non-uniformity, many color spaces instead consider luminance, a quantitative estimate of the perceived brightness.</p>
+<p>Different color representations try to overcome these problems, with varying degrees of success. It is for this reason that there are so many standard color representations.</p>
+<h2 id="gamma-correction">Gamma Correction</h2>
+<p>CRT monitors have a nonlinear relationship between the input voltages and the rendered intensities. To reproduce an image accurately, the image is <em>gamma-corrected</em> in such a way that the monitor displays the desired intensities.</p>
+<p>In <code>colorspace</code>, the “RGB” space is sRGB. The sRGB space was designed in 1996 for direct display on typical CRT monitors and standardized in 1999 by International Electrotechnical Commission (IEC) as IEC 61966-2-1. The “s” in sRGB means “standard.” From linear RGB values, the sRGB values are gamma-compensated by the formula</p>
+<p><span class="math display">\[R&#39; = \begin{cases}
+1.055 R^{1/2.4} - 0.055 &amp; \text{if $R \le 0.0031308$,} \\
+12.92 R &amp; \text{if $R &gt; 0.0031308$,}
+\end{cases}\]</span></p>
+<p>and similarly for G’ and B’ [4].</p>
+<p>Standard notation denotes R’,G’,B’ quantities and derived quantities with a prime ’ to signify gamma-correction. Since gamma-correction is already applied by digital cameras as standard practice, most digital image data should be interpreted as R’G’B’, and not RGB.</p>
+<h2 id="ycbcr-and-other-lumachroma">Y’C<sub>b</sub>C<sub>r</sub> and other Luma+Chroma</h2>
+<p>The luma of a color is an estimate of brightness based on gamma-corrected samples. Its definition (ITU-R Recommendation BT.601-4) is</p>
+<p><span class="math display">\[ Y&#39;_\text{601} = 0.299 R&#39; + 0.587 G&#39; + 0.114 B&#39;. \]</span></p>
+<p>This luma measure is (up to a scale factor) the Y’ in Y’P<sub>b</sub>P<sub>r</sub>, Y’C<sub>b</sub>C<sub>r</sub>, JPEG-Y’C<sub>b</sub>C<sub>r</sub>, Y’UV, Y’IQ, and Y’D<sub>b</sub>D<sub>r</sub>. The remaining two components in each of these representations capture the <em>chroma</em>, the part of a color independent of luma [2].</p>
+<h3 id="ypbpr">Y’P<sub>b</sub>P<sub>r</sub></h3>
+<p>Given R’, G’, and B’ in the range [0,1], the Y’P<sub>b</sub>P<sub>r</sub> components are</p>
+<p><span class="math display">\[\begin{pmatrix}Y&#39; \\ P_b \\ P_r\end{pmatrix}
+= \left(\begin{array}{lll}
+\hphantom{-}0.299 &amp; \hphantom{-}0.587 &amp; \hphantom{-}0.114 \\
+-0.1687367 &amp; -0.331264 &amp; \hphantom{-}0.5 \\
+\hphantom{-}0.5 &amp; -0.418688 &amp; -0.081312
+\end{array}\right) \times
+\begin{pmatrix}R&#39; \\ G&#39; \\ B&#39;\end{pmatrix}\]</span></p>
+<p>with Y’ in [0,1] and P<sub>b</sub>, P<sub>r</sub> in [−0.5,0.5].</p>
+<h3 id="ycbcr">Y’C<sub>b</sub>C<sub>r</sub></h3>
+<p>Y’C<sub>b</sub>C<sub>r</sub>, also called YCC, is a rescaling of Y’P<sub>b</sub>P<sub>r</sub> such that components can be stored as 8-bit unsigned values. Given R’, G’, and B’ in the range [0,1],</p>
+<p><span class="math display">\[\begin{pmatrix}Y&#39; \\ C_b \\ C_r\end{pmatrix}
+= \begin{pmatrix}16 \\ 128 \\ 128\end{pmatrix} +
+\left(\begin{array}{rrr}
+65.481 &amp; 128.553 &amp; 24.966 \\
+-37.797 &amp; -74.203 &amp; 112.0\hphantom{00} \\
+112.0\hphantom{00} &amp; -93.786 &amp; -18.214
+\end{array}\right) \times
+\begin{pmatrix}R&#39; \\ G&#39; \\ B&#39;\end{pmatrix}\]</span></p>
+<p>with Y’ in [16,235] and C<sub>b</sub>, C<sub>r</sub> in [16,240].</p>
+<h3 id="jpeg-ycbcr">JPEG-Y’C<sub>b</sub>C<sub>r</sub></h3>
+<p>JPEG-Y’C<sub>b</sub>C<sub>r</sub> is another rescaling of Y’P<sub>b</sub>P<sub>r</sub>, used in the JPEG image format,</p>
+<p><span class="math display">\[\begin{pmatrix}Y&#39; \\ C_b \\ C_r\end{pmatrix}
+= \begin{pmatrix}0 \\ 0.5 \\ 0.5\end{pmatrix} +
+\left(\begin{array}{lll}
+\hphantom{-}0.299 &amp; \hphantom{-}0.587 &amp; \hphantom{-}0.114 \\
+-0.1687367 &amp; -0.331264 &amp; \hphantom{-}0.5 \\
+\hphantom{-}0.5 &amp; -0.418688 &amp; -0.081312
+\end{array}\right) \times
+\begin{pmatrix}R&#39; \\ G&#39; \\ B&#39;\end{pmatrix}\]</span></p>
+<p>with Y’, C<sub>b</sub>, C<sub>r</sub> in [0,1].</p>
+<h2 id="hsv-hsl-and-hsi">HSV, HSL, and HSI</h2>
+<p>The Hue Saturation Value/Brightness (HSV/HSB) is an intuitive color system, measuring the <em>hue</em> of a color as the angle on the HSV color wheel, the <em>saturation</em> as the color’s vibrancy, and the color’s <em>value</em> or approximate brightness.</p>
+<p>HSV is related to sRGB by</p>
+<p><span class="math display">\[\begin{array}{ll}
+H = \text{hexagonal hue angle} &amp; (0 \le H &lt; 360), \\
+S = C/V &amp; (0 \le S \le 1), \\
+V = \max(R&#39;,G&#39;,B&#39;) &amp; (0 \le V \le 1),
+\end{array}\]</span></p>
+<p>where <span class="math inline">\(C = \max(R&#39;,G&#39;,B&#39;) - \min(R&#39;,G&#39;,B&#39;)\)</span>. The hue angle H is computed on a hexagon. The space is geometrically a hexagonal cone.</p>
+<p>The Hue Saturation Lightness (HSL or HLS) color space, has the same definition for color hue as HSV. The other two components differ such that all colors tend to white as lightness increases.</p>
+<p>HSL is related to sRGB by</p>
+<p><span class="math display">\[\begin{array}{ll}
+H = \text{hexagonal hue angle} &amp; (0 \le H &lt; 360), \\
+S = C/(1 - |2L - 1|) &amp; (0 \le S \le 1), \\
+L = \tfrac{1}{2}(\max(R&#39;,G&#39;,B&#39;) + \min(R&#39;,G&#39;,B&#39;)) &amp; (0 \le L \le 1),
+\end{array}\]</span></p>
+<p>where H and C are as in HSV. Geometrically, the space is a double hexagonal cone.</p>
+<p style="text-align:center">
+<img src="colorspace_01.jpg" width="462" height="209"><br> <em>Conic representation of the HSV and HSL color spaces (colorspace_demo.m).</em>
+</p>
+<p>A third related space is Hue Saturation Intensity (HSI), which is popular in computer vision. HSI is related to sRGB by</p>
+<p><span class="math display">\[\begin{array}{ll}
+H = \text{polar hue angle} &amp; (0 \le H &lt; 360), \\
+S = 1 - \min(R&#39;,G&#39;,B&#39;)/I &amp; (0 \le S \le 1), \\
+I = \tfrac{1}{3}(R&#39;+G&#39;+B&#39;) &amp; (0 \le L \le 1),
+\end{array}\]</span></p>
+<p>Unlike HSV and HSL, the hue angle H is computed on a circle rather than a hexagon.</p>
+<p>The HSV, HSL, and HSI systems are ambiguous on whether components should be based on RGB or gamma-corrected sRGB, and specify no white point. When truly device-independent color reproduction is necessary, it is better to use a CIE color space [2].</p>
+<h2 id="cie-standard-color-spaces">CIE Standard Color Spaces</h2>
+<p>In 1931, the Commission Internationale de L’Éclairage (CIE) defined a standard color system for precise color reproduction called XYZ. The XYZ color space has a linear relationship with non-gamma-corrected RGB [2]:</p>
+<p><span class="math display">\[\begin{pmatrix}R \\ G \\ B\end{pmatrix}
+= \left(\begin{array}{lll}
+\hphantom{-}3.240479 &amp; -1.53715 &amp; -0.498535 \\
+-0.969256 &amp; \hphantom{-}1.875992 &amp; \hphantom{-}0.041556 \\
+\hphantom{-}0.055648 &amp; -0.204043 &amp; \hphantom{-}1.057311
+\end{array}\right) \times
+\begin{pmatrix}X \\ Y \\ Z\end{pmatrix}\]</span></p>
+<p>The closely-related xyY space defines the chromaticity coordinates,</p>
+<p><span class="math display">\[ x = \frac{X}{X+Y+Z}, \quad y = \frac{Y}{X+Y+Z}. \]</span></p>
+<p style="text-align:center">
+<img src="colorspace_02.jpg" width="222" height="250"><br> <em>CIE “tongue”: region of all colors over x and y (colorspace_ciedemo.m).</em>
+</p>
+<p>In the figure, the U-shaped boundary is parameterized by light wavelength. The triangular region corresponds to the sRGB space, the range of colors that a typical computer monitor can display.</p>
+<p>XYZ is the foundation of the L*a*b* (CIELAB), L*u*v* (CIELUV), and L*ch color spaces. Let X<sub>n</sub>,Y<sub>n</sub>,Z<sub>n</sub> be the XYZ values of a reference white point. The white point in colorspace is the standard D65 white point, X<sub>n</sub> = 0.950456, Y<sub>n</sub> = 1, Z<sub>n</sub> = 1.088754. The <em>lightness</em>, denoted by L* in each of these spaces, is defined as</p>
+<p><span class="math display">\[L^* = \begin{cases}
+116 (Y/Y_n)^{1/3} - 16 &amp; \text{if $Y/Y_n &gt; (\tfrac{6}{29})^3$,} \\
+(Y/Y_n - \tfrac{4}{29}) \tfrac{108}{841} &amp; \text{otherwise.}
+\end{cases}\]</span></p>
+<p>The white point has lightness 100, and provided <span class="math inline">\(0 \le Y \le Y_n\)</span>, L* is in the range [0,100].</p>
+<p>The other two components in each representation describe the chromaticity. L*a*b* and L*u*v* both attempt to “perceptually linearize” chromaticity, meaning that changes in color values correspond to proportional changes in visual importance. L*ch is L*a*b* with chromaticity expressed in polar coordinates.</p>
+<p style="text-align:center">
+<img src="colorspace_03.jpg" width="387" height="179"><br> <em>Visualizations of the L*a*b* and L*u*v* color spaces (colorspace_demo.m).</em>
+</p>
+<h2 id="accuracy-test">Accuracy Test</h2>
+<p>To verify the invertibility of the color transformations, this test transforms sRGB data to a space, inverts, and compares with the original data.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb12-1" title="1">N = <span class="fl">1e5</span>;          <span class="co">% Number of points to test</span></a>
+<a class="sourceLine" id="cb12-2" title="2">A = rand(N,<span class="fl">3</span>);    <span class="co">% Generate points uniformly in sRGB colorspace</span></a>
+<a class="sourceLine" id="cb12-3" title="3"></a>
+<a class="sourceLine" id="cb12-4" title="4">Space = {<span class="st">&#39;YPbPr&#39;</span>,<span class="st">&#39;YCbCr&#39;</span>,<span class="st">&#39;JPEG-YCbCr&#39;</span>,<span class="st">&#39;YDbDr&#39;</span>,<span class="st">&#39;YIQ&#39;</span>,<span class="st">&#39;YUV&#39;</span>,<span class="st">&#39;HSV&#39;</span>,...</a>
+<a class="sourceLine" id="cb12-5" title="5">      <span class="st">&#39;HSL&#39;</span>,<span class="st">&#39;HSI&#39;</span>,<span class="st">&#39;XYZ&#39;</span>,<span class="st">&#39;Lab&#39;</span>,<span class="st">&#39;Luv&#39;</span>,<span class="st">&#39;LCH&#39;</span>,<span class="st">&#39;CAT02LMS&#39;</span>};</a>
+<a class="sourceLine" id="cb12-6" title="6">fprintf(<span class="st">&#39;\n Transform          RMSE Error   Max Error\n\n&#39;</span>);</a>
+<a class="sourceLine" id="cb12-7" title="7"></a>
+<a class="sourceLine" id="cb12-8" title="8">for k = <span class="fl">1</span>:length(Space)</a>
+<a class="sourceLine" id="cb12-9" title="9">   B = colorspace([Space{k} <span class="st">&#39;&lt;-RGB&#39;</span>],A);  <span class="co">% Convert to Space{k}</span></a>
+<a class="sourceLine" id="cb12-10" title="10">   R = colorspace([<span class="st">&#39;RGB&lt;-&#39;</span> Space{k}],B);  <span class="co">% Convert back to sRGB</span></a>
+<a class="sourceLine" id="cb12-11" title="11">   RMSE = sqrt(mean((A(:) - R(:)).^<span class="fl">2</span>));</a>
+<a class="sourceLine" id="cb12-12" title="12">   MaxError = max(abs(A(:) - R(:)));</a>
+<a class="sourceLine" id="cb12-13" title="13">   fprintf(<span class="st">&#39; RGB&lt;-&gt;%-10s   %9.2e    %9.2e\n&#39;</span>, ...</a>
+<a class="sourceLine" id="cb12-14" title="14">      Space{k}, RMSE, MaxError);</a>
+<a class="sourceLine" id="cb12-15" title="15">end</a></code></pre></div>
+<p>Code output:</p>
+<pre><code> Transform          RMSE Error   Max Error
+
+ RGB&lt;-&gt;YPbPr        9.07e-017    4.44e-016
+ RGB&lt;-&gt;YCbCr        1.06e-016    5.55e-016
+ RGB&lt;-&gt;JPEG-YCbCr   1.06e-016    5.55e-016
+ RGB&lt;-&gt;YDbDr        8.72e-017    4.44e-016
+ RGB&lt;-&gt;YIQ          8.17e-017    4.44e-016
+ RGB&lt;-&gt;YUV          6.99e-017    3.54e-016
+ RGB&lt;-&gt;HSV          7.28e-017    1.22e-015
+ RGB&lt;-&gt;HSL          8.06e-017    1.22e-015
+ RGB&lt;-&gt;HSI          1.10e-016    7.77e-016
+ RGB&lt;-&gt;XYZ          2.30e-016    6.36e-015
+ RGB&lt;-&gt;Lab          1.09e-015    2.10e-014
+ RGB&lt;-&gt;Luv          7.98e-016    2.00e-014
+ RGB&lt;-&gt;LCH          1.11e-015    2.39e-014
+ RGB&lt;-&gt;CAT02 LMS    8.29e-016    1.30e-014</code></pre>
+<p>Transformations are accurate to machine precision. The first six spaces, being linearly related to sRGB, have higher accuracy than the nonlinearly-related spaces.</p>
+<h2 id="references">References</h2>
+<ol type="1">
+<li><p>C. Poynton. <a href="http://www.poynton.com/">“Frequently Asked Questions about Gamma.”</a> 1998.</p></li>
+<li><p>C. Poynton. <a href="http://www.poynton.com/">“Frequently Asked Questions about Color.”</a> 1997.</p></li>
+<li><p>J. Burkardt. <a href="http://www.csit.fsu.edu/%7Eburkardt/f_src/colors/colors.html">“COLORS - Color Coordinate Conversion.”</a> (FORTRAN code.) 2002.</p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/SRGB">“sRGB”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/YUV">“YUV”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/YCbCr">“YCbCr”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/YPbPr">“YPbPr”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/YDbDr">“YDbDr”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/YIQ">“YIQ”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/HSL_and_HSV">“HSL and HSV”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/CIE_1931_color_space">“CIE 1931 color space”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/Lab_color_space">“Lab color space”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/CIELUV_color_space">“CIELUV color space”</a></p></li>
+<li><p>Wikipedia: <a href="http://en.wikipedia.org/wiki/LMS_color_space">“LMS color space”</a></p></li>
+</ol>
+<p><span class="copynote"> This material is based upon work supported by the National Science Foundation under Award No. DMS-1004694. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation. </span></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
