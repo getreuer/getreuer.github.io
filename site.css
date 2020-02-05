@@ -285,7 +285,7 @@ table td {
   margin-top:5ex;
 }
 
-div.features p {
+div.features a {
   display: block;
   float: left;
   background: #435ce3;
@@ -297,7 +297,7 @@ div.features p {
   font-size: 110%;
 }
 
-div.features p a {
+div.features a {
   color: #fff;
 }
 
