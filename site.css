@@ -9,7 +9,7 @@ body {
   background-color: #fff;
   font-family: 'Noto Serif SC', serif;
   text-rendering: optimizeLegibility;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.7;
   margin: 0;
   padding: 0;
@@ -27,51 +27,57 @@ body {
 #navbar {
   position: fixed;
   top: 0;
-  padding: 2px 0 0 0;
-  width: 42em;
+  margin: 0;
+  padding: 0;
+  width: 100%;
   transition: top 0.3s;
+  z-index: 1;
+}
+ 
+#navhold {
+  width: 23em;
+  margin: auto;
+  padding: 0.54ex 1em 0 1em;
+  height: 4.2ex;
   color: #666;
-  background: #444; /* #f6f6f6;*/
+  background: #444;
   border-style: solid;
   border-color: #444;
   border-width: 0 1px 1px 1px;
   border-radius: 0 0 0.4em 0.4em;
   box-shadow: -1px 3px 5px 0 rgba(0, 0, 0, 0.25), 1px 3px 5px 0 rgba(0, 0, 0, 0.25);
-  z-index: 1;
+  text-align: center;
 }
 
-#navbar a {
+#navhold a {
   font-size: 110%;
-  float: left;
-  display: block;
-  color: #fff;  /* #666; */
-  width: 5em;
-  vertical-align: middle;
-  margin: 0.2em 1em 0.2em 1em;
-  padding: 0.2em 0.5em 0.2em 0.5em;
+  color: #fff;
+  margin: 0.2em;
+  padding: 0.2em 0.7em 0.2em 0.7em;
   border-radius: 1em;
   text-decoration: none;
   transition: background 0.8s;
 }
 
-#navbar a:hover {
+#navhold a:hover {
   background: #585858;
 }
 
 #footer {
-  width: 100%;
+  width:100%;
   background-color: #444;
   color: #ccc;
-  margin: 0;
-  padding: 0;
+  padding: 2em 0 1em 0;
 }
 
 #footer p {
-  margin: 0 0 2em 0;
+  max-width:42em;
+  margin: auto;
+  padding-bottom: 2em;
 }
 
 #footer p a {
-  margin-left: 1.7em;
+  margin: 0 0.7em 0 1em;
   color: #fff;
 }
 
@@ -301,17 +307,22 @@ div.features a {
   color: #fff;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 628px) {
   body {
-    font-size: 17px;
+    font-size: 14px;
   }
 }
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 712px) {
+  body {
+    font-size: 16px;
+  }
+}
+@media only screen and (min-width: 850px) {
   body {
     font-size: 19px;
   }
 }
-@media only screen and (min-width: 1100px) {
+@media only screen and (min-width: 1050px) {
   body {
     font-size: 19px;
     background-color: #888;
