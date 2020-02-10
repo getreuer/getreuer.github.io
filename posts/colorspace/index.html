@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Pascal Getreuer" />
   <title>Convert between RGB, YUV, HSV, CIE Lab, …</title>
   <style type="text/css">code{white-space: pre;}</style>
@@ -79,9 +79,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <body>
 <div id="navbar">
 <div id="navhold">
-  <a href="../../index.html">&blacktriangle; Home</a>
-  <a href="../../papers/index.html">&blacksquare; Papers</a>
-  <a href="../../posts/index.html">&blacksquare; Posts</a>
+  <a href="../../index.html">Home</a>
+  <a href="../../papers/index.html">Papers</a>
+  <a href="../../posts/index.html">Posts</a>
 </div>
 </div>
 <div id="content">
@@ -109,7 +109,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="compiling">Compiling</h2>
 <p><code>colorspace</code> can be used either as C/C++ code or compiled as a MATLAB MEX function.</p>
 <p>To demonstrate <code>colorspace</code> for use in C programs, a small command line program <code>colorcalc</code> is included. The program is compiled with GCC by</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">gcc</span> colorcalc.c colorspace.c -lm -o colorcalc</a></code></pre></div>
+<pre><code>gcc colorcalc.c colorspace.c -lm -o colorcalc</code></pre>
 <p>This should produce a command line program <code>colorcalc</code> that converts input sRGB values to other representations.</p>
 <p>For use in Matlab, colorspace is compiled as a MEX function by entering</p>
 <pre><code>mex colorspace.c</code></pre>
@@ -122,11 +122,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb3-3" title="3">colortransform Trans;</a>
 <a class="sourceLine" id="cb3-4" title="4">       </a>
 <a class="sourceLine" id="cb3-5" title="5"><span class="cf">if</span> (!(GetColorTransform(&amp;Trans, <span class="st">&quot;HSI -&gt; Lab&quot;</span>))) {</a>
-<a class="sourceLine" id="cb3-6" title="6">  printf(<span class="st">&quot;Invalid syntax or unknown color space</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
+<a class="sourceLine" id="cb3-6" title="6">  printf(<span class="st">&quot;Invalid syntax</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
 <a class="sourceLine" id="cb3-7" title="7">  <span class="cf">return</span>;</a>
 <a class="sourceLine" id="cb3-8" title="8">}</a>
 <a class="sourceLine" id="cb3-9" title="9">       </a>
-<a class="sourceLine" id="cb3-10" title="10">ApplyColorTransform(Trans, &amp;D[<span class="dv">0</span>], &amp;D[<span class="dv">1</span>], &amp;D[<span class="dv">2</span>], S[<span class="dv">0</span>], S[<span class="dv">1</span>], S[<span class="dv">2</span>]);</a></code></pre></div>
+<a class="sourceLine" id="cb3-10" title="10">ApplyColorTransform(Trans, &amp;D[<span class="dv">0</span>], &amp;D[<span class="dv">1</span>], &amp;D[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb3-11" title="11">                    S[<span class="dv">0</span>], S[<span class="dv">1</span>], S[<span class="dv">2</span>]);</a></code></pre></div>
 <p><code>num</code> is a typedef defined at the beginning of <code>colorspace.h</code> that may be set to either double or float, depending on the application.</p>
 <p>A <code>colortransform</code> may be applied any number of times. To transform the color representation of an entire image, call <code>GetColorTransform</code> once and then call <code>ApplyColorTransform</code> for each pixel.</p>
 <p>Specific transformation routines can also be called directly. The following converts an sRGB color to CIELAB and then back to sRGB:</p>
@@ -140,24 +141,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Transform routines are named with the first letter of a color space capitalized with following letters in lower case and omitting prime symbols. For example, <code>Rgb2Ydbdr</code> converts sRGB to Y’D<sub>b</sub>D<sub>r</sub>.</p>
 <p>All transformations assume a two degree observer angle and a D65 illuminant. The white point can be changed by modifying the <code>WHITEPOINT_X</code>, <code>WHITEPOINT_Y</code>, <code>WHITEPOINT_Z</code> definitions at the beginning of <code>colorspace.h</code>.</p>
 <p>List of transformation routines:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb6-1" title="1">Rgb2Yuv(num *Y, num *U, num *V, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-2" title="2">Rgb2Ycbcr(num *Y, num *Cb, num *Cr, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-3" title="3">Rgb2Jpegycbcr(num *Y, num *Cb, num *Cr, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-4" title="4">Rgb2Ypbpr(num *Y, num *Pb, num *Pr, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-5" title="5">Rgb2Ydbdr(num *Y, num *Db, num *Dr, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-6" title="6">Rgb2Yiq(num *Y, num *I, num *Q, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-7" title="7">Rgb2Hsv(num *H, num *S, num *V, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-8" title="8">Rgb2Hsl(num *H, num *S, num *L, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-9" title="9">Rgb2Hsi(num *H, num *S, num *I, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-10" title="10">Rgb2Xyz(num *X, num *Y, num *Z, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-11" title="11">Xyz2Lab(num *L, num *a, num *b, num X, num Y, num Z)</a>
-<a class="sourceLine" id="cb6-12" title="12">Xyz2Luv(num *L, num *u, num *v, num X, num Y, num Z)</a>
-<a class="sourceLine" id="cb6-13" title="13">Xyz2Lch(num *L, num *C, num *h, num X, num Y, num Z)</a>
-<a class="sourceLine" id="cb6-14" title="14">Xyz2Cat02lms(num *L, num *M, num *S, num X, num Y, num Z) </a>
-<a class="sourceLine" id="cb6-15" title="15">Rgb2Lab(num *L, num *a, num *b, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-16" title="16">Rgb2Luv(num *L, num *u, num *v, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-17" title="17">Rgb2Lch(num *L, num *C, num *h, num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-18" title="18">Rgb2Cat02lms(num *L, num *M, num *S, num R, num G, num B) </a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb6-1" title="1">Rgb2Yuv(num *Y, num *U, num *V,</a>
+<a class="sourceLine" id="cb6-2" title="2">        num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-3" title="3">Rgb2Ycbcr(num *Y, num *Cb, num *Cr,</a>
+<a class="sourceLine" id="cb6-4" title="4">          num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-5" title="5">Rgb2Jpegycbcr(num *Y, num *Cb, num *Cr,</a>
+<a class="sourceLine" id="cb6-6" title="6">              num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-7" title="7">Rgb2Ypbpr(num *Y, num *Pb, num *Pr,</a>
+<a class="sourceLine" id="cb6-8" title="8">          num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-9" title="9">Rgb2Ydbdr(num *Y, num *Db, num *Dr,</a>
+<a class="sourceLine" id="cb6-10" title="10">          num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-11" title="11">Rgb2Yiq(num *Y, num *I, num *Q,</a>
+<a class="sourceLine" id="cb6-12" title="12">        num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-13" title="13">Rgb2Hsv(num *H, num *S, num *V,</a>
+<a class="sourceLine" id="cb6-14" title="14">        num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-15" title="15">Rgb2Hsl(num *H, num *S, num *L,</a>
+<a class="sourceLine" id="cb6-16" title="16">        num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-17" title="17">Rgb2Hsi(num *H, num *S, num *I,</a>
+<a class="sourceLine" id="cb6-18" title="18">        num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-19" title="19">Rgb2Xyz(num *X, num *Y, num *Z,</a>
+<a class="sourceLine" id="cb6-20" title="20">        num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-21" title="21"></a>
+<a class="sourceLine" id="cb6-22" title="22">Xyz2Lab(num *L, num *a, num *b,</a>
+<a class="sourceLine" id="cb6-23" title="23">        num X, num Y, num Z)</a>
+<a class="sourceLine" id="cb6-24" title="24">Xyz2Luv(num *L, num *u, num *v,</a>
+<a class="sourceLine" id="cb6-25" title="25">        num X, num Y, num Z)</a>
+<a class="sourceLine" id="cb6-26" title="26">Xyz2Lch(num *L, num *C, num *h,</a>
+<a class="sourceLine" id="cb6-27" title="27">        num X, num Y, num Z)</a>
+<a class="sourceLine" id="cb6-28" title="28">Xyz2Cat02lms(num *L, num *M, num *S,</a>
+<a class="sourceLine" id="cb6-29" title="29">             num X, num Y, num Z)</a>
+<a class="sourceLine" id="cb6-30" title="30">             </a>
+<a class="sourceLine" id="cb6-31" title="31">Rgb2Lab(num *L, num *a, num *b,</a>
+<a class="sourceLine" id="cb6-32" title="32">        num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-33" title="33">Rgb2Luv(num *L, num *u, num *v,</a>
+<a class="sourceLine" id="cb6-34" title="34">        num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-35" title="35">Rgb2Lch(num *L, num *C, num *h,</a>
+<a class="sourceLine" id="cb6-36" title="36">        num R, num G, num B)</a>
+<a class="sourceLine" id="cb6-37" title="37">Rgb2Cat02lms(num *L, num *M, num *S,</a>
+<a class="sourceLine" id="cb6-38" title="38">             num R, num G, num B) </a></code></pre></div>
 <p>(Similarly for the inverse transformations.)</p>
 <p>It is possible to transform between two arbitrary color spaces by first transforming from the source space to sRGB and then transforming from sRGB to the desired destination space. For transformations between CIE color spaces, it is convenient to use XYZ as the intermediate space. This is the strategy used by <code>GetColorTransform</code> and <code>ApplyColorTransform</code>.</p>
 <h2 id="use-in-matlab">Use in Matlab</h2>
@@ -288,7 +309,7 @@ CIE CAT02 LMS
 <p>MATLAB uses two standard data formats for sRGB: double data with intensities in the range 0 to 1, and uint8 data with integer-valued intensities from 0 to 255. colorspace expects sRGB data to be scaled between 0 and 1, and only accepts double data.</p>
 <p>If <code>A</code> is an M×3 array, like a colormap, <code>B</code> will also have size M×3.</p>
 <h3 id="typical-usage">Typical Usage</h3>
-<p>How does one get color image data into MATLAB? The function <code>imread</code> imports most formats as a uint8 array of size M×N×3, where the third dimension separates the R’,G’, and B’ color channels.</p>
+<p>How does one get color image data into Matlab? The function <code>imread</code> imports most formats as a uint8 array of size M×N×3, where the third dimension separates the R’,G’, and B’ color channels.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb7-1" title="1">A = imread(<span class="st">&#39;boats.png&#39;</span>);  <span class="co">% Import data as uint8 in the range [0,255]</span></a>
 <a class="sourceLine" id="cb7-2" title="2">A = double(A)/<span class="fl">255</span>;        <span class="co">% Cast to double in the range [0,1]</span></a>
 <a class="sourceLine" id="cb7-3" title="3"></a>
@@ -346,11 +367,13 @@ CIE CAT02 LMS
 <p>Different color representations try to overcome these problems, with varying degrees of success. It is for this reason that there are so many standard color representations.</p>
 <h2 id="gamma-correction">Gamma Correction</h2>
 <p>CRT monitors have a nonlinear relationship between the input voltages and the rendered intensities. To reproduce an image accurately, the image is <em>gamma-corrected</em> in such a way that the monitor displays the desired intensities.</p>
-<p>In <code>colorspace</code>, the “RGB” space is sRGB. The sRGB space was designed in 1996 for direct display on typical CRT monitors and standardized in 1999 by International Electrotechnical Commission (IEC) as IEC 61966-2-1. The “s” in sRGB means “standard.” From linear RGB values, the sRGB values are gamma-compensated by the formula</p>
-<p><span class="math display">\[R&#39; = \begin{cases}
+<p>In <code>colorspace</code>, the “RGB” space is sRGB. The sRGB space was designed in 1996 for direct display on typical CRT monitors and standardized in 1999 by International Electrotechnical Commission (IEC) as IEC 61966-2-1. The “s” in sRGB means “standard.” From linear RGB values, the sRGB values are gamma-compensated by the formula for R’</p>
+<div class="eqscroll">
+<p><span class="math display">\[\begin{cases}
 1.055 R^{1/2.4} - 0.055 &amp; \text{if $R \le 0.0031308$,} \\
 12.92 R &amp; \text{if $R &gt; 0.0031308$,}
 \end{cases}\]</span></p>
+</div>
 <p>and similarly for G’ and B’ [4].</p>
 <p>Standard notation denotes R’,G’,B’ quantities and derived quantities with a prime ’ to signify gamma-correction. Since gamma-correction is already applied by digital cameras as standard practice, most digital image data should be interpreted as R’G’B’, and not RGB.</p>
 <h2 id="ycbcr-and-other-lumachroma">Y’C<sub>b</sub>C<sub>r</sub> and other Luma+Chroma</h2>
@@ -360,65 +383,68 @@ CIE CAT02 LMS
 <h3 id="ypbpr">Y’P<sub>b</sub>P<sub>r</sub></h3>
 <p>Given R’, G’, and B’ in the range [0,1], the Y’P<sub>b</sub>P<sub>r</sub> components are</p>
 <p><span class="math display">\[\begin{pmatrix}Y&#39; \\ P_b \\ P_r\end{pmatrix}
-= \left(\begin{array}{lll}
+= M \begin{pmatrix}R&#39; \\ G&#39; \\ B&#39;\end{pmatrix}\]</span></p>
+<p>with Y’ in [0,1] and P<sub>b</sub>, P<sub>r</sub> in [−0.5,0.5], and where <span class="math inline">\(M\)</span> is the 3×3 matrix</p>
+<div class="eqtight">
+<p><span class="math display">\[ \left(\begin{array}{lll}
+\hphantom{-}0.299 &amp; \hphantom{-}0.587 &amp; \hphantom{-}0.114 \\
+-0.169 &amp; -0.331 &amp; \hphantom{-}0.5 \\
+\hphantom{-}0.5 &amp; -0.419 &amp; -0.081
+\end{array}\right). \]</span></p>
+</div>
+<div class="eqwide">
+<p><span class="math display">\[ M = \left(\begin{array}{lll}
 \hphantom{-}0.299 &amp; \hphantom{-}0.587 &amp; \hphantom{-}0.114 \\
 -0.1687367 &amp; -0.331264 &amp; \hphantom{-}0.5 \\
 \hphantom{-}0.5 &amp; -0.418688 &amp; -0.081312
-\end{array}\right) \times
-\begin{pmatrix}R&#39; \\ G&#39; \\ B&#39;\end{pmatrix}\]</span></p>
-<p>with Y’ in [0,1] and P<sub>b</sub>, P<sub>r</sub> in [−0.5,0.5].</p>
+\end{array}\right). \]</span></p>
+</div>
 <h3 id="ycbcr">Y’C<sub>b</sub>C<sub>r</sub></h3>
 <p>Y’C<sub>b</sub>C<sub>r</sub>, also called YCC, is a rescaling of Y’P<sub>b</sub>P<sub>r</sub> such that components can be stored as 8-bit unsigned values. Given R’, G’, and B’ in the range [0,1],</p>
 <p><span class="math display">\[\begin{pmatrix}Y&#39; \\ C_b \\ C_r\end{pmatrix}
 = \begin{pmatrix}16 \\ 128 \\ 128\end{pmatrix} +
-\left(\begin{array}{rrr}
-65.481 &amp; 128.553 &amp; 24.966 \\
--37.797 &amp; -74.203 &amp; 112.0\hphantom{00} \\
-112.0\hphantom{00} &amp; -93.786 &amp; -18.214
-\end{array}\right) \times
+219 M 
 \begin{pmatrix}R&#39; \\ G&#39; \\ B&#39;\end{pmatrix}\]</span></p>
-<p>with Y’ in [16,235] and C<sub>b</sub>, C<sub>r</sub> in [16,240].</p>
+<p>where matrix <span class="math inline">\(M\)</span> is as in Y’P<sub>b</sub>P<sub>r</sub> and with Y’ in [16,235] and C<sub>b</sub>, C<sub>r</sub> in [16,240].</p>
 <h3 id="jpeg-ycbcr">JPEG-Y’C<sub>b</sub>C<sub>r</sub></h3>
 <p>JPEG-Y’C<sub>b</sub>C<sub>r</sub> is another rescaling of Y’P<sub>b</sub>P<sub>r</sub>, used in the JPEG image format,</p>
 <p><span class="math display">\[\begin{pmatrix}Y&#39; \\ C_b \\ C_r\end{pmatrix}
-= \begin{pmatrix}0 \\ 0.5 \\ 0.5\end{pmatrix} +
-\left(\begin{array}{lll}
-\hphantom{-}0.299 &amp; \hphantom{-}0.587 &amp; \hphantom{-}0.114 \\
--0.1687367 &amp; -0.331264 &amp; \hphantom{-}0.5 \\
-\hphantom{-}0.5 &amp; -0.418688 &amp; -0.081312
-\end{array}\right) \times
+= \begin{pmatrix}0 \\ 0.5 \\ 0.5\end{pmatrix} + M 
 \begin{pmatrix}R&#39; \\ G&#39; \\ B&#39;\end{pmatrix}\]</span></p>
-<p>with Y’, C<sub>b</sub>, C<sub>r</sub> in [0,1].</p>
+<p>where matrix <span class="math inline">\(M\)</span> is as in Y’P<sub>b</sub>P<sub>r</sub> and with Y’, C<sub>b</sub>, C<sub>r</sub> in [0,1].</p>
 <h2 id="hsv-hsl-and-hsi">HSV, HSL, and HSI</h2>
 <p>The Hue Saturation Value/Brightness (HSV/HSB) is an intuitive color system, measuring the <em>hue</em> of a color as the angle on the HSV color wheel, the <em>saturation</em> as the color’s vibrancy, and the color’s <em>value</em> or approximate brightness.</p>
 <p>HSV is related to sRGB by</p>
-<p><span class="math display">\[\begin{array}{ll}
-H = \text{hexagonal hue angle} &amp; (0 \le H &lt; 360), \\
-S = C/V &amp; (0 \le S \le 1), \\
-V = \max(R&#39;,G&#39;,B&#39;) &amp; (0 \le V \le 1),
-\end{array}\]</span></p>
-<p>where <span class="math inline">\(C = \max(R&#39;,G&#39;,B&#39;) - \min(R&#39;,G&#39;,B&#39;)\)</span>. The hue angle H is computed on a hexagon. The space is geometrically a hexagonal cone.</p>
+<p><span class="math display">\[ \begin{aligned}
+H &amp;= \text{hexagonal hue angle}, \\
+S &amp;= C/V, \\
+V &amp;= \max(R&#39;,G&#39;,B&#39;),
+\end{aligned} \]</span></p>
+<p>where <span class="math inline">\(0 \le H &lt; 360\)</span>, <span class="math inline">\(0 \le S \le 1\)</span>, <span class="math inline">\(0 \le V \le 1\)</span>, and <span class="math inline">\(C = \max(R&#39;,G&#39;,B&#39;) - \min(R&#39;,G&#39;,B&#39;)\)</span>. The hue angle H is computed on a hexagon. The space is geometrically a hexagonal cone.</p>
 <p>The Hue Saturation Lightness (HSL or HLS) color space, has the same definition for color hue as HSV. The other two components differ such that all colors tend to white as lightness increases.</p>
 <p>HSL is related to sRGB by</p>
-<p><span class="math display">\[\begin{array}{ll}
-H = \text{hexagonal hue angle} &amp; (0 \le H &lt; 360), \\
-S = C/(1 - |2L - 1|) &amp; (0 \le S \le 1), \\
-L = \tfrac{1}{2}(\max(R&#39;,G&#39;,B&#39;) + \min(R&#39;,G&#39;,B&#39;)) &amp; (0 \le L \le 1),
-\end{array}\]</span></p>
-<p>where H and C are as in HSV. Geometrically, the space is a double hexagonal cone.</p>
+<p><span class="math display">\[\begin{aligned}
+H &amp;= \text{hexagonal hue angle}, \\
+S &amp;= C/(1 - |2L - 1|), \\
+L &amp;= \tfrac{1}{2}\bigl(
+\max(R&#39;,G&#39;,B&#39;) \\
+&amp; \qquad + \min(R&#39;,G&#39;,B&#39;)\bigr),
+\end{aligned}\]</span></p>
+<p>where <span class="math inline">\(0\le S \le 1\)</span> and <span class="math inline">\(0 \le L \le 1\)</span> and with H and C as in HSV. Geometrically, the space is a double hexagonal cone.</p>
 <p style="text-align:center">
-<img src="colorspace_01.jpg" width="462" height="209"><br> <em>Conic representation of the HSV and HSL color spaces (colorspace_demo.m).</em>
+<img src="colorspace_01.jpg" width="462" height="209"><br> <em>The HSV and HSL color spaces (colorspace_demo.m).</em>
 </p>
-<p>A third related space is Hue Saturation Intensity (HSI), which is popular in computer vision. HSI is related to sRGB by</p>
-<p><span class="math display">\[\begin{array}{ll}
-H = \text{polar hue angle} &amp; (0 \le H &lt; 360), \\
-S = 1 - \min(R&#39;,G&#39;,B&#39;)/I &amp; (0 \le S \le 1), \\
-I = \tfrac{1}{3}(R&#39;+G&#39;+B&#39;) &amp; (0 \le L \le 1),
-\end{array}\]</span></p>
-<p>Unlike HSV and HSL, the hue angle H is computed on a circle rather than a hexagon.</p>
+<p>A third related space is Hue Saturation Intensity (HSI), popular in computer vision. HSI is related to sRGB by</p>
+<p><span class="math display">\[\begin{aligned}
+H &amp;= \text{polar hue angle}, \\
+S &amp;= 1 - \min(R&#39;,G&#39;,B&#39;)/I, \\
+I &amp;= \tfrac{1}{3}(R&#39;+G&#39;+B&#39;), \\
+\end{aligned}\]</span></p>
+<p>with <span class="math inline">\(0 \le H &lt; 360\)</span>, <span class="math inline">\(0 \le S \le 1\)</span>, <span class="math inline">\(0\le I \le 1\)</span>. Unlike HSV and HSL, the hue angle H is computed on a circle rather than a hexagon.</p>
 <p>The HSV, HSL, and HSI systems are ambiguous on whether components should be based on RGB or gamma-corrected sRGB, and specify no white point. When truly device-independent color reproduction is necessary, it is better to use a CIE color space [2].</p>
 <h2 id="cie-standard-color-spaces">CIE Standard Color Spaces</h2>
 <p>In 1931, the Commission Internationale de L’Éclairage (CIE) defined a standard color system for precise color reproduction called XYZ. The XYZ color space has a linear relationship with non-gamma-corrected RGB [2]:</p>
+<div class="eqscroll">
 <p><span class="math display">\[\begin{pmatrix}R \\ G \\ B\end{pmatrix}
 = \left(\begin{array}{lll}
 \hphantom{-}3.240479 &amp; -1.53715 &amp; -0.498535 \\
@@ -426,6 +452,7 @@ I = \tfrac{1}{3}(R&#39;+G&#39;+B&#39;) &amp; (0 \le L \le 1),
 \hphantom{-}0.055648 &amp; -0.204043 &amp; \hphantom{-}1.057311
 \end{array}\right) \times
 \begin{pmatrix}X \\ Y \\ Z\end{pmatrix}\]</span></p>
+</div>
 <p>The closely-related xyY space defines the chromaticity coordinates,</p>
 <p><span class="math display">\[ x = \frac{X}{X+Y+Z}, \quad y = \frac{Y}{X+Y+Z}. \]</span></p>
 <p style="text-align:center">
@@ -433,10 +460,12 @@ I = \tfrac{1}{3}(R&#39;+G&#39;+B&#39;) &amp; (0 \le L \le 1),
 </p>
 <p>In the figure, the U-shaped boundary is parameterized by light wavelength. The triangular region corresponds to the sRGB space, the range of colors that a typical computer monitor can display.</p>
 <p>XYZ is the foundation of the L*a*b* (CIELAB), L*u*v* (CIELUV), and L*ch color spaces. Let X<sub>n</sub>,Y<sub>n</sub>,Z<sub>n</sub> be the XYZ values of a reference white point. The white point in colorspace is the standard D65 white point, X<sub>n</sub> = 0.950456, Y<sub>n</sub> = 1, Z<sub>n</sub> = 1.088754. The <em>lightness</em>, denoted by L* in each of these spaces, is defined as</p>
-<p><span class="math display">\[L^* = \begin{cases}
+<div class="eqscroll">
+<p><span class="math display">\[\begin{cases}
 116 (Y/Y_n)^{1/3} - 16 &amp; \text{if $Y/Y_n &gt; (\tfrac{6}{29})^3$,} \\
 (Y/Y_n - \tfrac{4}{29}) \tfrac{108}{841} &amp; \text{otherwise.}
 \end{cases}\]</span></p>
+</div>
 <p>The white point has lightness 100, and provided <span class="math inline">\(0 \le Y \le Y_n\)</span>, L* is in the range [0,100].</p>
 <p>The other two components in each representation describe the chromaticity. L*a*b* and L*u*v* both attempt to “perceptually linearize” chromaticity, meaning that changes in color values correspond to proportional changes in visual importance. L*ch is L*a*b* with chromaticity expressed in polar coordinates.</p>
 <p style="text-align:center">
@@ -460,22 +489,22 @@ I = \tfrac{1}{3}(R&#39;+G&#39;+B&#39;) &amp; (0 \le L \le 1),
 <a class="sourceLine" id="cb12-14" title="14">      Space{k}, RMSE, MaxError);</a>
 <a class="sourceLine" id="cb12-15" title="15">end</a></code></pre></div>
 <p>Code output:</p>
-<pre><code> Transform          RMSE Error   Max Error
+<pre><code>Transform          RMSE Error   Max Error
 
- RGB&lt;-&gt;YPbPr        9.07e-017    4.44e-016
- RGB&lt;-&gt;YCbCr        1.06e-016    5.55e-016
- RGB&lt;-&gt;JPEG-YCbCr   1.06e-016    5.55e-016
- RGB&lt;-&gt;YDbDr        8.72e-017    4.44e-016
- RGB&lt;-&gt;YIQ          8.17e-017    4.44e-016
- RGB&lt;-&gt;YUV          6.99e-017    3.54e-016
- RGB&lt;-&gt;HSV          7.28e-017    1.22e-015
- RGB&lt;-&gt;HSL          8.06e-017    1.22e-015
- RGB&lt;-&gt;HSI          1.10e-016    7.77e-016
- RGB&lt;-&gt;XYZ          2.30e-016    6.36e-015
- RGB&lt;-&gt;Lab          1.09e-015    2.10e-014
- RGB&lt;-&gt;Luv          7.98e-016    2.00e-014
- RGB&lt;-&gt;LCH          1.11e-015    2.39e-014
- RGB&lt;-&gt;CAT02 LMS    8.29e-016    1.30e-014</code></pre>
+RGB&lt;-&gt;YPbPr        9.07e-017    4.44e-016
+RGB&lt;-&gt;YCbCr        1.06e-016    5.55e-016
+RGB&lt;-&gt;JPEG-YCbCr   1.06e-016    5.55e-016
+RGB&lt;-&gt;YDbDr        8.72e-017    4.44e-016
+RGB&lt;-&gt;YIQ          8.17e-017    4.44e-016
+RGB&lt;-&gt;YUV          6.99e-017    3.54e-016
+RGB&lt;-&gt;HSV          7.28e-017    1.22e-015
+RGB&lt;-&gt;HSL          8.06e-017    1.22e-015
+RGB&lt;-&gt;HSI          1.10e-016    7.77e-016
+RGB&lt;-&gt;XYZ          2.30e-016    6.36e-015
+RGB&lt;-&gt;Lab          1.09e-015    2.10e-014
+RGB&lt;-&gt;Luv          7.98e-016    2.00e-014
+RGB&lt;-&gt;LCH          1.11e-015    2.39e-014
+RGB&lt;-&gt;CAT02 LMS    8.29e-016    1.30e-014</code></pre>
 <p>Transformations are accurate to machine precision. The first six spaces, being linearly related to sRGB, have higher accuracy than the nonlinearly-related spaces.</p>
 <h2 id="references">References</h2>
 <ol type="1">

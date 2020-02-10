@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Pascal Getreuer" />
   <title>Image Processing with Matlab</title>
   <style type="text/css">code{white-space: pre;}</style>
@@ -79,9 +79,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <body>
 <div id="navbar">
 <div id="navhold">
-  <a href="../../index.html">&blacktriangle; Home</a>
-  <a href="../../papers/index.html">&blacksquare; Papers</a>
-  <a href="../../posts/index.html">&blacksquare; Posts</a>
+  <a href="../../index.html">Home</a>
+  <a href="../../papers/index.html">Papers</a>
+  <a href="../../posts/index.html">Posts</a>
 </div>
 </div>
 <div id="content">
@@ -366,7 +366,7 @@ ppm   isppm   readpnm   writepnm  0      Portable Pixmap (PPM)
 <div class="sourceCode" id="cb13"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb13-1" title="1"><span class="co">% The alpha-trimmed mean filter</span></a>
 <a class="sourceLine" id="cb13-2" title="2">w = sort(w(:));</a>
 <a class="sourceLine" id="cb13-3" title="3">y(m, n) = mean(w(<span class="fl">1</span>+d/<span class="fl">2</span>:end-d/<span class="fl">2</span>));   <span class="co">% Compute the result y(m,n)</span></a></code></pre></div>
-<p>As another example, the bilateral filter is <span class="math display">\[ y_{m,n} = \frac{\sum_{j,k} h_{j,k,m,n} x_{m-j,n-k}}{\sum_{j,k} h_{j,k,m,n}} \]</span> where <span class="math display">\[ h_{j,k,m,n} = \mathrm{e}^{-(j^2 + k^2) / (2\sigma_s^2)} \mathrm{e}^{-(x_{m-j,n-k} - x_{m,n})^2 / (2\sigma_d^2)}\]</span></p>
+<p>As another example, the bilateral filter is <span class="math display">\[ y_{m,n} = \frac{\sum_{j,k} h_{j,k,m,n} x_{m-j,n-k}}{\sum_{j,k} h_{j,k,m,n}} \]</span> where <span class="math inline">\(h_{j,k,m,n}\)</span> is <span class="math display">\[ \mathrm{e}^{-(j^2 + k^2) / (2\sigma_s^2)} \mathrm{e}^{-(x_{m-j,n-k} - x_{m,n})^2 / (2\sigma_d^2)}\]</span></p>
 <p>The bilateral filter can be implemented as</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb14-1" title="1"><span class="co">% The bilateral filter</span></a>
 <a class="sourceLine" id="cb14-2" title="2">[k, j] = meshgrid(-r:r, -r:r);</a>

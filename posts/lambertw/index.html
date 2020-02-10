@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Pascal Getreuer" />
   <title>Lambert W Function Implementation</title>
   <style type="text/css">code{white-space: pre;}</style>
@@ -79,9 +79,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <body>
 <div id="navbar">
 <div id="navhold">
-  <a href="../../index.html">&blacktriangle; Home</a>
-  <a href="../../papers/index.html">&blacksquare; Papers</a>
-  <a href="../../posts/index.html">&blacksquare; Posts</a>
+  <a href="../../index.html">Home</a>
+  <a href="../../papers/index.html">Papers</a>
+  <a href="../../posts/index.html">Posts</a>
 </div>
 </div>
 <div id="content">
@@ -114,10 +114,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[ W(z) \mathrm{e}^{W(z)} = z \]</span></p>
 <p>for all complex values z. As log z is the inverse of e<sup>z</sup>, W(z) is the inverse of z e<sup>z</sup>. Like the complex logarithm, the Lambert W function is multivalued with a countably infinite number of branches. The branches are enumerated by the integers and are conventionally denoted by <span class="math inline">\(W_k\)</span> for the kth branch.</p>
 <p>The principal branch, <span class="math inline">\(W_0(z)\)</span>, is real-valued for −1/e ≤ z. If −1/e ≤ z &lt; 0, then the branch <span class="math inline">\(W_{-1}(z)\)</span> is also real-valued. In the complex plane, a surface plot of <span class="math inline">\(|W_0(z)|\)</span> is</p>
-<div style="float: right">
-<p>
-<img src="lambertw_01.png" width="358" height="353" alt="">
-</p>
+<div style="float: right; width: 18em">
+<figure>
+<img src="lambertw_01.png" alt="Surface plot of complex magnitude." /><figcaption>Surface plot of complex magnitude.</figcaption>
+</figure>
 </div>
 <div style="float: left; width: 18em">
 <div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb1-1" title="1">x = linspace(-<span class="fl">6</span>,<span class="fl">6</span>,<span class="fl">51</span>);</a>
@@ -151,18 +151,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \mathrm{e}^{x(\log b) / \alpha} &amp;= x.
 \end{align}\]</span></p>
 <p>Now divide the exponential over to the right-hand side and multiply by <span class="math inline">\(-(\log b)/\alpha\)</span>:</p>
+<div class="eqscroll">
 <p><span class="math display">\[\begin{align}
 1 &amp;= x \mathrm{e}^{-x (\log b)/\alpha} \\
 -(\log b)/\alpha &amp;= (-x (\log b)/\alpha) \mathrm{e}^{-x (\log b)/\alpha}.
 \end{align}\]</span></p>
+</div>
 <p>The right-hand side is now in the form <span class="math inline">\(f(x)\mathrm{e}^{f(x)}\)</span> where the Lambert W function can be applied:</p>
 <p><span class="math display">\[W\bigl(-(\log b)/\alpha\bigr) = -x (\log b)/\alpha. \]</span></p>
 <p>The solution is <span class="math inline">\(x = -(\alpha / \log b) W\bigl(-(\log b)/\alpha\bigr)\)</span>.</p>
 <p><strong>Problem 3.</strong> An old result [1] is the closed-form expression for iterated exponentiation:</p>
 <p><span class="math display">\[z^{z^{z^\cdots}} = \frac{W(-\log z)}{-\log z}.\]</span></p>
 <p>Find z such that <span class="math inline">\(z^{z^{z^\cdots}} = 2\)</span>.</p>
-<p><em>Solution:</em> Using the formula, <span class="math display">\[\begin{align}
--W(-\log z) / \log z &amp;= 2 \\
+<p><em>Solution:</em> Using the formula,</p>
+<p><span class="math display">\[ -W(-\log z) / \log z = 2 \]</span></p>
+<p>implies</p>
+<p><span class="math display">\[\begin{align}
 W(-\log z) &amp;= -2\log z \\
 -\log z &amp;= -2\log z \mathrm{e}^{-2\log z} \\
 \mathrm{e}^{2\log z} &amp;= 2 \\
@@ -210,10 +214,10 @@ z &amp;= \sqrt{2}.
 <a class="sourceLine" id="cb5-6" title="6">end</a>
 <a class="sourceLine" id="cb5-7" title="7"></a>
 <a class="sourceLine" id="cb5-8" title="8">plot(zz,<span class="st">&#39;.-&#39;</span>);</a></code></pre></div>
-<div style="float: right">
-<p>
-<img src="lambertw_02.png" width="300" height="249" alt="">
-</p>
+<div style="float: right; width: 18em">
+<figure>
+<img src="lambertw_02.png" alt="Iterated exponentiation of z" /><figcaption>Iterated exponentiation of z</figcaption>
+</figure>
 </div>
 <div style="float: left; width: 18em">
 <pre><code>  k    zz     zlim-zz

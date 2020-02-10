@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Pascal Getreuer" />
   <title>randmt: MT19937 pseudorandom number generator</title>
   <style type="text/css">code{white-space: pre;}</style>
@@ -79,9 +79,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <body>
 <div id="navbar">
 <div id="navhold">
-  <a href="../../index.html">&blacktriangle; Home</a>
-  <a href="../../papers/index.html">&blacksquare; Papers</a>
-  <a href="../../posts/index.html">&blacksquare; Posts</a>
+  <a href="../../index.html">Home</a>
+  <a href="../../papers/index.html">Papers</a>
+  <a href="../../posts/index.html">Posts</a>
 </div>
 </div>
 <div id="content">
@@ -155,111 +155,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>or with MSVC,</p>
 <pre><code>nmake -f makefile.vc example.exe</code></pre>
 <p>Pseudorandom numbers can be generated for several different distributions:</p>
-<table style="width:96%;">
-<colgroup>
-<col style="width: 30%" />
-<col style="width: 65%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><code>rand_unif()</code></td>
-<td>continuous uniform distribution on (0,1)</td>
-</tr>
-<tr class="even">
-<td><code>rand_uint32()</code></td>
-<td><div class="line-block">32-bit unsigned integers on <span class="math inline">\([0,2^{31}-1]\)</span></div></td>
-</tr>
-<tr class="odd">
-<td><code>rand_normal()</code></td>
-<td><div class="line-block">the standard normal distribution</div></td>
-</tr>
-<tr class="even">
-<td><code>rand_exp(mu)</code></td>
-<td><div class="line-block">exponential distribution with mean mu</div></td>
-</tr>
-<tr class="odd">
-<td><code>rand_gamma(a,b)</code></td>
-<td>Gamma distribution</td>
-</tr>
-<tr class="even">
-<td><code>rand_geometric(p)</code></td>
-<td>geometric distribution</td>
-</tr>
-<tr class="odd">
-<td><code>rand_poisson(mu)</code></td>
-<td>Poisson distribution with mean mu</td>
-</tr>
-</tbody>
-</table>
+<dl>
+<dt><code>rand_unif()</code></dt>
+<dd><p>continuous uniform distribution on the open interval (0,1)</p>
+</dd>
+<dt><code>rand_uint32()</code></dt>
+<dd><p>32-bit unsigned integers uniformly in <span class="math inline">\(\{0,\ldots, 2^{31}-1\}\)</span></p>
+</dd>
+<dt><code>rand_normal()</code></dt>
+<dd><p>the standard normal distribution (zero mean, unit variance)</p>
+</dd>
+<dt><code>rand_exp(mu)</code></dt>
+<dd><p>exponential distribution with mean <code>mu</code></p>
+</dd>
+<dt><code>rand_gamma(a, b)</code></dt>
+<dd><p>Gamma distribution with shape <code>a</code> and scale <code>b</code></p>
+</dd>
+<dt><code>rand_geometric(p)</code></dt>
+<dd><p>geometric distribution</p>
+</dd>
+<dt><code>rand_poisson(mu)</code></dt>
+<dd><p>Poisson distribution with mean <code>mu</code></p>
+</dd>
+</dl>
 <h2 id="reentrant-versions">Reentrant Versions</h2>
-<p>For use in multithreaded applications, reentrant versions of the functions are also included which have the same name suffixed with <code>_r</code>. For these functions, the generator state is passed using a <code>randmt_t</code> object.</p>
-<table>
-<colgroup>
-<col style="width: 41%" />
-<col style="width: 58%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><code>rand_unif_r(generator)</code></td>
-<td>continuous uniform distribution on (0,1)</td>
-</tr>
-<tr class="even">
-<td><code>rand_uint32_r(generator)</code></td>
-<td><div class="line-block">32-bit unsigned integers on <span class="math inline">\([0,2^{31}-1]\)</span></div></td>
-</tr>
-<tr class="odd">
-<td><code>rand_normal_r(generator)</code></td>
-<td>the standard normal distribution</td>
-</tr>
-<tr class="even">
-<td><code>rand_exp_r(generator,mu)</code></td>
-<td>exponential distribution with mean mu</td>
-</tr>
-<tr class="odd">
-<td><code>rand_gamma_r(generator,a,b)</code></td>
-<td>Gamma distribution</td>
-</tr>
-<tr class="even">
-<td><code>rand_geometric_r(generator,p)</code></td>
-<td>geometric distribution</td>
-</tr>
-<tr class="odd">
-<td><code>rand_poisson_r(generator,mu)</code></td>
-<td><div class="line-block">Poisson distribution with mean mu</div></td>
-</tr>
-</tbody>
-</table>
+<p>For use in multithreaded applications, reentrant versions of the functions are also included which have the same name suffixed with <code>_r</code>. With these functions the generator state is passed using a <code>randmt_t</code> object, for instance as <code>rand_unif_r(generator)</code> or <code>rand_exp_r(generator, mu)</code>.</p>
 <p>A <code>randmt_t</code> object represents the state of an MT19937 pseudo-random number generator. Use the following functions to create, initialize, and destroy <code>randmt_t</code> objects:</p>
-<table>
-<colgroup>
-<col style="width: 42%" />
-<col style="width: 57%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><code>new_randmt()</code></td>
-<td>create a new <code>randmt_t</code></td>
-</tr>
-<tr class="even">
-<td><code>free_randmt(generator)</code></td>
-<td>free memory associated with a <code>randmt_t</code></td>
-</tr>
-<tr class="odd">
-<td><code>init_randmt_auto_r(generator)</code></td>
-<td>initialize <code>randmt_t</code> with time and address</td>
-</tr>
-<tr class="even">
-<td><code>init_randmt_r(generator,seed)</code></td>
-<td>initialize <code>randmt_t</code> with a specified seed</td>
-</tr>
-</tbody>
-</table>
+<dl>
+<dt><code>new_randmt()</code></dt>
+<dd><p>create a new <code>randmt_t</code></p>
+</dd>
+<dt><code>free_randmt(generator)</code></dt>
+<dd><p>free memory associated with a <code>randmt_t</code></p>
+</dd>
+<dt><code>init_randmt_auto_r(generator)</code></dt>
+<dd><p>initialize <code>randmt_t</code> with time and address</p>
+</dd>
+<dt><code>init_randmt_r(generator, seed)</code></dt>
+<dd><p>initialize <code>randmt_t</code> with <code>seed</code></p>
+</dd>
+</dl>
 <h2 id="history">History</h2>
 <ul>
-<li>This code uses the Mersenne Twister MT19937 code by Makoto Matsumoto and Takuji Nishimura (2002/1/26), the original is available at<br> <a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html" class="uri">http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html</a></li>
-<li>Seiji Nishimura (2008) wrote a reentrant modification of MT19937, where a generator struct is passed to the pseudorandom sampler functions:<br> <a href="http://www.k3.dion.ne.jp/~sn1976/site/Software.html" class="uri">http://www.k3.dion.ne.jp/~sn1976/site/Software.html</a></li>
-<li>Nicolas Limare wrote a version with Doxygen documentation, simpler interface, and automatic initialization using the time:<br> <a href="http://dev.ipol.im/git/?p=nil/mt.git;a=summary" class="uri">http://dev.ipol.im/git/?p=nil/mt.git;a=summary</a></li>
-<li>Pascal Getreuer added samplers for the normal, exponential, Gamma, geometric, and Poisson distributions and test program with Kolmogorov–Smirnov and chi-squared testing.</li>
+<li><p>This code uses <a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html">the Mersenne Twister MT19937 code</a> by Makoto Matsumoto and Takuji Nishimura (2002/1/26).</p></li>
+<li><p>Seiji Nishimura (2008) wrote <a href="http://www.k3.dion.ne.jp/~sn1976/site/Software.html">a reentrant modification of MT19937</a>, where a generator struct is passed to sampling functions.</p></li>
+<li><p><a href="http://dev.ipol.im/git/?p=nil/mt.git;a=summary">Nicolas Limare wrote a version</a> with Doxygen documentation, simpler interface, and automatic initialization using the time.</p></li>
+<li><p>In the code documented here, Pascal Getreuer added samplers for normal, exponential, Gamma, geometric, and Poisson distributions and a test program.</p></li>
 </ul>
 <h2 id="test-program">Test Program</h2>
 <p>To verify the distributions of the samplers, a test program is included. Compile the test program using</p>
@@ -308,26 +249,29 @@ above zero with high probability:
     p-value &gt; 0.001 with probability 0.999</code></pre>
 <h2 id="function-reference">Function Reference</h2>
 <h3 id="init_randmt_auto">init_randmt_auto</h3>
-<p><code>void init_randmt_auto()</code> seeds the global generator with the current time. It should be called once at the beginning of the program so that different pseudorandom values are produced on different runs.</p>
-<p>This function only needs to be called once. Seeding multiple times does not improve the statistical quality of the generator.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb7-1" title="1"><span class="dt">void</span> init_randmt_auto()</a></code></pre></div>
+<p>seeds the global generator with the current time. It should be called once at the beginning of the program so that different pseudorandom values are produced on different runs.</p>
+<p>It is enough to call this function once. Seeding multiple times does not improve statistical quality of the generator.</p>
 <h3 id="init_randmt">init_randmt</h3>
-<p><code>void init_randmt(unsigned long seed)</code> seeds the global random number generator with an unsigned 32-bit integer value.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb8-1" title="1"><span class="dt">void</span> init_randmt(<span class="dt">unsigned</span> <span class="dt">long</span> seed)</a></code></pre></div>
+<p>seeds the global random number generator with an unsigned 32-bit integer value.</p>
 <p>A constant seed can be used to reproduce the same pseudorandom numbers.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb7-1" title="1"><span class="dt">int</span> i;</a>
-<a class="sourceLine" id="cb7-2" title="2"></a>
-<a class="sourceLine" id="cb7-3" title="3">init_randmt(<span class="dv">42</span>);</a>
-<a class="sourceLine" id="cb7-4" title="4">printf(<span class="st">&quot;Ten numbers:</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; ++i) {</a>
-<a class="sourceLine" id="cb7-6" title="6">  printf(<span class="st">&quot;%f</span><span class="sc">\n</span><span class="st">&quot;</span>, rand_unif());</a>
-<a class="sourceLine" id="cb7-7" title="7">}</a>
-<a class="sourceLine" id="cb7-8" title="8"></a>
-<a class="sourceLine" id="cb7-9" title="9">init_randmt(<span class="dv">42</span>);</a>
-<a class="sourceLine" id="cb7-10" title="10">printf(<span class="st">&quot;The same ten numbers:</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
-<a class="sourceLine" id="cb7-11" title="11"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; +++i) {</a>
-<a class="sourceLine" id="cb7-12" title="12">  printf(<span class="st">&quot;%f</span><span class="sc">\n</span><span class="st">&quot;</span>, rand_unif());</a>
-<a class="sourceLine" id="cb7-13" title="13">}</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb9-1" title="1"><span class="dt">int</span> i;</a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3">init_randmt(<span class="dv">42</span>);</a>
+<a class="sourceLine" id="cb9-4" title="4">printf(<span class="st">&quot;Ten numbers:</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; ++i) {</a>
+<a class="sourceLine" id="cb9-6" title="6">  printf(<span class="st">&quot;%f</span><span class="sc">\n</span><span class="st">&quot;</span>, rand_unif());</a>
+<a class="sourceLine" id="cb9-7" title="7">}</a>
+<a class="sourceLine" id="cb9-8" title="8"></a>
+<a class="sourceLine" id="cb9-9" title="9">init_randmt(<span class="dv">42</span>);</a>
+<a class="sourceLine" id="cb9-10" title="10">printf(<span class="st">&quot;The same ten numbers:</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; +++i) {</a>
+<a class="sourceLine" id="cb9-12" title="12">  printf(<span class="st">&quot;%f</span><span class="sc">\n</span><span class="st">&quot;</span>, rand_unif());</a>
+<a class="sourceLine" id="cb9-13" title="13">}</a></code></pre></div>
 <h3 id="rand_unif">rand_unif</h3>
-<p><code>double rand_unif()</code> generates a random number uniformly on the open interval (0,1) with 53-bit resolution. The global generator is used to generate the value.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb10-1" title="1"><span class="dt">double</span> rand_unif()</a></code></pre></div>
+<p>generates a random number uniformly on the open interval (0,1) with 53-bit resolution. The global generator is used to generate the value.</p>
 <table style="width:46%;">
 <colgroup>
 <col style="width: 15%" />
@@ -349,9 +293,11 @@ above zero with high probability:
 </tbody>
 </table>
 <h3 id="rand_uint32">rand_uint32</h3>
-<p><code>unsigned long rand_uint32()</code> a random 32-bit unsigned integer uniformly between 0 and 0xFFFFFFFF. The global generator is used to generate the value.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb11-1" title="1"><span class="dt">unsigned</span> <span class="dt">long</span> rand_uint32()</a></code></pre></div>
+<p>a random 32-bit unsigned integer uniformly between 0 and 0xFFFFFFFF. The global generator is used to generate the value.</p>
 <h3 id="rand_normal">rand_normal</h3>
-<p><code>double rand_normal()</code> generates a standard normal distributed random number with probability density</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb12-1" title="1"><span class="dt">double</span> rand_normal()</a></code></pre></div>
+<p>generates a standard normal distributed random number with probability density</p>
 <p><span class="math display">\[ f(x) = \tfrac{1}{\sqrt{2\pi}} \mathrm{e}^{-x^2 / 2}, \]</span></p>
 <p>using the Box–Muller transform. The global generator is used to generate the value.</p>
 <table style="width:94%;">
@@ -375,7 +321,8 @@ above zero with high probability:
 </tbody>
 </table>
 <h3 id="rand_exp">rand_exp</h3>
-<p><code>double rand_exp(double mu)</code> generates an exponentially-distributed number with mean <code>mu</code> with probability density</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb13-1" title="1"><span class="dt">double</span> rand_exp(<span class="dt">double</span> mu)</a></code></pre></div>
+<p>generates an exponentially-distributed number with mean <code>mu</code> with probability density</p>
 <p><span class="math display">\[ f(x;\mu) = \begin{cases}
 \tfrac{1}{\mu} \mathrm{e}^{-x/mu} &amp; x \ge 0, \\
 0 &amp; x &lt; 0,
@@ -402,7 +349,8 @@ above zero with high probability:
 </tbody>
 </table>
 <h3 id="rand_gamma">rand_gamma</h3>
-<p><code>double rand_gamma(double a, double b)</code> generates a Gamma-distributed number with shape parameter <code>a</code> and scale parameter <code>b</code> with probability density</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb14-1" title="1"><span class="dt">double</span> rand_gamma(<span class="dt">double</span> a, <span class="dt">double</span> b)</a></code></pre></div>
+<p>generates a Gamma-distributed number with shape parameter <code>a</code> and scale parameter <code>b</code> with probability density</p>
 <p><span class="math display">\[ f(x;a,b) = x^{a-1} \frac{\exp(-x/b)}{\Gamma(a)b^k}, \quad x \ge 0, \]</span></p>
 <p>using the method of Marsaglia and Tsang, 2000. The global generator is used to generate the value.</p>
 <table style="width:57%;">
@@ -427,7 +375,8 @@ above zero with high probability:
 </table>
 <p>where <span class="math inline">\(\gamma\)</span> is the lower incomplete Gamma function.</p>
 <h3 id="rand_geometric">rand_geometric</h3>
-<p><code>double rand_geometric(double p)</code> generates a geometrically-distributed number where <code>p</code> is the probability of success with</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb15-1" title="1"><span class="dt">double</span> rand_geometric(<span class="dt">double</span> p)</a></code></pre></div>
+<p>generates a geometrically-distributed number where <code>p</code> is the probability of success with</p>
 <p><span class="math display">\[ P(X = k) = (1 - p)^{k-1} p, \quad k = 1, 2, \ldots \]</span></p>
 <p>The global generator is used to generate the value.</p>
 <table style="width:65%;">
@@ -451,7 +400,8 @@ above zero with high probability:
 </tbody>
 </table>
 <h3 id="rand_poisson">rand_poisson</h3>
-<p><code>double rand_poisson(double mu)</code> generates a Poisson-distributed number with mean <code>mu</code> with</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb16-1" title="1"><span class="dt">double</span> rand_poisson(<span class="dt">double</span> mu)</a></code></pre></div>
+<p>generates a Poisson-distributed number with mean <code>mu</code> with</p>
 <p><span class="math display">\[ P(X = k) = \frac{\mu^k \mathrm{e}^{-\mu}}{k!}, \quad k = 0, 1, \ldots \]</span></p>
 <p>using a simple direct algorithm for <code>mu &lt; 10</code> and the “PTRS” algorithm of Hormann for larger <code>mu</code>. The global generator is used to generate the value.</p>
 <table>
@@ -475,53 +425,64 @@ above zero with high probability:
 </tbody>
 </table>
 <h3 id="new_randmt">new_randmt</h3>
-<p><code>randmt_t *new_randmt()</code> creates a new <code>randmt_t</code>, or returns <code>NULL</code> on memory allocation failure. The newly-created <code>randmt_t</code> should be initialized using <code>init_randmt_auto_r</code> or <code>init_randmt_r</code>. After use, call <code>free_randmt</code> to free memory associated with the <code>randmt_t</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb8-1" title="1">randmt_t *generator = NULL;</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="dt">int</span> i;</a>
-<a class="sourceLine" id="cb8-3" title="3"></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="cf">if</span> (!(generator = new_randmt())) {</a>
-<a class="sourceLine" id="cb8-5" title="5">  exit(<span class="dv">1</span>);</a>
-<a class="sourceLine" id="cb8-6" title="6">}</a>
-<a class="sourceLine" id="cb8-7" title="7"></a>
-<a class="sourceLine" id="cb8-8" title="8">init_randmt_auto_r(generator);</a>
-<a class="sourceLine" id="cb8-9" title="9"></a>
-<a class="sourceLine" id="cb8-10" title="10"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; ++i) {</a>
-<a class="sourceLine" id="cb8-11" title="11">  printf(<span class="st">&quot;%f</span><span class="sc">\n</span><span class="st">&quot;</span>, rand_unif_r(generator));</a>
-<a class="sourceLine" id="cb8-12" title="12">}</a>
-<a class="sourceLine" id="cb8-13" title="13"></a>
-<a class="sourceLine" id="cb8-14" title="14">free_randmt(generator);</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb17-1" title="1">randmt_t *new_randmt()</a></code></pre></div>
+<p>creates a new <code>randmt_t</code>, or returns <code>NULL</code> on memory allocation failure. The newly-created <code>randmt_t</code> should be initialized using <code>init_randmt_auto_r</code> or <code>init_randmt_r</code>. After use, call <code>free_randmt</code> to free memory associated with the <code>randmt_t</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb18-1" title="1">randmt_t *generator = NULL;</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="dt">int</span> i;</a>
+<a class="sourceLine" id="cb18-3" title="3"></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="cf">if</span> (!(generator = new_randmt())) {</a>
+<a class="sourceLine" id="cb18-5" title="5">  exit(<span class="dv">1</span>);</a>
+<a class="sourceLine" id="cb18-6" title="6">}</a>
+<a class="sourceLine" id="cb18-7" title="7"></a>
+<a class="sourceLine" id="cb18-8" title="8">init_randmt_auto_r(generator);</a>
+<a class="sourceLine" id="cb18-9" title="9"></a>
+<a class="sourceLine" id="cb18-10" title="10"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10</span>; ++i) {</a>
+<a class="sourceLine" id="cb18-11" title="11">  printf(<span class="st">&quot;%f</span><span class="sc">\n</span><span class="st">&quot;</span>, rand_unif_r(generator));</a>
+<a class="sourceLine" id="cb18-12" title="12">}</a>
+<a class="sourceLine" id="cb18-13" title="13"></a>
+<a class="sourceLine" id="cb18-14" title="14">free_randmt(generator);</a></code></pre></div>
 <h3 id="free_randmt">free_randmt</h3>
-<p><code>void free_randmt(randmt_t *generator)</code> frees the memory associated with <code>generator</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb19-1" title="1"><span class="dt">void</span> free_randmt(randmt_t *generator)</a></code></pre></div>
+<p>frees the memory associated with <code>generator</code>.</p>
 <h3 id="init_randmt_auto_r">init_randmt_auto_r</h3>
-<p><code>void init_randmt_auto_r(randmt_t *generator)</code> initializes generator with the current time and memory address. The generator is seeded using the current time added to the memory address of the generator. The memory address is included so that different generators are initialized with different seeds. An array of generators can be created initialized as</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb9-1" title="1">randmt_t *generators[<span class="dv">16</span>];</a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="dt">int</span> i;</a>
-<a class="sourceLine" id="cb9-3" title="3"></a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">16</span>; ++i) {</a>
-<a class="sourceLine" id="cb9-5" title="5">  <span class="cf">if</span>(!(generators[i] = new_randmt())) {</a>
-<a class="sourceLine" id="cb9-6" title="6">    exit(<span class="dv">1</span>);</a>
-<a class="sourceLine" id="cb9-7" title="7">  }</a>
-<a class="sourceLine" id="cb9-8" title="8">}</a>
-<a class="sourceLine" id="cb9-9" title="9"></a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">16</span>; i++) {</a>
-<a class="sourceLine" id="cb9-11" title="11">  init_randmt_auto_r(generators[i]);</a>
-<a class="sourceLine" id="cb9-12" title="12">}</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb20-1" title="1"><span class="dt">void</span> init_randmt_auto_r(randmt_t *generator)</a></code></pre></div>
+<p>initializes generator with the current time and memory address. The generator is seeded using the current time added to the memory address of the generator. The memory address is included so that different generators are initialized with different seeds. An array of generators can be created initialized as</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb21-1" title="1">randmt_t *generators[<span class="dv">16</span>];</a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="dt">int</span> i;</a>
+<a class="sourceLine" id="cb21-3" title="3"></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">16</span>; ++i) {</a>
+<a class="sourceLine" id="cb21-5" title="5">  <span class="cf">if</span>(!(generators[i] = new_randmt())) {</a>
+<a class="sourceLine" id="cb21-6" title="6">    exit(<span class="dv">1</span>);</a>
+<a class="sourceLine" id="cb21-7" title="7">  }</a>
+<a class="sourceLine" id="cb21-8" title="8">}</a>
+<a class="sourceLine" id="cb21-9" title="9"></a>
+<a class="sourceLine" id="cb21-10" title="10"><span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">16</span>; i++) {</a>
+<a class="sourceLine" id="cb21-11" title="11">  init_randmt_auto_r(generators[i]);</a>
+<a class="sourceLine" id="cb21-12" title="12">}</a></code></pre></div>
 <h3 id="init_randmt_r">init_randmt_r</h3>
-<p><code>void init_randmt_r(randmt_t *generator, unsigned long seed)</code> initializes <code>generator</code> with seed value <code>seed</code>.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb22-1" title="1"><span class="dt">void</span> init_randmt_r(randmt_t *generator, <span class="dt">unsigned</span> <span class="dt">long</span> seed)</a></code></pre></div>
+<p>initializes <code>generator</code> with seed value <code>seed</code>.</p>
 <h3 id="rand_unif_r">rand_unif_r</h3>
-<p><code>double rand_unif_r(randmt_t *generator)</code> uses <code>generator</code> to generate a random number uniformly on the open interval (0,1) with 53-bit resolution.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb23-1" title="1"><span class="dt">double</span> rand_unif_r(randmt_t *generator)</a></code></pre></div>
+<p>uses <code>generator</code> to generate a random number uniformly on the open interval (0,1) with 53-bit resolution.</p>
 <h3 id="rand_uint32_r">rand_uint32_r</h3>
-<p><code>unsigned long rand_uint32_r(randmt_t *generator)</code> uses <code>generator</code> to generate a random 32-bit unsigned integer uniformly between 0 and 0xFFFFFFFF.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb24-1" title="1"><span class="dt">unsigned</span> <span class="dt">long</span> rand_uint32_r(randmt_t *generator)</a></code></pre></div>
+<p>uses <code>generator</code> to generate a random 32-bit unsigned integer uniformly between 0 and 2<sup>32</sup> − 1.</p>
 <h3 id="rand_normal_r">rand_normal_r</h3>
-<p><code>double rand_normal_r(randmt_t *generator)</code> uses <code>generator</code> to generate a standard normal distributed random number.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb25-1" title="1"><span class="dt">double</span> rand_normal_r(randmt_t *generator)</a></code></pre></div>
+<p>uses <code>generator</code> to generate a standard normal distributed random number.</p>
 <h3 id="rand_exp_r">rand_exp_r</h3>
-<p><code>double rand_exp(randmt_t *generator, double mu)</code> uses <code>generator</code> to generate an exponentially-distributed number with mean <code>mu</code>.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb26-1" title="1"><span class="dt">double</span> rand_exp(randmt_t *generator, <span class="dt">double</span> mu)</a></code></pre></div>
+<p>uses <code>generator</code> to generate an exponentially-distributed number with mean <code>mu</code>.</p>
 <h3 id="rand_gamma_r">rand_gamma_r</h3>
-<p><code>double rand_gamma(randmt_t *generator, double a, double b)</code> uses <code>generator</code> to generate a Gamma-distributed number with shape parameter <code>a</code> and scale parameter <code>b</code>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb27-1" title="1"><span class="dt">double</span> rand_gamma(randmt_t *generator, <span class="dt">double</span> a, <span class="dt">double</span> b)</a></code></pre></div>
+<p>uses <code>generator</code> to generate a Gamma-distributed number with shape parameter <code>a</code> and scale parameter <code>b</code>.</p>
 <h3 id="rand_geometric_r">rand_geometric_r</h3>
-<p><code>double rand_geometric(randmt_t *generator, double p)</code> uses <code>generator</code> to generate a geometrically-distributed number where <code>p</code> is the probability of success.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb28-1" title="1"><span class="dt">double</span> rand_geometric(randmt_t *generator, <span class="dt">double</span> p)</a></code></pre></div>
+<p>uses <code>generator</code> to generate a geometrically-distributed number where <code>p</code> is the probability of success.</p>
 <h3 id="rand_poisson_r">rand_poisson_r</h3>
-<p><code>double rand_poisson(randmt_t *generator, double mu)</code> uses <code>generator</code> to generate a Poisson-distributed number with mean <code>mu</code>.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb29-1" title="1"><span class="dt">double</span> rand_poisson(randmt_t *generator, <span class="dt">double</span> mu)</a></code></pre></div>
+<p>uses <code>generator</code> to generate a Poisson-distributed number with mean <code>mu</code>.</p>
 <p><span class="copynote"> This material is based upon work supported by the National Science Foundation under Award No. DMS-1004694. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation. </span></p>
 </div>
 

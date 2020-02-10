@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Ultrasonic Communication Using Consumer Hardware</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -77,9 +77,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <body>
 <div id="navbar">
 <div id="navhold">
-  <a href="../../index.html">&blacktriangle; Home</a>
-  <a href="../../papers/index.html">&blacksquare; Papers</a>
-  <a href="../../posts/index.html">&blacksquare; Posts</a>
+  <a href="../../index.html">Home</a>
+  <a href="../../papers/index.html">Papers</a>
+  <a href="../../posts/index.html">Posts</a>
 </div>
 </div>
 <div id="content">
@@ -107,7 +107,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb1-11" title="11">}</a></code></pre></div>
 <h2 id="abstract">Abstract</h2>
 <blockquote>
-<p>We have implemented a near-ultrasonic communication protocol in the 18.5-20 kHz band, which is inaudible to most humans, using commodity smartphone speakers and microphones to transmit and receive signals. The protocol described in this paper is a component of Google’s Nearby platform, where near-ultrasound signals are used to establish copresence between nearby devices by transmitting a short token. High-frequency sound does not pass through walls (most energy is reflected), so identified devices are constrained to approximately the same room, “within earshot” of one another. Our protocol has a raw data rate of 94.5 b/s, and we find in real indoor environments that transmission between mobile devices is reliable at 2 m distance and often works at 10 m. We use direct-sequence spread spectrum modulation, which makes it highly robust to multipath, motion, and narrowband noise. We use a 127-chip pseudorandom code, repeating once per data symbol, and modulate its amplitude with orthogonal sine waveforms encoding 4-bit symbol values. We add the orthogonal sines to a constant “pedestal,” which is inefficient in an information-theoretic sense, but makes synchronization easier. We describe a robust and computationally efficient transmitter and receiver implementations and show experiments on real and simulated data.</p>
+<p>We have implemented a near-ultrasonic communication protocol in the 18.5–20 kHz band, which is inaudible to most humans, using commodity smartphone speakers and microphones to transmit and receive signals. The protocol described in this paper is a component of Google’s Nearby platform, where near-ultrasound signals are used to establish copresence between nearby devices by transmitting a short token. High-frequency sound does not pass through walls (most energy is reflected), so identified devices are constrained to approximately the same room, “within earshot” of one another. Our protocol has a raw data rate of 94.5 b/s, and we find in real indoor environments that transmission between mobile devices is reliable at 2 m distance and often works at 10 m. We use direct-sequence spread spectrum modulation, which makes it highly robust to multipath, motion, and narrowband noise. We use a 127-chip pseudorandom code, repeating once per data symbol, and modulate its amplitude with orthogonal sine waveforms encoding 4-bit symbol values. We add the orthogonal sines to a constant “pedestal,” which is inefficient in an information-theoretic sense, but makes synchronization easier. We describe a robust and computationally efficient transmitter and receiver implementations and show experiments on real and simulated data.</p>
 </blockquote>
 <p class="copynote">
 ©2018 by the Institute of Electrical and Electronics Engineers (IEEE). Personal use of this material is permitted. However, permission to reprint/republish this material for advertising or promotional purposes or for creating new collective works for resale or redistribution to servers or lists, or to reuse any copyrighted component of this work in other works must be obtained from IEEE.
