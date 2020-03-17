@@ -116,7 +116,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>on the MATLAB command console. For MEX compiling to work, your system must have a C compiler and MATLAB must be configured to use it. For more information, see the help documentation for the <code>mex</code> command.</p>
 <p>As an alternative to MEX, a pure M-code version <code>colorspace.m</code> is also included.</p>
 <h2 id="use-in-cc">Use in C/C++</h2>
-<p>First call <code>GetColorTransform</code>, specifying the source and destination color spaces as <code>&quot;dest&lt;-src&quot;</code> or <code>&quot;src-&gt;dest&quot;</code>. Then call ApplyColorTransform to perform the transform:</p>
+<p>First call <code>GetColorTransform</code>, specifying the source and destination color spaces as <code>"dest&lt;-src"</code> or <code>"src-&gt;dest"</code>. Then call ApplyColorTransform to perform the transform:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb3-1" title="1">num S[<span class="dv">3</span>] = {<span class="dv">173</span>, <span class="fl">0.8</span>, <span class="fl">0.5</span>};</a>
 <a class="sourceLine" id="cb3-2" title="2">num D[<span class="dv">3</span>];</a>
 <a class="sourceLine" id="cb3-3" title="3">colortransform Trans;</a>
@@ -344,7 +344,7 @@ CIE CAT02 LMS
 <h2 id="discrepancies">Discrepancies</h2>
 <p>While of course effort has been made to make <code>colorspace</code> accurate and in agreement with standards, it is possible to see differences between <code>colorspace</code> and other color transformation software. Potential sources for discrepancy are</p>
 <ul>
-<li>differences in how the components are scaled, for example, sRGB values scaled in [0,255] vs. [0,1];</li>
+<li>differences in how the components are scaled, for example, sRGB values scaled in [0,255] vs. [0,1];</li>
 <li>different handling of out-of-gamut colors;</li>
 <li>naming confusion over similar but distinct color spaces (e.g., HSV vs. HSL vs. HSI or Y’P<sub>b</sub>P<sub>r</sub> vs. Y’UV vs. Y’IQ);</li>
 <li>for CIE spaces, differences in white point, observer angle, or gamma correction</li>
@@ -528,7 +528,7 @@ RGB&lt;-&gt;CAT02 LMS    8.29e-016    1.30e-014</code></pre>
 
 <div id="footer">
 <p style="text-align:right">
-<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ"  target="_blank">Google Scholar</a>
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
 <a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
 </p>
 </div>
