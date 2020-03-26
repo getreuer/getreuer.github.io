@@ -8,26 +8,27 @@
   <title>Wavelet CDF 9/7 Implementation</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -36,9 +37,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -103,67 +104,67 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="demos">Demos</h2>
 <p>This package includes a demo program, <code>waveletcdf97_demo</code>, that uses <code>waveletcdf97</code> for signal approximation. Signal approximation is the problem of representing a signal with as few components as possible. This is similar to lossy image compression, but ignoring the problems of quantization and encoding.</p>
 <p>Wavelets are particularly efficient for approximating piecewise-smooth signals. This first demo uses the CDF 9/7 wavelet to represent a piecewise-smooth signal.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb1-1" title="1">NumComponents = <span class="fl">40</span>;          <span class="co">% Approximation with 40 components</span></a>
-<a class="sourceLine" id="cb1-2" title="2"></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="co">%%% Construct the test signal %%%</span></a>
-<a class="sourceLine" id="cb1-4" title="4">N = <span class="fl">512</span>;                     <span class="co">% Signal length</span></a>
-<a class="sourceLine" id="cb1-5" title="5">t = linspace(-<span class="fl">1.7</span>,<span class="fl">1.7</span>,N);</a>
-<a class="sourceLine" id="cb1-6" title="6">X = sign(t).*exp(-t.^<span class="fl">4</span>);</a>
-<a class="sourceLine" id="cb1-7" title="7"></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="co">%%% Wavelet approximation %%%</span></a>
-<a class="sourceLine" id="cb1-9" title="9">Level = <span class="fl">9</span>;                   <span class="co">% Use 9 levels of decomposition</span></a>
-<a class="sourceLine" id="cb1-10" title="10">Y = waveletcdf97(X,Level);   <span class="co">% Transform the signal</span></a>
-<a class="sourceLine" id="cb1-11" title="11">Y = keep(Y,NumComponents);   <span class="co">% Keep only 40 components</span></a>
-<a class="sourceLine" id="cb1-12" title="12"></a>
-<a class="sourceLine" id="cb1-13" title="13">R = waveletcdf97(Y,-Level);  <span class="co">% Invert to obtain the approximation</span></a>
-<a class="sourceLine" id="cb1-14" title="14">norm(X-R)                    <span class="co">% Compute error</span></a>
-<a class="sourceLine" id="cb1-15" title="15"></a>
-<a class="sourceLine" id="cb1-16" title="16"><span class="co">%%% Fourier approximation %%%</span></a>
-<a class="sourceLine" id="cb1-17" title="17">Y = fft(X);                  <span class="co">% Transform</span></a>
-<a class="sourceLine" id="cb1-18" title="18">Y = keep(Y,NumComponents);   <span class="co">% Keep only 40 components</span></a>
-<a class="sourceLine" id="cb1-19" title="19">R2 = real(ifft(Y));          <span class="co">% Invert</span></a>
-<a class="sourceLine" id="cb1-20" title="20"></a>
-<a class="sourceLine" id="cb1-21" title="21">norm(X-R2)                   <span class="co">% Compute error</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1"></a><span class="va">NumComponents</span> <span class="op">=</span> <span class="fl">40</span><span class="op">;</span>          <span class="co">% Approximation with 40 components</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">%%% Construct the test signal %%%</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="va">N</span> <span class="op">=</span> <span class="fl">512</span><span class="op">;</span>                     <span class="co">% Signal length</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="va">t</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="fl">1.7</span><span class="op">,</span><span class="fl">1.7</span><span class="op">,</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="va">X</span> <span class="op">=</span> <span class="va">sign</span>(<span class="va">t</span>)<span class="op">.*</span><span class="va">exp</span>(<span class="op">-</span><span class="va">t</span><span class="op">.^</span><span class="fl">4</span>)<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">%%% Wavelet approximation %%%</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="va">Level</span> <span class="op">=</span> <span class="fl">9</span><span class="op">;</span>                   <span class="co">% Use 9 levels of decomposition</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="va">Y</span> <span class="op">=</span> <span class="va">waveletcdf97</span>(<span class="va">X</span><span class="op">,</span><span class="va">Level</span>)<span class="op">;</span>   <span class="co">% Transform the signal</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="va">Y</span> <span class="op">=</span> <span class="va">keep</span>(<span class="va">Y</span><span class="op">,</span><span class="va">NumComponents</span>)<span class="op">;</span>   <span class="co">% Keep only 40 components</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="va">R</span> <span class="op">=</span> <span class="va">waveletcdf97</span>(<span class="va">Y</span><span class="op">,-</span><span class="va">Level</span>)<span class="op">;</span>  <span class="co">% Invert to obtain the approximation</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="va">norm</span>(<span class="va">X</span><span class="op">-</span><span class="va">R</span>)                    <span class="co">% Compute error</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co">%%% Fourier approximation %%%</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="va">Y</span> <span class="op">=</span> <span class="va">fft</span>(<span class="va">X</span>)<span class="op">;</span>                  <span class="co">% Transform</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="va">Y</span> <span class="op">=</span> <span class="va">keep</span>(<span class="va">Y</span><span class="op">,</span><span class="va">NumComponents</span>)<span class="op">;</span>   <span class="co">% Keep only 40 components</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="va">R2</span> <span class="op">=</span> <span class="va">real</span>(<span class="va">ifft</span>(<span class="va">Y</span>))<span class="op">;</span>          <span class="co">% Invert</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="va">norm</span>(<span class="va">X</span><span class="op">-</span><span class="va">R2</span>)                   <span class="co">% Compute error</span></span></code></pre></div>
 <p>The figure below shows the resulting wavelet approximation using only 40 out of 512 components. Fourier approximation with 40 components is shown for comparison. The wavelet approximation has <span class="math inline">\(L^2\)</span> error of 0.014 while the Fourier approximation has error of 2.244.</p>
 <p><img src="waveletcdf97_01.png" /></p>
 <p>The second demo applies waveletcdf97 to image approximation. First, the input image is converted from RGB to the JPEG Y’CbCr colorspace. The Y’CbCr image is transformed using waveletcdf97, all but the largest transform coefficients are set to zero, and then inverse transformed.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb2-1" title="1">X = double(imread(<span class="st">&#39;palm.jpg&#39;</span>))/<span class="fl">255</span>;  <span class="co">% Load the demo image</span></a>
-<a class="sourceLine" id="cb2-2" title="2">subplot(<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">1</span>);</a>
-<a class="sourceLine" id="cb2-3" title="3">image(X);</a>
-<a class="sourceLine" id="cb2-4" title="4">axis image</a>
-<a class="sourceLine" id="cb2-5" title="5"></a>
-<a class="sourceLine" id="cb2-6" title="6">X = RGBToYCbCr(X);                   <span class="co">% Convert to Y&#39;CbCr</span></a>
-<a class="sourceLine" id="cb2-7" title="7">L = <span class="fl">6</span>;</a>
-<a class="sourceLine" id="cb2-8" title="8">Y = waveletcdf97(X,L);               <span class="co">% Transform the image</span></a>
-<a class="sourceLine" id="cb2-9" title="9"></a>
-<a class="sourceLine" id="cb2-10" title="10">R = waveletcdf97(keep(Y,<span class="fl">1</span>/<span class="fl">40</span>),-L);   <span class="co">% 40:1 approximation</span></a>
-<a class="sourceLine" id="cb2-11" title="11">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">3</span>);</a>
-<a class="sourceLine" id="cb2-12" title="12">image(YCbCrToRGB(R));</a>
-<a class="sourceLine" id="cb2-13" title="13">axis image</a>
-<a class="sourceLine" id="cb2-14" title="14"></a>
-<a class="sourceLine" id="cb2-15" title="15">R = waveletcdf97(keep(Y,<span class="fl">1</span>/<span class="fl">80</span>),-L);   <span class="co">% 80:1 approximation</span></a>
-<a class="sourceLine" id="cb2-16" title="16">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">4</span>);</a>
-<a class="sourceLine" id="cb2-17" title="17">image(YCbCrToRGB(R));</a>
-<a class="sourceLine" id="cb2-18" title="18">axis image</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1"></a><span class="va">X</span> <span class="op">=</span> <span class="va">double</span>(<span class="va">imread</span>(<span class="ss">&#39;palm.jpg&#39;</span>))<span class="op">/</span><span class="fl">255</span><span class="op">;</span>  <span class="co">% Load the demo image</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="va">image</span>(<span class="va">X</span>)<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="va">axis</span> <span class="va">image</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="va">X</span> <span class="op">=</span> <span class="va">RGBToYCbCr</span>(<span class="va">X</span>)<span class="op">;</span>                   <span class="co">% Convert to Y&#39;CbCr</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="va">L</span> <span class="op">=</span> <span class="fl">6</span><span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="va">Y</span> <span class="op">=</span> <span class="va">waveletcdf97</span>(<span class="va">X</span><span class="op">,</span><span class="va">L</span>)<span class="op">;</span>               <span class="co">% Transform the image</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="va">R</span> <span class="op">=</span> <span class="va">waveletcdf97</span>(<span class="va">keep</span>(<span class="va">Y</span><span class="op">,</span><span class="fl">1</span><span class="op">/</span><span class="fl">40</span>)<span class="op">,-</span><span class="va">L</span>)<span class="op">;</span>   <span class="co">% 40:1 approximation</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">2</span><span class="op">,</span><span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="va">image</span>(<span class="va">YCbCrToRGB</span>(<span class="va">R</span>))<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="va">axis</span> <span class="va">image</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="va">R</span> <span class="op">=</span> <span class="va">waveletcdf97</span>(<span class="va">keep</span>(<span class="va">Y</span><span class="op">,</span><span class="fl">1</span><span class="op">/</span><span class="fl">80</span>)<span class="op">,-</span><span class="va">L</span>)<span class="op">;</span>   <span class="co">% 80:1 approximation</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">2</span><span class="op">,</span><span class="fl">4</span>)<span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="va">image</span>(<span class="va">YCbCrToRGB</span>(<span class="va">R</span>))<span class="op">;</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="va">axis</span> <span class="va">image</span></span></code></pre></div>
 <p><img src="waveletcdf97_02.jpg" /></p>
 <h2 id="tests">Tests</h2>
 <p>In the first test, a random signal <code>X</code> is transformed one stage, then inverse transformed, and the result is compared to the original. Mathematically, the transform is exactly inverted—the scheme is said to have perfect reconstruction. This test verifies that this property holds to machine precision.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb3-1" title="1">Runs = <span class="fl">100</span>;                    <span class="co">% Number of runs to average</span></a>
-<a class="sourceLine" id="cb3-2" title="2"></a>
-<a class="sourceLine" id="cb3-3" title="3">N = ceil(logspace(...          <span class="co">% Lengths to test</span></a>
-<a class="sourceLine" id="cb3-4" title="4">   log10(<span class="fl">15</span>),log10(<span class="fl">300</span>),<span class="fl">15</span>));  </a>
-<a class="sourceLine" id="cb3-5" title="5"></a>
-<a class="sourceLine" id="cb3-6" title="6">for k = <span class="fl">1</span>:length(N)     </a>
-<a class="sourceLine" id="cb3-7" title="7">   <span class="co">% Create random input matrices</span></a>
-<a class="sourceLine" id="cb3-8" title="8">   X = rand(N(k),<span class="fl">1</span>,Runs);</a>
-<a class="sourceLine" id="cb3-9" title="9">   <span class="co">% Forward transform followed by inverse</span></a>
-<a class="sourceLine" id="cb3-10" title="10">   R = waveletcdf97(waveletcdf97(X,<span class="fl">1</span>),-<span class="fl">1</span>);</a>
-<a class="sourceLine" id="cb3-11" title="11">   <span class="co">% Compute the average error</span></a>
-<a class="sourceLine" id="cb3-12" title="12">   AvgError(k) = mean(max(abs(permute(X - R,[<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">2</span>])),[],<span class="fl">1</span>));</a>
-<a class="sourceLine" id="cb3-13" title="13">   fprintf(<span class="st">&#39;%3d: Error = %.2e\n&#39;</span>,N(k),AvgError(k));</a>
-<a class="sourceLine" id="cb3-14" title="14">end</a>
-<a class="sourceLine" id="cb3-15" title="15"></a>
-<a class="sourceLine" id="cb3-16" title="16">plot(N,AvgError,<span class="st">&#39;.-&#39;</span>);</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1"></a><span class="va">Runs</span> <span class="op">=</span> <span class="fl">100</span><span class="op">;</span>                    <span class="co">% Number of runs to average</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="va">N</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="va">logspace</span>(<span class="op">...</span>          <span class="co">% Lengths to test</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>   <span class="va">log10</span>(<span class="fl">15</span>)<span class="op">,</span><span class="va">log10</span>(<span class="fl">300</span>)<span class="op">,</span><span class="fl">15</span>))<span class="op">;</span>  </span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">N</span>)     </span>
+<span id="cb3-7"><a href="#cb3-7"></a>   <span class="co">% Create random input matrices</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>   <span class="va">X</span> <span class="op">=</span> <span class="va">rand</span>(<span class="va">N</span>(<span class="va">k</span>)<span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="va">Runs</span>)<span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>   <span class="co">% Forward transform followed by inverse</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>   <span class="va">R</span> <span class="op">=</span> <span class="va">waveletcdf97</span>(<span class="va">waveletcdf97</span>(<span class="va">X</span><span class="op">,</span><span class="fl">1</span>)<span class="op">,-</span><span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>   <span class="co">% Compute the average error</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>   <span class="va">AvgError</span>(<span class="va">k</span>) <span class="op">=</span> <span class="va">mean</span>(<span class="va">max</span>(<span class="va">abs</span>(<span class="va">permute</span>(<span class="va">X</span> <span class="op">-</span> <span class="va">R</span><span class="op">,</span>[<span class="fl">1</span><span class="op">,</span><span class="fl">3</span><span class="op">,</span><span class="fl">2</span>]))<span class="op">,</span>[]<span class="op">,</span><span class="fl">1</span>))<span class="op">;</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>   <span class="va">fprintf</span>(<span class="ss">&#39;%3d: Error = %.2e\n&#39;</span><span class="op">,</span><span class="va">N</span>(<span class="va">k</span>)<span class="op">,</span><span class="va">AvgError</span>(<span class="va">k</span>))<span class="op">;</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="kw">end</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="va">plot</span>(<span class="va">N</span><span class="op">,</span><span class="va">AvgError</span><span class="op">,</span><span class="ss">&#39;.-&#39;</span>)<span class="op">;</span></span></code></pre></div>
 <p>Code output:</p>
 <p><img src="waveletcdf97_03.png" /></p>
 <pre><code> 15: Error = 3.34e-016
@@ -182,20 +183,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 243: Error = 7.17e-016
 300: Error = 7.00e-016</code></pre>
 <p>The CDF 9/7 wavelet is designed such that where the input signal is locally a polynomial of cubic degree or lower, the resulting detail (highpass) coefficients are equal to zero. A wavelet is said to have “N vanishing moments” if it has this property on polynomials up to degree N-1, so CDF 9/7 has 4 vanishing moments. This test transforms a piecewise polynomial signal and displays the largest detail coefficient magnitudes, verifying that the vanishing moments hold to reasonable accuracy.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb5-1" title="1">N = <span class="fl">64</span>;</a>
-<a class="sourceLine" id="cb5-2" title="2">t = (<span class="fl">0</span>:N-<span class="fl">1</span>)/N;</a>
-<a class="sourceLine" id="cb5-3" title="3">X = [t.^<span class="fl">0</span>,t.^<span class="fl">1</span>,t.^<span class="fl">2</span>,t.^<span class="fl">3</span>];</a>
-<a class="sourceLine" id="cb5-4" title="4">Y = waveletcdf97(X,<span class="fl">1</span>);</a>
-<a class="sourceLine" id="cb5-5" title="5"></a>
-<a class="sourceLine" id="cb5-6" title="6">norm(Y(<span class="fl">2</span>*N+<span class="fl">2</span>:<span class="fl">2.5</span>*N-<span class="fl">2</span>),inf)   <span class="co">% Largest detail coefficient from t^0</span></a>
-<a class="sourceLine" id="cb5-7" title="7">norm(Y(<span class="fl">2.5</span>*N+<span class="fl">2</span>:<span class="fl">3</span>*N-<span class="fl">2</span>),inf)   <span class="co">% Largest detail coefficient from t^1</span></a>
-<a class="sourceLine" id="cb5-8" title="8">norm(Y(<span class="fl">3</span>*N+<span class="fl">2</span>:<span class="fl">3.5</span>*N-<span class="fl">2</span>),inf)   <span class="co">% Largest detail coefficient from t^2</span></a>
-<a class="sourceLine" id="cb5-9" title="9">norm(Y(<span class="fl">3.5</span>*N+<span class="fl">2</span>:<span class="fl">4</span>*N-<span class="fl">2</span>),inf)   <span class="co">% Largest detail coefficient from t^3</span></a>
-<a class="sourceLine" id="cb5-10" title="10"></a>
-<a class="sourceLine" id="cb5-11" title="11">subplot(<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">1</span>);</a>
-<a class="sourceLine" id="cb5-12" title="12">plot(X);</a>
-<a class="sourceLine" id="cb5-13" title="13">subplot(<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span>);</a>
-<a class="sourceLine" id="cb5-14" title="14">plot(Y(<span class="fl">2</span>*N+<span class="fl">1</span>:<span class="fl">4</span>*N));</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1"></a><span class="va">N</span> <span class="op">=</span> <span class="fl">64</span><span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="va">t</span> <span class="op">=</span> (<span class="fl">0</span><span class="op">:</span><span class="va">N</span><span class="op">-</span><span class="fl">1</span>)<span class="op">/</span><span class="va">N</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="va">X</span> <span class="op">=</span> [<span class="va">t</span><span class="op">.^</span><span class="fl">0</span><span class="op">,</span><span class="va">t</span><span class="op">.^</span><span class="fl">1</span><span class="op">,</span><span class="va">t</span><span class="op">.^</span><span class="fl">2</span><span class="op">,</span><span class="va">t</span><span class="op">.^</span><span class="fl">3</span>]<span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="va">Y</span> <span class="op">=</span> <span class="va">waveletcdf97</span>(<span class="va">X</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="va">norm</span>(<span class="va">Y</span>(<span class="fl">2</span><span class="op">*</span><span class="va">N</span><span class="op">+</span><span class="fl">2</span><span class="op">:</span><span class="fl">2.5</span><span class="op">*</span><span class="va">N</span><span class="op">-</span><span class="fl">2</span>)<span class="op">,</span><span class="va">inf</span>)   <span class="co">% Largest detail coefficient from t^0</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="va">norm</span>(<span class="va">Y</span>(<span class="fl">2.5</span><span class="op">*</span><span class="va">N</span><span class="op">+</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">*</span><span class="va">N</span><span class="op">-</span><span class="fl">2</span>)<span class="op">,</span><span class="va">inf</span>)   <span class="co">% Largest detail coefficient from t^1</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="va">norm</span>(<span class="va">Y</span>(<span class="fl">3</span><span class="op">*</span><span class="va">N</span><span class="op">+</span><span class="fl">2</span><span class="op">:</span><span class="fl">3.5</span><span class="op">*</span><span class="va">N</span><span class="op">-</span><span class="fl">2</span>)<span class="op">,</span><span class="va">inf</span>)   <span class="co">% Largest detail coefficient from t^2</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="va">norm</span>(<span class="va">Y</span>(<span class="fl">3.5</span><span class="op">*</span><span class="va">N</span><span class="op">+</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">*</span><span class="va">N</span><span class="op">-</span><span class="fl">2</span>)<span class="op">,</span><span class="va">inf</span>)   <span class="co">% Largest detail coefficient from t^3</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="va">plot</span>(<span class="va">X</span>)<span class="op">;</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="va">plot</span>(<span class="va">Y</span>(<span class="fl">2</span><span class="op">*</span><span class="va">N</span><span class="op">+</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">*</span><span class="va">N</span>))<span class="op">;</span></span></code></pre></div>
 <p>Code output:</p>
 <p><img src="waveletcdf97_04.png" /></p>
 <pre><code>  Locally constant    Largest detail coefficient = 1.41e-012

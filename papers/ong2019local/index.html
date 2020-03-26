@@ -7,26 +7,27 @@
   <title>Local kernels that approximate Bayesian regularization and proximal operators</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -35,9 +36,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -94,17 +95,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Frank Ong, Peyman Milanfar, and Pascal Getreuer. “Local kernels that approximate Bayesian regularization and proximal operators.” <em>IEEE Transactions on Image Processing</em> 28.6 (2019): 3007–3019.</p>
 <p>Article permalink: <a href="https://doi.org/10.1109/TIP.2019.2893071" class="uri">https://doi.org/10.1109/TIP.2019.2893071</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><a class="sourceLine" id="cb1-1" title="1"><span class="va">@article</span>{<span class="ot">ong2019local</span>,</a>
-<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">title</span>={Local kernels that approximate {Bayesian} regularization and</a>
-<a class="sourceLine" id="cb1-3" title="3">         proximal operators},</a>
-<a class="sourceLine" id="cb1-4" title="4">  <span class="dt">author</span>={Frank Ong and Peyman Milanfar and Pascal Getreuer},</a>
-<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">journal</span>={IEEE Transactions on Image Processing},</a>
-<a class="sourceLine" id="cb1-6" title="6">  <span class="dt">volume</span>={28},</a>
-<a class="sourceLine" id="cb1-7" title="7">  <span class="dt">number</span>={6},</a>
-<a class="sourceLine" id="cb1-8" title="8">  <span class="dt">pages</span>={3007--3019},</a>
-<a class="sourceLine" id="cb1-9" title="9">  <span class="dt">year</span>={2019},</a>
-<a class="sourceLine" id="cb1-10" title="10">  <span class="dt">publisher</span>={IEEE}</a>
-<a class="sourceLine" id="cb1-11" title="11">}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1"></a><span class="va">@article</span>{<span class="ot">ong2019local</span>,</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="dt">title</span>={Local kernels that approximate {Bayesian} regularization and</span>
+<span id="cb1-3"><a href="#cb1-3"></a>         proximal operators},</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="dt">author</span>={Frank Ong and Peyman Milanfar and Pascal Getreuer},</span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="dt">journal</span>={IEEE Transactions on Image Processing},</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="dt">volume</span>={28},</span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="dt">number</span>={6},</span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="dt">pages</span>={3007--3019},</span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="dt">year</span>={2019},</span>
+<span id="cb1-10"><a href="#cb1-10"></a>  <span class="dt">publisher</span>={IEEE}</span>
+<span id="cb1-11"><a href="#cb1-11"></a>}</span></code></pre></div>
 <h2 id="abstract">Abstract</h2>
 <blockquote>
 <p>In this paper, we broadly connect kernel-based filtering (e.g., approaches such as the bilateral filter and non-local means, but also many more) with general variational formulations of Bayesian regularized least squares and the related concept of proximal operators. Variational/Bayesian/proximal formulations often result in optimization problems that do not have closed-form solutions and therefore typically require global iterative solutions. Our main contribution here is to establish how one can approximate the solution of the resulting global optimization problems using locally adaptive filters with specific kernels. Our results are valid for small regularization strength (i.e., weak noise), but the approach is powerful enough to be useful for a wide range of applications because we expose how to derive a “kernelized” solution to these problems that approximates the global solution in one shot, using only local operations. As another side benefit in the reverse direction, given a local data-adaptive filter constructed with a particular choice of kernel, we enable the interpretation of such filters in the variational/Bayesian/proximal framework.</p>

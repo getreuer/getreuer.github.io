@@ -7,26 +7,27 @@
   <title>A Survey of Gaussian Convolution Algorithms</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -35,9 +36,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -94,13 +95,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>P. Getreuer, “A Survey of Gaussian Convolution Algorithms,” <em>Image Processing On Line</em>, 2013. DOI: 10.5201/ipol.2013.87.</p>
 <p>Article permalink: <a href="http://dx.doi.org/10.5201/ipol.2013.87">http://dx.doi.org/10.5201/ipol.2013.87</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><a class="sourceLine" id="cb1-1" title="1"><span class="va">@article</span>{<span class="ot">getreuer2013survey</span>,</a>
-<a class="sourceLine" id="cb1-2" title="2">    <span class="dt">title</span> = {A Survey of {Gaussian} Convolution Algorithms},</a>
-<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">author</span> = {Pascal Getreuer},</a>
-<a class="sourceLine" id="cb1-4" title="4">    <span class="dt">journal</span> = {Image Processing On Line},</a>
-<a class="sourceLine" id="cb1-5" title="5">    <span class="dt">year</span> = {2013},</a>
-<a class="sourceLine" id="cb1-6" title="6">    <span class="dt">doi</span> = {10.5201/ipol.2013.87},</a>
-<a class="sourceLine" id="cb1-7" title="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1"></a><span class="va">@article</span>{<span class="ot">getreuer2013survey</span>,</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="dt">title</span> = {A Survey of {Gaussian} Convolution Algorithms},</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="dt">author</span> = {Pascal Getreuer},</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    <span class="dt">journal</span> = {Image Processing On Line},</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    <span class="dt">year</span> = {2013},</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="dt">doi</span> = {10.5201/ipol.2013.87},</span>
+<span id="cb1-7"><a href="#cb1-7"></a>}</span></code></pre></div>
 <h2 id="abstract">Abstract</h2>
 <blockquote>
 <p>Gaussian convolution is a common operation and building block for algorithms in signal and image processing. Consequently, its efficient computation is important, and many fast approximations have been proposed. In this survey, we discuss approximate Gaussian convolution based on finite impulse response filters, DFT and DCT based convolution, box filters, and several recursive filters. Since boundary handling is sometimes overlooked in the original works, we pay particular attention to develop it here. We perform numerical experiments to compare the speed and quality of the algorithms.</p>

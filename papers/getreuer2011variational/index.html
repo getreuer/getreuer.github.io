@@ -7,26 +7,27 @@
   <title>A variational model for the restoration of MR images corrupted by blur and Rician noise</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -35,9 +36,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -95,15 +96,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Pascal Getreuer, Melissa Tong, and Luminita A. Vese. “A variational model for the restoration of MR images corrupted by blur and Rician noise.” <em>International Symposium on Visual Computing.</em> Springer, Berlin, Heidelberg, 2011. DOI: 10.1007/978-3-642-24028-7_63.</p>
 <p>Article permalink: <a href="https://doi.org/10.1007/978-3-642-24028-7_63" class="uri">https://doi.org/10.1007/978-3-642-24028-7_63</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><a class="sourceLine" id="cb1-1" title="1"><span class="va">@inproceedings</span>{<span class="ot">getreuer2011variational</span>,</a>
-<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">title</span>={A variational model for the restoration of {MR} images</a>
-<a class="sourceLine" id="cb1-3" title="3">         corrupted by blur and {Rician} noise},</a>
-<a class="sourceLine" id="cb1-4" title="4">  <span class="dt">author</span>={Getreuer, Pascal and Tong, Melissa and Vese, Luminita A},</a>
-<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">booktitle</span>={International Symposium on Visual Computing},</a>
-<a class="sourceLine" id="cb1-6" title="6">  <span class="dt">pages</span>={686--698},</a>
-<a class="sourceLine" id="cb1-7" title="7">  <span class="dt">year</span>={2011},</a>
-<a class="sourceLine" id="cb1-8" title="8">  <span class="dt">organization</span>={Springer}</a>
-<a class="sourceLine" id="cb1-9" title="9">}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1"></a><span class="va">@inproceedings</span>{<span class="ot">getreuer2011variational</span>,</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="dt">title</span>={A variational model for the restoration of {MR} images</span>
+<span id="cb1-3"><a href="#cb1-3"></a>         corrupted by blur and {Rician} noise},</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="dt">author</span>={Getreuer, Pascal and Tong, Melissa and Vese, Luminita A},</span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="dt">booktitle</span>={International Symposium on Visual Computing},</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="dt">pages</span>={686--698},</span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="dt">year</span>={2011},</span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="dt">organization</span>={Springer}</span>
+<span id="cb1-9"><a href="#cb1-9"></a>}</span></code></pre></div>
 <h2 id="abstract">Abstract</h2>
 <blockquote>
 <p>In this paper, we propose a variational model to restore images degraded by blur and Rician noise. This model uses total variation regularization with a fidelity term involving the Rician probability distribution. For its numerical solution, we apply and compare the <span class="math inline">\(L^2\)</span> and Sobolev (<span class="math inline">\(H^1\)</span>) gradient descents, and the iterative method called split Bregman (with a convexified fidelity term). Numerical results are shown on synthetic magnetic resonance imaging (MRI) data corrupted with Rician noise and Gaussian blur, both with known standard deviations.Theoretical analysis of the proposed model is briefly discussed.</p>

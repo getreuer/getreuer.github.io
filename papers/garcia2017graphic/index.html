@@ -7,26 +7,27 @@
   <title>Graphic Narrative with Interactive Stylization Design</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -35,9 +36,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -94,13 +95,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Ignacio Garcia-Dorado, Pascal Getreuer, Madison Le, Robin Debreuil, Alex Kauffmann, and Peyman Milanfar. “Graphic Narrative with Interactive Stylization Design.” arXiv preprint arXiv:1712.06654 (2017).</p>
 <p>Article permalink: <a href="https://arxiv.org/abs/1712.06654" class="uri">https://arxiv.org/abs/1712.06654</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><a class="sourceLine" id="cb1-1" title="1"><span class="va">@article</span>{<span class="ot">garcia2017graphic</span>,</a>
-<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">title</span>={Graphic Narrative with Interactive Stylization Design},</a>
-<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">author</span>={Ignacio Garcia-Dorado and Pascal Getreuer and Madison Le</a>
-<a class="sourceLine" id="cb1-4" title="4">          and Robin Debreuil and Alex Kauffmann and Peyman Milanfar},</a>
-<a class="sourceLine" id="cb1-5" title="5">  <span class="dt">journal</span>={arXiv preprint arXiv:1712.06654},</a>
-<a class="sourceLine" id="cb1-6" title="6">  <span class="dt">year</span>={2017}</a>
-<a class="sourceLine" id="cb1-7" title="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1"></a><span class="va">@article</span>{<span class="ot">garcia2017graphic</span>,</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="dt">title</span>={Graphic Narrative with Interactive Stylization Design},</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="dt">author</span>={Ignacio Garcia-Dorado and Pascal Getreuer and Madison Le</span>
+<span id="cb1-4"><a href="#cb1-4"></a>          and Robin Debreuil and Alex Kauffmann and Peyman Milanfar},</span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="dt">journal</span>={arXiv preprint arXiv:1712.06654},</span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="dt">year</span>={2017}</span>
+<span id="cb1-7"><a href="#cb1-7"></a>}</span></code></pre></div>
 <h2 id="abstract">Abstract</h2>
 <blockquote>
 <p>We present a system to convert any set of images (e.g., a video clip or a photo album) into a storyboard. We aim to create multiple pleasing graphic representations of the content at interactive rates, so the user can explore and find the storyboard (images, layout, and stylization) that best suits their needs and taste. The main challenges of this work are: selecting the content images, placing them into panels, and applying a stylization. For the latter, we propose an interactive design tool to create new stylizations using a wide range of filter blocks. This approach unleashes the creativity by allowing the user to tune, modify, and intuitively design new sequences of filters. In parallel to this manual design, we propose a novel procedural approach that automatically assembles sequences of filters for innovative results. We aim to keep the algorithm complexity as low as possible such that it can run interactively on a mobile device. Our results include examples of styles designed using both our interactive and procedural tools, as well as their final composition into interesting and appealing storyboards.</p>

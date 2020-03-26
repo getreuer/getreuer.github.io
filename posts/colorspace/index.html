@@ -8,26 +8,27 @@
   <title>Convert between RGB, YUV, HSV, CIE Lab, …</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -36,9 +37,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -117,68 +118,68 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>As an alternative to MEX, a pure M-code version <code>colorspace.m</code> is also included.</p>
 <h2 id="use-in-cc">Use in C/C++</h2>
 <p>First call <code>GetColorTransform</code>, specifying the source and destination color spaces as <code>"dest&lt;-src"</code> or <code>"src-&gt;dest"</code>. Then call ApplyColorTransform to perform the transform:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb3-1" title="1">num S[<span class="dv">3</span>] = {<span class="dv">173</span>, <span class="fl">0.8</span>, <span class="fl">0.5</span>};</a>
-<a class="sourceLine" id="cb3-2" title="2">num D[<span class="dv">3</span>];</a>
-<a class="sourceLine" id="cb3-3" title="3">colortransform Trans;</a>
-<a class="sourceLine" id="cb3-4" title="4">       </a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="cf">if</span> (!(GetColorTransform(&amp;Trans, <span class="st">&quot;HSI -&gt; Lab&quot;</span>))) {</a>
-<a class="sourceLine" id="cb3-6" title="6">  printf(<span class="st">&quot;Invalid syntax</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
-<a class="sourceLine" id="cb3-7" title="7">  <span class="cf">return</span>;</a>
-<a class="sourceLine" id="cb3-8" title="8">}</a>
-<a class="sourceLine" id="cb3-9" title="9">       </a>
-<a class="sourceLine" id="cb3-10" title="10">ApplyColorTransform(Trans, &amp;D[<span class="dv">0</span>], &amp;D[<span class="dv">1</span>], &amp;D[<span class="dv">2</span>],</a>
-<a class="sourceLine" id="cb3-11" title="11">                    S[<span class="dv">0</span>], S[<span class="dv">1</span>], S[<span class="dv">2</span>]);</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1"></a>num S[<span class="dv">3</span>] = {<span class="dv">173</span>, <span class="fl">0.8</span>, <span class="fl">0.5</span>};</span>
+<span id="cb3-2"><a href="#cb3-2"></a>num D[<span class="dv">3</span>];</span>
+<span id="cb3-3"><a href="#cb3-3"></a>colortransform Trans;</span>
+<span id="cb3-4"><a href="#cb3-4"></a>       </span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="cf">if</span> (!(GetColorTransform(&amp;Trans, <span class="st">&quot;HSI -&gt; Lab&quot;</span>))) {</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  printf(<span class="st">&quot;Invalid syntax</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="cf">return</span>;</span>
+<span id="cb3-8"><a href="#cb3-8"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9"></a>       </span>
+<span id="cb3-10"><a href="#cb3-10"></a>ApplyColorTransform(Trans, &amp;D[<span class="dv">0</span>], &amp;D[<span class="dv">1</span>], &amp;D[<span class="dv">2</span>],</span>
+<span id="cb3-11"><a href="#cb3-11"></a>                    S[<span class="dv">0</span>], S[<span class="dv">1</span>], S[<span class="dv">2</span>]);</span></code></pre></div>
 <p><code>num</code> is a typedef defined at the beginning of <code>colorspace.h</code> that may be set to either double or float, depending on the application.</p>
 <p>A <code>colortransform</code> may be applied any number of times. To transform the color representation of an entire image, call <code>GetColorTransform</code> once and then call <code>ApplyColorTransform</code> for each pixel.</p>
 <p>Specific transformation routines can also be called directly. The following converts an sRGB color to CIELAB and then back to sRGB:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb4-1" title="1">num R = <span class="fl">0.85</span>, G = <span class="fl">0.32</span>, B = <span class="fl">0.5</span>;</a>
-<a class="sourceLine" id="cb4-2" title="2">num L, a, b;</a>
-<a class="sourceLine" id="cb4-3" title="3">Rgb2Lab(&amp;L, &amp;a, &amp;b, R, G, B);</a>
-<a class="sourceLine" id="cb4-4" title="4">Lab2Rgb(&amp;R, &amp;G, &amp;B, L, a, b);</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1"></a>num R = <span class="fl">0.85</span>, G = <span class="fl">0.32</span>, B = <span class="fl">0.5</span>;</span>
+<span id="cb4-2"><a href="#cb4-2"></a>num L, a, b;</span>
+<span id="cb4-3"><a href="#cb4-3"></a>Rgb2Lab(&amp;L, &amp;a, &amp;b, R, G, B);</span>
+<span id="cb4-4"><a href="#cb4-4"></a>Lab2Rgb(&amp;R, &amp;G, &amp;B, L, a, b);</span></code></pre></div>
 <p>Generally, the calling syntax is</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb5-1" title="1">Src2Dest(&amp;D0, &amp;D1, &amp;D2, S0, S1, S2);</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1"></a>Src2Dest(&amp;D0, &amp;D1, &amp;D2, S0, S1, S2);</span></code></pre></div>
 <p>where <code>(S0,S1,S2)</code> are coordinates in the source space and <code>(D0,D1,D2)</code> are the transformed coordinates in the destination space. For any transformation routine, its inverse has the analogous syntax.</p>
 <p>Transform routines are named with the first letter of a color space capitalized with following letters in lower case and omitting prime symbols. For example, <code>Rgb2Ydbdr</code> converts sRGB to Y’D<sub>b</sub>D<sub>r</sub>.</p>
 <p>All transformations assume a two degree observer angle and a D65 illuminant. The white point can be changed by modifying the <code>WHITEPOINT_X</code>, <code>WHITEPOINT_Y</code>, <code>WHITEPOINT_Z</code> definitions at the beginning of <code>colorspace.h</code>.</p>
 <p>List of transformation routines:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb6-1" title="1">Rgb2Yuv(num *Y, num *U, num *V,</a>
-<a class="sourceLine" id="cb6-2" title="2">        num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-3" title="3">Rgb2Ycbcr(num *Y, num *Cb, num *Cr,</a>
-<a class="sourceLine" id="cb6-4" title="4">          num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-5" title="5">Rgb2Jpegycbcr(num *Y, num *Cb, num *Cr,</a>
-<a class="sourceLine" id="cb6-6" title="6">              num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-7" title="7">Rgb2Ypbpr(num *Y, num *Pb, num *Pr,</a>
-<a class="sourceLine" id="cb6-8" title="8">          num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-9" title="9">Rgb2Ydbdr(num *Y, num *Db, num *Dr,</a>
-<a class="sourceLine" id="cb6-10" title="10">          num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-11" title="11">Rgb2Yiq(num *Y, num *I, num *Q,</a>
-<a class="sourceLine" id="cb6-12" title="12">        num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-13" title="13">Rgb2Hsv(num *H, num *S, num *V,</a>
-<a class="sourceLine" id="cb6-14" title="14">        num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-15" title="15">Rgb2Hsl(num *H, num *S, num *L,</a>
-<a class="sourceLine" id="cb6-16" title="16">        num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-17" title="17">Rgb2Hsi(num *H, num *S, num *I,</a>
-<a class="sourceLine" id="cb6-18" title="18">        num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-19" title="19">Rgb2Xyz(num *X, num *Y, num *Z,</a>
-<a class="sourceLine" id="cb6-20" title="20">        num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-21" title="21"></a>
-<a class="sourceLine" id="cb6-22" title="22">Xyz2Lab(num *L, num *a, num *b,</a>
-<a class="sourceLine" id="cb6-23" title="23">        num X, num Y, num Z)</a>
-<a class="sourceLine" id="cb6-24" title="24">Xyz2Luv(num *L, num *u, num *v,</a>
-<a class="sourceLine" id="cb6-25" title="25">        num X, num Y, num Z)</a>
-<a class="sourceLine" id="cb6-26" title="26">Xyz2Lch(num *L, num *C, num *h,</a>
-<a class="sourceLine" id="cb6-27" title="27">        num X, num Y, num Z)</a>
-<a class="sourceLine" id="cb6-28" title="28">Xyz2Cat02lms(num *L, num *M, num *S,</a>
-<a class="sourceLine" id="cb6-29" title="29">             num X, num Y, num Z)</a>
-<a class="sourceLine" id="cb6-30" title="30">             </a>
-<a class="sourceLine" id="cb6-31" title="31">Rgb2Lab(num *L, num *a, num *b,</a>
-<a class="sourceLine" id="cb6-32" title="32">        num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-33" title="33">Rgb2Luv(num *L, num *u, num *v,</a>
-<a class="sourceLine" id="cb6-34" title="34">        num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-35" title="35">Rgb2Lch(num *L, num *C, num *h,</a>
-<a class="sourceLine" id="cb6-36" title="36">        num R, num G, num B)</a>
-<a class="sourceLine" id="cb6-37" title="37">Rgb2Cat02lms(num *L, num *M, num *S,</a>
-<a class="sourceLine" id="cb6-38" title="38">             num R, num G, num B) </a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1"></a>Rgb2Yuv(num *Y, num *U, num *V,</span>
+<span id="cb6-2"><a href="#cb6-2"></a>        num R, num G, num B)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>Rgb2Ycbcr(num *Y, num *Cb, num *Cr,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>          num R, num G, num B)</span>
+<span id="cb6-5"><a href="#cb6-5"></a>Rgb2Jpegycbcr(num *Y, num *Cb, num *Cr,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>              num R, num G, num B)</span>
+<span id="cb6-7"><a href="#cb6-7"></a>Rgb2Ypbpr(num *Y, num *Pb, num *Pr,</span>
+<span id="cb6-8"><a href="#cb6-8"></a>          num R, num G, num B)</span>
+<span id="cb6-9"><a href="#cb6-9"></a>Rgb2Ydbdr(num *Y, num *Db, num *Dr,</span>
+<span id="cb6-10"><a href="#cb6-10"></a>          num R, num G, num B)</span>
+<span id="cb6-11"><a href="#cb6-11"></a>Rgb2Yiq(num *Y, num *I, num *Q,</span>
+<span id="cb6-12"><a href="#cb6-12"></a>        num R, num G, num B)</span>
+<span id="cb6-13"><a href="#cb6-13"></a>Rgb2Hsv(num *H, num *S, num *V,</span>
+<span id="cb6-14"><a href="#cb6-14"></a>        num R, num G, num B)</span>
+<span id="cb6-15"><a href="#cb6-15"></a>Rgb2Hsl(num *H, num *S, num *L,</span>
+<span id="cb6-16"><a href="#cb6-16"></a>        num R, num G, num B)</span>
+<span id="cb6-17"><a href="#cb6-17"></a>Rgb2Hsi(num *H, num *S, num *I,</span>
+<span id="cb6-18"><a href="#cb6-18"></a>        num R, num G, num B)</span>
+<span id="cb6-19"><a href="#cb6-19"></a>Rgb2Xyz(num *X, num *Y, num *Z,</span>
+<span id="cb6-20"><a href="#cb6-20"></a>        num R, num G, num B)</span>
+<span id="cb6-21"><a href="#cb6-21"></a></span>
+<span id="cb6-22"><a href="#cb6-22"></a>Xyz2Lab(num *L, num *a, num *b,</span>
+<span id="cb6-23"><a href="#cb6-23"></a>        num X, num Y, num Z)</span>
+<span id="cb6-24"><a href="#cb6-24"></a>Xyz2Luv(num *L, num *u, num *v,</span>
+<span id="cb6-25"><a href="#cb6-25"></a>        num X, num Y, num Z)</span>
+<span id="cb6-26"><a href="#cb6-26"></a>Xyz2Lch(num *L, num *C, num *h,</span>
+<span id="cb6-27"><a href="#cb6-27"></a>        num X, num Y, num Z)</span>
+<span id="cb6-28"><a href="#cb6-28"></a>Xyz2Cat02lms(num *L, num *M, num *S,</span>
+<span id="cb6-29"><a href="#cb6-29"></a>             num X, num Y, num Z)</span>
+<span id="cb6-30"><a href="#cb6-30"></a>             </span>
+<span id="cb6-31"><a href="#cb6-31"></a>Rgb2Lab(num *L, num *a, num *b,</span>
+<span id="cb6-32"><a href="#cb6-32"></a>        num R, num G, num B)</span>
+<span id="cb6-33"><a href="#cb6-33"></a>Rgb2Luv(num *L, num *u, num *v,</span>
+<span id="cb6-34"><a href="#cb6-34"></a>        num R, num G, num B)</span>
+<span id="cb6-35"><a href="#cb6-35"></a>Rgb2Lch(num *L, num *C, num *h,</span>
+<span id="cb6-36"><a href="#cb6-36"></a>        num R, num G, num B)</span>
+<span id="cb6-37"><a href="#cb6-37"></a>Rgb2Cat02lms(num *L, num *M, num *S,</span>
+<span id="cb6-38"><a href="#cb6-38"></a>             num R, num G, num B) </span></code></pre></div>
 <p>(Similarly for the inverse transformations.)</p>
 <p>It is possible to transform between two arbitrary color spaces by first transforming from the source space to sRGB and then transforming from sRGB to the desired destination space. For transformations between CIE color spaces, it is convenient to use XYZ as the intermediate space. This is the strategy used by <code>GetColorTransform</code> and <code>ApplyColorTransform</code>.</p>
 <h2 id="use-in-matlab">Use in Matlab</h2>
@@ -310,37 +311,37 @@ CIE CAT02 LMS
 <p>If <code>A</code> is an M×3 array, like a colormap, <code>B</code> will also have size M×3.</p>
 <h3 id="typical-usage">Typical Usage</h3>
 <p>How does one get color image data into Matlab? The function <code>imread</code> imports most formats as a uint8 array of size M×N×3, where the third dimension separates the R’,G’, and B’ color channels.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb7-1" title="1">A = imread(<span class="st">&#39;boats.png&#39;</span>);  <span class="co">% Import data as uint8 in the range [0,255]</span></a>
-<a class="sourceLine" id="cb7-2" title="2">A = double(A)/<span class="fl">255</span>;        <span class="co">% Cast to double in the range [0,1]</span></a>
-<a class="sourceLine" id="cb7-3" title="3"></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co">% View the image</span></a>
-<a class="sourceLine" id="cb7-5" title="5">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">1</span>);</a>
-<a class="sourceLine" id="cb7-6" title="6">image(A);</a>
-<a class="sourceLine" id="cb7-7" title="7">axis image</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1"></a><span class="va">A</span> <span class="op">=</span> <span class="va">imread</span>(<span class="ss">&#39;boats.png&#39;</span>)<span class="op">;</span>  <span class="co">% Import data as uint8 in the range [0,255]</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="va">A</span> <span class="op">=</span> <span class="va">double</span>(<span class="va">A</span>)<span class="op">/</span><span class="fl">255</span><span class="op">;</span>        <span class="co">% Cast to double in the range [0,1]</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">% View the image</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">2</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="va">image</span>(<span class="va">A</span>)<span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="va">axis</span> <span class="va">image</span></span></code></pre></div>
 <p>(For images using palette indexing, <code>imread</code> instead returns an array of color indices and a colormap, so palette-based images require other handling.) To view a color image, use image or imshow. The image may either be a uint8 array with intensities in the range [0,255] or a double array with the range [0,1].</p>
 <p>Once an sRGB array is loaded, colorspace can convert it to another color representation. To convert to Y’P<sub>b</sub>P<sub>r</sub>, for example, use</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb8-1" title="1">B = colorspace(<span class="st">&#39;YPbPr&lt;-RGB&#39;</span>, A);</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb8-1"><a href="#cb8-1"></a><span class="va">B</span> <span class="op">=</span> <span class="va">colorspace</span>(<span class="ss">&#39;YPbPr&lt;-RGB&#39;</span><span class="op">,</span> <span class="va">A</span>)<span class="op">;</span></span></code></pre></div>
 <p>Since the resulting array <code>B</code> is not in sRGB representation, it no longer makes sense to visualize it as a single color image, other than transforming it back to sRGB first. Instead, view each of the channels <code>B(:,:,1)</code>, <code>B(:,:,2)</code>, <code>B(:,:,3)</code> individually as gray-scale images:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb9-1" title="1"><span class="co">% View the individual channels</span></a>
-<a class="sourceLine" id="cb9-2" title="2">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">1</span>);</a>
-<a class="sourceLine" id="cb9-3" title="3">imagesc(B(:,:,<span class="fl">1</span>));</a>
-<a class="sourceLine" id="cb9-4" title="4">colormap(gray(<span class="fl">256</span>));</a>
-<a class="sourceLine" id="cb9-5" title="5">axis image</a>
-<a class="sourceLine" id="cb9-6" title="6">title <span class="st">&#39;Y&#39;&#39;&#39;</span></a>
-<a class="sourceLine" id="cb9-7" title="7"></a>
-<a class="sourceLine" id="cb9-8" title="8">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">3</span>);</a>
-<a class="sourceLine" id="cb9-9" title="9">imagesc(B(:,:,<span class="fl">2</span>));</a>
-<a class="sourceLine" id="cb9-10" title="10">colormap(gray(<span class="fl">256</span>));</a>
-<a class="sourceLine" id="cb9-11" title="11">axis image</a>
-<a class="sourceLine" id="cb9-12" title="12">title <span class="st">&#39;P_b&#39;</span></a>
-<a class="sourceLine" id="cb9-13" title="13"></a>
-<a class="sourceLine" id="cb9-14" title="14">subplot(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">4</span>);</a>
-<a class="sourceLine" id="cb9-15" title="15">imagesc(B(:,:,<span class="fl">3</span>));</a>
-<a class="sourceLine" id="cb9-16" title="16">colormap(gray(<span class="fl">256</span>));</a>
-<a class="sourceLine" id="cb9-17" title="17">axis image</a>
-<a class="sourceLine" id="cb9-18" title="18">title <span class="st">&#39;P_r&#39;</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">% View the individual channels</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">2</span><span class="op">,</span><span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="va">imagesc</span>(<span class="va">B</span>(<span class="op">:,:,</span><span class="fl">1</span>))<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="va">colormap</span>(<span class="va">gray</span>(<span class="fl">256</span>))<span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="va">axis</span> <span class="va">image</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="va">title</span> <span class="ss">&#39;Y&#39;&#39;&#39;</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">2</span><span class="op">,</span><span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="va">imagesc</span>(<span class="va">B</span>(<span class="op">:,:,</span><span class="fl">2</span>))<span class="op">;</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="va">colormap</span>(<span class="va">gray</span>(<span class="fl">256</span>))<span class="op">;</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="va">axis</span> <span class="va">image</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="va">title</span> <span class="ss">&#39;P_b&#39;</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="va">subplot</span>(<span class="fl">2</span><span class="op">,</span><span class="fl">2</span><span class="op">,</span><span class="fl">4</span>)<span class="op">;</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="va">imagesc</span>(<span class="va">B</span>(<span class="op">:,:,</span><span class="fl">3</span>))<span class="op">;</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="va">colormap</span>(<span class="va">gray</span>(<span class="fl">256</span>))<span class="op">;</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="va">axis</span> <span class="va">image</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a><span class="va">title</span> <span class="ss">&#39;P_r&#39;</span></span></code></pre></div>
 <p>To transform <code>B</code> back to sRGB, use colorspace again:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb10-1" title="1">ARecovered = colorspace(<span class="st">&#39;RGB&lt;-YPbPr&#39;</span>, B);</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb10-1"><a href="#cb10-1"></a><span class="va">ARecovered</span> <span class="op">=</span> <span class="va">colorspace</span>(<span class="ss">&#39;RGB&lt;-YPbPr&#39;</span><span class="op">,</span> <span class="va">B</span>)<span class="op">;</span></span></code></pre></div>
 <h2 id="discrepancies">Discrepancies</h2>
 <p>While of course effort has been made to make <code>colorspace</code> accurate and in agreement with standards, it is possible to see differences between <code>colorspace</code> and other color transformation software. Potential sources for discrepancy are</p>
 <ul>
@@ -352,16 +353,16 @@ CIE CAT02 LMS
 </ul>
 <p>Transformations with <code>colorspace</code> assume a 2-degree observer, D65 illuminant, and using the sRGB gamma correction function described in the Gamma Correction section below.</p>
 <p>Beware that <code>colorspace</code>‘s transformations generally do not constrain colors to be in-gamut. Particularly, transforming from another space to sRGB may obtain R’G’B’ values outside of the [0,1] range. In Matlab, the result should be clamped to [0,1] before displaying:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb11-1" title="1">image(min(max(B, <span class="fl">0</span>), <span class="fl">1</span>));  <span class="co">% Clamp B to [0,1] and display</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb11-1"><a href="#cb11-1"></a><span class="va">image</span>(<span class="va">min</span>(<span class="va">max</span>(<span class="va">B</span><span class="op">,</span> <span class="fl">0</span>)<span class="op">,</span> <span class="fl">1</span>))<span class="op">;</span>  <span class="co">% Clamp B to [0,1] and display</span></span></code></pre></div>
 <h2 id="challenges-in-color-representation">Challenges in Color Representation</h2>
 <p>Device-independent, quantitative description of color is a surprisingly challenging problem. For example, four shades of gray surrounded by black are perceived differently than the same four shades surrounded by white [1].</p>
 <figure>
-<img src="illumination.png" alt="Surrounding illumination affects the perceived color." /><figcaption>Surrounding illumination affects the perceived color.</figcaption>
+<img src="illumination.png" alt="" /><figcaption>Surrounding illumination affects the perceived color.</figcaption>
 </figure>
 <p>On black background, the lightest shade of gray seems to be almost white. But on white background, the same shade appears significantly darker. This discrepancy suggests that the perceived colors on a monitor depend on the illumination of the surrounding room. So for precise color description, color specifications include the intended viewing conditions.</p>
 <p>The <em>intensity</em> of a color is defined as the watts per unit area rendered by the display device. Another problem is that even under equal intensity, some colors are visually brighter than others.</p>
 <figure>
-<img src="intensity.png" alt="Intensity ≠ Visual Brightness." /><figcaption>Intensity ≠ Visual Brightness.</figcaption>
+<img src="intensity.png" alt="" /><figcaption>Intensity ≠ Visual Brightness.</figcaption>
 </figure>
 <p>To overcome this non-uniformity, many color spaces instead consider luminance, a quantitative estimate of the perceived brightness.</p>
 <p>Different color representations try to overcome these problems, with varying degrees of success. It is for this reason that there are so many standard color representations.</p>
@@ -473,21 +474,21 @@ I &amp;= \tfrac{1}{3}(R&#39;+G&#39;+B&#39;), \\
 </p>
 <h2 id="accuracy-test">Accuracy Test</h2>
 <p>To verify the invertibility of the color transformations, this test transforms sRGB data to a space, inverts, and compares with the original data.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode matlab"><code class="sourceCode matlab"><a class="sourceLine" id="cb12-1" title="1">N = <span class="fl">1e5</span>;          <span class="co">% Number of points to test</span></a>
-<a class="sourceLine" id="cb12-2" title="2">A = rand(N,<span class="fl">3</span>);    <span class="co">% Generate points uniformly in sRGB colorspace</span></a>
-<a class="sourceLine" id="cb12-3" title="3"></a>
-<a class="sourceLine" id="cb12-4" title="4">Space = {<span class="st">&#39;YPbPr&#39;</span>,<span class="st">&#39;YCbCr&#39;</span>,<span class="st">&#39;JPEG-YCbCr&#39;</span>,<span class="st">&#39;YDbDr&#39;</span>,<span class="st">&#39;YIQ&#39;</span>,<span class="st">&#39;YUV&#39;</span>,<span class="st">&#39;HSV&#39;</span>,...</a>
-<a class="sourceLine" id="cb12-5" title="5">      <span class="st">&#39;HSL&#39;</span>,<span class="st">&#39;HSI&#39;</span>,<span class="st">&#39;XYZ&#39;</span>,<span class="st">&#39;Lab&#39;</span>,<span class="st">&#39;Luv&#39;</span>,<span class="st">&#39;LCH&#39;</span>,<span class="st">&#39;CAT02LMS&#39;</span>};</a>
-<a class="sourceLine" id="cb12-6" title="6">fprintf(<span class="st">&#39;\n Transform          RMSE Error   Max Error\n\n&#39;</span>);</a>
-<a class="sourceLine" id="cb12-7" title="7"></a>
-<a class="sourceLine" id="cb12-8" title="8">for k = <span class="fl">1</span>:length(Space)</a>
-<a class="sourceLine" id="cb12-9" title="9">   B = colorspace([Space{k} <span class="st">&#39;&lt;-RGB&#39;</span>],A);  <span class="co">% Convert to Space{k}</span></a>
-<a class="sourceLine" id="cb12-10" title="10">   R = colorspace([<span class="st">&#39;RGB&lt;-&#39;</span> Space{k}],B);  <span class="co">% Convert back to sRGB</span></a>
-<a class="sourceLine" id="cb12-11" title="11">   RMSE = sqrt(mean((A(:) - R(:)).^<span class="fl">2</span>));</a>
-<a class="sourceLine" id="cb12-12" title="12">   MaxError = max(abs(A(:) - R(:)));</a>
-<a class="sourceLine" id="cb12-13" title="13">   fprintf(<span class="st">&#39; RGB&lt;-&gt;%-10s   %9.2e    %9.2e\n&#39;</span>, ...</a>
-<a class="sourceLine" id="cb12-14" title="14">      Space{k}, RMSE, MaxError);</a>
-<a class="sourceLine" id="cb12-15" title="15">end</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb12-1"><a href="#cb12-1"></a><span class="va">N</span> <span class="op">=</span> <span class="fl">1e5</span><span class="op">;</span>          <span class="co">% Number of points to test</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="va">A</span> <span class="op">=</span> <span class="va">rand</span>(<span class="va">N</span><span class="op">,</span><span class="fl">3</span>)<span class="op">;</span>    <span class="co">% Generate points uniformly in sRGB colorspace</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="va">Space</span> <span class="op">=</span> {<span class="ss">&#39;YPbPr&#39;</span><span class="op">,</span><span class="ss">&#39;YCbCr&#39;</span><span class="op">,</span><span class="ss">&#39;JPEG-YCbCr&#39;</span><span class="op">,</span><span class="ss">&#39;YDbDr&#39;</span><span class="op">,</span><span class="ss">&#39;YIQ&#39;</span><span class="op">,</span><span class="ss">&#39;YUV&#39;</span><span class="op">,</span><span class="ss">&#39;HSV&#39;</span><span class="op">,...</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>      <span class="ss">&#39;HSL&#39;</span><span class="op">,</span><span class="ss">&#39;HSI&#39;</span><span class="op">,</span><span class="ss">&#39;XYZ&#39;</span><span class="op">,</span><span class="ss">&#39;Lab&#39;</span><span class="op">,</span><span class="ss">&#39;Luv&#39;</span><span class="op">,</span><span class="ss">&#39;LCH&#39;</span><span class="op">,</span><span class="ss">&#39;CAT02LMS&#39;</span>}<span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="va">fprintf</span>(<span class="ss">&#39;\n Transform          RMSE Error   Max Error\n\n&#39;</span>)<span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">length</span>(<span class="va">Space</span>)</span>
+<span id="cb12-9"><a href="#cb12-9"></a>   <span class="va">B</span> <span class="op">=</span> <span class="va">colorspace</span>([<span class="va">Space</span>{<span class="va">k</span>} <span class="ss">&#39;&lt;-RGB&#39;</span>]<span class="op">,</span><span class="va">A</span>)<span class="op">;</span>  <span class="co">% Convert to Space{k}</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>   <span class="va">R</span> <span class="op">=</span> <span class="va">colorspace</span>([<span class="ss">&#39;RGB&lt;-&#39;</span> <span class="va">Space</span>{<span class="va">k</span>}]<span class="op">,</span><span class="va">B</span>)<span class="op">;</span>  <span class="co">% Convert back to sRGB</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>   <span class="va">RMSE</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">mean</span>((<span class="va">A</span>(<span class="op">:</span>) <span class="op">-</span> <span class="va">R</span>(<span class="op">:</span>))<span class="op">.^</span><span class="fl">2</span>))<span class="op">;</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a>   <span class="va">MaxError</span> <span class="op">=</span> <span class="va">max</span>(<span class="va">abs</span>(<span class="va">A</span>(<span class="op">:</span>) <span class="op">-</span> <span class="va">R</span>(<span class="op">:</span>)))<span class="op">;</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a>   <span class="va">fprintf</span>(<span class="ss">&#39; RGB&lt;-&gt;%-10s   %9.2e    %9.2e\n&#39;</span><span class="op">,</span> <span class="op">...</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a>      <span class="va">Space</span>{<span class="va">k</span>}<span class="op">,</span> <span class="va">RMSE</span><span class="op">,</span> <span class="va">MaxError</span>)<span class="op">;</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="kw">end</span></span></code></pre></div>
 <p>Code output:</p>
 <pre><code>Transform          RMSE Error   Max Error
 
