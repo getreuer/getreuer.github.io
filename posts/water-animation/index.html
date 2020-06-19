@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer" />
+  <title>Water Animation</title>
+  <style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet" href="../../site.css" type="text/css" />
+<link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
+<script type="text/javascript" src="../../site.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../index.html">Home</a>
+  <a href="../../papers/index.html">Papers</a>
+  <a href="../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">Water Animation</h1>
+<h2 class="author">Pascal Getreuer</h2>
+</div>
+
+<div style="margin:auto; width:600px; padding:0px">
+<canvas id="canvas" style="width:600px; height:600px"></canvas>
+</div>
+
+<p>Welcome to a hacky demo! This is a cheap 2D finite differences wave equation model, rendered using a simple screen space reflection effect, and running here thanks to Emscripten.</p>
+
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+<script type='text/javascript'>
+var Module = {};
+fetch('water.wasm')
+  .then(response =>
+    response.arrayBuffer()
+  ).then(buffer => {
+    Module.canvas = document.getElementById("canvas");
+    Module.wasmBinary = buffer;
+    var script = document.createElement('script');
+    script.src = 'water.js';
+    script.onload = function() { console.log('Emscripten loaded.'); }
+    document.body.appendChild(script);
+  });
+</script>
+</body>
+</html>
