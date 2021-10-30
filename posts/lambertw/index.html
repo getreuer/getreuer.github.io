@@ -121,17 +121,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 </div>
 <div style="float: left; width: 18em">
-<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1"></a><span class="va">x</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">51</span>)<span class="op">;</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="va">y</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">51</span>)<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>[<span class="va">x</span><span class="op">,</span><span class="va">y</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span>)<span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>(<span class="va">x</span> <span class="op">+</span> <span class="va">i</span><span class="op">*</span><span class="va">y</span>)<span class="op">;</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="va">surf</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span><span class="op">,</span><span class="va">abs</span>(<span class="va">w</span>))<span class="op">;</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="va">axis</span>([<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">0</span><span class="op">,</span><span class="fl">2.5</span>])<span class="op">;</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="va">view</span>(<span class="fl">40</span><span class="op">,</span><span class="fl">32</span>)<span class="op">;</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="va">xlabel</span>(<span class="ss">&#39;Re z&#39;</span>)<span class="op">;</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="va">ylabel</span>(<span class="ss">&#39;Im z&#39;</span>)<span class="op">;</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="va">title</span>(<span class="ss">&#39;|W_0(z)|&#39;</span>)<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="va">x</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">51</span>)<span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="va">y</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">51</span>)<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>[<span class="va">x</span><span class="op">,</span><span class="va">y</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span>)<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>(<span class="va">x</span> <span class="op">+</span> <span class="va">i</span><span class="op">*</span><span class="va">y</span>)<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="va">surf</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span><span class="op">,</span><span class="va">abs</span>(<span class="va">w</span>))<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="va">axis</span>([<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">0</span><span class="op">,</span><span class="fl">2.5</span>])<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="va">view</span>(<span class="fl">40</span><span class="op">,</span><span class="fl">32</span>)<span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="va">xlabel</span>(<span class="ss">&#39;Re z&#39;</span>)<span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="va">ylabel</span>(<span class="ss">&#39;Im z&#39;</span>)<span class="op">;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="va">title</span>(<span class="ss">&#39;|W_0(z)|&#39;</span>)<span class="op">;</span></span></code></pre></div>
 </div>
 <div style="clear: both">
  
@@ -175,46 +175,46 @@ z &amp;= \sqrt{2}.
 \end{align}\]</span></p>
 <h2 id="demos">Demos</h2>
 <p>The following command evaluates <span class="math inline">\(W_k(1)\)</span> for <span class="math inline">\(k = -4,\ldots,4\)</span>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1"></a><span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>((<span class="op">-</span><span class="fl">4</span><span class="op">:</span><span class="fl">4</span>)<span class="op">.&#39;,</span><span class="fl">1</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="va">w</span> <span class="op">=</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="op">-</span><span class="fl">3.1630</span> <span class="op">-</span><span class="fl">23.4277i</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="op">-</span><span class="fl">2.8536</span> <span class="op">-</span><span class="fl">17.1135i</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="op">-</span><span class="fl">2.4016</span> <span class="op">-</span><span class="fl">10.7763i</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="op">-</span><span class="fl">1.5339</span> <span class="op">-</span> <span class="fl">4.3752i</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>   <span class="fl">0.5671</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a>  <span class="op">-</span><span class="fl">1.5339</span> <span class="op">+</span> <span class="fl">4.3752i</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a>  <span class="op">-</span><span class="fl">2.4016</span> <span class="op">+</span><span class="fl">10.7763i</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>  <span class="op">-</span><span class="fl">2.8536</span> <span class="op">+</span><span class="fl">17.1135i</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a>  <span class="op">-</span><span class="fl">3.1630</span> <span class="op">+</span><span class="fl">23.4277i</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>((<span class="op">-</span><span class="fl">4</span><span class="op">:</span><span class="fl">4</span>)<span class="op">.&#39;,</span><span class="fl">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="va">w</span> <span class="op">=</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">3.1630</span> <span class="op">-</span><span class="fl">23.4277i</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">2.8536</span> <span class="op">-</span><span class="fl">17.1135i</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">2.4016</span> <span class="op">-</span><span class="fl">10.7763i</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">1.5339</span> <span class="op">-</span> <span class="fl">4.3752i</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>   <span class="fl">0.5671</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">1.5339</span> <span class="op">+</span> <span class="fl">4.3752i</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">2.4016</span> <span class="op">+</span><span class="fl">10.7763i</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">2.8536</span> <span class="op">+</span><span class="fl">17.1135i</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">3.1630</span> <span class="op">+</span><span class="fl">23.4277i</span></span></code></pre></div>
 <p>These values are all solutions of <span class="math inline">\(w\mathrm{e}^w = 1\)</span>. It is easy to verify numerically that they are solutions:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1"></a><span class="va">w</span><span class="op">.*</span><span class="va">exp</span>(<span class="va">w</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="va">ans</span> <span class="op">=</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>   <span class="fl">1.0000</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>   <span class="fl">1.0000</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>   <span class="fl">1.0000</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="va">w</span><span class="op">.*</span><span class="va">exp</span>(<span class="va">w</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="va">ans</span> <span class="op">=</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>   <span class="fl">1.0000</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>   <span class="fl">1.0000</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>   <span class="fl">1.0000</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span></code></pre></div>
 <p>Problem 3 in the previous section mentioned the formula for evaluating iterated exponentiation: <span class="math display">\[z^{z^{z^\cdots}} = \frac{W(-\log z)}{-\log z}.\]</span></p>
 <p>For example, set <code>z = 1.3</code>, then its iterated exponentiation is approximately <code>zlim = 1.4710</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1"></a><span class="va">zlim</span> <span class="op">=</span> <span class="op">-</span><span class="va">lambertw</span>(<span class="op">-</span><span class="va">log</span>(<span class="va">z</span>))<span class="op">/</span><span class="va">log</span>(<span class="va">z</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="va">zlim</span> <span class="op">=</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a>    <span class="fl">1.4710</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="va">zlim</span> <span class="op">=</span> <span class="op">-</span><span class="va">lambertw</span>(<span class="op">-</span><span class="va">log</span>(<span class="va">z</span>))<span class="op">/</span><span class="va">log</span>(<span class="va">z</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="va">zlim</span> <span class="op">=</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="fl">1.4710</span></span></code></pre></div>
 <p>To verify this, computing <code>z^z^z^...^z</code> through 40 iterations shows that the iterated exponentiation does indeed converge to <code>zlim</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1"></a><span class="va">zz</span>(<span class="fl">1</span>) <span class="op">=</span> <span class="va">z</span><span class="op">;</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="va">zlim</span> <span class="op">=</span> <span class="op">-</span><span class="va">lambertw</span>(<span class="op">-</span><span class="va">log</span>(<span class="va">z</span>))<span class="op">/</span><span class="va">log</span>(<span class="va">z</span>)<span class="op">;</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>   <span class="va">zz</span>(<span class="va">k</span><span class="op">+</span><span class="fl">1</span>) <span class="op">=</span> <span class="va">z</span><span class="op">^</span><span class="va">zz</span>(<span class="va">k</span>)<span class="op">;</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="kw">end</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="va">plot</span>(<span class="va">zz</span><span class="op">,</span><span class="ss">&#39;.-&#39;</span>)<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="va">zz</span>(<span class="fl">1</span>) <span class="op">=</span> <span class="va">z</span><span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="va">zlim</span> <span class="op">=</span> <span class="op">-</span><span class="va">lambertw</span>(<span class="op">-</span><span class="va">log</span>(<span class="va">z</span>))<span class="op">/</span><span class="va">log</span>(<span class="va">z</span>)<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>   <span class="va">zz</span>(<span class="va">k</span><span class="op">+</span><span class="fl">1</span>) <span class="op">=</span> <span class="va">z</span><span class="op">^</span><span class="va">zz</span>(<span class="va">k</span>)<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="kw">end</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="va">plot</span>(<span class="va">zz</span><span class="op">,</span><span class="ss">&#39;.-&#39;</span>)<span class="op">;</span></span></code></pre></div>
 <div style="float: right; width: 18em">
 <figure>
 <img src="lambertw_02.png" alt="" /><figcaption>Iterated exponentiation of z</figcaption>
@@ -242,19 +242,19 @@ z &amp;= \sqrt{2}.
 <h2 id="test">Test</h2>
 <p>Ideally, <code>lambertw(b,z)*exp(lambertw(b,z)) = z</code> for any complex <code>z</code> and any integer branch index <code>b</code>, but this is limited by machine precision. The inversion error <code>|lambertw(b,z)*exp(lambertw(b,z)) - z|</code> is small but worth minding.</p>
 <p>Experimentation finds that the error is usually on the order of |z|×10<sup>−16</sup> on the principal branch. This test computes the inversion error over the square [−10,10]×[−10,10] in the complex plane, large enough to characterize the error away from the branch points at z = 0 and −1/e.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1"></a><span class="va">N</span> <span class="op">=</span> <span class="fl">81</span><span class="op">;</span>    <span class="co">% Use NxN points to sample the complex plane</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="va">R</span> <span class="op">=</span> <span class="fl">10</span><span class="op">;</span>    <span class="co">% Sample in the square [-R,R]x[-R,R]</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="va">x</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="va">R</span><span class="op">,</span><span class="va">R</span><span class="op">,</span><span class="va">N</span>)<span class="op">;</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="va">y</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="va">R</span><span class="op">,</span><span class="va">R</span><span class="op">,</span><span class="va">N</span>)<span class="op">;</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a>[<span class="va">xx</span><span class="op">,</span><span class="va">yy</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span>)<span class="op">;</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="va">z</span> <span class="op">=</span> <span class="va">xx</span> <span class="op">+</span> <span class="fl">1i</span><span class="op">*</span><span class="va">yy</span><span class="op">;</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="kw">for</span> <span class="va">b</span> <span class="op">=</span> <span class="op">-</span><span class="fl">4</span><span class="op">:</span><span class="fl">4</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a>   <span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>(<span class="va">b</span><span class="op">,</span><span class="va">z</span>)<span class="op">;</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a>   <span class="va">InvError</span> <span class="op">=</span> <span class="va">abs</span>(<span class="va">w</span><span class="op">.*</span><span class="va">exp</span>(<span class="va">w</span>) <span class="op">-</span> <span class="va">z</span>)<span class="op">;</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>   <span class="va">fprintf</span>(<span class="ss">&#39;Largest error for b = %2d:  %.2e\n&#39;</span><span class="op">,</span><span class="va">b</span><span class="op">,</span><span class="va">max</span>(<span class="va">InvError</span>(<span class="op">:</span>)))<span class="op">;</span></span>
-<span id="cb7-13"><a href="#cb7-13"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="va">N</span> <span class="op">=</span> <span class="fl">81</span><span class="op">;</span>    <span class="co">% Use NxN points to sample the complex plane</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="va">R</span> <span class="op">=</span> <span class="fl">10</span><span class="op">;</span>    <span class="co">% Sample in the square [-R,R]x[-R,R]</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="va">x</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="va">R</span><span class="op">,</span><span class="va">R</span><span class="op">,</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="va">y</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="va">R</span><span class="op">,</span><span class="va">R</span><span class="op">,</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>[<span class="va">xx</span><span class="op">,</span><span class="va">yy</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span>)<span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="va">z</span> <span class="op">=</span> <span class="va">xx</span> <span class="op">+</span> <span class="fl">1i</span><span class="op">*</span><span class="va">yy</span><span class="op">;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">for</span> <span class="va">b</span> <span class="op">=</span> <span class="op">-</span><span class="fl">4</span><span class="op">:</span><span class="fl">4</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>   <span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>(<span class="va">b</span><span class="op">,</span><span class="va">z</span>)<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>   <span class="va">InvError</span> <span class="op">=</span> <span class="va">abs</span>(<span class="va">w</span><span class="op">.*</span><span class="va">exp</span>(<span class="va">w</span>) <span class="op">-</span> <span class="va">z</span>)<span class="op">;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>   <span class="va">fprintf</span>(<span class="ss">&#39;Largest error for b = %2d:  %.2e\n&#39;</span><span class="op">,</span><span class="va">b</span><span class="op">,</span><span class="va">max</span>(<span class="va">InvError</span>(<span class="op">:</span>)))<span class="op">;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>Largest error for b = -4:  2.51e-014
 Largest error for b = -3:  2.39e-014
 Largest error for b = -2:  1.39e-014

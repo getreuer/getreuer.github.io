@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer" />
+  <title>QMK: Custom shift keys</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
+<script type="text/javascript" src="../../../site.js" ></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">QMK: Custom shift keys</h1>
+<h2 class="author">Pascal Getreuer</h2>
+</div>
+<p><a href="../index.html">← More about keyboards</a></p>
+<h2 id="overview">Overview</h2>
+<p>A frequently asked question about QMK is how to change what a key types when it is shifted. For instance, how to make a key with “inverted” shifting such that it types <code>:</code> when pressed normally and <code>;</code> when pressed shifted. Or how to implement “programmer” layouts having keys that type symbols normally and type the digits when pressed shifted.</p>
+<figure>
+<img src="example-custom-shifts.svg" alt="" /><figcaption>Some example custom shifts.</figcaption>
+</figure>
+<p>It’s surprisingly tricky to get a custom shift key implemented just right. I’ve seen a lot of proposed solutions, and tried a few things myself. Some subtle gotchas:</p>
+<ul>
+<li><p><strong>Key repeating.</strong> When you hold a key down long enough, it normally repeats the character. E.g. you may want this repeating behavior to type a row of stars <code>****************</code> without having to tap the <code>*</code> key for each star.</p></li>
+<li><p><strong>Rolled presses.</strong> Real typing is not always clean, individual key presses, especially in fast typing. You may press down one key, then while it is held, begin pressing another key—a “roll” across the keys. A common failure mode is a rolled press involving custom shift keys causes a key to get “stuck” until it is pressed again.</p></li>
+<li><p><strong>Interoperating with QMK features.</strong> Does the custom shift key implementation support shifting when done as a one-shot mod? Or with a mod-tap? Auto Shift? Space Cadet Shift?</p></li>
+</ul>
+<h2 id="implementation">Implementation</h2>
+<p>Here is my solution. It correctly handles key repeating and rolled presses, and I’ve tested that it works predictably in combination with one-shot mods, mod-taps, and Space Cadet Shift. It does not work with Auto Shift.</p>
+<p><strong>Step 1:</strong> In your <code>keymap.c</code>, define a table of “custom_shift_key_t” structs. Each row defines one key. The <code>keycode</code> is the keycode as it appears in your layout and determines what is typed normally. The <code>shifted_keycode</code> is what you want the key to type when shifted. (See the <a href="https://docs.qmk.fm/#/keycodes">QMK keycodes documentation</a> for a reference of all QMK keycodes.)</p>
+<p>E.g. the first row in my table has a <code>.</code> (<code>KC_DOT</code>) key that types <code>?</code> (<code>KC_QUES</code>) when pressed shifted.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/custom_shift_keys.h&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="dt">const</span> custom_shift_key_t custom_shift_keys[] = {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  {KC_DOT , KC_QUES}, <span class="co">// Shift . is ?</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>  {KC_COMM, KC_EXLM}, <span class="co">// Shift , is !</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>  {KC_MINS, KC_EQL }, <span class="co">// Shift - is =</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  {KC_COLN, KC_SCLN}, <span class="co">// Shift : is ;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>};</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="dt">uint8_t</span> NUM_CUSTOM_SHIFT_KEYS =</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>    <span class="kw">sizeof</span>(custom_shift_keys) / <span class="kw">sizeof</span>(custom_shift_key_t);</span></code></pre></div>
+<p><strong>Step 2:</strong> Handle custom shift keys from your <code>process_record_user</code> function like so:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>  <span class="cf">if</span> (!process_custom_shift_keys(keycode, record)) { <span class="cf">return</span> false; }</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>  <span class="co">// Your macros ...</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>}</span></code></pre></div>
+<p><strong>Step 3:</strong> Add <code>SRC += custom_shift_keys.c</code> to your rules.mk file.</p>
+<p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/custom_shift_keys.h">custom_shift_keys.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/custom_shift_keys.c">custom_shift_keys.c</a> there. This is the meat of the implementation.</p>
+<p><strong>custom_shift_keys.h</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">// Copyright 2021 Google LLC.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">// SPDX-License-Identifier: Apache-2.0</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="pp">#pragma once</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="pp">#include QMK_KEYBOARD_H</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>  <span class="dt">uint16_t</span> keycode;</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>  <span class="dt">uint16_t</span> shifted_keycode;</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>} custom_shift_key_t;</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="kw">extern</span> <span class="dt">const</span> custom_shift_key_t custom_shift_keys[];</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="kw">extern</span> <span class="dt">uint8_t</span> NUM_CUSTOM_SHIFT_KEYS;</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="dt">bool</span> process_custom_shift_keys(<span class="dt">uint16_t</span> keycode, keyrecord_t *record);</span></code></pre></div>
+<p><strong>custom_shift_keys.c</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">// Copyright 2021 Google LLC.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co">// SPDX-License-Identifier: Apache-2.0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;custom_shift_keys.h&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">uint16_t</span> custom_shift_keycode(<span class="dt">int</span> active_key, <span class="dt">bool</span> shifted) {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>  <span class="dt">const</span> custom_shift_key_t* p = &amp;custom_shift_keys[active_key];</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>  <span class="cf">return</span> shifted ? p-&gt;shifted_keycode : p-&gt;keycode;</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>}</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="dt">bool</span> process_custom_shift_keys(<span class="dt">uint16_t</span> keycode, keyrecord_t *record) {</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">uint8_t</span> kNone = <span class="dv">255</span>;</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>  <span class="dt">static</span> <span class="dt">uint8_t</span> saved_mods = <span class="dv">0</span>;</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>  <span class="dt">static</span> <span class="dt">uint8_t</span> active_key = kNone;</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>  <span class="dt">static</span> <span class="dt">bool</span> shifted = false;</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>  <span class="co">// If a custom key is active, then this event is either releasing it or</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>  <span class="co">// manipulating another key at the same time. Either way, we release the</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>  <span class="co">// currently active key.</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>  <span class="cf">if</span> (active_key != kNone) {</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a>    unregister_code16(custom_shift_keycode(active_key, shifted));</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>    add_mods(saved_mods);  <span class="co">// Restore shift mods that were active on press.</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>    active_key = kNone;</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a>    saved_mods = <span class="dv">0</span>;</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a>    shifted = false;</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a>  }</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a>  <span class="co">// Search for a custom key with keycode equal to `keycode`.</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; NUM_CUSTOM_SHIFT_KEYS; ++i) {</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a>    <span class="cf">if</span> (keycode == custom_shift_keys[i].keycode) {</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a>      <span class="cf">if</span> (record-&gt;event.pressed) {</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a>        <span class="cf">if</span> ((get_mods() | get_oneshot_mods()) &amp; MOD_MASK_SHIFT) {</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a>          <span class="co">// The key is being pressed with shift held. We save the shift</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a>          <span class="co">// mods in `saved_mods`, then delete shift from the mod states.</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true"></a>          saved_mods = get_mods() &amp; MOD_MASK_SHIFT;</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true"></a>          del_mods(MOD_MASK_SHIFT);</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true"></a>          del_oneshot_mods(MOD_MASK_SHIFT);</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true"></a>          shifted = true;</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true"></a>        } <span class="cf">else</span> {</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true"></a>          shifted = false;</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true"></a>        }</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true"></a></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true"></a>        active_key = i;  <span class="co">// Remember which custom key is active.</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true"></a>        register_code16(custom_shift_keycode(active_key, shifted));</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true"></a>      }</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true"></a></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true"></a>    }</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true"></a>  }</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true"></a></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 id="explanation">Explanation</h2>
+<p>The <code>active_key</code> variable is the index of the custom shift key that is currently pressed or otherwise <code>kNone</code>. Only one custom key can be pressed at a time. Attempting to hold multiple custom shift keys releases all but the last one.</p>
+<p>On each press or release of any key, the following two rules are considered:</p>
+<ol type="1">
+<li><p>If <code>active_key</code> is not <code>kNone</code>, we release the currently active custom shift key (<code>unregister_code16</code>). To avoid stuck modifiers, this is always the right thing to do: either the event is releasing the active custom shift key (so we should release it), or it is a rolled press manipulating another key while the active custom shift key is still held (so again, we should release it).</p>
+<p>After releasing the key, we also restore any shift modifiers from <code>saved_mods</code> that were active at the time the custom shift key was pressed.</p></li>
+<li><p>In the for loop, we check if the current key event is pressing a custom shift key. If so, it becomes the active custom shift key and <code>active_key</code> is set to its index. We check whether a shift mod is held, remember the shift mods in <code>saved_mods</code>, and delete shift from the mod state. We then press the key (<code>register_code16</code>).</p></li>
+</ol>
+<p>So for instance with simple press and release of a custom shift key, rule 2 clears the shift mod state and registers the keycode on press, then rule 1 correspondingly unregistering and restoring the mod state on release.</p>
+<p>Or in situations with rolled presses, rule 1 avoids trouble by releasing the active key and restoring the mod state as soon as another key is involved.</p>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>

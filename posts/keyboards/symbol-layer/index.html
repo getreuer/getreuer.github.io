@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer" />
+  <title>Designing a Symbol Layer</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
+<script type="text/javascript" src="../../../site.js" ></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">Designing a Symbol Layer</h1>
+<h2 class="author">Pascal Getreuer</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#design-principles">Design principles</a>
+<ul>
+<li><a href="#automatic-optimization">Automatic optimization?</a></li>
+</ul></li>
+<li><a href="#some-existing-designs">Some existing designs</a>
+<ul>
+<li><a href="#a-reasonable-default">A reasonable default</a></li>
+<li><a href="#layer-optimized-for-elixir-code">Layer optimized for Elixir code</a></li>
+<li><a href="#beakl-15">BEAKL 15</a></li>
+</ul></li>
+<li><a href="#my-symbol-layer">My symbol layer</a></li>
+<li><a href="#learning-your-symbol-layer">Learning your symbol layer</a></li>
+<li><a href="#symbol-character-frequencies">Symbol character frequencies</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</div>
+<p><a href="../index.html">← More about keyboards</a></p>
+<p>It’s pretty common in a QMK layout to have a “symbol” layer, for all those symbols that didn’t fit on the base layer, especially with smaller boards.</p>
+<figure>
+<img src="my-layer.png" alt="" /><figcaption>A symbol layer.</figcaption>
+</figure>
+<p>A lot of effort has gone into optimizing the layout of the alpha keys—Dvorak, Colemak, MTGAP, BEAKL, RSTHD, to name a few. Yet I found relatively little written about how to design a symbol layer. To do something about that, this page discusses some design principles and observations about symbol layers.</p>
+<h2 id="design-principles">Design principles</h2>
+<p>Symbols are not like alpha characters: they occur less often, and they tend to occur in isolation or in short bigrams (for instance in C code, things like <code>#</code> and <code>!=</code>). We can learn nevertheless from work on optimizing alpha key layouts and apply some of those findings to symbol layouts:</p>
+<p>It’s a good idea to…</p>
+<ul>
+<li><p>put the most used keys on home row and rare keys toward the corners.</p></li>
+<li><p>avoid the pinkies for keys that are often double tapped (<code>==</code>, <code>++</code>, <code>//</code>, <code>::</code>, …).</p></li>
+<li><p>make common bigrams (<code>!=</code>, <code>&lt;=</code>, <code>+=</code>, <code>-&gt;</code>, …) comfortable to type. Ideally they are “inward rolls”. An inward roll is a pattern typed on one hand with successive keys moving toward the center of the keyboard (“inward”), like drumming your fingers from pinky to index finger.</p></li>
+</ul>
+<p>And a practicality:</p>
+<ul>
+<li>It’s a good idea to make your layout easy to learn. You won’t use keys that you forgot about!</li>
+</ul>
+<p>While each principle above is reasonable for an isolated key, they will easily conflict when getting into the design. Obviously, not all keys can be on the home row and not all bigrams can be inward rolls. We need to make compromises.</p>
+<h3 id="automatic-optimization">Automatic optimization?</h3>
+<p>There are keyboard layout optimizer tools (like <a href="http://mkweb.bcgsc.ca/carpalx/">Carpalx</a> and <a href="https://github.com/xsznix/keygen">xsznix/keygen</a>) that automatically search for a layout that balances many above such considerations, and these could be applied to design a symbol layer. However, automatically designed layouts are notorious for having random-looking hard-to-learn arrangements. It’s also hard with these tools to make a minor adjustment to one key without reshuffling everything else. I think it’s better for these reasons to arrange the symbol keys manually.</p>
+<h2 id="some-existing-designs">Some existing designs</h2>
+<p>Looking at keymaps in the QMK repo, it is easy to find many existing designs for symbol layers. Here are a few for inspiration:</p>
+<h3 id="a-reasonable-default">A reasonable default</h3>
+<p>This is the symbol layer in the default keymap for the ZSA Moonlander, the Dactyl boards, and probably many others:</p>
+<figure>
+<img src="reasonable-default.png" alt="" /><figcaption>A reasonable default symbol layer.</figcaption>
+</figure>
+<p>(index fingers rest on <code>)</code> and <code>4</code>)</p>
+<p>The layer is very learnable. Brackets are neatly organized on the left hand, and the leftmost two columns are simply the first six number row symbols in usual order (<code>! @ # $ % ^</code>). They managed to squeeze a numpad onto the right hand in the same layer. While it’s a well-designed layer, there is room for improvement, especially for typing common bigrams.</p>
+<h3 id="layer-optimized-for-elixir-code">Layer optimized for Elixir code</h3>
+<p>Dusty Pomerleau <a href="https://elixirforum.com/t/an-elixir-optimized-keyboard-layout/20730">posted on elixirforum</a> about a layer optimized for writing Elixir code:</p>
+<figure>
+<img src="elixir-optimized.png" alt="" /><figcaption>Elixir-optimized symbol layer.</figcaption>
+</figure>
+<p>(index fingers rest on <code>)</code> and <code>]</code>)</p>
+<p>As Dusty explains in the linked post, the following bigrams are inward rolls:</p>
+<ul>
+<li>For general programming, <code>+=</code>, <code>()</code>, <code>[]</code>, <code>{}</code></li>
+<li>Specifically for Elixir, <code>&lt;&gt;</code>, <code>&lt;-</code>, <code>-&gt;</code>, <code>|&gt;</code></li>
+</ul>
+<p>In the same vein, it’s worth checking out Jonas Hietala’s <a href="https://www.jonashietala.se/blog/2021/06/03/the-t-34-keyboard-layout/">excellent post</a> about the “T-34” layout, a 40% keyboard layout geared for Rust and Elixir coding. Jonas describes design choices behind it, including thought about symbol bigrams and efficient movement between layers.</p>
+<h3 id="beakl-15">BEAKL 15</h3>
+<p><a href="https://deskthority.net/wiki/BEAKL">BEAKL (Balanced Effortless Advanced Keyboard Layout)</a> is a sequence of optimized keyboard layouts, which include symbol layers. Here is the symbol layer for BEAKL 15:</p>
+<figure>
+<img src="beakl15.png" alt="" /><figcaption>BEAKL 15’s symbol layer.</figcaption>
+</figure>
+<p>(index fingers rest on <code>)</code> and <code>{</code>)</p>
+<p>Consistent with BEAKL’s philosophy, the layout favors the 3x3 “home block” with the index, middle, and ring fingers, while avoiding the pinky and center columns.</p>
+<h2 id="my-symbol-layer">My symbol layer</h2>
+<p>This is my symbol layer, with index fingers resting on <code>=</code> and <code>:</code>.</p>
+<figure>
+<img src="my-layer.png" alt="" /><figcaption>My symbol layer.</figcaption>
+</figure>
+<p>Note, not pictured here: my base layer has keys for <code>' , . ; - /</code> as usual and a <code>_</code> key. See my <a href="../../keymap.c">keymap.c</a> for full details.</p>
+<p>I don’t claim it’s the best for you, but that this may be a point of inspiration for optimizing your own symbol layer.</p>
+<p>The color tints show groups of related keys. I grouped these keys to try to make the layout easier to learn: comparisons <code>! &lt; &gt; =</code>, arithmetic <code>- + / *</code>, bitwise operators <code>&amp; | ~</code>, and brackets <code>[ ] ( ) { }</code>. The layout is geared for the programming languages I use: mainly C++ and some Python, shell, and LaTeX. Certainly, you should personalize your symbol layer for you.</p>
+<p>Features:</p>
+<ul>
+<li><p>The following are inward rolls:</p>
+<ul>
+<li>Comparisons <code>!=</code>, <code>&lt;=</code>, <code>&gt;=</code></li>
+<li>A good share of assignment operators <code>-=</code>, <code>+=</code>, <code>/=</code>, <code>*=</code>, <code>^=</code></li>
+<li>C comments <code>/* ... */</code> start with an inward roll and end with an outward roll.</li>
+<li>Arrow operator <code>-&gt;</code></li>
+<li>Elvis operator <code>?:</code></li>
+</ul></li>
+<li><p>Some other common bigrams are outward rolls. That’s not as good as inward rolls, but I find these still pretty comfortable:</p>
+<ul>
+<li><code>()</code>, <code>[]</code>, <code>{}</code></li>
+<li>Shell shebang <code>#!</code></li>
+<li><code>${</code> (as in <code>${foo}</code>)</li>
+<li>Fat arrow <code>=&gt;</code></li>
+</ul></li>
+<li><p>Most symbols are double tapped in some use: <code>&lt;&lt; == &amp;&amp; || **</code>. So pinky keys <code>' ! ^ % ? @</code> are deliberately things that <strong>aren’t</strong> commonly double tapped.</p></li>
+<li><p>There are two <a href="../macros/index.html">macro buttons</a>:</p>
+<ul>
+<li>a <code>../</code> button (left hand, bottom row) for up directory on the shell.</li>
+<li>a <code>::</code> button (right hand, top row) for the C++ scope operator.</li>
+</ul></li>
+</ul>
+<p>This layout isn’t perfect. Some bugs:</p>
+<ul>
+<li>It’s not great for HTML. Closing tags <code>&lt;/</code> is a clumsy same-finger bigram, and HTML comments <code>&lt;!-- ... --&gt;</code> are awkward to type.</li>
+<li><code>&lt;-</code> and <code>\"</code> are same-finger bigrams.</li>
+</ul>
+<h2 id="learning-your-symbol-layer">Learning your symbol layer</h2>
+<p>As I mentioned, you won’t use keys that you forgot about. It’s important to learn your keyboard layers.</p>
+<figure>
+<img src="reminder-note.jpg" alt="" /><figcaption>A reminder note with my symbol layer.</figcaption>
+</figure>
+<p>Whenever I change a keyboard layer, something that works for me is to write the layer on a slip of paper and put it below my monitor. The act of writing out the layer helps reinforce it in my mind, and the paper is there to refer to when I need a reminder. After a few weeks, I have it memorized and can throw out the paper.</p>
+<p>Another way to learn is with typing practice. Try out your symbol layer on <a href="https://www.typingclub.com/sportal/program-3/457.play">typingclub.com’s</a> symbol practice or <a href="https://type-fu.com/">type-fu.com’s</a> code lesson.</p>
+<h2 id="symbol-character-frequencies">Symbol character frequencies</h2>
+<p>This section is on measuring character frequencies, which helps optimize the layout for the programming languages you use. Some symbols occur much more often than others. It’s helpful to know the distribution so that we can prioritize the layout for more frequent symbols.</p>
+<p>I counted how often each symbol occurs in my own files. I found that this depends greatly on what kind of file it is. Below are character frequencies counted on six different kinds of text, each column counted on at least 40K of data. Units are percentages. “Prose” is a mix email and other plain text files. “Mixed” is a mixed corpus.</p>
+<pre><code>     Prose       C/C++       Python      Shell       LaTeX       Mixed
+#1   .  1.249    _  1.369    _  2.213    &quot;  2.792    \  2.254    ,  1.416
+#2   ,  0.952    *  1.238    .  2.183    -  2.430    {  1.327    .  1.067
+#3   1  0.743    ,  1.200    ,  1.428    $  1.464    }  1.326    &quot;  0.529
+#4   0  0.713    )  1.151    )  1.248    0  1.386    .  0.932    _  0.497
+#5   -  0.633    (  1.151    (  1.246    =  1.386    $  0.800    )  0.396
+#6   2  0.514    .  1.037    &#39;  0.844    1  1.333    ,  0.754    (  0.396
+#7   )  0.487    /  0.991    &quot;  0.784    _  1.250    _  0.454    -  0.362
+#8   (  0.486    0  0.938    =  0.780    /  1.219    )  0.383    *  0.343
+#9   6  0.396    ;  0.909    0  0.692    ]  1.095    (  0.372    &#39;  0.335
+#10  4  0.394    -  0.689    :  0.663    [  1.095    1  0.370    ;  0.317
+#11  /  0.360    1  0.643    1  0.422    .  0.937    0  0.361    0  0.315
+#12  8  0.306    =  0.589    2  0.373    #  0.898    2  0.344    /  0.290
+#13  5  0.298    2  0.554    #  0.336    2  0.879    -  0.285    1  0.223
+#14  3  0.281    3  0.361    [  0.332    \  0.823    :  0.232    =  0.210
+#15  +  0.274    :  0.336    ]  0.329    ;  0.748    %  0.212    2  0.191
+#16  [  0.246    4  0.321    -  0.303    :  0.658    ^  0.194    :  0.162
+#17  ]  0.246    8  0.311    /  0.184    )  0.653    ~  0.176    \  0.150
+#18  9  0.231    {  0.291    3  0.171    (  0.493    =  0.152    {  0.136
+#19  7  0.219    }  0.291    *  0.162    ,  0.476    /  0.141    }  0.136
+#20  :  0.210    5  0.288    5  0.141    3  0.473    [  0.131    3  0.115
+#21  =  0.191    9  0.287    4  0.136    6  0.466    ]  0.128    4  0.101
+#22  _  0.168    6  0.286    &gt;  0.110    4  0.422    5  0.128    [  0.101
+#23  |  0.137    +  0.282    6  0.108    &#39;  0.422    3  0.113    ]  0.100
+#24  &#39;  0.098    &gt;  0.272    `  0.081    5  0.362    &amp;  0.110    5  0.093
+#25  &quot;  0.070    &lt;  0.264    8  0.076    9  0.279    9  0.095    8  0.093
+#26  *  0.064    [  0.262    +  0.076    8  0.260    7  0.094    6  0.090
+#27  &lt;  0.031    ]  0.262    7  0.072    7  0.250    4  0.088    !  0.089
+#28  ?  0.020    &quot;  0.251    \  0.057    |  0.248    6  0.087    9  0.087
+#29  @  0.018    7  0.247    &lt;  0.057    %  0.204    +  0.075    +  0.083
+#30  ~  0.017    \  0.186    {  0.057    }  0.187    8  0.071    &gt;  0.079</code></pre>
+<p><strong>Caveat:</strong> What we actually care about are keys <em>typed</em>. But considering editor hotkeys, that’s not necessarily the same as characters <em>written</em>, which is what the above counts. For instance in Vim, many symbol keys are hotkeys in normal mode, like <code>/</code> for search.</p>
+<p>Some observations from these stats:</p>
+<ul>
+<li><p><code>.</code> and <code>,</code> are extremely frequent. You probably want them as unshifted keys on the base layer. In code, <code>_</code> is also near the top, so I put a <code>_</code> key on my base layer.</p></li>
+<li><p>Digits <code>0 1 2</code> are more frequent than the other digits, an observation known as <a href="https://en.wikipedia.org/wiki/Benford%27s_law">Benford’s law</a>. They are also more frequent than most other symbols. But I wouldn’t put <code>0 1 2</code> on a different layer than <code>3 4 5 6 7 8 9</code>—typing numbers would then require too much layer switching. My conclusion is digits better go on the base layer, even for coding, contrary to “programmer” layout variants.</p></li>
+<li><p>For each programming language, the commenting characters in that language are frequent: <code>/* */</code> in C, <code>#</code> in Python and shell, <code>%</code> in LaTeX.</p></li>
+<li><p><code>&lt;</code> and <code>&gt;</code> are relatively uncommon in all contexts, ranking #24 and later, yet it is standard to have them on the base layer by shifting the <code>,</code> and <code>.</code> keys. A good idea is to replace shift + <code>,</code> with <code>!</code> and shift + <code>.</code> with <code>?</code>. See my <a href="../custom-shift-keys/index.html">custom shift keys</a> post for a method of doing that.</p></li>
+</ul>
+<p>For more stats, check out Xah Lee’s <a href="http://xahlee.info/comp/computer_language_char_distribution.html">Computer Languages Character Frequency page</a>, showing character distributions for over a dozen languages.</p>
+<p>You can count character frequencies in your own files with this Python script: <a href="https://github.com/getreuer/qmk-keymap/blob/main/tools/count_chars.py">count_chars.py</a>. The script reads the specified files and counts how often symbol characters occur. Use it like</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">python3</span> count_chars.py input.txt</span></code></pre></div>
+<p>Or to compute counts across multiple files, do</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">python3</span> count_chars.py file1.cpp file2.py file3.sh</span></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>We can apply principles from alpha key layout optimization to designing good symbol layers. The frequency of different symbol characters and bigrams depends a lot on what kind of text is being typed. So it makes sense to personalize your symbol layer to your needs. I hope this post gave some useful ideas on how to do that.</p>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
