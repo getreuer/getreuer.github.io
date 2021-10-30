@@ -123,7 +123,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>Step 3:</strong> Add <code>SRC += custom_shift_keys.c</code> to your rules.mk file.</p>
-<p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/custom_shift_keys.h">custom_shift_keys.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/custom_shift_keys.c">custom_shift_keys.c</a> there. This is the meat of the implementation.</p>
+<p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/custom_shift_keys.h">custom_shift_keys.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/custom_shift_keys.c">custom_shift_keys.c</a> there. This is the meat of the implementation.</p>
 <p><strong>custom_shift_keys.h</strong></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">// Copyright 2021 Google LLC.</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">// SPDX-License-Identifier: Apache-2.0</span></span>

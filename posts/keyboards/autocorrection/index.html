@@ -329,8 +329,8 @@ static const uint8_t autocorrection_data[1104] = {172, 43, 0, 6, 71, 0, 7,
 </textarea>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="avoiding-false-triggers">Avoiding false triggers</h3>
-<p>By default, typos are searched <em>within</em> words, to find typos within longer identifiers like <tt>max<span class="typo">FitlerOuput</span></tt>. While this is useful, a consequence is that autocorrection will falsely trigger when a typo happens to be a substring of a correctly-spelled word. For instance, if we had <code>thier -&gt; their</code> as an entry, it would falsely trigger on (correct, though uncommon) words like “wealthier” and “filthier”.</p>
-<p>The solution is to set a word break <code>:</code> before and/or after the typo to constrain matching. <code>:</code> matches space, period, comma, underscore, digits, an most other non-alpha characters.</p>
+<p>By default, typos are searched <em>within</em> words, to find typos within longer identifiers like <tt>max<span class="typo">FitlerOuput</span></tt>. While this is useful, a consequence is that autocorrection will falsely trigger when a typo happens to be a substring of a correctly-spelled word. For instance, if we had <code>thier -&gt; their</code> as an entry, it would falsely trigger on (correct, though relatively uncommon) words like “wealthier” and “filthier”.</p>
+<p>The solution is to set a word break <code>:</code> before and/or after the typo to constrain matching. <code>:</code> matches space, period, comma, underscore, digits, and most other non-alpha characters.</p>
 <table>
 <tr>
 <th>
@@ -423,7 +423,7 @@ no
 <p>This section details how the trie is serialized to byte data in <code>autocorrection_data</code>. You don’t need to care about this to use this autocorrection implementation. But I document it for the record in case anyone is interested in modifying the implementation, or just curious how it works.</p>
 <p>What I did here is fairly arbitrary, but it is simple to decode and gets the job done.</p>
 <h3 id="encoding">Encoding</h3>
-<p>All autocorrection data is stored in a single flat array <code>autocorrection_data</code>. Each trie node is associated with a 16-bit byte offset into this array, where data for that node is encoded, beginning with root at offset 0. There are three kinds of nodes:</p>
+<p>All autocorrection data is stored in a single flat array <code>autocorrection_data</code>. Each trie node is associated with a byte offset into this array, where data for that node is encoded, beginning with root at offset 0. There are three kinds of nodes:</p>
 <ul>
 <li>branching node: a trie node with multiple children.</li>
 <li>chain node: a trie node with a single child.</li>

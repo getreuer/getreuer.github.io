@@ -184,7 +184,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-60"><a href="#cb3-60" aria-hidden="true"></a>}</span></code></pre></div>
 <h2 id="explanation">Explanation</h2>
 <p>The code checks the mod bits on each key event, enabling Caps Word when both left and right shifts are active.</p>
-<p>While enabled, Caps Word automatically presses and releases left shift (<code>KC_LSFT</code>) as needed so that letters are shifted and other keys are not. The word continues while typing <code>a</code>–<code>z</code> <code>0</code>–<code>9</code> <code>-</code> <code>_</code> and backspace. Any other key is considered “word breaking” and disables Caps Word. You can edit the switch statement at the end of the function to adjust which keys count as word breaking.</p>
+<p>While enabled, Caps Word automatically presses and releases left shift (<code>KC_LSFT</code>) as needed so that letters are shifted and other keys are not. The word continues while typing <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace. Any other key is considered “word breaking” and disables Caps Word. You can edit the switch statement at the end of the function to adjust which keys count as word breaking.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
