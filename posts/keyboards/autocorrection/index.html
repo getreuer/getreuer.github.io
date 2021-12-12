@@ -123,7 +123,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Features:</strong></p>
 <ul>
 <li><p>It runs on your keyboard, so it is always active no matter what software.</p></li>
-<li><p>Low resource cost: for an autocorrection dictionary of 70 entries, firmware size cost is 1578 bytes and CPU cost per key press is about 18 us.</p></li>
+<li><p>Low resource cost: for an autocorrection dictionary of 70 entries, firmware size cost is 1620 bytes and CPU cost per key press is about 18 us.</p></li>
 <li><p>It is case insensitive. It corrects <tt><span class="typo">Fitler</span></tt> to <code>Filter</code> and <tt><span class="typo">FITLER</span></tt> to <code>FILTER</code>.</p></li>
 <li><p>It works within words. It corrects <tt><span class="typo">fitler</span>ed</tt>, <tt><span class="typo">fitler</span>ing</tt>, and useful for programming, within longer identifiers like <tt>DesignButterworth<span class="typo">Fitler</span></tt>.</p></li>
 </ul>
@@ -229,7 +229,7 @@ widht         -> width
 <h3 id="firmware-size-and-cpu-costs">Firmware size and CPU costs</h3>
 <p>I am anxiously aware that a keyboard microcontroller has limited resources. So I was sure to measure how much memory and CPU time autocorrection consumes during development. These measurements are for the example autocorrection dictionary as used above, which has 70 entries:</p>
 <ul>
-<li><p><strong>Firmware size:</strong> Autocorrection increases my firmware size by a total of <strong>1578 bytes</strong>. Breaking that down, 1104 bytes are for the <code>autocorrection_data</code> array and 474 bytes for the autocorrection code.</p></li>
+<li><p><strong>Firmware size:</strong> Autocorrection increases my firmware size by a total of <strong>1620 bytes</strong>. Breaking that down, 1104 bytes are for the <code>autocorrection_data</code> array and 516 bytes for the autocorrection code.</p></li>
 <li><p><strong>CPU time:</strong> On my Elite-C microcontrollers, the CPU time for <code>process_autocorrection</code> to process an alpha key press is around <strong>18 us</strong>.</p></li>
 </ul>
 <p>The costs are not free but reasonable. For reference, the firmware size cost for mouse keys is 2124 bytes and the CPU time to process a layer switch is about 70 us, so autocorrection is cheaper than those things. Of course, the cost scales with the size of the autocorrection dictionary, so keep that in mind if you add a lot more entries.</p>
@@ -250,7 +250,7 @@ fitler        -&gt; filter
 lenght        -&gt; length
 ouput         -&gt; output
 widht         -&gt; width</code></pre>
-<p>For a longer example, see the <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict.txt">autocorrection_dict.txt</a> included in the repo sources.</p>
+<p>For a practical 70-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict.txt">autocorrection_dict.txt</a>. And for a yet larger 400-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict_extra.txt">autocorrection_dict_extra.txt</a>.</p>
 <p>The syntax is <code>typo -&gt; correction</code>. Typos and corrections are case insensitive, and any whitespace before or after the typo and correction is ignored. The typo must be only the letters <code>a</code>–<code>z</code>, or the special character <code>:</code> representing a word break. The correction may have any characters.</p></li>
 <li><p>Use the <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/make_autocorrection_data.py">make_autocorrection_data.py</a> Python script to process the dictionary</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>$ <span class="ex">python3</span> make_autocorrection_data.py</span>
@@ -266,71 +266,74 @@ widht         -&gt; width</code></pre>
 #define AUTOCORRECTION_MIN_LENGTH 5  // "cheif"
 #define AUTOCORRECTION_MAX_LENGTH 10  // "accomodate"
 
-static const uint8_t autocorrection_data[1104] = {172, 43, 0, 6, 71, 0, 7,
+static const uint8_t autocorrection_data[1104] = {108, 43, 0, 6, 71, 0, 7,
   81, 0, 8, 199, 0, 9, 240, 1, 10, 250, 1, 11, 26, 2, 17, 53, 2, 18, 190,
-  2, 19, 202, 2, 21, 212, 2, 22, 20, 3, 23, 67, 3, 28, 16, 4, 0, 136, 50,
-  0, 22, 60, 0, 0, 11, 23, 44, 8, 11, 23, 44, 0, 4, 0, 8, 22, 18, 18, 15,
-  0, 4, 115, 101, 115, 0, 11, 23, 12, 26, 22, 0, 1, 99, 104, 0, 132, 94, 0,
-  8, 106, 0, 15, 174, 0, 21, 187, 0, 0, 12, 15, 25, 17, 12, 0, 3, 97, 108,
-  105, 100, 0, 138, 119, 0, 12, 129, 0, 21, 140, 0, 24, 165, 0, 0, 17, 12,
-  22, 0, 3, 103, 110, 101, 100, 0, 25, 21, 8, 7, 0, 3, 105, 118, 101, 100,
-  0, 136, 147, 0, 24, 156, 0, 0, 9, 8, 21, 0, 1, 114, 101, 100, 0, 6, 6,
-  18, 0, 1, 114, 101, 100, 0, 15, 6, 17, 12, 0, 1, 100, 101, 0, 18, 22, 8,
-  21, 11, 23, 0, 2, 104, 111, 108, 100, 0, 4, 26, 18, 9, 0, 3, 114, 119,
-  97, 114, 100, 0, 132, 233, 0, 6, 246, 0, 7, 4, 1, 8, 16, 1, 10, 52, 1,
-  15, 81, 1, 21, 90, 1, 22, 117, 1, 23, 144, 1, 24, 215, 1, 25, 228, 1, 0,
-  6, 19, 22, 8, 16, 4, 17, 0, 2, 97, 99, 101, 0, 19, 4, 22, 8, 16, 4, 17,
-  0, 3, 112, 97, 99, 101, 0, 12, 21, 8, 25, 18, 0, 2, 114, 105, 100, 101,
-  0, 23, 0, 132, 25, 1, 17, 36, 1, 0, 21, 4, 24, 10, 0, 2, 110, 116, 101,
-  101, 0, 4, 21, 24, 4, 10, 0, 7, 117, 97, 114, 97, 110, 116, 101, 101, 0,
-  132, 59, 1, 7, 69, 1, 0, 24, 10, 44, 0, 3, 97, 117, 103, 101, 0, 8, 15,
-  12, 25, 12, 21, 19, 0, 2, 103, 101, 0, 22, 4, 9, 0, 2, 108, 115, 101, 0,
-  140, 97, 1, 24, 109, 1, 0, 24, 20, 4, 0, 4, 99, 113, 117, 105, 114, 101,
-  0, 23, 44, 0, 2, 114, 117, 101, 0, 4, 0, 143, 126, 1, 24, 134, 1, 0, 9,
-  0, 3, 97, 108, 115, 101, 0, 6, 8, 5, 0, 3, 97, 117, 115, 101, 0, 4, 0,
-  135, 156, 1, 19, 193, 1, 21, 203, 1, 0, 18, 16, 0, 144, 166, 1, 18, 181,
-  1, 0, 18, 6, 4, 0, 7, 99, 111, 109, 109, 111, 100, 97, 116, 101, 0, 6, 6,
-  4, 0, 4, 109, 111, 100, 97, 116, 101, 0, 7, 24, 0, 4, 112, 100, 97, 116,
-  101, 0, 8, 19, 8, 22, 0, 4, 97, 114, 97, 116, 101, 0, 10, 8, 15, 15, 18,
-  6, 0, 2, 97, 103, 117, 101, 0, 8, 12, 6, 8, 21, 0, 3, 101, 105, 118, 101,
-  0, 12, 8, 11, 6, 0, 2, 105, 101, 102, 0, 17, 0, 140, 3, 2, 21, 16, 2, 0,
-  15, 8, 12, 6, 0, 5, 101, 105, 108, 105, 110, 103, 0, 12, 23, 22, 0, 3,
-  114, 105, 110, 103, 0, 134, 33, 2, 23, 44, 2, 0, 12, 23, 26, 22, 0, 3,
-  105, 116, 99, 104, 0, 10, 12, 8, 11, 0, 1, 104, 116, 0, 136, 69, 2, 10,
-  80, 2, 18, 89, 2, 21, 156, 2, 24, 167, 2, 0, 22, 18, 18, 11, 6, 0, 3,
-  115, 101, 110, 0, 12, 21, 23, 22, 0, 1, 110, 103, 0, 12, 0, 150, 98, 2,
-  23, 124, 2, 0, 132, 105, 2, 22, 114, 2, 0, 12, 15, 0, 3, 105, 115, 111,
-  110, 0, 4, 6, 6, 18, 0, 3, 105, 111, 110, 0, 140, 131, 2, 22, 146, 2, 0,
-  23, 12, 19, 8, 21, 0, 6, 101, 116, 105, 116, 105, 111, 110, 0, 18, 19, 0,
-  3, 105, 116, 105, 111, 110, 0, 23, 24, 8, 21, 0, 3, 116, 117, 114, 110,
-  0, 149, 174, 2, 23, 183, 2, 0, 23, 8, 21, 0, 2, 117, 114, 110, 0, 8, 21,
-  0, 0, 114, 110, 0, 7, 8, 24, 22, 19, 0, 3, 101, 117, 100, 111, 0, 24, 18,
-  18, 15, 0, 1, 107, 117, 112, 0, 136, 219, 2, 18, 3, 3, 0, 140, 229, 2,
-  15, 238, 2, 17, 248, 2, 0, 11, 23, 44, 0, 2, 101, 105, 114, 0, 23, 12, 9,
-  0, 3, 108, 116, 101, 114, 0, 23, 22, 12, 15, 0, 2, 101, 110, 101, 114, 0,
-  23, 4, 21, 8, 23, 17, 12, 0, 7, 116, 101, 114, 97, 116, 111, 114, 0, 136,
-  30, 3, 17, 38, 3, 24, 51, 3, 0, 15, 4, 9, 0, 1, 115, 101, 0, 4, 12, 23,
-  17, 18, 6, 0, 3, 97, 105, 110, 115, 0, 22, 17, 8, 6, 17, 18, 6, 0, 5,
-  115, 101, 110, 115, 117, 115, 0, 138, 86, 3, 11, 96, 3, 15, 118, 3, 17,
-  129, 3, 22, 218, 3, 24, 232, 3, 0, 11, 24, 4, 6, 0, 2, 103, 104, 116, 0,
-  135, 103, 3, 10, 110, 3, 0, 12, 26, 0, 1, 116, 104, 0, 17, 8, 15, 0, 1,
-  116, 104, 0, 22, 24, 8, 21, 0, 3, 115, 117, 108, 116, 0, 132, 139, 3, 8,
-  150, 3, 22, 210, 3, 0, 21, 4, 19, 19, 4, 0, 2, 101, 110, 116, 0, 149,
-  157, 3, 25, 200, 3, 0, 132, 164, 3, 21, 175, 3, 0, 19, 4, 0, 4, 112, 97,
-  114, 101, 110, 116, 0, 4, 19, 0, 132, 185, 131, 19, 193, 3, 0, 5, 112,
-  97, 114, 101, 110, 116, 0, 4, 0, 3, 101, 110, 116, 0, 8, 15, 8, 21, 0, 2,
-  97, 110, 116, 0, 18, 6, 0, 2, 110, 115, 116, 0, 12, 9, 8, 17, 4, 16, 0,
-  4, 105, 102, 101, 115, 116, 0, 147, 239, 3, 23, 6, 4, 0, 151, 246, 3, 24,
-  254, 3, 0, 17, 12, 0, 3, 112, 117, 116, 0, 18, 0, 2, 116, 112, 117, 116,
-  0, 19, 24, 18, 0, 3, 116, 112, 117, 116, 0, 134, 29, 4, 8, 41, 4, 11, 51,
-  4, 21, 69, 4, 0, 8, 24, 20, 8, 21, 9, 0, 1, 110, 99, 121, 0, 23, 9, 4,
-  22, 0, 2, 101, 116, 121, 0, 6, 21, 4, 21, 12, 8, 11, 0, 7, 105, 101, 114,
-  97, 114, 99, 104, 121, 0, 4, 5, 12, 15, 0, 2, 114, 97, 114, 121, 0};
+  2, 19, 202, 2, 21, 212, 2, 22, 20, 3, 23, 67, 3, 28, 16, 4, 0, 72, 50, 0,
+  22, 60, 0, 0, 11, 23, 44, 8, 11, 23, 44, 0, 132, 0, 8, 22, 18, 18, 15, 0,
+  132, 115, 101, 115, 0, 11, 23, 12, 26, 22, 0, 129, 99, 104, 0, 68, 94, 0,
+  8, 106, 0, 15, 174, 0, 21, 187, 0, 0, 12, 15, 25, 17, 12, 0, 131, 97,
+  108, 105, 100, 0, 74, 119, 0, 12, 129, 0, 21, 140, 0, 24, 165, 0, 0, 17,
+  12, 22, 0, 131, 103, 110, 101, 100, 0, 25, 21, 8, 7, 0, 131, 105, 118,
+  101, 100, 0, 72, 147, 0, 24, 156, 0, 0, 9, 8, 21, 0, 129, 114, 101, 100,
+  0, 6, 6, 18, 0, 129, 114, 101, 100, 0, 15, 6, 17, 12, 0, 129, 100, 101,
+  0, 18, 22, 8, 21, 11, 23, 0, 130, 104, 111, 108, 100, 0, 4, 26, 18, 9, 0,
+  131, 114, 119, 97, 114, 100, 0, 68, 233, 0, 6, 246, 0, 7, 4, 1, 8, 16, 1,
+  10, 52, 1, 15, 81, 1, 21, 90, 1, 22, 117, 1, 23, 144, 1, 24, 215, 1, 25,
+  228, 1, 0, 6, 19, 22, 8, 16, 4, 17, 0, 130, 97, 99, 101, 0, 19, 4, 22, 8,
+  16, 4, 17, 0, 131, 112, 97, 99, 101, 0, 12, 21, 8, 25, 18, 0, 130, 114,
+  105, 100, 101, 0, 23, 0, 68, 25, 1, 17, 36, 1, 0, 21, 4, 24, 10, 0, 130,
+  110, 116, 101, 101, 0, 4, 21, 24, 4, 10, 0, 135, 117, 97, 114, 97, 110,
+  116, 101, 101, 0, 68, 59, 1, 7, 69, 1, 0, 24, 10, 44, 0, 131, 97, 117,
+  103, 101, 0, 8, 15, 12, 25, 12, 21, 19, 0, 130, 103, 101, 0, 22, 4, 9, 0,
+  130, 108, 115, 101, 0, 76, 97, 1, 24, 109, 1, 0, 24, 20, 4, 0, 132, 99,
+  113, 117, 105, 114, 101, 0, 23, 44, 0, 130, 114, 117, 101, 0, 4, 0, 79,
+  126, 1, 24, 134, 1, 0, 9, 0, 131, 97, 108, 115, 101, 0, 6, 8, 5, 0, 131,
+  97, 117, 115, 101, 0, 4, 0, 71, 156, 1, 19, 193, 1, 21, 203, 1, 0, 18,
+  16, 0, 80, 166, 1, 18, 181, 1, 0, 18, 6, 4, 0, 135, 99, 111, 109, 109,
+  111, 100, 97, 116, 101, 0, 6, 6, 4, 0, 132, 109, 111, 100, 97, 116, 101,
+  0, 7, 24, 0, 132, 112, 100, 97, 116, 101, 0, 8, 19, 8, 22, 0, 132, 97,
+  114, 97, 116, 101, 0, 10, 8, 15, 15, 18, 6, 0, 130, 97, 103, 117, 101, 0,
+  8, 12, 6, 8, 21, 0, 131, 101, 105, 118, 101, 0, 12, 8, 11, 6, 0, 130,
+  105, 101, 102, 0, 17, 0, 76, 3, 2, 21, 16, 2, 0, 15, 8, 12, 6, 0, 133,
+  101, 105, 108, 105, 110, 103, 0, 12, 23, 22, 0, 131, 114, 105, 110, 103,
+  0, 70, 33, 2, 23, 44, 2, 0, 12, 23, 26, 22, 0, 131, 105, 116, 99, 104, 0,
+  10, 12, 8, 11, 0, 129, 104, 116, 0, 72, 69, 2, 10, 80, 2, 18, 89, 2, 21,
+  156, 2, 24, 167, 2, 0, 22, 18, 18, 11, 6, 0, 131, 115, 101, 110, 0, 12,
+  21, 23, 22, 0, 129, 110, 103, 0, 12, 0, 86, 98, 2, 23, 124, 2, 0, 68,
+  105, 2, 22, 114, 2, 0, 12, 15, 0, 131, 105, 115, 111, 110, 0, 4, 6, 6,
+  18, 0, 131, 105, 111, 110, 0, 76, 131, 2, 22, 146, 2, 0, 23, 12, 19, 8,
+  21, 0, 134, 101, 116, 105, 116, 105, 111, 110, 0, 18, 19, 0, 131, 105,
+  116, 105, 111, 110, 0, 23, 24, 8, 21, 0, 131, 116, 117, 114, 110, 0, 85,
+  174, 2, 23, 183, 2, 0, 23, 8, 21, 0, 130, 117, 114, 110, 0, 8, 21, 0,
+  128, 114, 110, 0, 7, 8, 24, 22, 19, 0, 131, 101, 117, 100, 111, 0, 24,
+  18, 18, 15, 0, 129, 107, 117, 112, 0, 72, 219, 2, 18, 3, 3, 0, 76, 229,
+  2, 15, 238, 2, 17, 248, 2, 0, 11, 23, 44, 0, 130, 101, 105, 114, 0, 23,
+  12, 9, 0, 131, 108, 116, 101, 114, 0, 23, 22, 12, 15, 0, 130, 101, 110,
+  101, 114, 0, 23, 4, 21, 8, 23, 17, 12, 0, 135, 116, 101, 114, 97, 116,
+  111, 114, 0, 72, 30, 3, 17, 38, 3, 24, 51, 3, 0, 15, 4, 9, 0, 129, 115,
+  101, 0, 4, 12, 23, 17, 18, 6, 0, 131, 97, 105, 110, 115, 0, 22, 17, 8, 6,
+  17, 18, 6, 0, 133, 115, 101, 110, 115, 117, 115, 0, 74, 86, 3, 11, 96, 3,
+  15, 118, 3, 17, 129, 3, 22, 218, 3, 24, 232, 3, 0, 11, 24, 4, 6, 0, 130,
+  103, 104, 116, 0, 71, 103, 3, 10, 110, 3, 0, 12, 26, 0, 129, 116, 104, 0,
+  17, 8, 15, 0, 129, 116, 104, 0, 22, 24, 8, 21, 0, 131, 115, 117, 108,
+  116, 0, 68, 139, 3, 8, 150, 3, 22, 210, 3, 0, 21, 4, 19, 19, 4, 0, 130,
+  101, 110, 116, 0, 85, 157, 3, 25, 200, 3, 0, 68, 164, 3, 21, 175, 3, 0,
+  19, 4, 0, 132, 112, 97, 114, 101, 110, 116, 0, 4, 19, 0, 68, 185, 3, 19,
+  193, 3, 0, 133, 112, 97, 114, 101, 110, 116, 0, 4, 0, 131, 101, 110, 116,
+  0, 8, 15, 8, 21, 0, 130, 97, 110, 116, 0, 18, 6, 0, 130, 110, 115, 116,
+  0, 12, 9, 8, 17, 4, 16, 0, 132, 105, 102, 101, 115, 116, 0, 83, 239, 3,
+  23, 6, 4, 0, 87, 246, 3, 24, 254, 3, 0, 17, 12, 0, 131, 112, 117, 116, 0,
+  18, 0, 130, 116, 112, 117, 116, 0, 19, 24, 18, 0, 131, 116, 112, 117,
+  116, 0, 70, 29, 4, 8, 41, 4, 11, 51, 4, 21, 69, 4, 0, 8, 24, 20, 8, 21,
+  9, 0, 129, 110, 99, 121, 0, 23, 9, 4, 22, 0, 130, 101, 116, 121, 0, 6,
+  21, 4, 21, 12, 8, 11, 0, 135, 105, 101, 114, 97, 114, 99, 104, 121, 0, 4,
+  5, 12, 15, 0, 130, 114, 97, 114, 121, 0};
 </textarea>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="avoiding-false-triggers">Avoiding false triggers</h3>
 <p>By default, typos are searched <em>within</em> words, to find typos within longer identifiers like <tt>max<span class="typo">FitlerOuput</span></tt>. While this is useful, a consequence is that autocorrection will falsely trigger when a typo happens to be a substring of a correctly-spelled word. For instance, if we had <code>thier -&gt; their</code> as an entry, it would falsely trigger on (correct, though relatively uncommon) words like “wealthier” and “filthier”.</p>
 <p>The solution is to set a word break <code>:</code> before and/or after the typo to constrain matching. <code>:</code> matches space, period, comma, underscore, digits, and most other non-alpha characters.</p>
+<div class="eqscroll">
 <table>
 <tr>
 <th>
@@ -351,7 +354,7 @@ Text
 </tr>
 <tr>
 <td>
-<tt>see <span class="typo">thier</span> typo</tt>
+<tt>see <span class="typo">thier</span> typo</tt>
 </td>
 <td>
 matches
@@ -368,7 +371,7 @@ matches
 </tr>
 <tr>
 <td>
-<tt>it’s <span class="typo">thier</span>s</tt>
+<tt>it’s <span class="typo">thier</span>s</tt>
 </td>
 <td>
 matches
@@ -385,7 +388,7 @@ no
 </tr>
 <tr>
 <td>
-<tt>weal<span class="typo">thier</span> words</tt>
+<tt>weal<span class="typo">thier</span> words</tt>
 </td>
 <td>
 matches
@@ -401,6 +404,7 @@ no
 </td>
 </tr>
 </table>
+</div>
 <p><code>:thier:</code> is most restrictive, matching only when <code>thier</code> is a whole word.</p>
 <p>The <code>make_autocorrection_data.py</code> script makes an effort to check for entries that would false trigger as substrings of correct words. It searches each typo against a dictionary of 25K English words from the <a href="https://pypi.org/project/english-words">english_words Python package</a>, provided it’s installed.</p>
 <h3 id="overriding-autocorrection">Overriding autocorrection</h3>
@@ -419,41 +423,47 @@ no
 <li><p><strong>Vim:</strong> Type <code>:set spell</code>, and misspellings will be highlighted. Use <code>]s</code> to jump to the next misspelled word and <code>z=</code> to get suggested corrections for the word under the cursor. See the <a href="http://vimdoc.sourceforge.net/htmldoc/spell.html"><tt>:help spell</tt> documentation</a>. Vim also has an abbreviations feature that can autocorrect misspellings (see <a href="http://vimdoc.sourceforge.net/htmldoc/map.html#abbreviations"><tt>:help abbreviations</tt></a>).</p></li>
 <li><p><strong>Emacs:</strong> Use <code>M-x flyspell-mode</code> to enable Flyspell mode in the current buffer. Or for programming, use <code>M-x flyspell-prog-mode</code> to check comments and strings only. See the <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html">spelling documentation</a>. There is also an <a href="https://www.emacswiki.org/emacs/AutoCorrection">abbreviations feature that can do autocorrection</a>.</p></li>
 </ul>
+<p>Some useful resources:</p>
+<ul>
+<li><p>Wikipedia has <a href="https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines">a large list of common typos</a>.</p></li>
+<li><p>EmacsWiki has another <a href="https://www.emacswiki.org/emacs/autocorrection_abbrev_defs">list of typos</a>.</p></li>
+<li><p>You can find data on English word frequencies at <a href="https://www.wordfrequency.info/samples.asp" class="uri">https://www.wordfrequency.info/samples.asp</a>.</p></li>
+</ul>
 <h2 id="appendix-trie-binary-data-format">Appendix: Trie binary data format</h2>
 <p>This section details how the trie is serialized to byte data in <code>autocorrection_data</code>. You don’t need to care about this to use this autocorrection implementation. But I document it for the record in case anyone is interested in modifying the implementation, or just curious how it works.</p>
 <p>What I did here is fairly arbitrary, but it is simple to decode and gets the job done.</p>
 <h3 id="encoding">Encoding</h3>
-<p>All autocorrection data is stored in a single flat array <code>autocorrection_data</code>. Each trie node is associated with a byte offset into this array, where data for that node is encoded, beginning with root at offset 0. There are three kinds of nodes:</p>
+<p>All autocorrection data is stored in a single flat array <code>autocorrection_data</code>. Each trie node is associated with a byte offset into this array, where data for that node is encoded, beginning with root at offset 0. There are three kinds of nodes. The highest two bits of the first byte of the node indicate what kind:</p>
 <ul>
-<li>branching node: a trie node with multiple children.</li>
-<li>chain node: a trie node with a single child.</li>
-<li>leaf node: a leaf, corresponding to a typo and storing its correction.</li>
+<li><code>00</code> ⇒ chain node: a trie node with a single child.</li>
+<li><code>01</code> ⇒ branching node: a trie node with multiple children.</li>
+<li><code>10</code> ⇒ leaf node: a leaf, corresponding to a typo and storing its correction.</li>
 </ul>
 <figure>
 <img src="trie.svg" alt="" /><figcaption>An example trie.</figcaption>
 </figure>
-<p><strong>Branching node.</strong> Each branch is encoded with one byte for the keycode (<code>KC_A</code>–<code>KC_Z</code>) followed by a link to the child node. Links between nodes are 16-bit byte offsets relative to the beginning of the array, serialized in little endian order. If the node is a leaf node, the high bit is set.</p>
-<p>All branches are serialized this way, one after another, and terminated with a zero byte. For the first branch, the high bit of the keycode is set (the decoder uses this to distinguish a branch from a chain). The root node for the above figure would be serialized like:</p>
+<p><strong>Branching node.</strong> Each branch is encoded with one byte for the keycode (<code>KC_A</code>–<code>KC_Z</code>) followed by a link to the child node. Links between nodes are 16-bit byte offsets relative to the beginning of the array, serialized in little endian order.</p>
+<p>All branches are serialized this way, one after another, and terminated with a zero byte. As described above, the node is identified as a branch by setting the two high bits of the first byte to <code>01</code>, done by ORing the first keycode with 64. keycode. The root node for the above figure would be serialized like:</p>
 <pre><code>+-------+-------+-------+-------+-------+-------+-------+
-| R|128 |    node 2     |   T   |    node 3     |   0   |
+| R|64  |    node 2     |   T   |    node 3     |   0   |
 +-------+-------+-------+-------+-------+-------+-------+</code></pre>
-<p><strong>Chain node.</strong> Tries tend to have long chains of single-child nodes, as seen in the example above with <code>f-i-t-l</code> in <tt><span class="typo">fitler</span></tt>. So to save space, we use a different format to encode chains than branching nodes. A chain is encoded as a string of keycodes, beginning with the node closest to the root, and terminated with a zero byte. The child of the last node in the chain is encoded immediately after. That child could be either a branching node or a leaf. If the high bit of its first byte is set, it is a branching node.</p>
-<p>In the figure above, the <code>f-i-t-l</code> chain in fitler is encoded as</p>
+<p><strong>Chain node.</strong> Tries tend to have long chains of single-child nodes, as seen in the example above with <code>f-i-t-l</code> in <tt><span class="typo">fitler</span></tt>. So to save space, we use a different format to encode chains than branching nodes. A chain is encoded as a string of keycodes, beginning with the node closest to the root, and terminated with a zero byte. The child of the last node in the chain is encoded immediately after. That child could be either a branching node or a leaf.</p>
+<p>In the figure above, the <code>f-i-t-l</code> chain is encoded as</p>
 <pre><code>+-------+-------+-------+-------+-------+
 |   L   |   T   |   I   |   F   |   0   |
 +-------+-------+-------+-------+-------+</code></pre>
 <p>If we were to encode this chain using the same format used for branching nodes, we would encode a 16-bit node link with every node, costing 8 more bytes in this example. Across the whole trie, this adds up. Conveniently, we can point to intermediate points in the chain and interpret the bytes in the same way as before. E.g. starting at the <code>i</code> instead of the <code>l</code>, and the subchain has the same format.</p>
-<p><strong>Leaf node.</strong> A leaf node corresponds to a particular typo and stores data to correct the typo. The leaf begins with a byte for the number of backspaces to type, and is followed by a null-terminated ASCII string of the replacement text. The idea is, after tapping backspace the indicated number of times, we can simply pass this string to QMK’s <code>send_string</code> function. For <tt><span class="typo">fitler</span></tt>, we need to tap backspace 3 times (not 4, because we catch the typo as the final ‘r’ is pressed) and replace it with <code>lter</code>:</p>
+<p><strong>Leaf node.</strong> A leaf node corresponds to a particular typo and stores data to correct the typo. The leaf begins with a byte for the number of backspaces to type, and is followed by a null-terminated ASCII string of the replacement text. The idea is, after tapping backspace the indicated number of times, we can simply pass this string to QMK’s <code>send_string</code> function. For <tt><span class="typo">fitler</span></tt>, we need to tap backspace 3 times (not 4, because we catch the typo as the final ‘r’ is pressed) and replace it with <code>lter</code>. To identify the node as a leaf, the two high bits are set to <code>10</code> by ORing the backspace count with 128:</p>
 <pre><code>+-------+-------+-------+-------+-------+-------+
-|   3   |  &#39;l&#39;  |  &#39;t&#39;  |  &#39;e&#39;  |  &#39;r&#39;  |   0   |
+| 3|128 |  &#39;l&#39;  |  &#39;t&#39;  |  &#39;e&#39;  |  &#39;r&#39;  |   0   |
 +-------+-------+-------+-------+-------+-------+</code></pre>
 <h3 id="decoding">Decoding</h3>
-<p>This format is by design decodable with fairly simple logic. A 16-bit variable <code>state</code> represents our current position in the trie, initialized with 0 to start at the root node. Then, for each keycode, test whether the byte at <code>state</code> has the high bit set. If it is, this is a branching node, or if not, it is a chain node.</p>
+<p>This format is by design decodable with fairly simple logic. A 16-bit variable <code>state</code> represents our current position in the trie, initialized with 0 to start at the root node. Then, for each keycode, test the highest two bits in the byte at <code>state</code> to identify the kind of node.</p>
 <ul>
-<li><p><strong>Branching node:</strong> Search the branches for one that matches the keycode, and follow its node link. If the link has its high bit set, then a leaf has been reached.</p></li>
-<li><p><strong>Chain node:</strong> If the node’s byte matches the keycode, increment <code>state</code> by one to go to the next byte. If the next byte is zero, increment again to go to the following node. If the first byte of that node does <em>not</em> have its high bit set, it is a leaf.</p></li>
+<li><p><code>00</code> ⇒ <strong>chain node:</strong> If the node’s byte matches the keycode, increment <code>state</code> by one to go to the next byte. If the next byte is zero, increment again to go to the following node.</p></li>
+<li><p><code>01</code> ⇒ <strong>branching node:</strong> Search the branches for one that matches the keycode, and follow its node link.</p></li>
+<li><p><code>10</code> ⇒ <strong>lead node:</strong> a typo has been found! We read its first byte for the number of backspaces to type, then pass its following bytes to <code>send_string</code> to type the correction.</p></li>
 </ul>
-<p>When a leaf is reached, a typo has been found! We read its first byte for the number of backspaces to type, then pass its following bytes to <code>send_string</code> to type the correction.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 

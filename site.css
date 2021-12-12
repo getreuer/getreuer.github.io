@@ -101,7 +101,7 @@ p {
   margin: 1em 0;
 }
 
-img, video {
+img, video, textarea {
   max-width: 100%;
 }
 
