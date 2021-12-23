@@ -116,20 +116,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 .typo {
   text-decoration: #cc4000 wavy underline; background-color: #ffe0d0;
 }
+.detection {
+  text-decoration: #0090cc wavy underline; background-color: #c0f0ff;
+}
 </style>
 <p><a href="../index.html">← More about keyboards</a></p>
 <h2 id="overview">Overview</h2>
 <p>Some words are more prone to typos than others. I have a habit of typo-ing <tt><span class="typo">ouput</span></tt> and <tt><span class="typo">fitler</span></tt>. This post describes a rudimentary autocorrection implementation that runs on your keyboard with QMK.</p>
+<p>The animation below shows the effect as I type <tt><span class="typo">aparent</span></tt>. As I press the final <code>t</code>, the autocorrection feature detects the typo and automatically sends keys to correct it:</p>
+<figure>
+<img src="apparent.gif" alt="" /><figcaption>Example: Autocorrecting <tt><span class="typo">aparent</span></tt> → <code>apparent</code>.</figcaption>
+</figure>
 <p><strong>Features:</strong></p>
 <ul>
 <li><p>It runs on your keyboard, so it is always active no matter what software.</p></li>
-<li><p>Low resource cost: for an autocorrection dictionary of 70 entries, firmware size cost is 1620 bytes and CPU cost per key press is about 18 us.</p></li>
+<li><p>Low resource cost: for an autocorrection dictionary of 70 entries, firmware size cost is 1620 bytes and average CPU cost per key press is about 20 µs.</p></li>
 <li><p>It is case insensitive. It corrects <tt><span class="typo">Fitler</span></tt> to <code>Filter</code> and <tt><span class="typo">FITLER</span></tt> to <code>FILTER</code>.</p></li>
 <li><p>It works within words. It corrects <tt><span class="typo">fitler</span>ed</tt>, <tt><span class="typo">fitler</span>ing</tt>, and useful for programming, within longer identifiers like <tt>DesignButterworth<span class="typo">Fitler</span></tt>.</p></li>
 </ul>
 <p><strong>Limitations:</strong> Running autocorrection on the keyboard comes with some constraints. It is rudimentary like I said:</p>
 <ul>
-<li><p>It is limited to alphabet characters <code>a</code>–<code>z</code>. No accented or unicode letters; I’m sorry this probably isn’t useful for languages besides English.</p></li>
+<li><p>It is limited to alphabet characters <code>a</code>–<code>z</code>. No accented or Unicode letters; I’m sorry this probably isn’t useful for languages besides English.</p></li>
 <li><p>It does not follow mouse or hotkey driven cursor movement.</p></li>
 </ul>
 <h2 id="add-autocorrection-to-your-keymap">Add autocorrection to your keymap</h2>
@@ -230,9 +237,9 @@ widht         -> width
 <p>I am anxiously aware that a keyboard microcontroller has limited resources. So I was sure to measure how much memory and CPU time autocorrection consumes during development. These measurements are for the example autocorrection dictionary as used above, which has 70 entries:</p>
 <ul>
 <li><p><strong>Firmware size:</strong> Autocorrection increases my firmware size by a total of <strong>1620 bytes</strong>. Breaking that down, 1104 bytes are for the <code>autocorrection_data</code> array and 516 bytes for the autocorrection code.</p></li>
-<li><p><strong>CPU time:</strong> On my Elite-C microcontrollers, the CPU time for <code>process_autocorrection</code> to process an alpha key press is around <strong>18 us</strong>.</p></li>
+<li><p><strong>CPU time:</strong> On my Elite-C microcontrollers, the average CPU time for <code>process_autocorrection</code> to process an alpha key press is around <strong>20 µs</strong>. Consider this a rough order-of-magnitude cost. Processing cost increases (more trie nodes are visited) when recent input is close to a known typo, with the max being when a long typo is matched.</p></li>
 </ul>
-<p>The costs are not free but reasonable. For reference, the firmware size cost for mouse keys is 2124 bytes and the CPU time to process a layer switch is about 70 us, so autocorrection is cheaper than those things. Of course, the cost scales with the size of the autocorrection dictionary, so keep that in mind if you add a lot more entries.</p>
+<p>The costs are not free but reasonable. For reference, the firmware size cost for mouse keys is 2124 bytes and the CPU time to process a layer switch is about 70 µs, so autocorrection is cheaper than those things. Of course, the cost scales with the size of the autocorrection dictionary, so keep that in mind if you add a lot more entries.</p>
 <p><em>Side note:</em> <a href="https://thomasbaart.nl/2018/12/01/reducing-firmware-size-in-qmk/">as Thomas Baart describes</a>, link time optimization (LTO) helps a lot to reduce firmware size. In your <code>rules.mk</code>, add: <code>LTO_ENABLE = yes</code></p>
 <h2 id="how-does-it-work">How does it work?</h2>
 <p>The function <code>process_autocorrection</code> maintains a small buffer of recent key presses. On each key press, it checks whether the buffer ends in a recognized typo, and if so, automatically sends keystrokes to correct it.</p>
@@ -260,51 +267,51 @@ widht         -&gt; width</code></pre>
 </ol>
 <p>The generated C header looks like this:</p>
 <p><strong>autocorrection_data.h</strong></p>
-<textarea rows="25" cols="75" name="autocorrection_data.h">
+<textarea rows="25" cols="75" name="autocorrection_data.h" readonly>
 // Generated code.
 
 #define AUTOCORRECTION_MIN_LENGTH 5  // "cheif"
 #define AUTOCORRECTION_MAX_LENGTH 10  // "accomodate"
 
-static const uint8_t autocorrection_data[1104] = {108, 43, 0, 6, 71, 0, 7,
-  81, 0, 8, 199, 0, 9, 240, 1, 10, 250, 1, 11, 26, 2, 17, 53, 2, 18, 190,
-  2, 19, 202, 2, 21, 212, 2, 22, 20, 3, 23, 67, 3, 28, 16, 4, 0, 72, 50, 0,
-  22, 60, 0, 0, 11, 23, 44, 8, 11, 23, 44, 0, 132, 0, 8, 22, 18, 18, 15, 0,
-  132, 115, 101, 115, 0, 11, 23, 12, 26, 22, 0, 129, 99, 104, 0, 68, 94, 0,
-  8, 106, 0, 15, 174, 0, 21, 187, 0, 0, 12, 15, 25, 17, 12, 0, 131, 97,
-  108, 105, 100, 0, 74, 119, 0, 12, 129, 0, 21, 140, 0, 24, 165, 0, 0, 17,
-  12, 22, 0, 131, 103, 110, 101, 100, 0, 25, 21, 8, 7, 0, 131, 105, 118,
-  101, 100, 0, 72, 147, 0, 24, 156, 0, 0, 9, 8, 21, 0, 129, 114, 101, 100,
-  0, 6, 6, 18, 0, 129, 114, 101, 100, 0, 15, 6, 17, 12, 0, 129, 100, 101,
-  0, 18, 22, 8, 21, 11, 23, 0, 130, 104, 111, 108, 100, 0, 4, 26, 18, 9, 0,
-  131, 114, 119, 97, 114, 100, 0, 68, 233, 0, 6, 246, 0, 7, 4, 1, 8, 16, 1,
-  10, 52, 1, 15, 81, 1, 21, 90, 1, 22, 117, 1, 23, 144, 1, 24, 215, 1, 25,
-  228, 1, 0, 6, 19, 22, 8, 16, 4, 17, 0, 130, 97, 99, 101, 0, 19, 4, 22, 8,
-  16, 4, 17, 0, 131, 112, 97, 99, 101, 0, 12, 21, 8, 25, 18, 0, 130, 114,
-  105, 100, 101, 0, 23, 0, 68, 25, 1, 17, 36, 1, 0, 21, 4, 24, 10, 0, 130,
-  110, 116, 101, 101, 0, 4, 21, 24, 4, 10, 0, 135, 117, 97, 114, 97, 110,
-  116, 101, 101, 0, 68, 59, 1, 7, 69, 1, 0, 24, 10, 44, 0, 131, 97, 117,
-  103, 101, 0, 8, 15, 12, 25, 12, 21, 19, 0, 130, 103, 101, 0, 22, 4, 9, 0,
-  130, 108, 115, 101, 0, 76, 97, 1, 24, 109, 1, 0, 24, 20, 4, 0, 132, 99,
-  113, 117, 105, 114, 101, 0, 23, 44, 0, 130, 114, 117, 101, 0, 4, 0, 79,
-  126, 1, 24, 134, 1, 0, 9, 0, 131, 97, 108, 115, 101, 0, 6, 8, 5, 0, 131,
-  97, 117, 115, 101, 0, 4, 0, 71, 156, 1, 19, 193, 1, 21, 203, 1, 0, 18,
-  16, 0, 80, 166, 1, 18, 181, 1, 0, 18, 6, 4, 0, 135, 99, 111, 109, 109,
-  111, 100, 97, 116, 101, 0, 6, 6, 4, 0, 132, 109, 111, 100, 97, 116, 101,
-  0, 7, 24, 0, 132, 112, 100, 97, 116, 101, 0, 8, 19, 8, 22, 0, 132, 97,
-  114, 97, 116, 101, 0, 10, 8, 15, 15, 18, 6, 0, 130, 97, 103, 117, 101, 0,
-  8, 12, 6, 8, 21, 0, 131, 101, 105, 118, 101, 0, 12, 8, 11, 6, 0, 130,
-  105, 101, 102, 0, 17, 0, 76, 3, 2, 21, 16, 2, 0, 15, 8, 12, 6, 0, 133,
-  101, 105, 108, 105, 110, 103, 0, 12, 23, 22, 0, 131, 114, 105, 110, 103,
-  0, 70, 33, 2, 23, 44, 2, 0, 12, 23, 26, 22, 0, 131, 105, 116, 99, 104, 0,
-  10, 12, 8, 11, 0, 129, 104, 116, 0, 72, 69, 2, 10, 80, 2, 18, 89, 2, 21,
-  156, 2, 24, 167, 2, 0, 22, 18, 18, 11, 6, 0, 131, 115, 101, 110, 0, 12,
-  21, 23, 22, 0, 129, 110, 103, 0, 12, 0, 86, 98, 2, 23, 124, 2, 0, 68,
-  105, 2, 22, 114, 2, 0, 12, 15, 0, 131, 105, 115, 111, 110, 0, 4, 6, 6,
-  18, 0, 131, 105, 111, 110, 0, 76, 131, 2, 22, 146, 2, 0, 23, 12, 19, 8,
-  21, 0, 134, 101, 116, 105, 116, 105, 111, 110, 0, 18, 19, 0, 131, 105,
-  116, 105, 111, 110, 0, 23, 24, 8, 21, 0, 131, 116, 117, 114, 110, 0, 85,
-  174, 2, 23, 183, 2, 0, 23, 8, 21, 0, 130, 117, 114, 110, 0, 8, 21, 0,
+static const uint8_t autocorrection_data[1104] PROGMEM = {108, 43, 0, 6,
+  71, 0, 7, 81, 0, 8, 199, 0, 9, 240, 1, 10, 250, 1, 11, 26, 2, 17, 53, 2,
+  18, 190, 2, 19, 202, 2, 21, 212, 2, 22, 20, 3, 23, 67, 3, 28, 16, 4, 0,
+  72, 50, 0, 22, 60, 0, 0, 11, 23, 44, 8, 11, 23, 44, 0, 132, 0, 8, 22, 18,
+  18, 15, 0, 132, 115, 101, 115, 0, 11, 23, 12, 26, 22, 0, 129, 99, 104, 0,
+  68, 94, 0, 8, 106, 0, 15, 174, 0, 21, 187, 0, 0, 12, 15, 25, 17, 12, 0,
+  131, 97, 108, 105, 100, 0, 74, 119, 0, 12, 129, 0, 21, 140, 0, 24, 165,
+  0, 0, 17, 12, 22, 0, 131, 103, 110, 101, 100, 0, 25, 21, 8, 7, 0, 131,
+  105, 118, 101, 100, 0, 72, 147, 0, 24, 156, 0, 0, 9, 8, 21, 0, 129, 114,
+  101, 100, 0, 6, 6, 18, 0, 129, 114, 101, 100, 0, 15, 6, 17, 12, 0, 129,
+  100, 101, 0, 18, 22, 8, 21, 11, 23, 0, 130, 104, 111, 108, 100, 0, 4, 26,
+  18, 9, 0, 131, 114, 119, 97, 114, 100, 0, 68, 233, 0, 6, 246, 0, 7, 4, 1,
+  8, 16, 1, 10, 52, 1, 15, 81, 1, 21, 90, 1, 22, 117, 1, 23, 144, 1, 24,
+  215, 1, 25, 228, 1, 0, 6, 19, 22, 8, 16, 4, 17, 0, 130, 97, 99, 101, 0,
+  19, 4, 22, 8, 16, 4, 17, 0, 131, 112, 97, 99, 101, 0, 12, 21, 8, 25, 18,
+  0, 130, 114, 105, 100, 101, 0, 23, 0, 68, 25, 1, 17, 36, 1, 0, 21, 4, 24,
+  10, 0, 130, 110, 116, 101, 101, 0, 4, 21, 24, 4, 10, 0, 135, 117, 97,
+  114, 97, 110, 116, 101, 101, 0, 68, 59, 1, 7, 69, 1, 0, 24, 10, 44, 0,
+  131, 97, 117, 103, 101, 0, 8, 15, 12, 25, 12, 21, 19, 0, 130, 103, 101,
+  0, 22, 4, 9, 0, 130, 108, 115, 101, 0, 76, 97, 1, 24, 109, 1, 0, 24, 20,
+  4, 0, 132, 99, 113, 117, 105, 114, 101, 0, 23, 44, 0, 130, 114, 117, 101,
+  0, 4, 0, 79, 126, 1, 24, 134, 1, 0, 9, 0, 131, 97, 108, 115, 101, 0, 6,
+  8, 5, 0, 131, 97, 117, 115, 101, 0, 4, 0, 71, 156, 1, 19, 193, 1, 21,
+  203, 1, 0, 18, 16, 0, 80, 166, 1, 18, 181, 1, 0, 18, 6, 4, 0, 135, 99,
+  111, 109, 109, 111, 100, 97, 116, 101, 0, 6, 6, 4, 0, 132, 109, 111, 100,
+  97, 116, 101, 0, 7, 24, 0, 132, 112, 100, 97, 116, 101, 0, 8, 19, 8, 22,
+  0, 132, 97, 114, 97, 116, 101, 0, 10, 8, 15, 15, 18, 6, 0, 130, 97, 103,
+  117, 101, 0, 8, 12, 6, 8, 21, 0, 131, 101, 105, 118, 101, 0, 12, 8, 11,
+  6, 0, 130, 105, 101, 102, 0, 17, 0, 76, 3, 2, 21, 16, 2, 0, 15, 8, 12, 6,
+  0, 133, 101, 105, 108, 105, 110, 103, 0, 12, 23, 22, 0, 131, 114, 105,
+  110, 103, 0, 70, 33, 2, 23, 44, 2, 0, 12, 23, 26, 22, 0, 131, 105, 116,
+  99, 104, 0, 10, 12, 8, 11, 0, 129, 104, 116, 0, 72, 69, 2, 10, 80, 2, 18,
+  89, 2, 21, 156, 2, 24, 167, 2, 0, 22, 18, 18, 11, 6, 0, 131, 115, 101,
+  110, 0, 12, 21, 23, 22, 0, 129, 110, 103, 0, 12, 0, 86, 98, 2, 23, 124,
+  2, 0, 68, 105, 2, 22, 114, 2, 0, 12, 15, 0, 131, 105, 115, 111, 110, 0,
+  4, 6, 6, 18, 0, 131, 105, 111, 110, 0, 76, 131, 2, 22, 146, 2, 0, 23, 12,
+  19, 8, 21, 0, 134, 101, 116, 105, 116, 105, 111, 110, 0, 18, 19, 0, 131,
+  105, 116, 105, 111, 110, 0, 23, 24, 8, 21, 0, 131, 116, 117, 114, 110, 0,
+  85, 174, 2, 23, 183, 2, 0, 23, 8, 21, 0, 130, 117, 114, 110, 0, 8, 21, 0,
   128, 114, 110, 0, 7, 8, 24, 22, 19, 0, 131, 101, 117, 100, 111, 0, 24,
   18, 18, 15, 0, 129, 107, 117, 112, 0, 72, 219, 2, 18, 3, 3, 0, 76, 229,
   2, 15, 238, 2, 17, 248, 2, 0, 11, 23, 44, 0, 130, 101, 105, 114, 0, 23,
@@ -331,7 +338,7 @@ static const uint8_t autocorrection_data[1104] = {108, 43, 0, 6, 71, 0, 7,
 </textarea>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="avoiding-false-triggers">Avoiding false triggers</h3>
-<p>By default, typos are searched <em>within</em> words, to find typos within longer identifiers like <tt>max<span class="typo">FitlerOuput</span></tt>. While this is useful, a consequence is that autocorrection will falsely trigger when a typo happens to be a substring of a correctly-spelled word. For instance, if we had <code>thier -&gt; their</code> as an entry, it would falsely trigger on (correct, though relatively uncommon) words like “wealthier” and “filthier”.</p>
+<p>By default, typos are searched <em>within</em> words, to find typos within longer identifiers like <tt>max<span class="typo">FitlerOuput</span></tt>. While this is useful, a consequence is that autocorrection will falsely trigger when a typo happens to be a substring of a correctly-spelled word. For instance, if we had <code>thier -&gt; their</code> as an entry, it would falsely trigger on (correct, though relatively uncommon) words like “wealthier” and “filthier.”</p>
 <p>The solution is to set a word break <code>:</code> before and/or after the typo to constrain matching. <code>:</code> matches space, period, comma, underscore, digits, and most other non-alpha characters.</p>
 <div class="eqscroll">
 <table>
@@ -354,7 +361,7 @@ Text
 </tr>
 <tr>
 <td>
-<tt>see <span class="typo">thier</span> typo</tt>
+<tt>see <span class="detection">thier</span> typo</tt>
 </td>
 <td>
 matches
@@ -371,7 +378,7 @@ matches
 </tr>
 <tr>
 <td>
-<tt>it’s <span class="typo">thier</span>s</tt>
+<tt>it’s <span class="detection">thier</span>s</tt>
 </td>
 <td>
 matches
@@ -388,7 +395,7 @@ no
 </tr>
 <tr>
 <td>
-<tt>weal<span class="typo">thier</span> words</tt>
+<tt>weal<span class="detection">thier</span> words</tt>
 </td>
 <td>
 matches
@@ -420,6 +427,7 @@ no
 <p>I suggest to enable and use spell check in combination with autocorrection:</p>
 <ul>
 <li><p><strong>Sublime:</strong> Open the View menu and enable “Spell Check.”</p></li>
+<li><p><strong>Eclipse:</strong> Open the Window menu, click Preferences, and search for “Spelling.”</p></li>
 <li><p><strong>Vim:</strong> Type <code>:set spell</code>, and misspellings will be highlighted. Use <code>]s</code> to jump to the next misspelled word and <code>z=</code> to get suggested corrections for the word under the cursor. See the <a href="http://vimdoc.sourceforge.net/htmldoc/spell.html"><tt>:help spell</tt> documentation</a>. Vim also has an abbreviations feature that can autocorrect misspellings (see <a href="http://vimdoc.sourceforge.net/htmldoc/map.html#abbreviations"><tt>:help abbreviations</tt></a>).</p></li>
 <li><p><strong>Emacs:</strong> Use <code>M-x flyspell-mode</code> to enable Flyspell mode in the current buffer. Or for programming, use <code>M-x flyspell-prog-mode</code> to check comments and strings only. See the <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html">spelling documentation</a>. There is also an <a href="https://www.emacswiki.org/emacs/AutoCorrection">abbreviations feature that can do autocorrection</a>.</p></li>
 </ul>
@@ -443,7 +451,7 @@ no
 <img src="trie.svg" alt="" /><figcaption>An example trie.</figcaption>
 </figure>
 <p><strong>Branching node.</strong> Each branch is encoded with one byte for the keycode (<code>KC_A</code>–<code>KC_Z</code>) followed by a link to the child node. Links between nodes are 16-bit byte offsets relative to the beginning of the array, serialized in little endian order.</p>
-<p>All branches are serialized this way, one after another, and terminated with a zero byte. As described above, the node is identified as a branch by setting the two high bits of the first byte to <code>01</code>, done by ORing the first keycode with 64. keycode. The root node for the above figure would be serialized like:</p>
+<p>All branches are serialized this way, one after another, and terminated with a zero byte. As described above, the node is identified as a branch by setting the two high bits of the first byte to <code>01</code>, done by bitwise ORing the first keycode with 64. keycode. The root node for the above figure would be serialized like:</p>
 <pre><code>+-------+-------+-------+-------+-------+-------+-------+
 | R|64  |    node 2     |   T   |    node 3     |   0   |
 +-------+-------+-------+-------+-------+-------+-------+</code></pre>
@@ -453,7 +461,7 @@ no
 |   L   |   T   |   I   |   F   |   0   |
 +-------+-------+-------+-------+-------+</code></pre>
 <p>If we were to encode this chain using the same format used for branching nodes, we would encode a 16-bit node link with every node, costing 8 more bytes in this example. Across the whole trie, this adds up. Conveniently, we can point to intermediate points in the chain and interpret the bytes in the same way as before. E.g. starting at the <code>i</code> instead of the <code>l</code>, and the subchain has the same format.</p>
-<p><strong>Leaf node.</strong> A leaf node corresponds to a particular typo and stores data to correct the typo. The leaf begins with a byte for the number of backspaces to type, and is followed by a null-terminated ASCII string of the replacement text. The idea is, after tapping backspace the indicated number of times, we can simply pass this string to QMK’s <code>send_string</code> function. For <tt><span class="typo">fitler</span></tt>, we need to tap backspace 3 times (not 4, because we catch the typo as the final ‘r’ is pressed) and replace it with <code>lter</code>. To identify the node as a leaf, the two high bits are set to <code>10</code> by ORing the backspace count with 128:</p>
+<p><strong>Leaf node.</strong> A leaf node corresponds to a particular typo and stores data to correct the typo. The leaf begins with a byte for the number of backspaces to type, and is followed by a null-terminated ASCII string of the replacement text. The idea is, after tapping backspace the indicated number of times, we can simply pass this string to QMK’s <code>send_string_P</code> function. For <tt><span class="typo">fitler</span></tt>, we need to tap backspace 3 times (not 4, because we catch the typo as the final ‘r’ is pressed) and replace it with <code>lter</code>. To identify the node as a leaf, the two high bits are set to <code>10</code> by ORing the backspace count with 128:</p>
 <pre><code>+-------+-------+-------+-------+-------+-------+
 | 3|128 |  &#39;l&#39;  |  &#39;t&#39;  |  &#39;e&#39;  |  &#39;r&#39;  |   0   |
 +-------+-------+-------+-------+-------+-------+</code></pre>
@@ -462,7 +470,7 @@ no
 <ul>
 <li><p><code>00</code> ⇒ <strong>chain node:</strong> If the node’s byte matches the keycode, increment <code>state</code> by one to go to the next byte. If the next byte is zero, increment again to go to the following node.</p></li>
 <li><p><code>01</code> ⇒ <strong>branching node:</strong> Search the branches for one that matches the keycode, and follow its node link.</p></li>
-<li><p><code>10</code> ⇒ <strong>lead node:</strong> a typo has been found! We read its first byte for the number of backspaces to type, then pass its following bytes to <code>send_string</code> to type the correction.</p></li>
+<li><p><code>10</code> ⇒ <strong>leaf node:</strong> a typo has been found! We read its first byte for the number of backspaces to type, then pass its following bytes to <code>send_string_P</code> to type the correction.</p></li>
 </ul>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>

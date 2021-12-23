@@ -172,27 +172,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>  <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; NUM_CUSTOM_SHIFT_KEYS; ++i) {</span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a>    <span class="cf">if</span> (keycode == custom_shift_keys[i].keycode) {</span>
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a>      <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a>        <span class="cf">if</span> ((get_mods() | get_oneshot_mods()) &amp; MOD_MASK_SHIFT) {</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a>          <span class="co">// The key is being pressed with shift held. We save the shift</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a>          <span class="co">// mods in `saved_mods`, then delete shift from the mod states.</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true"></a>          saved_mods = get_mods() &amp; MOD_MASK_SHIFT;</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true"></a>          del_mods(MOD_MASK_SHIFT);</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true"></a>          del_oneshot_mods(MOD_MASK_SHIFT);</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true"></a>          shifted = true;</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true"></a>        } <span class="cf">else</span> {</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true"></a>          shifted = false;</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true"></a>        }</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true"></a>        active_key = i;  <span class="co">// Remember which custom key is active.</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true"></a>        register_code16(custom_shift_keycode(active_key, shifted));</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true"></a>      }</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true"></a></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true"></a>    }</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true"></a>  }</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true"></a></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true"></a>}</span></code></pre></div>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a>        <span class="dt">const</span> <span class="dt">uint8_t</span> mods = get_mods() | get_oneshot_mods();</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a><span class="pp">#else</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true"></a>        <span class="dt">const</span> <span class="dt">uint8_t</span> mods = get_mods();</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true"></a>        <span class="cf">if</span> (mods &amp; MOD_MASK_SHIFT) {</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true"></a>          <span class="co">// The key is being pressed with shift held. We save the shift</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true"></a>          <span class="co">// mods in `saved_mods`, then delete shift from the mod states.</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true"></a>          saved_mods = get_mods() &amp; MOD_MASK_SHIFT;</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true"></a>          del_mods(MOD_MASK_SHIFT);</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true"></a>          del_oneshot_mods(MOD_MASK_SHIFT);</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true"></a>          shifted = true;</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true"></a>        } <span class="cf">else</span> {</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true"></a>          shifted = false;</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true"></a>        }</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true"></a>        active_key = i;  <span class="co">// Remember which custom key is active.</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true"></a>        register_code16(custom_shift_keycode(active_key, shifted));</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true"></a>      }</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true"></a>    }</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true"></a>  }</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true"></a></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true"></a>}</span></code></pre></div>
 <h2 id="explanation">Explanation</h2>
 <p>The <code>active_key</code> variable is the index of the custom shift key that is currently pressed or otherwise <code>kNone</code>. Only one custom key can be pressed at a time. Attempting to hold multiple custom shift keys releases all but the last one.</p>
 <p>On each press or release of any key, the following two rules are considered:</p>

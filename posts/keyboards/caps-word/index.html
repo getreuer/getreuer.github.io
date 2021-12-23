@@ -91,14 +91,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
 <h2 id="overview">Overview</h2>
-<p>All-caps identifiers like <code>MOD_MASK_ALT</code> are awkward to type.</p>
+<p>All-caps identifiers like “<code>MOD_MASK_ALT</code>” are awkward to type.</p>
 <p>Caps Lock would be the standard solution to this problem, but it is awkward: it needs a dedicated key to toggle it (an imposition on smaller keyboards), and we need to remember to toggle it off after typing the word. Or with normal shifting, we either perform finger gymnastics or need to stop typing in the middle of the word to release shift with one hand to switch to holding shift with the other hand. In my experience, this is a nuisance especially if your shift keys are mod-taps, as in <a href="https://precondition.github.io/home-row-mods">home row mods</a>.</p>
 <p><strong>Caps Word</strong>, implemented here, is a modern alternative to Caps Lock:</p>
 <ul>
 <li><p>Caps Word is activated by pressing the left and right shift keys at the same time. This way you don’t need a dedicated key for using Caps Word.</p></li>
 <li><p>Caps Word automatically disables itself at the end of the word.</p></li>
 </ul>
-<p><strong>Compatibility:</strong> I’ve tested that this implementation works with one-shot mods and Space Cadet Shift, and it predictably handles key repeating. If your shift keys are mod-taps, activate Caps Word by holding both shift mod-tap keys until the tapping term, release them, then begin typing.</p>
+<p><strong>Compatibility:</strong> I’ve tested that this implementation works with one-shot mods and Space Cadet Shift, and it predictably handles key repeating.</p>
 <p>Unlike some other QMK Caps Word implementations, this library does not use the Caps Lock (<code>KC_CAPS</code>) keycode. It works even if the OS remaps Caps Lock to Ctrl or something else, as Emacs and Vim users often do.</p>
 <h2 id="add-caps-word-to-your-keymap">Add Caps Word to your keymap</h2>
 <p><strong>Step 1:</strong> In your <code>keymap.c</code>, call Caps Word from your <code>process_record_user</code> function as</p>
@@ -112,79 +112,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>Step 2:</strong> In your rules.mk, add <code>SRC += features/caps_word.c</code></p>
 <p><strong>Step 3:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/caps_word.h">caps_word.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/caps_word.c">caps_word.c</a> there.</p>
-<p><strong>caps_word.h</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">// Copyright 2021 Google LLC.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co">// SPDX-License-Identifier: Apache-2.0</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="pp">#pragma once</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="pp">#include QMK_KEYBOARD_H</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="dt">bool</span> process_caps_word(<span class="dt">uint16_t</span> keycode, keyrecord_t* record);</span></code></pre></div>
-<p><strong>caps_word.c</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">// Copyright 2021 Google LLC.</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">// SPDX-License-Identifier: Apache-2.0</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;caps_word.h&quot;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="dt">bool</span> process_caps_word(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>  <span class="dt">static</span> <span class="dt">bool</span> caps_word_enabled = false;</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>  <span class="dt">static</span> <span class="dt">bool</span> shifted = false;</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>  <span class="cf">if</span> (!caps_word_enabled) {</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>    <span class="co">// Pressing both shift keys at the same time enables caps word.</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>    <span class="cf">if</span> (((get_mods() | get_oneshot_mods()) &amp; MOD_MASK_SHIFT)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>        == MOD_MASK_SHIFT) {</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>      clear_mods();</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>      clear_oneshot_mods();</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>      shifted = false;</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>      caps_word_enabled = true;</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>    }</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>    <span class="cf">return</span> true;</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>  }</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a>  <span class="cf">if</span> (!record-&gt;event.pressed) { <span class="cf">return</span> true; }</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true"></a>  <span class="cf">if</span> (!((get_mods() | get_oneshot_mods()) &amp; ~MOD_MASK_SHIFT)) {</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true"></a>    <span class="cf">switch</span> (keycode) {</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true"></a>      <span class="cf">case</span> QK_MOD_TAP ... QK_MOD_TAP_MAX:</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true"></a>      <span class="cf">case</span> QK_LAYER_TAP ... QK_LAYER_TAP_MAX:</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true"></a>        <span class="co">// Earlier return if this has not been considered tapped yet.</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true"></a>        <span class="cf">if</span> (record-&gt;tap.count == <span class="dv">0</span>) { <span class="cf">return</span> true; }</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true"></a>        <span class="co">// Get the base tapping keycode of a mod- or layer-tap key.</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true"></a>        keycode &amp;= <span class="bn">0xff</span>;</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true"></a>    }</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true"></a></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true"></a>    <span class="cf">switch</span> (keycode) {</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true"></a>      <span class="co">// Letter keys should be shifted.</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true"></a>      <span class="cf">case</span> KC_A ... KC_Z:</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true"></a>        <span class="cf">if</span> (!shifted) { register_code(KC_LSFT); }</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true"></a>        shifted = true;</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true"></a>        <span class="cf">return</span> true;</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true"></a></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true"></a>      <span class="co">// Keycodes that continue caps word but shouldn&#39;t get shifted.</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true"></a>      <span class="cf">case</span> KC_1 ... KC_0:</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true"></a>      <span class="cf">case</span> KC_BSPC:</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true"></a>      <span class="cf">case</span> KC_MINS:</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true"></a>      <span class="cf">case</span> KC_UNDS:</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true"></a>        <span class="cf">if</span> (shifted) { unregister_code(KC_LSFT); }</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true"></a>        shifted = false;</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true"></a>        <span class="cf">return</span> true;</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true"></a></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true"></a>      <span class="co">// Any other keycode disables caps word.</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true"></a>    }</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true"></a>  }</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true"></a></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true"></a>  <span class="co">// Disable caps word.</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true"></a>  caps_word_enabled = false;</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true"></a>  <span class="cf">if</span> (shifted) { unregister_code(KC_LSFT); }</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true"></a>  shifted = false;</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Also, your keymap needs both a left and right shift key <code>KC_LSFT</code> and <code>KC_RSFT</code> or one-shot or mod-tap equivalents.</p>
+<h2 id="using-caps-word">Using Caps Word</h2>
+<p>With the above flashed to your keyboard:</p>
+<ol type="1">
+<li><p><strong>Activating:</strong> Press and release both left and right shift keys at the same time. If your shift keys are mod-taps, activate Caps Word by holding both shift mod-tap keys until the tapping term, then release them.</p></li>
+<li><p>Then begin typing to get capitalized letters.</p></li>
+<li><p><strong>Disabling:</strong> Caps Word disables itself when the next word breaking key is typed.</p></li>
+</ol>
+<p>If you want to explicitly stop Caps Word, press and release Ctrl or another non-shift modifier or layer key. This also disables Caps Word.</p>
 <h2 id="explanation">Explanation</h2>
 <p>The code checks the mod bits on each key event, enabling Caps Word when both left and right shifts are active.</p>
-<p>While enabled, Caps Word automatically presses and releases left shift (<code>KC_LSFT</code>) as needed so that letters are shifted and other keys are not. The word continues while typing <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace. Any other key is considered “word breaking” and disables Caps Word. You can edit the switch statement at the end of the function to adjust which keys count as word breaking.</p>
+<p>While enabled, Caps Word automatically presses and releases left shift (<code>KC_LSFT</code>) as needed so that letters are shifted and other keys are not. The word continues while typing <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace. Any other key is considered “word breaking” and disables Caps Word. You can edit the switch statement at the end of the <code>process_caps_word()</code> function to adjust which keys count as word breaking.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
