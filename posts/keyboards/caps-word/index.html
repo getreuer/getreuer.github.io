@@ -96,10 +96,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Caps Word</strong>, implemented here, is a modern alternative to Caps Lock:</p>
 <ul>
 <li><p>Caps Word is activated by pressing the left and right shift keys at the same time. This way you don’t need a dedicated key for using Caps Word.</p></li>
-<li><p>Caps Word automatically disables itself at the end of the word.</p></li>
+<li><p>Caps Word automatically disables itself at the end of the word, that is, once space or any key other than <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, or backspace is pressed.</p></li>
 </ul>
 <p><strong>Compatibility:</strong> I’ve tested that this implementation works with one-shot mods and Space Cadet Shift, and it predictably handles key repeating.</p>
-<p>Unlike some other QMK Caps Word implementations, this library does not use the Caps Lock (<code>KC_CAPS</code>) keycode. It works even if the OS remaps Caps Lock to Ctrl or something else, as Emacs and Vim users often do.</p>
+<p>Unlike some other QMK Caps Word implementations, this library does not use the Caps Lock (<code>KC_CAPS</code>) keycode. It works even if you’re remapping Caps Lock at the OS level to Ctrl or something else, as Emacs and Vim users often do.</p>
 <h2 id="add-caps-word-to-your-keymap">Add Caps Word to your keymap</h2>
 <p><strong>Step 1:</strong> In your <code>keymap.c</code>, call Caps Word from your <code>process_record_user</code> function as</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/caps_word.h&quot;</span></span>
@@ -123,7 +123,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>If you want to explicitly stop Caps Word, press and release Ctrl or another non-shift modifier or layer key. This also disables Caps Word.</p>
 <h2 id="explanation">Explanation</h2>
 <p>The code checks the mod bits on each key event, enabling Caps Word when both left and right shifts are active.</p>
-<p>While enabled, Caps Word automatically presses and releases left shift (<code>KC_LSFT</code>) as needed so that letters are shifted and other keys are not. The word continues while typing <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace. Any other key is considered “word breaking” and disables Caps Word. You can edit the switch statement at the end of the <code>process_caps_word()</code> function to adjust which keys count as word breaking.</p>
+<p>While enabled, Caps Word automatically presses and releases left shift (<code>KC_LSFT</code>) as needed so that letters are shifted and other keys are not. The word continues while typing <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace. Any other key is considered “word breaking” and disables Caps Word. You can edit the switch statement at the end of the <code>process_caps_word()</code> function to define which keys are word breaking.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 

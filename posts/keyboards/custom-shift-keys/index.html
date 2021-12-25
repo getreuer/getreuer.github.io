@@ -200,6 +200,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-57"><a href="#cb4-57" aria-hidden="true"></a></span>
 <span id="cb4-58"><a href="#cb4-58" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb4-59"><a href="#cb4-59" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 id="compared-to-key-overrides">Compared to Key Overrides</h2>
+<p>In August 2021, QMK added <a href="https://docs.qmk.fm/#/feature_key_overrides">Key Overrides</a>, which “overrides” the keys sent for specified modifier-key combinations. In particular, it can be used to implement custom shift keys. Add “<code>KEY_OVERRIDE_ENABLE = yes</code>” in rules.mk to enable it, then the example above is analogously implemented as:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">const</span> key_override_t dot_key_override =</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    ko_make_basic(MOD_MASK_SHIFT, KC_DOT, KC_QUES); <span class="co">// Shift . is ?</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="dt">const</span> key_override_t comm_key_override =</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    ko_make_basic(MOD_MASK_SHIFT, KC_COMM, KC_EXLM); <span class="co">// Shift , is !</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="dt">const</span> key_override_t mins_key_override =</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    ko_make_basic(MOD_MASK_SHIFT, KC_MINS, KC_EQL); <span class="co">// Shift - is =</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="dt">const</span> key_override_t coln_key_override =</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    ko_make_basic(MOD_MASK_SHIFT, KC_COLN, KC_SCNL); <span class="co">// Shift : is ;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="dt">const</span> key_override_t** key_overrides = (<span class="dt">const</span> key_override_t*[]){</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>    &amp;dot_key_override,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>    &amp;comm_key_override,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>    &amp;mins_key_override,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>    &amp;coln_key_override,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>    NULL</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>};</span></code></pre></div>
+<p>Advantages of <code>custom_shift_keys</code>:</p>
+<ul>
+<li><p>Costs less firmware space: <code>custom_shift_keys</code> adds 446 bytes to my keymap vs. 1716 bytes for Key Overrides (building with LTO enabled).</p></li>
+<li><p>Simpler configuration syntax.</p></li>
+</ul>
+<p>Advantages of Key Overrides:</p>
+<ul>
+<li><p>Easily enabled, since it is part of QMK.</p></li>
+<li><p>More general and configurable.</p></li>
+</ul>
+<p>If you are already using Key Overrides for other purposes or have a couple kilobytes to spare, it is a great solution.</p>
 <h2 id="explanation">Explanation</h2>
 <p>The <code>active_key</code> variable is the index of the custom shift key that is currently pressed or otherwise <code>kNone</code>. Only one custom key can be pressed at a time. Attempting to hold multiple custom shift keys releases all but the last one.</p>
 <p>On each press or release of any key, the following two rules are considered:</p>
