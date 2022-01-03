@@ -101,6 +101,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#a-reasonable-default">A reasonable default</a></li>
 <li><a href="#layer-optimized-for-elixir-code">Layer optimized for Elixir code</a></li>
 <li><a href="#beakl-15">BEAKL 15</a></li>
+<li><a href="#multi-layer-designs">Multi-layer designs</a></li>
 </ul></li>
 <li><a href="#my-symbol-layer">My symbol layer</a></li>
 <li><a href="#learning-your-symbol-layer">Learning your symbol layer</a></li>
@@ -138,7 +139,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <img src="reasonable-default.png" alt="" /><figcaption>A reasonable default symbol layer.</figcaption>
 </figure>
 <p>(index fingers rest on <code>)</code> and <code>4</code>)</p>
-<p>The layer is very learnable. Brackets are neatly organized on the left hand, and the leftmost two columns are simply the first six number row symbols in usual order (<code>! @ # $ % ^</code>). They managed to squeeze a numpad onto the right hand in the same layer. While it’s a well-designed layer, there is room for improvement, especially for typing common bigrams.</p>
+<p>The layer is very learnable. Brackets are neatly organized on the left hand, and the leftmost two columns are simply the first six number row symbols in usual order (<code>! @ # $ % ^</code>). They layer manages to squeeze a numpad onto the right hand. While it’s a well-designed layer, there is room for improvement, especially for typing common bigrams.</p>
 <h3 id="layer-optimized-for-elixir-code">Layer optimized for Elixir code</h3>
 <p>Dusty Pomerleau <a href="https://elixirforum.com/t/an-elixir-optimized-keyboard-layout/20730">posted on elixirforum</a> about a layer optimized for writing Elixir code:</p>
 <figure>
@@ -150,7 +151,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>For general programming, <code>+=</code>, <code>()</code>, <code>[]</code>, <code>{}</code></li>
 <li>Specifically for Elixir, <code>&lt;&gt;</code>, <code>&lt;-</code>, <code>-&gt;</code>, <code>|&gt;</code></li>
 </ul>
-<p>In the same vein, check out Jonas Hietala’s <a href="https://www.jonashietala.se/blog/2021/06/03/the-t-34-keyboard-layout/">excellent post</a> about the “T-34” layout, a 40% keyboard layout geared for Rust and Elixir coding. Jonas describes design choices behind it, including thought about symbol bigrams and efficient movement between layers.</p>
 <h3 id="beakl-15">BEAKL 15</h3>
 <p><a href="https://deskthority.net/wiki/BEAKL">BEAKL (Balanced Effortless Advanced Keyboard Layout)</a> is a sequence of optimized keyboard layouts, which include symbol layers. Here is the symbol layer for BEAKL 15:</p>
 <figure>
@@ -158,6 +158,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 <p>(index fingers rest on <code>)</code> and <code>{</code>)</p>
 <p>Consistent with BEAKL’s philosophy, the layout favors the 3x3 “home block” with the index, middle, and ring fingers, while avoiding the pinky and center columns.</p>
+<h3 id="multi-layer-designs">Multi-layer designs</h3>
+<p>Rather than a symbol layer, another approach is to distribute the symbols across several layers, particularly on smaller keyboards.</p>
+<ul>
+<li><p><a href="https://decorous-derby-cf1.notion.site/Thoughts-on-keyboard-layouts-63ee6a98536044d394d178a807426972">Thoughts on keyboard layouts</a> describes a practical 46-key keymap for the Kyria, having symbol keys split across a numpad layer and a symbol layer.</p></li>
+<li><p><a href="https://github.com/manna-harbour/miryoku/tree/master/docs/reference">Miryoku</a> is a 36-key keymap. It has a numpad layer, then a symbol layer has the shifted digits in the same positions: <code>1</code> → <code>!</code>, <code>2</code> → <code>@</code>, <code>3</code> → <code>#</code>, and so on.</p></li>
+<li><p><a href="https://github.com/qmk/qmk_firmware/tree/master/keyboards/ferris/keymaps/default">The default Ferris layout</a> is a 34-key keymap. It has symbols split across two symbol layers. It has a number layer that duplicates some symbols for arithmetic.</p></li>
+<li><p>Jonas Hietala’s <a href="https://www.jonashietala.se/blog/2021/06/03/the-t-34-keyboard-layout/">“T-34” layout post</a> describes another 34-key keymap, geared for Rust and Elixir coding. Jonas describes design choices behind it, including thought about symbol bigrams and efficient movement between layers.</p></li>
+</ul>
 <h2 id="my-symbol-layer">My symbol layer</h2>
 <p>This is my symbol layer, with index fingers resting on <code>=</code> and <code>:</code>.</p>
 <figure>
@@ -204,7 +212,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Another way to learn is with typing practice. Try out your symbol layer on <a href="https://www.typingclub.com/sportal/program-3/457.play">typingclub.com’s</a> symbol practice or <a href="https://type-fu.com/">type-fu.com’s</a> code lesson.</p>
 <h2 id="symbol-character-frequencies">Symbol character frequencies</h2>
 <p>This section is on measuring character frequencies, which helps optimize the layout for the programming languages you use. Some symbols occur much more often than others. It’s helpful to know the distribution so that we can prioritize the layout for more frequent symbols.</p>
-<p>I counted how often each symbol occurs in my own files. I found that this depends greatly on what kind of file it is. Below are character frequencies counted on six different kinds of text, each column counted on at least 40K of data. Units are percentages. “Prose” is a mix email and other plain text files. “Mixed” is a mixed corpus.</p>
+<p>I counted how often each symbol occurs in my own files. I found that this depends greatly on what kind of file it is. Below are character frequencies counted on six different kinds of text, each column counted on at least 40K of data. Units are percentages. “Prose” is a mix of email and other plain text files. “Mixed” is a mixed corpus.</p>
 <pre><code>     Prose       C/C++       Python      Shell       LaTeX       Mixed
 #1   .  1.249    _  1.369    _  2.213    &quot;  2.792    \  2.254    ,  1.416
 #2   ,  0.952    *  1.238    .  2.183    -  2.430    {  1.327    .  1.067
