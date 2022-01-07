@@ -89,13 +89,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title">QMK: Caps Word</h1>
 <h2 class="author">Pascal Getreuer</h2>
 </div>
+<div id="TOC">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#add-caps-word-to-your-keymap">Add Caps Word to your keymap</a></li>
+<li><a href="#using-caps-word">Using Caps Word</a></li>
+<li><a href="#customization-options">Customization options</a>
+<ul>
+<li><a href="#activate-caps-word-with-a-combo">Activate Caps Word with a combo</a></li>
+<li><a href="#representing-the-current-caps-word-state">Representing the current Caps Word state</a></li>
+</ul></li>
+<li><a href="#explanation">Explanation</a></li>
+</ul>
+</div>
 <p><a href="../index.html">← More about keyboards</a></p>
 <h2 id="overview">Overview</h2>
 <p>All-caps identifiers like “<code>MOD_MASK_ALT</code>” are awkward to type.</p>
 <p>Caps Lock would be the standard solution to this problem, but it is awkward: it needs a dedicated key to toggle it (an imposition on smaller keyboards), and we need to remember to toggle it off after typing the word. Or with normal shifting, we either perform finger gymnastics or need to stop typing in the middle of the word to release shift with one hand to switch to holding shift with the other hand. In my experience, this is a nuisance especially if your shift keys are mod-taps, as in <a href="https://precondition.github.io/home-row-mods">home row mods</a>.</p>
 <p><strong>Caps Word</strong>, implemented here, is a modern alternative to Caps Lock:</p>
 <ul>
-<li><p>Caps Word is activated by pressing the left and right shift keys at the same time. This way you don’t need a dedicated key for using Caps Word.</p></li>
+<li><p>Caps Word is activated by pressing the left and right shift keys at the same time (see also the customization options below). This way you don’t need a dedicated key for using Caps Word.</p></li>
 <li><p>Caps Word automatically disables itself at the end of the word, that is, once space or any key other than <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, or backspace is pressed.</p></li>
 </ul>
 <p><strong>Compatibility:</strong> I’ve tested that this implementation works with one-shot mods and Space Cadet Shift, and it predictably handles key repeating.</p>
@@ -112,7 +125,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>Step 2:</strong> In your rules.mk, add <code>SRC += features/caps_word.c</code></p>
 <p><strong>Step 3:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/caps_word.h">caps_word.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/caps_word.c">caps_word.c</a> there.</p>
-<p>Also, your keymap needs both a left and right shift key <code>KC_LSFT</code> and <code>KC_RSFT</code> or one-shot or mod-tap equivalents.</p>
+<p>Also, your keymap needs both a left and right shift key <code>KC_LSFT</code> and <code>KC_RSFT</code> or one-shot or mod-tap equivalents. Alternatively, use the customization options below to add another method of activating Caps Word.</p>
 <h2 id="using-caps-word">Using Caps Word</h2>
 <p>With the above flashed to your keyboard:</p>
 <ol type="1">
@@ -121,6 +134,71 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><strong>Disabling:</strong> Caps Word disables itself when the next word breaking key is typed.</p></li>
 </ol>
 <p>If you want to explicitly stop Caps Word, press and release Ctrl or another non-shift modifier or layer key. This also disables Caps Word.</p>
+<h2 id="customization-options">Customization options</h2>
+<p>Functions to manipulate Caps Word:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>caps_word_set(active)</code></td>
+<td>Activates or deactivates Caps Word.</td>
+</tr>
+<tr class="even">
+<td><code>caps_word_get()</code></td>
+<td>Returns whether Caps Word is currently active.</td>
+</tr>
+</tbody>
+</table>
+<p>These functions can be used to activate, deactivate, or toggle Caps Word from your keymap with a macro, combo, tap dance, or whatever means.</p>
+<h3 id="activate-caps-word-with-a-combo">Activate Caps Word with a combo</h3>
+<p><a href="https://github.com/getreuer/qmk-keymap">In my keymap</a>, I activate Caps Word with <a href="https://docs.qmk.fm/#/feature_combo">a combo</a> of simultaneously pressing <code>.</code> and <code>C</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">enum</span> combo_events {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>  CAPS_COMBO,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>  <span class="co">// Other combos...</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>  COMBO_LENGTH</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>};</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="dt">uint16_t</span> COMBO_LEN = COMBO_LENGTH;</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint16_t</span> PROGMEM caps_combo[] = {KC_DOT, KC_C, COMBO_END};</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>combo_t key_combos[] = {</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>  [CAPS_COMBO] = COMBO_ACTION(caps_combo),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>  <span class="co">// Other combos...</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>};</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="dt">void</span> process_combo_event(<span class="dt">uint16_t</span> combo_index, <span class="dt">bool</span> pressed) {</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>  <span class="cf">switch</span>(combo_index) {</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>    <span class="cf">case</span> CAPS_COMBO:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>      <span class="cf">if</span> (pressed) {</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>        caps_word_set(true);  <span class="co">// Activate Caps Word!</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>      }</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a>      <span class="cf">break</span>;</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>    <span class="co">// Other combos...</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>  }</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a>}</span></code></pre></div>
+<p>And if you haven’t yet enabled combos, add <code>COMBO_ENABLE = yes</code> in rules.mk.</p>
+<h3 id="representing-the-current-caps-word-state">Representing the current Caps Word state</h3>
+<p>You can define <code>caps_word_set_user(bool active)</code> to get callbacks when Caps Word turns on or off. This is useful to represent the current Caps Word state, e.g. by setting an LED or playing a sound. In your keymap, define</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="dt">void</span> caps_word_set_user(<span class="dt">bool</span> active) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>  <span class="cf">if</span> (active) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    <span class="co">// Do something when Caps Word activates.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>  } <span class="cf">else</span> {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>    <span class="co">// Do something when Caps Word deactivates.</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>  }</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>}</span></code></pre></div>
+<p>For instance on the ZSA Moonlander, the following indicates the Caps Word state on LEDs 1 and 6:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;moonlander.h&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="dt">void</span> caps_word_set_user(<span class="dt">bool</span> active) {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>  ML_LED_1(active);</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>  ML_LED_6(active);</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>}</span></code></pre></div>
 <h2 id="explanation">Explanation</h2>
 <p>The code checks the mod bits on each key event, enabling Caps Word when both left and right shifts are active.</p>
 <p>While enabled, Caps Word automatically presses and releases left shift (<code>KC_LSFT</code>) as needed so that letters are shifted and other keys are not. The word continues while typing <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace. Any other key is considered “word breaking” and disables Caps Word. You can edit the switch statement at the end of the <code>process_caps_word()</code> function to define which keys are word breaking.</p>

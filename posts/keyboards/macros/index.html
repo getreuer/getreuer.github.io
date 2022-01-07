@@ -239,7 +239,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="cf">case</span> NEXTSEN:  <span class="co">// Next sentence macro.</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    SEND_STRING(<span class="st">&quot;. &quot;</span>);</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    add_oneshot_mods(MOD_BIT(KC_LSHIFT));  <span class="co">// Set one-shot mod for shift.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    add_oneshot_mods(MOD_BIT(KC_LSFT));  <span class="co">// Set one-shot mod for shift.</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>  }</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
 <p>See also the approach taken in <a href="https://github.com/precondition/dactyl-manuform-keymap">precondition’s keymap</a>: there, the next sentence is triggered by double tapping the period button through a QMK tap dance, rather than using a macro.</p>
