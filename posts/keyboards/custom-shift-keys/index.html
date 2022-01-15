@@ -103,7 +103,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <h2 id="implementation">Implementation</h2>
 <p>Here is my solution. It correctly handles key repeating and rolled presses, and I’ve tested that it works predictably in combination with one-shot mods, mod-taps, and Space Cadet Shift. It does not work with Auto Shift.</p>
-<p><strong>Step 1:</strong> In your <code>keymap.c</code>, define a table of “custom_shift_key_t” structs. Each row defines one key. The <code>keycode</code> is the keycode as it appears in your layout and determines what is typed normally. The <code>shifted_keycode</code> is what you want the key to type when shifted. (See the <a href="https://docs.qmk.fm/#/keycodes">QMK keycodes documentation</a> for a reference of all QMK keycodes.)</p>
+<p><strong>Step 1:</strong> In your <code>keymap.c</code>, define a table of “<code>custom_shift_key_t</code>” structs. Each row defines one key. The <code>keycode</code> is the keycode as it appears in your layout and determines what is typed normally. The <code>shifted_keycode</code> is what you want the key to type when shifted. (See the <a href="https://docs.qmk.fm/#/keycodes">QMK keycodes documentation</a> for possible keycodes.)</p>
 <p>E.g. the first row in my table has a <code>.</code> (<code>KC_DOT</code>) key that types <code>?</code> (<code>KC_QUES</code>) when pressed shifted.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/custom_shift_keys.h&quot;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
@@ -111,7 +111,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  {KC_DOT , KC_QUES}, <span class="co">// Shift . is ?</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>  {KC_COMM, KC_EXLM}, <span class="co">// Shift , is !</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>  {KC_MINS, KC_EQL }, <span class="co">// Shift - is =</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  {KC_COLN, KC_SCLN}, <span class="co">// Shift : is ;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  {KC_COLN, KC_SCLN}, <span class="co">// Shift : is ; </span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>};</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="dt">uint8_t</span> NUM_CUSTOM_SHIFT_KEYS =</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>    <span class="kw">sizeof</span>(custom_shift_keys) / <span class="kw">sizeof</span>(custom_shift_key_t);</span></code></pre></div>

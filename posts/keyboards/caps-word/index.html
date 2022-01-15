@@ -133,7 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Then begin typing to get capitalized letters.</p></li>
 <li><p><strong>Disabling:</strong> Caps Word disables itself when the next word breaking key is typed.</p></li>
 </ol>
-<p>If you want to explicitly stop Caps Word, press and release Ctrl or another non-shift modifier or layer key. This also disables Caps Word.</p>
+<p>If you want to explicitly stop Caps Word, press and release Ctrl or another modifier. Or in many programs, it may be acceptable to press Space and then Backspace. Any of these actions disables Caps Word.</p>
 <h2 id="customization-options">Customization options</h2>
 <p>Functions to manipulate Caps Word:</p>
 <table>
@@ -200,8 +200,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>  ML_LED_6(active);</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>}</span></code></pre></div>
 <h2 id="explanation">Explanation</h2>
-<p>The code checks the mod bits on each key event, enabling Caps Word when both left and right shifts are active.</p>
-<p>While enabled, Caps Word automatically presses and releases left shift (<code>KC_LSFT</code>) as needed so that letters are shifted and other keys are not. The word continues while typing <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace. Any other key is considered “word breaking” and disables Caps Word. You can edit the switch statement at the end of the <code>process_caps_word()</code> function to define which keys are word breaking.</p>
+<p>The code checks the mod bits on each key event, activating Caps Word when both left and right shifts are pressed.</p>
+<p>While active, Caps Word automatically applies shift as a weak mod as needed so that letters are shifted and other keys are not. The word continues while typing <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace. Additionally, most layer switch keys (<code>MO</code>, <code>TO</code>, <code>TG</code>, <code>OSL</code>, <code>LT</code>) are ignored so that Caps Word may be used across layers. Any other key is considered “word breaking” and disables Caps Word. You can edit the switch statement at the end of the <code>process_caps_word()</code> function to define which keys are word breaking.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
