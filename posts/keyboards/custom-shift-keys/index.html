@@ -115,14 +115,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>};</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="dt">uint8_t</span> NUM_CUSTOM_SHIFT_KEYS =</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>    <span class="kw">sizeof</span>(custom_shift_keys) / <span class="kw">sizeof</span>(custom_shift_key_t);</span></code></pre></div>
-<p><strong>Step 2:</strong> Handle custom shift keys from your <code>process_record_user</code> function like so:</p>
+<p><strong>Step 2:</strong> Handle custom shift keys from your <code>process_record_user()</code> function like so:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>  <span class="cf">if</span> (!process_custom_shift_keys(keycode, record)) { <span class="cf">return</span> false; }</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>  <span class="co">// Your macros ...</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>}</span></code></pre></div>
-<p><strong>Step 3:</strong> Add <code>SRC += custom_shift_keys.c</code> to your rules.mk file.</p>
+<p><strong>Step 3:</strong> Add <code>SRC += features/custom_shift_keys.c</code> to your rules.mk file.</p>
 <p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/custom_shift_keys.h">custom_shift_keys.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/custom_shift_keys.c">custom_shift_keys.c</a> there. This is the meat of the implementation.</p>
 <p><strong>custom_shift_keys.h</strong></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">// Copyright 2021 Google LLC.</span></span>

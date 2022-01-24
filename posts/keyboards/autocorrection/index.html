@@ -147,7 +147,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection.h">autocorrection.h</a>: corresponding header file.</li>
 <li><a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_data.h">autocorrection_data.h</a>: file encoding the typos to be corrected. This is a practical example, but it can be changed; see below for details.</li>
 </ul>
-<p><strong>Step 2:</strong> In your <code>keymap.c</code> file, call autocorrection from your <code>process_record_user</code> function as</p>
+<p><strong>Step 2:</strong> In your <code>keymap.c</code> file, call autocorrection from your <code>process_record_user()</code> function as</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/autocorrection.h&quot;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>

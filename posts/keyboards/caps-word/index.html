@@ -115,7 +115,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Compatibility:</strong> I’ve tested that this implementation works with one-shot mods and Space Cadet Shift, and it predictably handles key repeating.</p>
 <p>Unlike some other QMK Caps Word implementations, this library does not use the Caps Lock (<code>KC_CAPS</code>) keycode. It works even if you’re remapping Caps Lock at the OS level to Ctrl or something else, as Emacs and Vim users often do.</p>
 <h2 id="add-caps-word-to-your-keymap">Add Caps Word to your keymap</h2>
-<p><strong>Step 1:</strong> In your <code>keymap.c</code>, call Caps Word from your <code>process_record_user</code> function as</p>
+<p><strong>Step 1:</strong> In your <code>keymap.c</code>, call Caps Word from your <code>process_record_user()</code> function as</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/caps_word.h&quot;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>

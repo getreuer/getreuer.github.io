@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Pascal Getreuer" />
-  <title>Word selection QMK macro</title>
+  <title>QMK: Mouse Turbo Click</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -86,39 +86,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="content">
 <div id="header">
-<h1 class="title">Word selection QMK macro</h1>
+<h1 class="title">QMK: Mouse Turbo Click</h1>
 <h2 class="author">Pascal Getreuer</h2>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
-<h2 id="overview">Overview</h2>
-<p>This post describes a QMK macro for a button that selects the current word, assuming conventional text editing hotkeys. Pressing it again extends the selection to the following word. The effect is similar to word selection (<code>W</code>) in the <a href="https://kakoune.org">Kakoune editor</a>.</p>
-<figure>
-<img src="select-word.gif" alt="" /><figcaption>Effect of pressing the macro repeatedly.</figcaption>
-</figure>
-<p>Similarly, pressing the button with shift selects the current line, and pressing the button again extends the selection to the following line.</p>
+<p>This post describes a QMK macro “Turbo Click” button that clicks the mouse rapidly:</p>
+<ul>
+<li><p>Pressing and holding the Turbo Click button sends rapid mouse clicks, about 12 clicks per second.</p></li>
+<li><p>Quickly double tapping the Turbo Click button “locks” it. Rapid mouse clicks are sent until the Turbo Click button is tapped again.</p></li>
+</ul>
+<p>Turbo Click may be advantageous in certain computer games. It could also be used in art programs to paint in a dashed pattern. I don’t know that there is a “serious” use for Turbo Click, but it is interesting how auto-repeating actions like this can be implemented in QMK.</p>
 <h2 id="add-it-to-your-keymap">Add it to your keymap</h2>
 <p>If you are new to QMK macros, see my <a href="../macros/index.html">macro buttons</a> post for an intro.</p>
-<p><strong>Step 1:</strong> In your <code>keymap.c</code>, add a custom keycode for activating the macro and use the new keycode somewhere in your layout. I’ll name it <code>SELWORD</code>, but you can call it anything you like.</p>
+<p><strong>Step 1:</strong> In your <code>keymap.c</code>, add a custom keycode for activating Turbo Click and use the new keycode somewhere in your layout. I’ll name it <code>TURBO</code>, but you can call it anything you like.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">enum</span> custom_keycodes {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>  SELWORD = SAFE_RANGE,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>  TURBO = SAFE_RANGE,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  <span class="co">// Other custom keys...</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>};</span></code></pre></div>
-<p><strong>Step 2:</strong> Handle the macro from your <code>process_record_user()</code> function by calling <code>process_select_word()</code>, passing your custom keycode as the third argument:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/select_word.h&quot;</span></span>
+<p><strong>Step 2:</strong> Handle Turbo Click from your <code>process_record_user()</code> function by calling <code>process_mouse_turbo_click()</code>, passing your custom keycode as the third argument:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/mouse_turbo_click.h&quot;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>  <span class="cf">if</span> (!process_select_word(keycode, record, SELWORD)) { <span class="cf">return</span> false; }</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>  <span class="cf">if</span> (!process_mouse_turbo_click(keycode, record, TURBO)) { <span class="cf">return</span> false; }</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="co">// Your macros ...</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>}</span></code></pre></div>
-<p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add <code>SRC += features/select_word.c</code></p>
-<p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/select_word.h">select_word.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/select_word.c">select_word.c</a> there. This is the meat of the implementation.</p>
-<p><strong>Note for Mac users:</strong> The implementation assumes Windows/Linux editing hotkeys by default. Uncomment the <code>#define MAC_HOTKEYS</code> line in <code>select_word.c</code> for Mac hotkeys. The Mac implementation is untested, let me know if it has problems.</p>
+<p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">SRC</span> += features/mouse_turbo_click.c</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="ex">MOUSEKEY_ENABLE</span> = yes</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="ex">DEFERRED_EXEC_ENABLE</span> = yes</span></code></pre></div>
+<p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/mouse_turbo_click.h">mouse_turbo_click.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/mouse_turbo_click.c">mouse_turbo_click.c</a> there.</p>
 <h2 id="explanation">Explanation</h2>
-<p>The macro checks for events involving <code>sel_keycode</code>. For word selection, the first press of the macro sends the keys <strong>Ctrl+→</strong>, <strong>Ctrl+←</strong> to move the cursor to the beginning of the word, then holds <strong>Ctrl+Shift+→</strong> to select to the end of the word. On subsequent presses, <strong>Ctrl+Shift+→</strong> is pressed again to extend the selection to the next word.</p>
-<p>For line selection, the macro sends <strong>Home</strong>, <strong>Shift+End</strong> on the first press, then <strong>↓</strong> on subsequent presses.</p>
-<p>The <code>state</code> variable keeps track of whether the macro has done the initial press and whether it is making a word vs. line selection.</p>
+<p>The implementation uses mouse keys and a periodic callback using the <a href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">deferred execution API</a>. When Turbo Click starts, <code>turbo_click_callback()</code> is scheduled. The callback executes twice per click, alternating between pressing and releasing the left mouse button key (<code>KC_MS_BTN1</code>). When Turbo Click stops, the callback is canceled and the mouse button is released if needed.</p>
+<p>The constant <code>CLICK_PERIOD_MS</code> determines the click period in units of milliseconds. The configured period of 80 ms gives 1000/80 = 12.5 clicks per second. Smaller period implies faster clicking. Beware that the keyboard might become unresponsive if the period is too small. I suggest setting this no smaller than 50.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
