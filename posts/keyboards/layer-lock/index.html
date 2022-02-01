@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer" />
+  <title>QMK: Layer Lock key</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
+<script type="text/javascript" src="../../../site.js" ></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">QMK: Layer Lock key</h1>
+<h2 class="author">Pascal Getreuer</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#add-it-to-your-keymap">Add it to your keymap</a></li>
+<li><a href="#example-use">Example use</a></li>
+<li><a href="#customization-options">Customization options</a></li>
+<li><a href="#explanation">Explanation</a></li>
+</ul>
+</div>
+<p><a href="../index.html">← More about keyboards</a></p>
+<p>Layers are often accessed by holding a button, using a momentary layer switch <code>MO(layer)</code> or layer tap <code>LT(layer, key)</code> key. But you may sometimes want to “lock” or “toggle” the layer so that it stays on without having to continue to hold the button. One way to do that is with a tap-toggle <code>TT</code> layer key, but here is an alternative.</p>
+<p>This post describes a <strong>Layer Lock</strong> key. When tapped, it “locks” the highest layer to stay active, assuming the layer was activated by one of the following keys:</p>
+<ul>
+<li><code>MO(layer)</code> momentary layer switch</li>
+<li><code>LT(layer, key)</code> layer tap</li>
+<li><code>OSL(layer)</code> one-shot layer</li>
+<li><code>TT(layer)</code> layer tap toggle</li>
+</ul>
+<p>Tapping Layer Lock again unlocks and turns off the layer. Additionally, when a layer is “locked,” other layer keys such as <code>TO(layer)</code> will override and unlock the layer.</p>
+<p>(Side note: This is not to be confused with another meaning of “layer lock,” which refers to a bugged keymap in which it is impossible to switch layers.)</p>
+<h2 id="add-it-to-your-keymap">Add it to your keymap</h2>
+<p>If you are new to QMK macros, see my <a href="../macros/index.html">macro buttons</a> post for an intro.</p>
+<p><strong>Step 1:</strong> In your <code>keymap.c</code>, add a custom keycode for the Layer Lock key and use the new keycode somewhere in your layout. I’ll name it <code>LLOCK</code>, but you can call it anything you like.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">enum</span> custom_keycodes {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>  LLOCK = SAFE_RANGE,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  <span class="co">// Other custom keys...</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>};</span></code></pre></div>
+<p><strong>Step 2:</strong> Handle Layer Lock from your <code>process_record_user()</code> function by calling <code>process_layer_lock()</code>, passing your custom keycode as the third argument:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/layer_lock.h&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>  <span class="cf">if</span> (!process_layer_lock(keycode, record, LLOCK)) { <span class="cf">return</span> false; }</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="co">// Your macros ...</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>}</span></code></pre></div>
+<p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">SRC</span> += features/layer_lock.c</span></code></pre></div>
+<p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/layer_lock.h">layer_lock.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/layer_lock.c">layer_lock.c</a> there.</p>
+<h2 id="example-use">Example use</h2>
+<p>Consider a keymap with the following base layer.</p>
+<figure>
+<img src="example-base.png" alt="" /><figcaption>Base layer.</figcaption>
+</figure>
+<p>The highlighted key is a momentary layer switch <code>MO(NAV)</code>. Holding it accesses a navigation layer.</p>
+<figure>
+<img src="example-nav.png" alt="" /><figcaption>Navigation layer.</figcaption>
+</figure>
+<p>Holding the NAV key is fine for brief use, but awkward to continue holding when using these functions continuously. The <strong>Layer Lock</strong> key comes to the rescue:</p>
+<ol type="1">
+<li><p>Hold the NAV key, activating the navigation layer.</p></li>
+<li><p>Tap Layer Lock.</p></li>
+<li><p>Release NAV. The navigation layer stays on.</p></li>
+<li><p>Make use of the arrow keys, etc.</p></li>
+<li><p>Tap Layer Lock or NAV again to turn the navigation layer back off.</p></li>
+</ol>
+<p>A variation that would also work is to put the Layer Lock key on the base layer and make other layers transparent (<code>KC_TRNS</code>) in that position. Pressing the Layer Lock key locks (or unlocks) the <em>highest</em> layer, regardless of which layer the Layer Lock key is on.</p>
+<h2 id="customization-options">Customization options</h2>
+<p>Use the following functions to query and manipulate the layer lock state.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>is_layer_locked(layer)</code></td>
+<td>Checks whether <code>layer</code> is locked.</td>
+</tr>
+<tr class="even">
+<td><code>layer_lock_on(layer)</code></td>
+<td>Locks and turns on <code>layer</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>layer_lock_off(layer)</code></td>
+<td>Unlocks and turns off <code>layer</code>.</td>
+</tr>
+<tr class="even">
+<td><code>layer_lock_invert(layer)</code></td>
+<td>Toggles whether <code>layer</code> is locked.</td>
+</tr>
+</tbody>
+</table>
+<p>Additionally, there is an optional callback <code>layer_lock_set_user()</code> that gets called when a layer is locked or unlocked. This is useful to represent the current lock state for instance by setting an LED. In your keymap, define</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">void</span> layer_lock_set_user(layer_state_t locked_layers) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="co">// Do something like `set_led(is_layer_locked(NAV));`</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 id="explanation">Explanation</h2>
+<p>Internally, a variable <code>locked_layers</code> tracks the lock state for each layer. It is a bitfield where the <code>k</code>th bit is on if layer <code>k</code> is locked.</p>
+<p>On an <code>MO(layer)</code>, <code>TT(layer)</code>, or <code>LT(layer, key)</code> event, the layer is extracted from the keycode and checked against <code>locked_layers</code>. Since the normal release event handling for these keys is to turn the layer off, we indicate that this handling should be skipped (return false) if the layer is locked so that the layer stays on.</p>
+<p>For one-shot layer <code>OSL(layer)</code> keys, we check when locking whether the layer being locked is <code>get_oneshot_layer()</code>. If so, we call <code>reset_oneshot_layer()</code> to forget the OSL state. This way the OSL handling doesn’t turn the layer off after the next keypress.</p>
+<p>Even when a layer is nominally “locked,” it is possible and expected that other features may nevertheless turn the layer off. For instance, a <code>TO(layer)</code> key may turn off a locked layer or user code may directly call <code>layer_off(layer)</code>. To account for this, we compare <code>locked_layers</code> vs. the layer state on each key event and set layers with broken locks to be unlocked.</p>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
