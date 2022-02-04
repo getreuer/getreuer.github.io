@@ -228,13 +228,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    <span class="co">// Do something when Caps Word deactivates.</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>  }</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>}</span></code></pre></div>
-<p>For instance on the ZSA Moonlander, the following indicates the Caps Word state on LEDs 1 and 6:</p>
+<p>For instance on the ZSA Moonlander, the following indicates the Caps Word state on LEDs 1 and 4:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;moonlander.h&quot;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="dt">void</span> caps_word_set_user(<span class="dt">bool</span> active) {</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>  ML_LED_1(active);</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>  ML_LED_6(active);</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>}</span></code></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="dt">void</span> keyboard_post_init_user(<span class="dt">void</span>) {</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>  <span class="co">// I want to control the Moonlander&#39;s LEDs myself.</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>  keyboard_config.led_level = false;</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>}</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="dt">void</span> caps_word_set_user(<span class="dt">bool</span> active) {</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>  ML_LED_1(active);</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>  ML_LED_4(active);</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>}</span></code></pre></div>
 <h2 id="explanation">Explanation</h2>
 <p>The code checks the mod bits on each key event, activating Caps Word when both left and right shifts are pressed.</p>
 <p>While active, Caps Word automatically applies shift as a weak mod as needed so that letters are shifted and other keys are not. The word continues while <code>caps_word_press_user</code> returns true (by default, for <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace). Additionally, most layer switch keys (<code>MO</code>, <code>TO</code>, <code>TG</code>, <code>TT</code>, <code>OSL</code>, <code>LT</code>) are ignored so that Caps Word may be used across layers. Any other key is considered “word breaking” and disables Caps Word.</p>
