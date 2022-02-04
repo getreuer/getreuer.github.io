@@ -91,11 +91,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
 <h2 id="overview">Overview</h2>
-<p>This post describes a QMK macro for a button that selects the current word, assuming conventional text editing hotkeys. Pressing it again extends the selection to the following word. The effect is similar to word selection (<code>W</code>) in the <a href="https://kakoune.org">Kakoune editor</a>.</p>
+<p>This post describes a QMK macro for a button that selects the current word, assuming conventional text editing hotkeys. Press it again to extend the selection to the following word. The effect is similar to word selection (<code>W</code>) in the <a href="https://kakoune.org">Kakoune editor</a>.</p>
 <figure>
 <img src="select-word.gif" alt="" /><figcaption>Effect of pressing the macro repeatedly.</figcaption>
 </figure>
-<p>Similarly, pressing the button with shift selects the current line, and pressing the button again extends the selection to the following line.</p>
+<p><strong>Line selection:</strong> Similarly, press the button with shift to select the current line, and press it again to extend the selection to the following line.</p>
+<p><strong>Clearing the selection:</strong> During a selection, press <strong>Esc</strong> to make the macro tap right arrow <strong>→</strong> to deselect and leave the cursor at the end of the selection. Or press <strong>←</strong> or <strong>→</strong> directly to deselect and choose which selection endpoint to jump the cursor to.</p>
 <h2 id="add-it-to-your-keymap">Add it to your keymap</h2>
 <p>If you are new to QMK macros, see my <a href="../macros/index.html">macro buttons</a> post for an intro.</p>
 <p><strong>Step 1:</strong> In your <code>keymap.c</code>, add a custom keycode for activating the macro and use the new keycode somewhere in your layout. I’ll name it <code>SELWORD</code>, but you can call it anything you like.</p>
