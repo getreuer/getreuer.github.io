@@ -130,13 +130,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Features:</strong></p>
 <ul>
 <li><p>It runs on your keyboard, so it is always active no matter what software.</p></li>
-<li><p>Low resource cost: for an autocorrection dictionary of 70 entries, firmware size cost is 1620 bytes and average CPU cost per key press is about 20 µs.</p></li>
+<li><p>Low resource cost: for an autocorrection dictionary of 71 entries, firmware size cost is 1672 bytes and average CPU cost per key press is about 20 µs.</p></li>
 <li><p>It is case insensitive. It corrects <tt><span class="typo">Fitler</span></tt> to <code>Filter</code> and <tt><span class="typo">FITLER</span></tt> to <code>FILTER</code>.</p></li>
 <li><p>It works within words. It corrects <tt><span class="typo">fitler</span>ed</tt>, <tt><span class="typo">fitler</span>ing</tt>, and useful for programming, within longer identifiers like <tt>DesignButterworth<span class="typo">Fitler</span></tt>.</p></li>
 </ul>
 <p><strong>Limitations:</strong> Running autocorrection on the keyboard comes with some constraints. It is rudimentary like I said:</p>
 <ul>
-<li><p>It is limited to alphabet characters <code>a</code>–<code>z</code>. No accented or Unicode letters; I’m sorry this probably isn’t useful for languages besides English.</p></li>
+<li><p>It is limited to alphabet characters <code>a</code>–<code>z</code>, apostrophes <code>'</code>, and “word breaks.” No accented or Unicode letters; I’m sorry this probably isn’t useful for languages besides English.</p></li>
 <li><p>It does not follow mouse or hotkey driven cursor movement.</p></li>
 </ul>
 <h2 id="add-autocorrection-to-your-keymap">Add autocorrection to your keymap</h2>
@@ -183,6 +183,7 @@ concensus     -> consensus
 contians      -> contains
 cosnt         -> const
 dervied       -> derived
+dosen't       -> doesn't
 fales         -> false
 fasle         -> false
 fitler        -> filter
@@ -234,9 +235,9 @@ udpate        -> update
 widht         -> width
 </textarea>
 <h3 id="firmware-size-and-cpu-costs">Firmware size and CPU costs</h3>
-<p>I am anxiously aware that a keyboard microcontroller has limited resources. So I was sure to measure how much memory and CPU time autocorrection consumes during development. These measurements are for the example autocorrection dictionary as used above, which has 70 entries:</p>
+<p>I am anxiously aware that a keyboard microcontroller has limited resources. So I was sure to measure how much memory and CPU time autocorrection consumes during development. These measurements are for the example autocorrection dictionary as used above, which has 71 entries:</p>
 <ul>
-<li><p><strong>Firmware size:</strong> Autocorrection increases my firmware size by a total of <strong>1620 bytes</strong>. Breaking that down, 1104 bytes are for the <code>autocorrection_data</code> array and 516 bytes for the autocorrection code.</p></li>
+<li><p><strong>Firmware size:</strong> Autocorrection increases my firmware size by a total of <strong>1672 bytes</strong>. Breaking that down, 1120 bytes are for the <code>autocorrection_data</code> array and 552 bytes for the autocorrection code.</p></li>
 <li><p><strong>CPU time:</strong> On my Elite-C microcontrollers, the average CPU time for <code>process_autocorrection</code> to process an alpha key press is around <strong>20 µs</strong>. Consider this a rough order-of-magnitude cost. Processing cost increases (more trie nodes are visited) when recent input is close to a known typo, with the max being when a long typo is matched.</p></li>
 </ul>
 <p>The costs are not free but reasonable. For reference, the firmware size cost for mouse keys is 2124 bytes and the CPU time to process a layer switch is about 70 µs, so autocorrection is cheaper than those things. Of course, the cost scales with the size of the autocorrection dictionary, so keep that in mind if you add a lot more entries.</p>
@@ -253,15 +254,15 @@ widht         -> width
 <ol type="1">
 <li><p>First, create an autocorrection dictionary <code>autocorrection_dict.txt</code>, like</p>
 <pre><code>:thier        -&gt; their
+dosen&#39;t       -&gt; doesn&#39;t
 fitler        -&gt; filter
-lenght        -&gt; length
 ouput         -&gt; output
 widht         -&gt; width</code></pre>
-<p>For a practical 70-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict.txt">autocorrection_dict.txt</a>. And for a yet larger 400-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict_extra.txt">autocorrection_dict_extra.txt</a>.</p>
-<p>The syntax is <code>typo -&gt; correction</code>. Typos and corrections are case insensitive, and any whitespace before or after the typo and correction is ignored. The typo must be only the letters <code>a</code>–<code>z</code>, or the special character <code>:</code> representing a word break. The correction may have any characters.</p></li>
+<p>For a practical 71-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict.txt">autocorrection_dict.txt</a>. And for a yet larger 400-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict_extra.txt">autocorrection_dict_extra.txt</a>.</p>
+<p>The syntax is <code>typo -&gt; correction</code>. Typos and corrections are case insensitive, and any whitespace before or after the typo and correction is ignored. The typo must be only the characters <code>a</code>–<code>z</code>, <code>'</code>, or the special character <code>:</code> representing a word break. The correction may have just about any printable ASCII characters.</p></li>
 <li><p>Use the <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/make_autocorrection_data.py">make_autocorrection_data.py</a> Python script to process the dictionary</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>$ <span class="ex">python3</span> make_autocorrection_data.py</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">Processed</span> 70 autocorrection entries to table with 1104 bytes.</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">Processed</span> 71 autocorrection entries to table with 1120 bytes.</span></code></pre></div>
 <p>The script arranges the entries in <code>autocorrection_dict.txt</code> into a trie and generates <code>autocorrection_data.h</code> with the serialized trie embedded as an array.</p></li>
 <li><p>Finally, recompile and flash your keymap.</p></li>
 </ol>
@@ -273,9 +274,9 @@ widht         -&gt; width</code></pre>
 #define AUTOCORRECTION_MIN_LENGTH 5  // "cheif"
 #define AUTOCORRECTION_MAX_LENGTH 10  // "accomodate"
 
-static const uint8_t autocorrection_data[1104] PROGMEM = {108, 43, 0, 6,
+static const uint8_t autocorrection_data[1120] PROGMEM = {108, 43, 0, 6,
   71, 0, 7, 81, 0, 8, 199, 0, 9, 240, 1, 10, 250, 1, 11, 26, 2, 17, 53, 2,
-  18, 190, 2, 19, 202, 2, 21, 212, 2, 22, 20, 3, 23, 67, 3, 28, 16, 4, 0,
+  18, 190, 2, 19, 202, 2, 21, 212, 2, 22, 20, 3, 23, 67, 3, 28, 32, 4, 0,
   72, 50, 0, 22, 60, 0, 0, 11, 23, 44, 8, 11, 23, 44, 0, 132, 0, 8, 22, 18,
   18, 15, 0, 132, 115, 101, 115, 0, 11, 23, 12, 26, 22, 0, 129, 99, 104, 0,
   68, 94, 0, 8, 106, 0, 15, 174, 0, 21, 187, 0, 0, 12, 15, 25, 17, 12, 0,
@@ -319,22 +320,23 @@ static const uint8_t autocorrection_data[1104] PROGMEM = {108, 43, 0, 6,
   101, 114, 0, 23, 4, 21, 8, 23, 17, 12, 0, 135, 116, 101, 114, 97, 116,
   111, 114, 0, 72, 30, 3, 17, 38, 3, 24, 51, 3, 0, 15, 4, 9, 0, 129, 115,
   101, 0, 4, 12, 23, 17, 18, 6, 0, 131, 97, 105, 110, 115, 0, 22, 17, 8, 6,
-  17, 18, 6, 0, 133, 115, 101, 110, 115, 117, 115, 0, 74, 86, 3, 11, 96, 3,
-  15, 118, 3, 17, 129, 3, 22, 218, 3, 24, 232, 3, 0, 11, 24, 4, 6, 0, 130,
-  103, 104, 116, 0, 71, 103, 3, 10, 110, 3, 0, 12, 26, 0, 129, 116, 104, 0,
-  17, 8, 15, 0, 129, 116, 104, 0, 22, 24, 8, 21, 0, 131, 115, 117, 108,
-  116, 0, 68, 139, 3, 8, 150, 3, 22, 210, 3, 0, 21, 4, 19, 19, 4, 0, 130,
-  101, 110, 116, 0, 85, 157, 3, 25, 200, 3, 0, 68, 164, 3, 21, 175, 3, 0,
-  19, 4, 0, 132, 112, 97, 114, 101, 110, 116, 0, 4, 19, 0, 68, 185, 3, 19,
-  193, 3, 0, 133, 112, 97, 114, 101, 110, 116, 0, 4, 0, 131, 101, 110, 116,
-  0, 8, 15, 8, 21, 0, 130, 97, 110, 116, 0, 18, 6, 0, 130, 110, 115, 116,
-  0, 12, 9, 8, 17, 4, 16, 0, 132, 105, 102, 101, 115, 116, 0, 83, 239, 3,
-  23, 6, 4, 0, 87, 246, 3, 24, 254, 3, 0, 17, 12, 0, 131, 112, 117, 116, 0,
-  18, 0, 130, 116, 112, 117, 116, 0, 19, 24, 18, 0, 131, 116, 112, 117,
-  116, 0, 70, 29, 4, 8, 41, 4, 11, 51, 4, 21, 69, 4, 0, 8, 24, 20, 8, 21,
-  9, 0, 129, 110, 99, 121, 0, 23, 9, 4, 22, 0, 130, 101, 116, 121, 0, 6,
-  21, 4, 21, 12, 8, 11, 0, 135, 105, 101, 114, 97, 114, 99, 104, 121, 0, 4,
-  5, 12, 15, 0, 130, 114, 97, 114, 121, 0};
+  17, 18, 6, 0, 133, 115, 101, 110, 115, 117, 115, 0, 116, 89, 3, 10, 102,
+  3, 11, 112, 3, 15, 134, 3, 17, 145, 3, 22, 234, 3, 24, 248, 3, 0, 17, 8,
+  22, 18, 7, 0, 132, 101, 115, 110, 39, 116, 0, 11, 24, 4, 6, 0, 130, 103,
+  104, 116, 0, 71, 119, 3, 10, 126, 3, 0, 12, 26, 0, 129, 116, 104, 0, 17,
+  8, 15, 0, 129, 116, 104, 0, 22, 24, 8, 21, 0, 131, 115, 117, 108, 116, 0,
+  68, 155, 3, 8, 166, 3, 22, 226, 3, 0, 21, 4, 19, 19, 4, 0, 130, 101, 110,
+  116, 0, 85, 173, 3, 25, 216, 3, 0, 68, 180, 3, 21, 191, 3, 0, 19, 4, 0,
+  132, 112, 97, 114, 101, 110, 116, 0, 4, 19, 0, 68, 201, 3, 19, 209, 3, 0,
+  133, 112, 97, 114, 101, 110, 116, 0, 4, 0, 131, 101, 110, 116, 0, 8, 15,
+  8, 21, 0, 130, 97, 110, 116, 0, 18, 6, 0, 130, 110, 115, 116, 0, 12, 9,
+  8, 17, 4, 16, 0, 132, 105, 102, 101, 115, 116, 0, 83, 255, 3, 23, 22, 4,
+  0, 87, 6, 4, 24, 14, 4, 0, 17, 12, 0, 131, 112, 117, 116, 0, 18, 0, 130,
+  116, 112, 117, 116, 0, 19, 24, 18, 0, 131, 116, 112, 117, 116, 0, 70, 45,
+  4, 8, 57, 4, 11, 67, 4, 21, 85, 4, 0, 8, 24, 20, 8, 21, 9, 0, 129, 110,
+  99, 121, 0, 23, 9, 4, 22, 0, 130, 101, 116, 121, 0, 6, 21, 4, 21, 12, 8,
+  11, 0, 135, 105, 101, 114, 97, 114, 99, 104, 121, 0, 4, 5, 12, 15, 0,
+  130, 114, 97, 114, 121, 0};
 </textarea>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="avoiding-false-triggers">Avoiding false triggers</h3>
