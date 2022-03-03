@@ -94,6 +94,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#add-it-to-your-keymap">Add it to your keymap</a></li>
 <li><a href="#example-use">Example use</a></li>
 <li><a href="#customization-options">Customization options</a></li>
+<li><a href="#compared-to-dflayer">Compared to <code>DF(layer)</code></a></li>
 <li><a href="#explanation">Explanation</a></li>
 </ul>
 </div>
@@ -177,11 +178,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">void</span> layer_lock_set_user(layer_state_t locked_layers) {</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="co">// Do something like `set_led(is_layer_locked(NAV));`</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 id="compared-to-dflayer">Compared to <code>DF(layer)</code></h2>
+<p>Another way to set a layer to be always on is to set it as the default layer with <a href="https://docs.qmk.fm/#/feature_layers">the <code>DF(layer)</code> keycode</a>, comparable to Layer Lock:</p>
+<ul>
+<li><p><code>DF(layer)</code> sets exactly one layer to be always on, changing the base layer to that layer. The <a href="https://docs.qmk.fm/#/feature_layers?id=intermediate-users">intended use</a> is that “When you have multiple base layers you should always treat them as mutually exclusive.”</p></li>
+<li><p>Layer Lock on the other hand does not change the base layer. The idea is to enable locking a partially transparent layer above the existing base layer. Also, it is easy to “break the lock” with Layer Lock, for instance a <code>TO(layer)</code> keycode or user code calling <code>layer_off(layer)</code> will override and unlock the layer, but neither of these things change the default layer. This helps avoid getting into a situation where a layer gets stuck on and makes other layers impossible to reach.</p></li>
+</ul>
 <h2 id="explanation">Explanation</h2>
 <p>Internally, a variable <code>locked_layers</code> tracks the lock state for each layer. It is a bitfield where the <code>k</code>th bit is on if layer <code>k</code> is locked.</p>
 <p>On an <code>MO(layer)</code>, <code>TT(layer)</code>, or <code>LT(layer, key)</code> event, the layer is extracted from the keycode and checked against <code>locked_layers</code>. Since the normal release event handling for these keys is to turn the layer off, we indicate that this handling should be skipped (return false) if the layer is locked so that the layer stays on.</p>
 <p>For one-shot layer <code>OSL(layer)</code> keys, we check when locking whether the layer being locked is <code>get_oneshot_layer()</code>. If so, we call <code>reset_oneshot_layer()</code> to forget the OSL state. This way the OSL handling doesn’t turn the layer off after the next keypress.</p>
-<p>Even when a layer is nominally “locked,” it is possible and expected that other features may nevertheless turn the layer off. For instance, a <code>TO(layer)</code> key may turn off a locked layer or user code may directly call <code>layer_off(layer)</code>. To account for this, we compare <code>locked_layers</code> vs. the layer state on each key event and set layers with broken locks to be unlocked.</p>
+<p>Even when a layer is nominally “locked,” it is possible and expected that other features may nevertheless turn the layer off. To account for this, we compare <code>locked_layers</code> vs. the layer state on each key event and set layers with broken locks to be unlocked.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
