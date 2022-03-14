@@ -157,7 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>Step 3:</strong> In your <code>rules.mk</code>, add</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">SRC</span> += features/autocorrection.c</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/autocorrection.c</span></span></code></pre></div>
 <h3 id="taking-autocorrection-for-a-test-drive">Taking autocorrection for a test drive</h3>
 <p>With the above flashed to your keyboard, try for instance typing the misspelled word <tt><span class="typo">ouput</span></tt>. The instant you type the final <code>t</code>, the word should be speedily autocorrected to <code>output</code>. As further tests, try <tt><span class="typo">becuase</span></tt> and <tt><span class="typo">invliad</span></tt>.</p>
 <p>Here is the full list of typos corrected using the provided <code>autocorrection_data.h</code> file. <code>:</code> is a special character denoting a word break. See below for how to change the autocorrection dictionary.</p>

@@ -113,7 +113,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>}</span></code></pre></div>
-<p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add <code>SRC += features/select_word.c</code></p>
+<p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/select_word.c</span></span></code></pre></div>
 <p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/select_word.h">select_word.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/select_word.c">select_word.c</a> there. This is the meat of the implementation.</p>
 <p><strong>Note for Mac users:</strong> The implementation assumes Windows/Linux editing hotkeys by default. Uncomment the <code>#define MAC_HOTKEYS</code> line in <code>select_word.c</code> for Mac hotkeys. The Mac implementation is untested, let me know if it has problems.</p>
 <h2 id="explanation">Explanation</h2>

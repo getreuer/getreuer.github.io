@@ -113,10 +113,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">SRC</span> += features/mouse_turbo_click.c</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/mouse_turbo_click.c</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="ex">MOUSEKEY_ENABLE</span> = yes</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="ex">DEFERRED_EXEC_ENABLE</span> = yes</span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="dt">MOUSEKEY_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="dt">DEFERRED_EXEC_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
 <p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/mouse_turbo_click.h">mouse_turbo_click.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/mouse_turbo_click.c">mouse_turbo_click.c</a> there.</p>
 <h2 id="explanation">Explanation</h2>
 <p>The implementation uses mouse keys and a periodic callback using the <a href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">deferred execution API</a>. When Turbo Click starts, <code>turbo_click_callback()</code> is scheduled. The callback executes twice per click, alternating between pressing and releasing the left mouse button key (<code>KC_MS_BTN1</code>). When Turbo Click stops, the callback is canceled and the mouse button is released if needed.</p>

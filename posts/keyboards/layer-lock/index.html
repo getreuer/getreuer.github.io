@@ -126,7 +126,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="ex">SRC</span> += features/layer_lock.c</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/layer_lock.c</span></span></code></pre></div>
 <p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/layer_lock.h">layer_lock.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/layer_lock.c">layer_lock.c</a> there.</p>
 <h2 id="example-use">Example use</h2>
 <p>Consider a keymap with the following base layer.</p>
