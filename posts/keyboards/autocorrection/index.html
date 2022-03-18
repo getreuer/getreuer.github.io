@@ -92,6 +92,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="TOC">
 <ul>
 <li><a href="#overview">Overview</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
 <li><a href="#add-autocorrection-to-your-keymap">Add autocorrection to your keymap</a>
 <ul>
 <li><a href="#taking-autocorrection-for-a-test-drive">Taking autocorrection for a test drive</a></li>
@@ -139,6 +140,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>It is limited to alphabet characters <code>a</code>–<code>z</code>, apostrophes <code>'</code>, and “word breaks.” No accented or Unicode letters; I’m sorry this probably isn’t useful for languages besides English.</p></li>
 <li><p>It does not follow mouse or hotkey driven cursor movement.</p></li>
 </ul>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Huge thanks to <span class="citation" data-cites="drashna">@drashna</span> and <span class="citation" data-cites="filterpaper">@filterpaper</span> on GitHub for feedback, ideas, and improvements to make autocorrection better, and to <span class="citation" data-cites="drashna">@drashna</span> for leading the effort to add autocorrection as a core QMK feature.</p>
 <h2 id="add-autocorrection-to-your-keymap">Add autocorrection to your keymap</h2>
 <p>There are a few steps to the implementation. Please bear with me.</p>
 <p><strong>Step 1:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy the following files there:</p>
