@@ -92,10 +92,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="TOC">
 <ul>
 <li><a href="#overview">Overview</a></li>
-<li><a href="#acknowledgements">Acknowledgements</a></li>
 <li><a href="#implementation">Implementation</a></li>
 <li><a href="#compared-to-key-overrides">Compared to Key Overrides</a></li>
 <li><a href="#explanation">Explanation</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
@@ -110,8 +110,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><strong>Rolled presses.</strong> Real typing is not always clean, individual key presses, especially in fast typing. You may press down one key, then while it is held, begin pressing another key—a “roll” across the keys. A common failure mode is a rolled press involving custom shift keys causes a key to get “stuck” until it is pressed again.</p></li>
 <li><p><strong>Interoperating with QMK features.</strong> Does the custom shift key implementation support shifting when done as a one-shot mod? Or with a mod-tap? Auto Shift? Space Cadet Shift?</p></li>
 </ul>
-<h2 id="acknowledgements">Acknowledgements</h2>
-<p>Thanks a bunch to <span class="citation" data-cites="wheredoesyourmindgo">@wheredoesyourmindgo</span> on GitHub and u/uolot on Reddit for feedback and improvements to make custom shift keys better.</p>
 <h2 id="implementation">Implementation</h2>
 <p>Here is my solution. It correctly handles key repeating and rolled presses, and I’ve tested that it works predictably in combination with one-shot mods, mod-taps, and Space Cadet Shift. It does not work with Auto Shift. To get the analogous effect with Auto Shift, use Auto Shift’s <a href="https://docs.qmk.fm/#/feature_auto_shift?id=custom-shifted-values">custom shifted values</a> configuration.</p>
 <p><strong>Step 1:</strong> In your <code>keymap.c</code>, define a table of “<code>custom_shift_key_t</code>” structs. Each row defines one key. The <code>keycode</code> is the keycode as it appears in your layout and determines what is typed normally. The <code>shifted_keycode</code> is what you want the key to type when shifted. (See the <a href="https://docs.qmk.fm/#/keycodes">QMK keycodes documentation</a> for possible keycodes.)</p>
@@ -236,6 +234,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>If <code>registered_keycode</code> is not <code>KC_NO</code>, we release the currently active custom shift key (<code>unregister_code16</code>). To avoid stuck keys, this is always the right thing to do: either the event is releasing the active custom shift key (so we should release it), or it is a rolled press manipulating another key while the active custom shift key is still held (so again, we should release it).</p></li>
 <li><p>In the loop, we check whether the current key event is pressing a custom shift key. If so, we clear the shift mods, press the appropriate key depending on whether shift was held (<code>register_code16</code>), and restore the mods.</p></li>
 </ol>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Thanks a bunch to <span class="citation" data-cites="wheredoesyourmindgo">@wheredoesyourmindgo</span> on GitHub and u/uolot on Reddit for feedback and improvements to make custom shift keys better.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
