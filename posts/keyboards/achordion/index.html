@@ -129,10 +129,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 id="compatibility">Compatibility</h4>
 <p>When Achordion settles a tap-hold key, it plumbs the tap or hold event back into the handling pipeline, so other features including macros in <code>process_record_user()</code> will see it. So Achordion should interoperate with most QMK features and user code. I’ve been using Achordion successfully together with <a href="../autocorrection/index.html">Autocorrection</a>, <a href="../caps-word/index.html">Caps Word</a>, and <a href="../custom-shift-keys/index.html">Custom Shift Keys</a>.</p>
 <p>Limitations:</p>
+<p>Some QMK features handle events before the point where userspace code can intercept them. I don’t expect Achordion to interoperate properly with them, and unfortunately, this is unfixable without making changes to core QMK code. Particularly:</p>
 <ul>
-<li><p><code>RETRO_TAP</code> and <code>RETRO_SHIFT</code> aren’t supported. It looks possible, but I haven’t yet implemented this.</p></li>
-<li><p>I don’t expect Achordion to work with <a href="https://docs.qmk.fm/#/feature_key_lock">Key Lock</a> or <a href="https://docs.qmk.fm/#/feature_dynamic_macros">Dynamic Macros</a>. These features in particular handle events before the point where userspace code can intercept them.</p></li>
+<li><p><a href="https://docs.qmk.fm/#/feature_combo">Combos</a>. You can use both Combos and Achordion in your keymap, but beware that pressing a combo while holding a mod-tap key may behave poorly, e.g. fail to trigger the combo or apply the mod too late.</p></li>
+<li><p><a href="https://docs.qmk.fm/#/feature_key_lock">Key Lock</a> probably doesn’t work with Achordion.</p></li>
+<li><p><a href="https://docs.qmk.fm/#/feature_dynamic_macros">Dynamic Macros</a> probably doesn’t work with Achordion.</p></li>
 </ul>
+<p>Additionally, <code>RETRO_TAP</code> and <code>RETRO_SHIFT</code> aren’t supported. It looks possible, but I haven’t yet implemented them.</p>
 <h2 id="add-achordion-to-your-keymap">Add Achordion to your keymap</h2>
 <p><strong>Step 1:</strong> In your <code>keymap.c</code>, call Achordion from your <code>process_record_user()</code> function:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/achordion.h&quot;</span></span>
