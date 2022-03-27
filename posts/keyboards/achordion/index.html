@@ -101,6 +101,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li><a href="#tap-hold-configuration">Tap-hold configuration</a></li>
 <li><a href="#explanation">Explanation</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
@@ -129,9 +130,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 id="compatibility">Compatibility</h4>
 <p>When Achordion settles a tap-hold key, it plumbs the tap or hold event back into the handling pipeline, so other features including macros in <code>process_record_user()</code> will see it. So Achordion should interoperate with most QMK features and user code. I’ve been using Achordion successfully together with <a href="../autocorrection/index.html">Autocorrection</a>, <a href="../caps-word/index.html">Caps Word</a>, and <a href="../custom-shift-keys/index.html">Custom Shift Keys</a>.</p>
 <p>Limitations:</p>
-<p>Some QMK features handle events before the point where userspace code can intercept them. I don’t expect Achordion to interoperate properly with them, and unfortunately, this is unfixable without making changes to core QMK code. Particularly:</p>
+<p>Some QMK features handle events before the point where userspace code can intercept them. I don’t expect Achordion to interoperate properly with them, and unfortunately, this isn’t entirely fixable without making changes to core QMK code. It is still possible to use these features and Achrodion in your keymap, but behavior may be poor when using these features while holding a tap-hold key. Particularly:</p>
 <ul>
-<li><p><a href="https://docs.qmk.fm/#/feature_combo">Combos</a>. You can use both Combos and Achordion in your keymap, but beware that pressing a combo while holding a mod-tap key may behave poorly, e.g. fail to trigger the combo or apply the mod too late.</p></li>
 <li><p><a href="https://docs.qmk.fm/#/feature_key_lock">Key Lock</a> probably doesn’t work with Achordion.</p></li>
 <li><p><a href="https://docs.qmk.fm/#/feature_dynamic_macros">Dynamic Macros</a> probably doesn’t work with Achordion.</p></li>
 </ul>
@@ -256,6 +256,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <h4 id="multiple-tap-hold-keys">Multiple tap-hold keys</h4>
 <p>A potentially complicated situation is what to do when the next key press is also a tap-hold key that QMK has settled as held, meaning multiple tap-hold keys pressed at once. If this happens, we settle both keys as held, bypassing Achordion. This way things like home row modifier chords work and allows Achordion to otherwise consider simply a single active tap-hold key at a time.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Thanks to <span class="citation" data-cites="jdart">@jdart</span> for feedback and help on improving Achordion’s operation with Combos.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
