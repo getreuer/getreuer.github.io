@@ -134,6 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><p><a href="https://docs.qmk.fm/#/feature_key_lock">Key Lock</a> probably doesn’t work with Achordion.</p></li>
 <li><p><a href="https://docs.qmk.fm/#/feature_dynamic_macros">Dynamic Macros</a> probably doesn’t work with Achordion.</p></li>
+<li><p><a href="https://docs.qmk.fm/#/feature_combo">Combos</a> also handle events before Achordion. A mitigation is implemented so that combo events bypass Achordion, so combos and tap-hold keys should still work together.</p></li>
 </ul>
 <p>Additionally, <code>RETRO_TAP</code> and <code>RETRO_SHIFT</code> aren’t supported. It looks possible, but I haven’t yet implemented them.</p>
 <h2 id="add-achordion-to-your-keymap">Add Achordion to your keymap</h2>
@@ -257,7 +258,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 id="multiple-tap-hold-keys">Multiple tap-hold keys</h4>
 <p>A potentially complicated situation is what to do when the next key press is also a tap-hold key that QMK has settled as held, meaning multiple tap-hold keys pressed at once. If this happens, we settle both keys as held, bypassing Achordion. This way things like home row modifier chords work and allows Achordion to otherwise consider simply a single active tap-hold key at a time.</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
-<p>Thanks to <span class="citation" data-cites="jdart">@jdart</span> for feedback and help on improving Achordion’s operation with Combos.</p>
+<p>Thanks to <span class="citation" data-cites="jdart">@jdart</span> and <span class="citation" data-cites="filterpaper">@filterpaper</span> for feedback and help to improve Achordion.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
