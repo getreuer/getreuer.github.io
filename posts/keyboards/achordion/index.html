@@ -94,6 +94,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#overview">Overview</a></li>
 <li><a href="#achordion">Achordion</a></li>
 <li><a href="#add-achordion-to-your-keymap">Add Achordion to your keymap</a></li>
+<li><a href="#how-does-achordion-affect-delay">How does Achordion affect delay?</a></li>
 <li><a href="#customization">Customization</a>
 <ul>
 <li><a href="#achordion_chord">achordion_chord()</a></li>
@@ -106,10 +107,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
-<div style="border-radius:4px; border:solid 2.5px #e6b153; padding:0 1em 0 1em">
-<p>🚧  <strong>Consider this “experimental” or “alpha quality” software</strong>  🚧</p>
-<p>Achordion has been running nicely for a couple weeks on my keyboards, but tap-holds are subtle. I’d appreciate your feedback! Please <a href="https://github.com/getreuer/qmk-keymap/issues">open an issue</a> or send me a message about any problems.</p>
-</div>
 <h2 id="overview">Overview</h2>
 <p>Most people who have tried home row mods are familiar with the struggle of accidental mod activations from typing rolls. If you are an exception, consider yourself lucky! In QMK, the standard mitigations as explained <a href="https://precondition.github.io/home-row-mods">in precondition’s guide</a> are using <code>IGNORE_MOD_TAP_INTERRUPT</code> and <code>PERMISSIVE_HOLD</code> and setting <code>TAPPING_TERM</code> reasonably (in the range 160–220 ms is typical).</p>
 <p>QMK’s tap-hold implementation provides (with e.g. <code>TAPPING_TERM_PER_KEY</code>) the flexibility to tune these configurations per key, with callbacks taking the tap-hold keycode as an input. But I want more than that:</p>
@@ -156,6 +153,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb3"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/achordion.c</span></span></code></pre></div>
 <p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/achordion.h">achordion.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/achordion.c">achordion.c</a> there.</p>
 <p>You’ll also of course want to have some tap-hold keys in your keymap. Define mod-tap and layer-tap keys in your keymap in the usual way as described in the <a href="https://docs.qmk.fm/#/mod_tap">Mod-Tap documentation</a>.</p>
+<h2 id="how-does-achordion-affect-delay">How does Achordion affect delay?</h2>
+<p>Delay is an important drawback of tap-hold keys, so here we cover how Achordion affects that. In practice, I see no added delay with Achordion beyond the delay that QMK’s tap-hold keys have on their own. To back this up, I’ll walk through a few cases of pressing tap-hold keys along with other keys.</p>
+<ul>
+<li><p>Achordion adds no delay when QMK decided the tap-hold key was tapped. Only holds are affected.</p></li>
+<li><p><strong>Good case: normal typing.</strong> Achordion adds no visible delay during normal typing.</p>
+<ul>
+<li><p>Suppose <code>PERMISSIVE_HOLD</code> is enabled (I recommend it!), and a key is pressed and released within the tapping term while a tap-hold key is down. Then, QMK settles the tap-hold as held the instant the other key is released. In this good case, Achordion will receive an event for the tap-hold key being pressed followed back-to-back by an event for the other key being pressed, and without delay, Achordion decides whether the mod-tap is tapped or held.</p></li>
+<li><p>Alternatively if a tap-hold key is held past the tapping term, then QMK considers the tap-hold key held, but this has no visible effect until a following key is pressed (at least usually, holding a mod or layer switch by itself has no visible effect). Once that following key press happens, Achordion can settle its decision whether the key is tapped vs. held. So again no visible delay is added.</p></li>
+</ul></li>
+<li><p><strong>Tricky case: mod + mouse.</strong> A tricky case for mod-taps and especially with Achordion or Bilateral Combinations is using a mod-tap with a mouse, for instance to do Ctrl + click. Since there is no following key press after the mod-tap goes down, you would normally need to wait out Achordion’s timeout before clicking the mouse. This case was a big gripe for me, so I came up with an “eager mods” workaround to eliminate this delay. This is <a href="#achordion_eager_mod">described further below</a>.</p></li>
+</ul>
 <h2 id="customization">Customization</h2>
 <h3 id="achordion_chord">achordion_chord()</h3>
 <p>This callback is the main point of customization. Suppose that while a tap-hold key is pressed down, some other key is pressed. Then <code>achordion_chord()</code> is called to decide the outcome. It takes both the tap-hold key and other key as inputs. The return value is <code>true</code> to consider the tap-hold key held or <code>false</code> to consider it tapped.</p>
@@ -289,7 +297,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 id="multiple-tap-hold-keys">Multiple tap-hold keys</h4>
 <p>A potentially complicated situation is what to do when the next key press is also a tap-hold key that QMK has settled as held, meaning multiple tap-hold keys pressed at once. If this happens, we settle both keys as held, bypassing Achordion. This way things like home row modifier chords work and allows Achordion to otherwise consider simply a single active tap-hold key at a time.</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
-<p>Thanks to <span class="citation" data-cites="jdart">@jdart</span>, <span class="citation" data-cites="filterpaper">@filterpaper</span>, and <span class="citation" data-cites="jweickm">@jweickm</span> for feedback and help to improve Achordion.</p>
+<p>Thanks to GitHub users <span class="citation" data-cites="jdart">@jdart</span>, <span class="citation" data-cites="filterpaper">@filterpaper</span>, and <span class="citation" data-cites="jweickm">@jweickm</span> and Reddit user u/02ranger for feedback and help to improve Achordion.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
