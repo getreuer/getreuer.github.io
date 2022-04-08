@@ -93,6 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#simple-macros">Simple macros</a></li>
+<li><a href="#process_record_user-in-depth">process_record_user() in depth</a></li>
 <li><a href="#macros-that-respond-to-mods">Macros that respond to mods</a>
 <ul>
 <li><a href="#arrow-macro-types---or">Arrow macro, types -&gt; or =&gt;</a></li>
@@ -147,54 +148,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Use <code>SEND_STRING</code> to type a sequence of keys when the macro button is pressed. You can use this to blast out programming syntax like <code>-&gt;</code> or <code>===</code> or patterns in the languages you use. For instance, typing the C++ scope operator <code>::</code> in most keyboard layouts is an uncomfortable shifted double tap on a pinky key. So a well-used feature in my QMK keymap is a macro that types <code>::</code>.</p>
 <p>Macros are also useful for typing common strings, like your email. Macros could be used to type commands, say <code>SEND_STRING("git status")</code>, but for that I suggest <a href="https://tldp.org/LDP/abs/html/aliases.html">shell aliases</a> are a better solution. For instance in your .bashrc or .zshrc, add <code>alias gs="git status"</code>.</p>
 <p>You can also use <code>tap_code(keycode)</code> to tap an individual key. Or for even finer grained control, <code>register_code(keycode)</code> and <code>unregister_code(keycode)</code> to respectively hold and release a key.</p>
+<h2 id="process_record_user-in-depth">process_record_user() in depth</h2>
+<p>Before we dive into more interesting macros, let’s go over what the <code>process_record_user()</code> function is.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="co">// Macros...</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>}</span></code></pre></div>
+<p><strong>The big picture:</strong> QMK’s main loop scans the key matrix to watch for changes. When a button is pressed or released, an event is generated. The event enters a pipeline of handlers. A handler function runs for each QMK feature (Mod-Tap, Combos, Auto Shift, Tap Dance, …), one after another, so that each feature a chance to react to the event. Additionally, handlers may return <code>false</code> to block later handlers from receiving the event. The <code>process_record_user()</code> function is one such handler in the pipeline, enabling user code to customize what happens. See also <a href="https://docs.qmk.fm/#/understanding_qmk">Understanding QMK</a>.</p>
+<p><strong>Function arguments:</strong> The <code>keycode</code> arg is the keycode as in your keymap that was pressed or released, like <code>UPDIR</code> or <code>KC_A</code>. The <code>record</code> arg contains additional information about the event:</p>
+<ul>
+<li><code>record-&gt;event.pressed</code> is true if the event is a press (key down), and false if it is a release (key up). In the example above, we only take action on the press event.</li>
+<li><code>record-&gt;event.time</code> is a 16-bit timestamp of when the event occurred, used for timing effects (see also <a href="https://docs.qmk.fm/#/ref_functions?id=software-timers">Software Timers</a> and <a href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">Deferred Execution</a>).</li>
+<li><code>record-&gt;event.key.row</code> and <code>record-&gt;event.key.col</code> are the matrix position of the key, counting from 0. If the event comes from a <a href="https://docs.qmk.fm/#/feature_combo">Combo</a>, this is set to the non-physical position <code>(254, 254)</code>.</li>
+<li>If the event comes from a <a href="https://docs.qmk.fm/#/mod_tap">mod-tap</a> (<code>MT</code>) or layer-tap (<code>LT</code>),key, then <code>record-&gt;tap.count</code> is zero if the key is considered held, otherwise it is considered tapped (see also <a href="https://docs.qmk.fm/#/mod_tap?id=intercepting-mod-taps">Intercepting Mod-Taps</a> and <a href="../achordion/index.html">Achordion</a>).</li>
+</ul>
+<p><strong>Return value:</strong> The return value from <code>process_record_user()</code> tells QMK whether to continue handling the event. Returning <code>false</code> from <code>process_record_user()</code> means the remaining handlers in the pipeline should be skipped. We return <code>false</code> for events on our macro buttons, since as they are custom keycodes, QMK’s default handling will ignore them anyway. Otherwise, we return <code>true</code> so that QMK handles the event.</p>
 <h2 id="macros-that-respond-to-mods">Macros that respond to mods</h2>
 <h3 id="arrow-macro-types---or">Arrow macro, types -&gt; or =&gt;</h3>
 <p>For extra functionality, you can do a different action when the macro button is pressed with a mod. For instance, the following implements an ARROW button so that ARROW + shift types <code>=&gt;</code> and ARROW by itself types <code>-&gt;</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">// Get current mod and one-shot mod states.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint8_t</span> mods = get_mods();</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint8_t</span> oneshot_mods = get_oneshot_mods();</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="cf">switch</span> (keycode) {</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>  <span class="cf">case</span> ARROW:  <span class="co">// Arrow macro, types -&gt; or =&gt;.</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>      <span class="cf">if</span> ((mods | oneshot_mods) &amp; MOD_MASK_SHIFT) {  <span class="co">// Is shift held?</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>        del_mods(MOD_MASK_SHIFT);  <span class="co">// Temporarily delete shift.</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>        del_oneshot_mods(MOD_MASK_SHIFT);</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;=&gt;&quot;</span>);</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>        set_mods(mods);            <span class="co">// Restore mods.</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>      } <span class="cf">else</span> {</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;-&gt;&quot;</span>);</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>      }</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>    }</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>    <span class="cf">return</span> false;</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">// Get current mod and one-shot mod states.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint8_t</span> mods = get_mods();</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint8_t</span> oneshot_mods = get_oneshot_mods();</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="cf">switch</span> (keycode) {</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>  <span class="cf">case</span> ARROW:  <span class="co">// Arrow macro, types -&gt; or =&gt;.</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>      <span class="cf">if</span> ((mods | oneshot_mods) &amp; MOD_MASK_SHIFT) {  <span class="co">// Is shift held?</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>        del_mods(MOD_MASK_SHIFT);  <span class="co">// Temporarily delete shift.</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>        del_oneshot_mods(MOD_MASK_SHIFT);</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;=&gt;&quot;</span>);</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>        set_mods(mods);            <span class="co">// Restore mods.</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>      } <span class="cf">else</span> {</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;-&gt;&quot;</span>);</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>      }</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>    }</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a>    <span class="cf">return</span> false;</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>}</span></code></pre></div>
 <p>The tricky part is that shift or any other active mods will apply to the keys sent by <code>SEND_STRING</code>. So without treatment, the shift would turn the intended arrow <code>=&gt;</code> into <code>+&gt;</code>. We get around this by temporarily deleting shift from the mod state. Alternatively, we can turn off all mods temporarily with</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>clear_mods();</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>clear_oneshot_mods();</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co">// Do stuff...</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>set_mods(mods);</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>clear_mods();</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>clear_oneshot_mods();</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="co">// Do stuff...</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>set_mods(mods);</span></code></pre></div>
 <h3 id="braces-macro-types-or">Braces macro, types [], {}, or &lt;&gt;</h3>
 <p>From <a href="https://github.com/qmk/qmk_firmware/blob/master/users/draevin">draevin’s user directory</a>, the following types <code>[</code>, then <code>]</code>, and taps the left arrow to position the cursor between the <code>[]</code>. Or if shift is held, it does the same but with curly braces <code>{}</code>. Or with Ctrl, it does angle brackets <code>&lt;&gt;</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint8_t</span> mods = get_mods();</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint8_t</span> oneshot_mods = get_oneshot_mods();</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="cf">switch</span> (keycode) {</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>  <span class="cf">case</span> BRACES:  <span class="co">// Types [], {}, or &lt;&gt; and puts cursor between braces.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>      clear_mods();  <span class="co">// Temporarily disable mods.</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>      clear_oneshot_mods();</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>      <span class="cf">if</span> ((mods | oneshot_mods) &amp; MOD_MASK_SHIFT) {</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;{}&quot;</span>);</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>      } <span class="cf">else</span> <span class="cf">if</span> ((mods | oneshot_mods) &amp; MOD_MASK_CTRL) {</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;&lt;&gt;&quot;</span>);</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>      } <span class="cf">else</span> {</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;[]&quot;</span>);</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>      }</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>      tap_code(KC_LEFT);  <span class="co">// Move cursor between braces.</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>      set_mods(mods);  <span class="co">// Restore mods.</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>    }</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>    <span class="cf">return</span> false;</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint8_t</span> mods = get_mods();</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint8_t</span> oneshot_mods = get_oneshot_mods();</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="cf">switch</span> (keycode) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>  <span class="cf">case</span> BRACES:  <span class="co">// Types [], {}, or &lt;&gt; and puts cursor between braces.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>      clear_mods();  <span class="co">// Temporarily disable mods.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>      clear_oneshot_mods();</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>      <span class="cf">if</span> ((mods | oneshot_mods) &amp; MOD_MASK_SHIFT) {</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;{}&quot;</span>);</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>      } <span class="cf">else</span> <span class="cf">if</span> ((mods | oneshot_mods) &amp; MOD_MASK_CTRL) {</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;&lt;&gt;&quot;</span>);</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>      } <span class="cf">else</span> {</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>        SEND_STRING(<span class="st">&quot;[]&quot;</span>);</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>      }</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>      tap_code(KC_LEFT);  <span class="co">// Move cursor between braces.</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a>      set_mods(mods);  <span class="co">// Restore mods.</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>    }</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>    <span class="cf">return</span> false;</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>}</span></code></pre></div>
 <h2 id="macros-with-special-keys">Macros with special keys</h2>
 <p><code>SEND_STRING</code> is not limited to printable characters. To tap the left arrow key, for instance, do <code>SEND_STRING(SS_TAP(X_LEFT))</code>. Within <code>SEND_STRING</code>, the key name begins with <code>X_</code> instead of <code>KC_</code>, otherwise keys have the same names as elsewhere.</p>
 <p>Modifiers can be applied:</p>
@@ -202,54 +218,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>SS_LCTL(string)</code> = left Ctrl</li>
 <li><code>SS_LSFT(string)</code> = left Shift</li>
 <li><code>SS_LALT(string)</code> = left Alt (Option key ⌥ on Mac)</li>
-<li><code>SS_LGUI(string)</code> = left GUI (Win key ⊞ on Windows, Cmd key ⌘ on Mac)</li>
+<li><code>SS_LGUI(string)</code> = left GUI (Win key on Windows, Cmd key ⌘ on Mac)</li>
 </ul>
 <p>A few examples are described next.</p>
 <h3 id="select-word-macro">Select word macro</h3>
 <p>Most text editors support Ctrl+left / Ctrl+right to move the cursor by words. From <a href="https://github.com/qmk/qmk_firmware/tree/master/users/ajp10304">ajp10304’s user directory</a>, this macro selects the current word. It types Ctrl+right to move to the end of the word, then Ctrl+Shift+left to select to the beginning of the word:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="cf">case</span> SELWORD:  <span class="co">// Selects the current word under the cursor.</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    SEND_STRING(SS_LCTL(SS_TAP(X_RGHT) SS_LSFT(SS_TAP(X_LEFT))));</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="co">// Mac users, change LCTL to LALT:</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>    <span class="co">// SEND_STRING(SS_LALT(SS_TAP(X_RGHT) SS_LSFT(SS_TAP(X_LEFT))));</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>  }</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
-<p>See also my <a href="../select-word/index.html">word selection</a> post for an elaborated version of this macro.</p>
-<h3 id="select-line-macro">Select line macro</h3>
-<p>This macro selects the current line, by tapping the home key and then Shift+end:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="cf">case</span> SELLINE:  <span class="co">// Selects the current line.</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="cf">case</span> SELWORD:  <span class="co">// Selects the current word under the cursor.</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    SEND_STRING(SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)));</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="co">// Mac users, use:</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    <span class="co">// SEND_STRING(SS_LCTL(&quot;a&quot; SS_LSFT(&quot;e&quot;)));</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    SEND_STRING(SS_LCTL(SS_TAP(X_RGHT) SS_LSFT(SS_TAP(X_LEFT))));</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="co">// Mac users, change LCTL to LALT:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    <span class="co">// SEND_STRING(SS_LALT(SS_TAP(X_RGHT) SS_LSFT(SS_TAP(X_LEFT))));</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>  }</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
+<p>See also my <a href="../select-word/index.html">Word Selection</a> post for an elaborated version of this macro.</p>
+<h3 id="select-line-macro">Select line macro</h3>
+<p>This macro selects the current line, by tapping the home key and then Shift+end:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="cf">case</span> SELLINE:  <span class="co">// Selects the current line.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    SEND_STRING(SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)));</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    <span class="co">// Mac users, use:</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    <span class="co">// SEND_STRING(SS_LCTL(&quot;a&quot; SS_LSFT(&quot;e&quot;)));</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>  }</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
 <h3 id="web-search-for-current-selection">Web search for current selection</h3>
 <p>Suppose you are in a web browser and have selected some text. This macro copies the text and does a web search for that text in a new tab.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="cf">case</span> SRCHSEL:  <span class="co">// Searches the current selection in a new tab.</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    <span class="co">// Mac users, change LCTL to LGUI.</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    SEND_STRING(SS_LCTL(<span class="st">&quot;ct&quot;</span>) SS_DELAY(<span class="dv">100</span>) SS_LCTL(<span class="st">&quot;v&quot;</span>) SS_TAP(X_ENTER));</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>  }</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="cf">case</span> SRCHSEL:  <span class="co">// Searches the current selection in a new tab.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    <span class="co">// Mac users, change LCTL to LGUI.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    SEND_STRING(SS_LCTL(<span class="st">&quot;ct&quot;</span>) SS_DELAY(<span class="dv">100</span>) SS_LCTL(<span class="st">&quot;v&quot;</span>) SS_TAP(X_ENTER));</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>  }</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
 <p>In detail, it copies the selection (Ctrl+C), opens a new tab (Ctrl+T), pastes the selection into the omnibar (Ctrl+V), and finally taps enter to do the search. Since the browser might need a moment to open the new tab, <code>SS_DELAY</code> is used to wait briefly before pasting.</p>
 <h2 id="other-cool-ideas">Other cool ideas</h2>
 <h3 id="next-sentence-macro">Next sentence macro</h3>
 <p>Inspired by <a href="https://github.com/precondition/dactyl-manuform-keymap">precondition’s keymap</a>, here is a “next sentence” macro. This is useful to flow between sentences. Having tried it, I admit it takes some practice to incorporate into your typing habits, but it packs a satisfying amount of action into a single button press. The macro types a period, space, then sets a <a href="https://docs.qmk.fm/#/one_shot_keys">one-shot mod</a> so that the next key typed is shifted, to capitalize the first letter of the next sentence:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="cf">case</span> NEXTSEN:  <span class="co">// Next sentence macro.</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    SEND_STRING(<span class="st">&quot;. &quot;</span>);</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    add_oneshot_mods(MOD_BIT(KC_LSFT));  <span class="co">// Set one-shot mod for shift.</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>  }</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="cf">case</span> NEXTSEN:  <span class="co">// Next sentence macro.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    SEND_STRING(<span class="st">&quot;. &quot;</span>);</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    add_oneshot_mods(MOD_BIT(KC_LSFT));  <span class="co">// Set one-shot mod for shift.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>  }</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
 <p>See also the approach taken in <a href="https://github.com/precondition/dactyl-manuform-keymap">precondition’s keymap</a>: there, the next sentence is triggered by double tapping the period button through a QMK tap dance, rather than using a macro.</p>
 <h3 id="emojis">Emojis</h3>
-<p><a href="https://docs.juliaebert.com/projects/keyboard">Julia Ebert’s blog</a> notes that the way to type a multi-character emoji is to implement it as a macro. The following types a US flag emoji 🇺🇸:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="cf">case</span> US_FLAG:  <span class="co">// Types US flag emoji.</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    send_unicode_hex_string(<span class="st">&quot;1F1FA 1F1F8&quot;</span>);</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>  }</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
+<p><a href="https://docs.juliaebert.com/projects/keyboard">Julia Ebert’s blog</a> notes that the way to type a multi-codepoint emoji is to implement it as a macro. The following types a US flag emoji 🇺🇸:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="cf">case</span> US_FLAG:  <span class="co">// Types US flag emoji.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    <span class="co">// UTF-8 encoding of U+1F1FA, U+1F1F8.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>    send_unicode_string(<span class="st">&quot;</span><span class="sc">\xf0\x9f\x87\xba\xf0\x9f\x87\xb8</span><span class="st">&quot;</span>);</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>  }</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>  <span class="cf">return</span> false;</span></code></pre></div>
 <p>Note: the above assumes <code>UNICODEMAP_ENABLE = yes</code> is set in the rules.mk file. You’ll also need to define <code>UNICODE_SELECTED_MODES</code> in config.h <a href="https://docs.qmk.fm/#/feature_unicode?id=input-modes">according to your OS</a>.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
