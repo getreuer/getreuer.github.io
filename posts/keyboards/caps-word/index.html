@@ -103,6 +103,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#configure-which-keys-are-word-breaking">Configure which keys are “word breaking”</a></li>
 <li><a href="#representing-the-current-caps-word-state">Representing the current Caps Word state</a></li>
 </ul></li>
+<li><a href="#other-implementations">Other implementations</a></li>
 <li><a href="#explanation">Explanation</a></li>
 <li><a href="#acknowledgements">Acknowledgements</a></li>
 </ul>
@@ -251,8 +252,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>  ML_LED_1(active);</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>  ML_LED_4(active);</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 id="other-implementations">Other implementations</h2>
+<p>I’m aware of a few other QMK implementations of Caps Word:</p>
+<ul>
+<li><p><a href="https://github.com/qmk/qmk_firmware/pull/16588">qmk/qmk_firmware#16588</a> is a pending pull request to add Caps Word to QMK as a core feature. It is functionally the same as the userspace implementation here, though there are a few differences in default settings and API naming.</p></li>
+<li><p><a href="https://github.com/andrewjrae/kyria-keymap/tree/e3ad77dc4d48b8e6a842c9136c76c1021ab5976b#case-modes">andrewjrae’s Kyria keymap</a> has a Caps Word implementation. Caps Word is done as a special case of a “Case Modes” library, which can also be used to conveniently type <code>snake_case_name</code> and <code>camelCaseName</code> identifiers.</p></li>
+<li><p><a href="https://github.com/qmk/qmk_firmware/tree/906108fb486797ab2f3eb7c3a6f70e099c1199e6/users/replicaJunction#capsword-and-numword">replicaJunction’s QMK users folder</a> has a Caps Word implementation. There is also a matching “Num Word” library applying the same idea to using a number layer.</p></li>
+</ul>
+<p>Beyond QMK, Caps Word is <a href="https://zmk.dev/docs/behaviors/caps-word">a core feature in ZMK</a>.</p>
 <h2 id="explanation">Explanation</h2>
-<p>Here is a brief explanation of how the Caps Word implementation works. The code checks the mod bits on each key event, activating Caps Word when both left and right shifts are pressed.</p>
+<p>Here is a brief explanation of how this Caps Word implementation works. The code checks the mod bits on each key event, activating Caps Word when both left and right shifts are pressed.</p>
 <p>While active, Caps Word automatically applies shift as a weak mod as needed so that letters are shifted and other keys are not. The word continues while <code>caps_word_press_user</code> returns true (by default, for <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace). Additionally, most layer switch keys (<code>MO</code>, <code>TO</code>, <code>TG</code>, <code>TT</code>, <code>OSL</code>, <code>LT</code>) are ignored so that Caps Word may be used across layers. Any other key is considered “word breaking” and disables Caps Word.</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
 <p>Thanks to <span class="citation" data-cites="drashna">@drashna</span> and <span class="citation" data-cites="wheredoesyourmindgo">@wheredoesyourmindgo</span> on GitHub and u/uolot and u/Dutchnesss1 on Reddit for feedback, bug fixes, and improvements to make Caps Word better. I couldn’t have done it alone!</p>
