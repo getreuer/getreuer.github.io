@@ -219,12 +219,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a><span class="pp">    { KC_NO, KC_NO, k73, k74, k75 } \</span></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a><span class="pp">  }</span></span></code></pre></div>
 <p>It is also perfectly valid to make conditions on <code>other_keycode</code>. For instance if you only want the opposite hands rule on alpha keys, do</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">// Allow same-hand holds with non-alpha keys.</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="cf">switch</span> (other_keycode) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>  <span class="cf">case</span> QK_MOD_TAP ... QK_MOD_TAP_MAX:</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>  <span class="cf">case</span> QK_LAYER_TAP ... QK_LAYER_TAP_MAX:</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    other_keycode &amp;= <span class="bn">0xff</span>;  <span class="co">// Get base keycode.</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>}</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="cf">switch</span> (other_keycode) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>  <span class="cf">case</span> QK_MOD_TAP ... QK_MOD_TAP_MAX:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>  <span class="cf">case</span> QK_LAYER_TAP ... QK_LAYER_TAP_MAX:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    other_keycode &amp;= <span class="bn">0xff</span>;  <span class="co">// Get base keycode.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>}</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co">// Allow same-hand holds with non-alpha keys.</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="cf">if</span> (other_keycode &gt; KC_Z) { <span class="cf">return</span> true; }</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="cf">return</span> achordion_opposite_hands(tap_hold_record, other_record);</span></code></pre></div>
