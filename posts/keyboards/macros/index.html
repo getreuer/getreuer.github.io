@@ -91,13 +91,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#overview">Overview</a></li>
+<li><a href="#overview">Overview</a>
+<ul>
+<li><a href="#license">License</a></li>
+</ul></li>
 <li><a href="#simple-macros">Simple macros</a></li>
 <li><a href="#process_record_user-in-depth">process_record_user() in depth</a></li>
 <li><a href="#macros-that-respond-to-mods">Macros that respond to mods</a>
 <ul>
 <li><a href="#arrow-macro-types---or">Arrow macro, types -&gt; or =&gt;</a></li>
 <li><a href="#braces-macro-types-or">Braces macro, types [], {}, or &lt;&gt;</a></li>
+<li><a href="#custom-shift-keys">Custom shift keys</a></li>
 </ul></li>
 <li><a href="#macros-with-special-keys">Macros with special keys</a>
 <ul>
@@ -116,6 +120,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="overview">Overview</h2>
 <p>One of QMK’s most empowering features is the ability to define macro buttons: a button, that when pressed, types a sequence of keys. This page is an assortment of practical QMK macros, collected from real users’ keymaps.</p>
 <p><strong>Obligatory warning:</strong> don’t use macros to type passwords or credit card numbers. Otherwise if someone has physical access to your keyboard, they can access this info.</p>
+<h3 id="license">License</h3>
+<p>Code snippets in this post are shared under Apache 2 license.</p>
+<div style="font-size:85%">
+<blockquote>
+<p>Copyright 2021-2022 Google LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
+<p><a href="https://www.apache.org/licenses/LICENSE-2.0" class="uri">https://www.apache.org/licenses/LICENSE-2.0</a></p>
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+</blockquote>
+</div>
 <h2 id="simple-macros">Simple macros</h2>
 <p>First, to establish the basic pattern, here are instructions for implementing a couple simple macros. Add the following to your keymap.c file.</p>
 <p><strong>Step 1:</strong> Define keycodes for your macros:</p>
@@ -216,6 +230,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>    }</span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>    <span class="cf">return</span> false;</span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>}</span></code></pre></div>
+<h3 id="custom-shift-keys">Custom shift keys</h3>
+<p>An especially handy use of <code>get_mods()</code> is to change what key is typed when it is shifted. For instance, a key with “inverted” shifting such that it types <code>:</code> when pressed normally and <code>;</code> when pressed shifted, or implementing “programmer” layouts that type symbols normally and digits when shifted. See <a href="../custom-shift-keys/index.html">Custom shift keys</a> for an implementation.</p>
 <h2 id="macros-with-special-keys">Macros with special keys</h2>
 <p><code>SEND_STRING</code> is not limited to printable characters. To tap the left arrow key, for instance, do <code>SEND_STRING(SS_TAP(X_LEFT))</code>. Within <code>SEND_STRING</code>, the key name begins with <code>X_</code> instead of <code>KC_</code>, otherwise keys have the same names as elsewhere.</p>
 <p>Modifiers can be applied:</p>
