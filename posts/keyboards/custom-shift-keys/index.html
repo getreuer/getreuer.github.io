@@ -164,40 +164,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>  <span class="co">// we release the currently registered key.</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>  <span class="cf">if</span> (registered_keycode != KC_NO) {</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>    unregister_code16(registered_keycode);</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>    <span class="cf">if</span> (keycode == registered_keycode &amp;&amp; !record-&gt;event.pressed) {</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>      registered_keycode = KC_NO;</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a>    }</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>    registered_keycode = KC_NO;</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a>  }</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {  <span class="co">// Press event.</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>    <span class="dt">const</span> <span class="dt">uint8_t</span> mods = get_mods();</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>    <span class="cf">if</span> ((mods | get_weak_mods() | get_oneshot_mods()) &amp; MOD_MASK_SHIFT) {</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a><span class="pp">#else</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a>    <span class="cf">if</span> ((mods | get_weak_mods()) &amp; MOD_MASK_SHIFT) {  <span class="co">// Shift is held.</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a>      <span class="co">// Search for a custom key with keycode equal to `keycode`.</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a>      <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; NUM_CUSTOM_SHIFT_KEYS; ++i) {</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a>        <span class="cf">if</span> (keycode == custom_shift_keys[i].keycode) {</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a>          del_oneshot_mods(MOD_MASK_SHIFT);</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a>          del_mods(MOD_MASK_SHIFT);</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a>          del_weak_mods(MOD_MASK_SHIFT);</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a>          send_keyboard_report();</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true"></a>          registered_keycode = custom_shift_keys[i].shifted_keycode;</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true"></a>          register_code16(registered_keycode);</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true"></a>          set_mods(mods);  <span class="co">// Restore the mods.</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true"></a>          <span class="cf">return</span> false;</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true"></a>        }</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true"></a>      }</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true"></a>    }</span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true"></a>  }</span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true"></a></span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true"></a>  <span class="cf">return</span> true;  <span class="co">// Continue with default handling.</span></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true"></a>}</span></code></pre></div>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>    registered_keycode = KC_NO;</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>  }</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;event.pressed) {  <span class="co">// Press event.</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>    <span class="dt">const</span> <span class="dt">uint8_t</span> mods = get_mods();</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>    <span class="cf">if</span> ((mods | get_weak_mods() | get_oneshot_mods()) &amp; MOD_MASK_SHIFT) {</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="pp">#else</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>    <span class="cf">if</span> ((mods | get_weak_mods()) &amp; MOD_MASK_SHIFT) {  <span class="co">// Shift is held.</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>      <span class="co">// Search for a custom key with keycode equal to `keycode`.</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a>      <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; NUM_CUSTOM_SHIFT_KEYS; ++i) {</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a>        <span class="cf">if</span> (keycode == custom_shift_keys[i].keycode) {</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a>          del_oneshot_mods(MOD_MASK_SHIFT);</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a>          del_mods(MOD_MASK_SHIFT);</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a>          del_weak_mods(MOD_MASK_SHIFT);</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a>          send_keyboard_report();</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a>          registered_keycode = custom_shift_keys[i].shifted_keycode;</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a>          register_code16(registered_keycode);</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a>          set_mods(mods);  <span class="co">// Restore the mods.</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a>          <span class="cf">return</span> false;</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true"></a>        }</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true"></a>      }</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true"></a>    }</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true"></a>  }</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true"></a></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true"></a>  <span class="cf">return</span> true;  <span class="co">// Continue with default handling.</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true"></a>}</span></code></pre></div>
 <h2 id="compared-to-key-overrides">Compared to Key Overrides</h2>
 <p>In August 2021, QMK added <a href="https://docs.qmk.fm/#/feature_key_overrides">Key Overrides</a>, which “overrides” the keys sent for specified modifier-key combinations. In particular, it can be used to implement custom shift keys. Add “<code>KEY_OVERRIDE_ENABLE = yes</code>” in rules.mk to enable it, then the example above is analogously implemented as:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">const</span> key_override_t dot_key_override =</span>
