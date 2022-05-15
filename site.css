@@ -322,9 +322,9 @@ div.features a {
   color: #fff;
 }
 
-div.eqwide { display: none; }
-.eqscroll, div.eqtight { overflow-x: auto; margin: 0; padding: 0; }
-.eqscroll p, div.eqtight p { margin: 0; padding: 0 }
+.eqwide { display: none; }
+.eqscroll, .eqtight { overflow-x: auto; margin: 0; padding: 0; }
+.eqscroll p, .eqtight p { margin: 0; padding: 0 }
 
 @media only screen and (min-width: 400px) {
   blockquote {
@@ -347,8 +347,8 @@ div.eqwide { display: none; }
   pre, code, kbd, samp {
     font-size: 0.95em;
   }
-  div.eqwide { display: block; }
-  div.eqtight { display: none; }
+  .eqwide { display: block; }
+  .eqtight { display: none; }
 }
 
 @media only screen and (min-width: 850px) {

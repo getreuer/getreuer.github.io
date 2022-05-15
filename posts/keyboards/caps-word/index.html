@@ -160,6 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The default behavior (when <code>CAPS_WORD_IDLE_TIMEOUT</code> isn’t set, or set to 0) is that Caps Word never times out, and in this case it isn’t necessary to call <code>caps_word_task()</code>. Caps Word remains active indefinitely until a word breaking key is pressed.</p>
 <h3 id="functions">Functions</h3>
 <p>Functions to manipulate Caps Word:</p>
+<div class="eqscroll">
 <table>
 <thead>
 <tr class="header">
@@ -178,6 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
+</div>
 <p>These functions can be used to activate, deactivate, or toggle Caps Word from your keymap with a macro, combo, tap dance, or whatever means.</p>
 <h3 id="activate-caps-word-with-a-combo">Activate Caps Word with a combo</h3>
 <p><a href="https://github.com/getreuer/qmk-keymap">In my keymap</a>, I activate Caps Word with <a href="https://docs.qmk.fm/#/feature_combo">a combo</a> of simultaneously pressing <code>.</code> and <code>C</code>:</p>
@@ -188,7 +190,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>};</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="dt">uint16_t</span> COMBO_LEN = COMBO_LENGTH;</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint16_t</span> PROGMEM caps_combo[] = {KC_DOT, KC_C, COMBO_END};</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint16_t</span> caps_combo[] PROGMEM = {KC_DOT, KC_C, COMBO_END};</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>combo_t key_combos[] = {</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>  [CAPS_COMBO] = COMBO_ACTION(caps_combo),</span>

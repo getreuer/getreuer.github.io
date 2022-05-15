@@ -163,7 +163,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Use <code>SEND_STRING</code> to type a sequence of keys when the macro button is pressed. You can use this to blast out programming syntax like <code>-&gt;</code> or <code>===</code> or patterns in the languages you use. For instance, typing the C++ scope operator <code>::</code> in most keyboard layouts is an uncomfortable shifted double tap on a pinky key. So a well-used feature in my QMK keymap is a macro that types <code>::</code>.</p>
 <p>Macros are also useful for typing common strings, like your email. Macros could be used to type commands, say <code>SEND_STRING("git status")</code>, but for that I suggest <a href="https://tldp.org/LDP/abs/html/aliases.html">shell aliases</a> are a better solution. For instance in your .bashrc or .zshrc, add <code>alias gs="git status"</code>.</p>
 <p>You can also use <code>tap_code(keycode)</code> to tap an individual key. Or for even finer grained control, <code>register_code(keycode)</code> and <code>unregister_code(keycode)</code> to respectively hold and release a key.</p>
-<h2 id="process_record_user-in-depth">process_record_user() in depth</h2>
+<section id="process_record_user-in-depth">
+<section id="process_record_user-in-depth" class="eqwide">
+<h2>process_record_user() in depth</h2>
+</section>
+<h2 class="eqtight">
+process record user in depth
+</h2>
+</section>
 <p>Before we dive into more interesting macros, let’s go over what the <code>process_record_user()</code> function is.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="co">// Macros...</span></span>

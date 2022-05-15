@@ -148,6 +148,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>A variation that would also work is to put the Layer Lock key on the base layer and make other layers transparent (<code>KC_TRNS</code>) in that position. Pressing the Layer Lock key locks (or unlocks) the <em>highest</em> layer, regardless of which layer the Layer Lock key is on.</p>
 <h2 id="customization-options">Customization options</h2>
 <p>Use the following functions to query and manipulate the layer lock state.</p>
+<div class="eqscroll">
 <table>
 <thead>
 <tr class="header">
@@ -174,6 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
+</div>
 <p>Additionally, there is an optional callback <code>layer_lock_set_user()</code> that gets called when a layer is locked or unlocked. This is useful to represent the current lock state for instance by setting an LED. In your keymap, define</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">void</span> layer_lock_set_user(layer_state_t locked_layers) {</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="co">// Do something like `set_led(is_layer_locked(NAV));`</span></span>
