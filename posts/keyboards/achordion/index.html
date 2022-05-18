@@ -102,6 +102,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#achordion_eager_mod">achordion_eager_mod()</a></li>
 </ul></li>
 <li><a href="#tap-hold-configuration">Tap-hold configuration</a></li>
+<li><a href="#other-tricks">Other tricks</a>
+<ul>
+<li><a href="#one-shot-mod-tap-key">One-shot mod-tap key</a></li>
+<li><a href="#tap-vs.-long-press">Tap vs. long press</a></li>
+</ul></li>
 <li><a href="#explanation">Explanation</a></li>
 <li><a href="#acknowledgements">Acknowledgements</a></li>
 </ul>
@@ -293,6 +298,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a>  }</span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a>}</span></code></pre></div>
 <p>See also the QMK documentation on <a href="https://docs.qmk.fm/#/tap_hold">Tap-Hold Configuration Options</a> for details on what these options mean and <a href="https://precondition.github.io/home-row-mods#tap-hold-configuration-settings">precondition’s guide</a> for their use with home row mods.</p>
+<h2 id="other-tricks">Other tricks</h2>
+<p>Here are a couple further tricks for getting the most out of tap-hold keys. They work with Achordion, but Achordion is not required.</p>
+<h3 id="one-shot-mod-tap-key">One-shot mod-tap key</h3>
+<p>You can modify a mod-tap key to behave like a one-shot mod when held. This changes the hold action so that the mod applies to only the first key tapped while the mod-tap is held. Thanks to <span class="citation" data-cites="rafaelromao">@rafaelromao</span> for this idea. This can be done by adding in keymap.c:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="co">// Copyright 2022 Google LLC.</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="co">// SPDX-License-Identifier: Apache-2.0</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="co">// Replaces a mod-tap key&#39;s hold function with its one-shot counterpart.</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">bool</span> oneshot_mod_tap(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;tap.count == <span class="dv">0</span>) {  <span class="co">// Key is being held.</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a>      <span class="dt">const</span> <span class="dt">uint8_t</span> mods = (keycode &gt;&gt; <span class="dv">8</span>) &amp; <span class="bn">0x1f</span>;</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a>      add_oneshot_mods(((mods &amp; <span class="bn">0x10</span>) == <span class="dv">0</span>) ? mods : (mods &lt;&lt; <span class="dv">4</span>));</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a>    }</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a>    <span class="cf">return</span> false;  <span class="co">// Skip default handling.</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a>  }</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a>  <span class="cf">return</span> true;  <span class="co">// Continue default handling.</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a>}</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true"></a>  <span class="cf">if</span> (!process_achordion(keycode, record)) { <span class="cf">return</span> false; }</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true"></a>    <span class="cf">case</span> LSFT_T(KC_D):</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true"></a>    <span class="cf">case</span> RSFT_T(KC_K):</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true"></a>      <span class="cf">return</span> oneshot_mod_tap(keycode, record);</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true"></a>  }</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true"></a>}</span></code></pre></div>
+<h3 id="tap-vs.-long-press">Tap vs. long press</h3>
+<p>You can have a key perform a different action on tap vs. when held a bit longer by customizing a layer-tap <code>LT</code> key. Thanks to <span class="citation" data-cites="filterpaper">@filterpaper</span> and <span class="citation" data-cites="jweickm">@jweickm</span> for teaching me this trick. First, define a layer-tap key like <code>LT(0, kc)</code>, where <code>kc</code> is a basic keycode to be sent on tap and the layer is a dummy placeholder.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="pp">#define COMM_COPY LT(0, KC_COMM)</span></span></code></pre></div>
+<p>Then in <code>process_record_user()</code>, we customize the long press action:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co">// Helper for implementing tap vs. long-press keys. Given a tap-hold</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="co">// key event, replaces the hold function with `long_press_keycode`.</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">bool</span> process_tap_or_long_press_key(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>    keyrecord_t* record, <span class="dt">uint16_t</span> long_press_keycode) {</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;tap.count == <span class="dv">0</span>) {  <span class="co">// Key is being held.</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>      tap_code16(long_press_keycode);</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>    }</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a>    <span class="cf">return</span> false;  <span class="co">// Skip default handling.</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>  }</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a>  <span class="cf">return</span> true;  <span class="co">// Continue default handling.</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a>}</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a>  <span class="cf">if</span> (!process_achordion(keycode, record)) { <span class="cf">return</span> false; }</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true"></a>    <span class="cf">case</span> COMM_COPY:  <span class="co">// Comma on tap, Ctrl+C on long press.</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true"></a>      <span class="cf">return</span> process_tap_or_long_press_key(record, C(KC_C));</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true"></a>  }</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true"></a>}</span></code></pre></div>
+<p>See <a href="../triggers/index.html#tap-vs.-long-press">tap vs. long press</a> for further discussion and variations on this idea.</p>
 <h2 id="explanation">Explanation</h2>
 <p>If you are interested in the technical details, here is an explanation of Achordion’s implementation and how it works together with QMK’s core tap-hold handling.</p>
 <h4 id="tap-hold-event-plumbing">Tap-hold event plumbing</h4>
