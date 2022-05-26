@@ -168,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>    <span class="cf">case</span> COMM_COPY:  <span class="co">// Comma on tap, Ctrl+C on long press.</span></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>      <span class="cf">return</span> process_tap_or_long_press_key(record, C(KC_C));</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>    <span class="cf">case</span> DOT_PASTE:  <span class="co">// Paste on tap, Ctrl+V on long press.</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>    <span class="cf">case</span> DOT_PASTE:  <span class="co">// Dot on tap, Ctrl+V on long press.</span></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>      <span class="cf">return</span> process_tap_or_long_press_key(record, C(KC_V));</span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a></span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>    <span class="cf">case</span> MPLY_MNXT:  <span class="co">// Play/pause on tap, next song on long press.</span></span>
@@ -179,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a></span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>}</span></code></pre></div>
-<p>See also <a href="https://docs.qmk.fm/#/mod_tap?id=changing-hold-function">changing the hold function</a> in the mod-tap documentation. The above definition of <code>process_tap_or_long_press_key()</code> taps the long press keycode just once when held. If you want the keycode repeated, use the following instead:</p>
+<p>Configure the <a href="https://docs.qmk.fm/#/tap_hold?id=tapping-term">tapping term</a> to determine how long the button needs to be held to be considered a tap vs. long press. See also <a href="https://docs.qmk.fm/#/mod_tap?id=changing-hold-function">changing the hold function</a> in the mod-tap documentation. The above definition of <code>process_tap_or_long_press_key()</code> taps the long press keycode just once when held. If you want the keycode repeated, use the following instead:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">bool</span> process_tap_or_long_press_key(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    keyrecord_t* record, <span class="dt">uint16_t</span> long_press_keycode) {</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;tap.count == <span class="dv">0</span>) {  <span class="co">// Key is being held.</span></span>
