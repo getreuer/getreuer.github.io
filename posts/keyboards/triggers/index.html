@@ -75,6 +75,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
 <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
 <script type="text/javascript" src="../../../site.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
 </head>
 <body>
 <div id="navbar">
@@ -101,6 +102,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#action-on-double-tap-without-delay">Action on double tap, without delay</a></li>
 <li><a href="#when-another-key-is-held">When another key is held</a></li>
 <li><a href="#based-on-previously-typed-keys">Based on previously typed keys</a></li>
+<li><a href="#when-idle-for-x-milliseconds">When idle for X milliseconds</a></li>
 <li><a href="#closing-thoughts">Closing thoughts</a></li>
 </ul>
 </div>
@@ -385,6 +387,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a>}</span></code></pre></div>
 <p>If you are testing the <code>recent</code> buffer for a dozen or so patterns, it is reasonable to do it as above, checking for one after another. However, for a larger number of patterns, more elaborate data structures and algorithms may be a win. Autocorrection <a href="../autocorrection/index.html#how-does-it-work">uses a trie data structure</a> to efficiently test for possibly hundreds to low thousands of typos.</p>
+<h2 id="when-idle-for-x-milliseconds">When idle for X milliseconds</h2>
+<p>You might want to turn off a layer, disable RGB, cancel an effect, etc. if the keyboard has gone idle. For instance with <a href="../caps-word/index.html">Caps Word</a>, I find it useful to turn it off after 5 seconds of inactivity.</p>
+<p>This section describes two ways to do this: using the deferred execution API or using software timers. The deferred execution method is easier to use, but has the drawback that it adds a little more to the firmware size to enable the deferred execution feature.</p>
+<p><strong>Using the deferred execution API.</strong> This method uses the <a href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">Deferred Execution API</a>. First, add <code>DEFERRED_EXEC_ENABLE = yes</code> in rules.mk. Then keymap.c, set up a callback method to be called.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="pp">#define IDLE_TIMEOUT_MS 5000  </span><span class="co">// Idle timeout in milliseconds.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">uint32_t</span> idle_callback(<span class="dt">uint32_t</span> trigger_time, <span class="dt">void</span>* cb_arg) {</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>  <span class="co">// If execution reaches here, the keyboard has gone idle.</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>  SEND_STRING(<span class="st">&quot;Idle!);</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>  <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>}</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>  <span class="co">// On every key event, start or extend the deferred execution to call</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a>  <span class="co">// `idle_callback()` after IDLE_TIMEOUT_MS.</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a>  <span class="dt">static</span> deferred_token idle_token = INVALID_DEFERRED_TOKEN;</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a>  <span class="cf">if</span> (!extend_deferred_exec(idle_token, IDLE_TIMEOUT_MS)) {</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a>    idle_token = defer_exec(IDLE_TIMEOUT_MS, idle_callback, NULL);</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a>  }</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true"></a>  <span class="co">// Macros...</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true"></a>}</span></code></pre></div>
+<p>The <code>defer_exec()</code> function schedules <code>idle_callback()</code> to run after <code>IDLE_TIMEOUT_MS</code>. It also returns a “token” <code>idle_token</code> that can be used with other APIs to extend or cancel the execution.</p>
+<p><strong>Using a software timer.</strong> A lower-lever method is to use a <a href="https://docs.qmk.fm/#/ref_functions?id=software-timers">software timer</a> within the <a href="https://docs.qmk.fm/#/custom_quantum_functions?id=matrix-scanning-code">matrix_scan_user function</a> as follows.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="pp">#define IDLE_TIMEOUT_MS 5000  </span><span class="co">// Idle timeout in milliseconds.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">uint16_t</span> idle_timer = <span class="dv">0</span>;</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a><span class="dt">void</span> matrix_scan_user(<span class="dt">void</span>) {</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>  <span class="cf">if</span> (idle_timer &amp;&amp; timer_expired(timer_read(), idle_timer)) {</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a>    <span class="co">// If execution reaches here, the keyboard has gone idle.</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a>    SEND_STRING(<span class="st">&quot;Idle!);</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a>    idle_timer = <span class="dv">0</span>;</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a>  }</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a>}</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true"></a>  <span class="co">// On every key event, set idle_timer to expire after IDLE_TIMEOUT_MS.</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true"></a>  <span class="co">// We use idle_timer == 0 to indicate that the timer is inactive, so</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true"></a>  <span class="co">// the value is bitwise or&#39;d with 1 to ensure it is nonzero.</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true"></a>  idle_timer = (record-&gt;event.time + IDLE_TIMEOUT_MS) | <span class="dv">1</span>;</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true"></a>  <span class="co">// Macros...</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true"></a>}</span></code></pre></div>
+<p>The above uses a 16-bit timer, which wraps around every <span class="math inline">\(2^{16} = 65536\)</span> milliseconds or about once a minute. The <code>timer_expired()</code> function works for deadlines that are at most half that duration in the future, 32768 milliseconds, so <code>IDLE_TIMEOUT_MS</code> can’t be larger than that. This range is often enough, but if you need longer-term timing, QMK also has a 32-bit flavor of timers with the APIs <code>timer_read32()</code>, <code>timer_elapsed32()</code>, <code>timer_expired32()</code> (<a href="https://github.com/qmk/qmk_firmware/blob/master/platforms/timer.h">code link</a>).</p>
 <h2 id="closing-thoughts">Closing thoughts</h2>
 <p>There are a variety of ways to trigger an action in QMK, enabling a range of interesting effects. I’m excited in particular about actions based on previously typed keys. Knowing what <em>word</em> was just typed, not just the last key, opens new possibilities.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
