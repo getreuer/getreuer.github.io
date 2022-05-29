@@ -109,6 +109,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
+<div style="border-radius:4px; border:solid 2.5px #e6b153; padding:0 1em 0 1em">
+<p>🚀  <strong>Caps Word is now a core QMK feature!</strong>  🚀</p>
+<p>Caps Word was merged into QMK master on 2022-05-28. To use it, <a href="https://docs.qmk.fm/#/newbs_git_using_your_master_branch?id=updating-your-master-branch">update your QMK set up</a> and see the <a href="https://docs.qmk.fm/#/feature_caps_word">QMK Caps Word documentation</a>. Or if you want, you may continue to use the userspace Caps Word implementation described in this page.</p>
+</div>
 <h2 id="overview">Overview</h2>
 <p>All-caps identifiers like “<code>MOD_MASK_ALT</code>” are awkward to type.</p>
 <p>Caps Lock would be the standard solution to this problem, but it is awkward: it needs a dedicated key to toggle it (an imposition on smaller keyboards), and we need to remember to toggle it off after typing the word. Or with normal shifting, we either perform finger gymnastics or need to stop typing in the middle of the word to release shift with one hand to switch to holding shift with the other hand. In my experience, this is a nuisance especially if your shift keys are mod-taps, as in <a href="https://precondition.github.io/home-row-mods">home row mods</a>.</p>
@@ -257,7 +261,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 id="other-implementations">Other implementations</h2>
 <p>I’m aware of a few other QMK implementations of Caps Word:</p>
 <ul>
-<li><p><a href="https://github.com/qmk/qmk_firmware/pull/16588">qmk/qmk_firmware#16588</a> is a pending pull request to add Caps Word to QMK as a core feature. It is functionally the same as the userspace implementation here, though there are a few differences in default settings and API naming.</p></li>
+<li><p><a href="https://github.com/qmk/qmk_firmware/pull/16588">qmk/qmk_firmware#16588</a> added Caps Word to QMK as a core feature. It is functionally the same as the userspace implementation here, though there are a few differences in default settings and API naming.</p></li>
 <li><p><a href="https://github.com/andrewjrae/kyria-keymap/tree/e3ad77dc4d48b8e6a842c9136c76c1021ab5976b#case-modes">andrewjrae’s Kyria keymap</a> has a Caps Word implementation. Caps Word is done as a special case of a “Case Modes” library, which can also be used to conveniently type <code>snake_case_name</code> and <code>camelCaseName</code> identifiers.</p></li>
 <li><p><a href="https://github.com/qmk/qmk_firmware/tree/906108fb486797ab2f3eb7c3a6f70e099c1199e6/users/replicaJunction#capsword-and-numword">replicaJunction’s QMK users folder</a> has a Caps Word implementation. There is also a matching “Num Word” library applying the same idea to using a number layer.</p></li>
 </ul>
