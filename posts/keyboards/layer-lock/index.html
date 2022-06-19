@@ -93,9 +93,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><a href="#add-it-to-your-keymap">Add it to your keymap</a></li>
 <li><a href="#example-use">Example use</a></li>
-<li><a href="#customization-options">Customization options</a></li>
+<li><a href="#customization-options">Customization options</a>
+<ul>
+<li><a href="#idle-timeout">Idle timeout</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#representing-the-current-layer-lock-state">Representing the current Layer Lock state</a></li>
+</ul></li>
 <li><a href="#compared-to-dflayer">Compared to <code>DF(layer)</code></a></li>
 <li><a href="#explanation">Explanation</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
@@ -147,6 +153,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <p>A variation that would also work is to put the Layer Lock key on the base layer and make other layers transparent (<code>KC_TRNS</code>) in that position. Pressing the Layer Lock key locks (or unlocks) the <em>highest</em> layer, regardless of which layer the Layer Lock key is on.</p>
 <h2 id="customization-options">Customization options</h2>
+<h3 id="idle-timeout">Idle timeout</h3>
+<p>Optionally, Layer Lock may be configured to deactivate if the keyboard is idle for some time. This is useful to avoid confusion if you get interrupted and step away from your desk while a layer is locked. In your config.h, define <code>LAYER_LOCK_IDLE_TIMEOUT</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="pp">#define LAYER_LOCK_IDLE_TIMEOUT 60000  </span><span class="co">// Turn off after 60 seconds.</span></span></code></pre></div>
+<p>where the time is in units of milliseconds. Then in your keymap.c, define (or add to) <code>matrix_scan_user()</code> as</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">void</span> matrix_scan_user(<span class="dt">void</span>) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>  layer_lock_task();</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  <span class="co">// Other tasks...</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>}</span></code></pre></div>
+<p>The default behavior (when <code>LAYER_LOCK_IDLE_TIMEOUT</code> isn’t set, or set to 0) is that Layer Lock never times out, and in this case it isn’t necessary to call <code>layer_lock_task()</code>.</p>
+<h3 id="functions">Functions</h3>
 <p>Use the following functions to query and manipulate the layer lock state.</p>
 <div class="eqscroll">
 <table>
@@ -176,10 +192,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 </div>
-<p>Additionally, there is an optional callback <code>layer_lock_set_user()</code> that gets called when a layer is locked or unlocked. This is useful to represent the current lock state for instance by setting an LED. In your keymap, define</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">void</span> layer_lock_set_user(layer_state_t locked_layers) {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="co">// Do something like `set_led(is_layer_locked(NAV));`</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>}</span></code></pre></div>
+<h3 id="representing-the-current-layer-lock-state">Representing the current Layer Lock state</h3>
+<p>There is an optional callback <code>layer_lock_set_user()</code> that gets called when a layer is locked or unlocked. This is useful to represent the current lock state for instance by setting an LED. In your keymap, define</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">void</span> layer_lock_set_user(layer_state_t locked_layers) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  <span class="co">// Do something like `set_led(is_layer_locked(NAV));`</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>}</span></code></pre></div>
 <h2 id="compared-to-dflayer">Compared to <code>DF(layer)</code></h2>
 <p>Another way to set a layer to be always on is to set it as the default layer with <a href="https://docs.qmk.fm/#/feature_layers">the <code>DF(layer)</code> keycode</a>, comparable to Layer Lock:</p>
 <ul>
@@ -191,6 +208,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>On an <code>MO(layer)</code>, <code>TT(layer)</code>, or <code>LT(layer, key)</code> event, the layer is extracted from the keycode and checked against <code>locked_layers</code>. Since the normal release event handling for these keys is to turn the layer off, we indicate that this handling should be skipped (return false) if the layer is locked so that the layer stays on.</p>
 <p>For one-shot layer <code>OSL(layer)</code> keys, we check when locking whether the layer being locked is <code>get_oneshot_layer()</code>. If so, we call <code>reset_oneshot_layer()</code> to forget the OSL state. This way the OSL handling doesn’t turn the layer off after the next keypress.</p>
 <p>Even when a layer is nominally “locked,” it is possible and expected that other features may nevertheless turn the layer off. To account for this, we compare <code>locked_layers</code> vs. the layer state on each key event and set layers with broken locks to be unlocked.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Thanks to <span class="citation" data-cites="ujl123">@ujl123</span> on GitHub and u/DB_Cooper75 on Reddit for helpful feedback and suggestions. And big thanks to <span class="citation" data-cites="mwpardue">@mwpardue</span> for suggesting and contributing the idle timeout option.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
