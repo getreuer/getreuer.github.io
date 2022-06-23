@@ -134,7 +134,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>Step 2:</strong> In your rules.mk, add</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/caps_word.c</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/caps_word.c</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co"># Disable QMK core&#39;s Caps Word implementation.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="dt">CAPS_WORD_ENABLE </span><span class="ch">=</span><span class="st"> no  </span></span></code></pre></div>
 <p><strong>Step 3:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/caps_word.h">caps_word.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/caps_word.c">caps_word.c</a> there.</p>
 <p>Also, your keymap needs both a left and right shift key <code>KC_LSFT</code> and <code>KC_RSFT</code> or one-shot or mod-tap equivalents. Alternatively, use the customization options below to add another method of activating Caps Word.</p>
 <h2 id="troubleshooting-command">Troubleshooting: Command</h2>
@@ -278,7 +281,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Here is a brief explanation of how this Caps Word implementation works. The code checks the mod bits on each key event, activating Caps Word when both left and right shifts are pressed.</p>
 <p>While active, Caps Word automatically applies shift as a weak mod as needed so that letters are shifted and other keys are not. The word continues while <code>caps_word_press_user</code> returns true (by default, for <code>a</code>–<code>z</code>, <code>0</code>–<code>9</code>, <code>-</code>, <code>_</code>, and backspace). Additionally, most layer switch keys (<code>MO</code>, <code>TO</code>, <code>TG</code>, <code>TT</code>, <code>OSL</code>, <code>LT</code>) are ignored so that Caps Word may be used across layers. Any other key is considered “word breaking” and disables Caps Word.</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
-<p>Thanks to <span class="citation" data-cites="drashna">@drashna</span> and <span class="citation" data-cites="wheredoesyourmindgo">@wheredoesyourmindgo</span> on GitHub and u/uolot and u/Dutchnesss1 on Reddit for feedback, bug fixes, and improvements to make Caps Word better. I couldn’t have done it alone!</p>
+<p>Thanks to <span class="citation" data-cites="drashna">@drashna</span>, <span class="citation" data-cites="wheredoesyourmindgo">@wheredoesyourmindgo</span>, and <span class="citation" data-cites="ujl123">@ujl123</span> on GitHub and u/uolot and u/Dutchnesss1 on Reddit for feedback, bug fixes, and improvements to make Caps Word better. I couldn’t have done it alone!</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
