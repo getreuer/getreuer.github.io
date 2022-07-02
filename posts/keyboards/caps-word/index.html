@@ -100,6 +100,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#idle-timeout">Idle timeout</a></li>
 <li><a href="#functions">Functions</a></li>
 <li><a href="#activate-caps-word-with-a-combo">Activate Caps Word with a combo</a></li>
+<li><a href="#activate-caps-word-by-pressing-a-key">Activate Caps Word by pressing a key</a></li>
 <li><a href="#configure-which-keys-are-word-breaking">Configure which keys are “word breaking”</a></li>
 <li><a href="#representing-the-current-caps-word-state">Representing the current Caps Word state</a></li>
 </ul></li>
@@ -224,51 +225,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a>  }</span>
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true"></a>}</span></code></pre></div>
 <p>And if you haven’t yet enabled combos, add <code>COMBO_ENABLE = yes</code> in rules.mk.</p>
+<h3 id="activate-caps-word-by-pressing-a-key">Activate Caps Word by pressing a key</h3>
+<p>First, enable the toggle key by adding in config.h:</p>
+<pre><code>#define CAPS_WORD_TOGGLE_KEY</code></pre>
+<p>Then use the <code>CAPS_WORD</code> keycode (short alias <code>CAPSWRD</code>) in your keymap. Pressing this key toggles Caps Word.</p>
+<p><strong>Note:</strong> We repurpose the <code>CAPS_WORD</code> keycode from QMK’s Caps Word so that there is no need to define a keycode yourself. This method requires QMK is updated to include the changes made to QMK on 2022-05-28 (<a href="https://docs.qmk.fm/#/newbs_git_using_your_master_branch?id=updating-your-master-branch">update your QMK set up</a>).</p>
 <h3 id="configure-which-keys-are-word-breaking">Configure which keys are “word breaking”</h3>
 <p>You can define the <code>caps_word_press_user(uint16_t keycode)</code> callback to configure which keys should be shifted and which keys are considered “word breaking” and stop Caps Word.</p>
 <p>The callback is called on every key press while Caps Word is active. When the key should be shifted (that is, a letter key), the callback should call <code>add_weak_mods(MOD_BIT(KC_LSFT))</code> to shift the key. Returning true continues the current “word,” while returning false is “word breaking” and deactivates Caps Word. The default callback is</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">bool</span> caps_word_press_user(<span class="dt">uint16_t</span> keycode) {</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    <span class="co">// Keycodes that continue Caps Word, with shift applied.</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="cf">case</span> KC_A ... KC_Z:</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    <span class="cf">case</span> KC_MINS:</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>      add_weak_mods(MOD_BIT(KC_LSFT));  <span class="co">// Apply shift to the next key.</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>      <span class="cf">return</span> true;</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>    <span class="co">// Keycodes that continue Caps Word, without shifting.</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>    <span class="cf">case</span> KC_1 ... KC_0:</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>    <span class="cf">case</span> KC_BSPC:</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>    <span class="cf">case</span> KC_DEL:</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a>    <span class="cf">case</span> KC_UNDS:</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>      <span class="cf">return</span> true;</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a>    <span class="cf">default</span>:</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>      <span class="cf">return</span> false;  <span class="co">// Deactivate Caps Word.</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a>  }</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="dt">bool</span> caps_word_press_user(<span class="dt">uint16_t</span> keycode) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    <span class="co">// Keycodes that continue Caps Word, with shift applied.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    <span class="cf">case</span> KC_A ... KC_Z:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    <span class="cf">case</span> KC_MINS:</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>      add_weak_mods(MOD_BIT(KC_LSFT));  <span class="co">// Apply shift to the next key.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>      <span class="cf">return</span> true;</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>    <span class="co">// Keycodes that continue Caps Word, without shifting.</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>    <span class="cf">case</span> KC_1 ... KC_0:</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>    <span class="cf">case</span> KC_BSPC:</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>    <span class="cf">case</span> KC_DEL:</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    <span class="cf">case</span> KC_UNDS:</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>      <span class="cf">return</span> true;</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>    <span class="cf">default</span>:</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a>      <span class="cf">return</span> false;  <span class="co">// Deactivate Caps Word.</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a>  }</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a>}</span></code></pre></div>
 <p>To customize, copy the above function into your keymap.c and add or remove keycodes to the cases. For instance, by default, pressing Shift keys will stop Caps Word, but you could add cases to return true for <code>KC_LSFT</code> and <code>KC_RSFT</code> to allow using Shift keys while using Caps Word.</p>
 <p>NOTE: Outside of this callback, you can use <code>caps_word_off()</code> to turn off Caps Word.</p>
 <h3 id="representing-the-current-caps-word-state">Representing the current Caps Word state</h3>
 <p>You can define <code>caps_word_set_user(bool active)</code> to get callbacks when Caps Word turns on or off. This is useful to represent the current Caps Word state, e.g. by setting an LED or playing a sound. In your keymap, define</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="dt">void</span> caps_word_set_user(<span class="dt">bool</span> active) {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  <span class="cf">if</span> (active) {</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    <span class="co">// Do something when Caps Word activates.</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  } <span class="cf">else</span> {</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    <span class="co">// Do something when Caps Word deactivates.</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>  }</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="dt">void</span> caps_word_set_user(<span class="dt">bool</span> active) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>  <span class="cf">if</span> (active) {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    <span class="co">// Do something when Caps Word activates.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>  } <span class="cf">else</span> {</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="co">// Do something when Caps Word deactivates.</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>  }</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>}</span></code></pre></div>
 <p>For instance on the ZSA Moonlander, the following indicates the Caps Word state on LEDs 1 and 4:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;moonlander.h&quot;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="dt">void</span> keyboard_post_init_user(<span class="dt">void</span>) {</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>  <span class="co">// I want to control the Moonlander&#39;s LEDs myself.</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>  keyboard_config.led_level = false;</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>}</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a><span class="dt">void</span> caps_word_set_user(<span class="dt">bool</span> active) {</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>  ML_LED_1(active);</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>  ML_LED_4(active);</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;moonlander.h&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="dt">void</span> keyboard_post_init_user(<span class="dt">void</span>) {</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>  <span class="co">// I want to control the Moonlander&#39;s LEDs myself.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>  keyboard_config.led_level = false;</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>}</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="dt">void</span> caps_word_set_user(<span class="dt">bool</span> active) {</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>  ML_LED_1(active);</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>  ML_LED_4(active);</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>}</span></code></pre></div>
 <h2 id="other-implementations">Other implementations</h2>
 <p>I’m aware of a few other QMK implementations of Caps Word:</p>
 <ul>
