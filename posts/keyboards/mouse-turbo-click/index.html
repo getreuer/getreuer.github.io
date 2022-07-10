@@ -120,7 +120,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Step 4:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/mouse_turbo_click.h">mouse_turbo_click.h</a> and <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/mouse_turbo_click.c">mouse_turbo_click.c</a> there.</p>
 <h2 id="explanation">Explanation</h2>
 <p>The implementation uses mouse keys and a periodic callback using the <a href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">deferred execution API</a>. When Turbo Click starts, <code>turbo_click_callback()</code> is scheduled. The callback executes twice per click, alternating between pressing and releasing the left mouse button key (<code>KC_MS_BTN1</code>). When Turbo Click stops, the callback is canceled and the mouse button is released if needed.</p>
-<p>The constant <code>CLICK_PERIOD_MS</code> determines the click period in units of milliseconds. The configured period of 80 ms gives 1000/80 = 12.5 clicks per second. Smaller period implies faster clicking. Beware that the keyboard might become unresponsive if the period is too small. I suggest setting this no smaller than 50.</p>
+<p>The constant <code>CLICK_PERIOD_MS</code> determines the click period in units of milliseconds. The configured period of 80 ms gives 1000/80 = 12.5 clicks per second. Smaller period implies faster clicking. Beware that the keyboard might become unresponsive if the period is too small. I suggest setting this no smaller than 10.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
