@@ -261,10 +261,10 @@ ouput         -&gt; output
 widht         -&gt; width</code></pre>
 <p>For a practical 71-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict.txt">autocorrection_dict.txt</a>. And for a yet larger 400-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict_extra.txt">autocorrection_dict_extra.txt</a>.</p>
 <p>The syntax is <code>typo -&gt; correction</code>. Typos and corrections are case insensitive, and any whitespace before or after the typo and correction is ignored. The typo must be only the characters <code>a</code>–<code>z</code>, <code>'</code>, or the special character <code>:</code> representing a word break. The correction may have just about any printable ASCII characters.</p></li>
-<li><p>Use the <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/make_autocorrection_data.py">make_autocorrection_data.py</a> Python script to process the dictionary</p>
+<li><p>Use the <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/make_autocorrection_data.py">make_autocorrection_data.py</a> Python script to process the dictionary. Put <code>autocorrection_dict.txt</code> in the same directory as the Python script and run</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>$ <span class="ex">python3</span> make_autocorrection_data.py</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">Processed</span> 71 autocorrection entries to table with 1120 bytes.</span></code></pre></div>
-<p>The script arranges the entries in <code>autocorrection_dict.txt</code> into a trie and generates <code>autocorrection_data.h</code> with the serialized trie embedded as an array.</p></li>
+<p>The script arranges the entries in <code>autocorrection_dict.txt</code> into a trie and generates <code>autocorrection_data.h</code> with the serialized trie embedded as an array. The .h file will be written in the same directory.</p></li>
 <li><p>Finally, recompile and flash your keymap.</p></li>
 </ol>
 <p>The generated C header looks like this:</p>
