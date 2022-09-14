@@ -99,6 +99,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#pressing-a-key-sometimes-types-it-twice">Pressing a key sometimes types it twice</a></li>
 <li><a href="#home-row-mods-are-hard-to-use">Home row mods are hard to use</a></li>
 <li><a href="#firmware-is-too-large">Firmware is too large!</a></li>
+<li><a href="#how-to-type-non-english-letters-qmk">How to type non-English letters (QMK)</a></li>
 <li><a href="#some-keys-are-swapped-qmk">Some keys are swapped (QMK)</a></li>
 <li><a href="#send_string-doesnt-work-qmk">SEND_STRING doesn’t work (QMK)</a></li>
 <li><a href="#what-is-this-weird-c-syntax-qmk">What is this weird C syntax (QMK)</a></li>
@@ -265,6 +266,9 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=10</code></pre></li>
 <p><strong>Specific to QMK:</strong> Make sure to enable LTO (link-time optimization) in rules.mk:</p>
 <pre><code>LTO_ENABLE = yes</code></pre>
 <p>Firmware will take longer to build, but the result will be smaller. See <a href="https://docs.qmk.fm/#/squeezing_avr?id=squeezing-the-most-out-of-avr">Squeezing the most out of AVR</a> (applicable also with non-AVR MCUs) for further tips.</p>
+<h2 id="how-to-type-non-english-letters-qmk">How to type non-English letters (QMK)</h2>
+<p><a href="#how-to-type-non-english-letters-qmk">🔗 Link</a></p>
+<p>There is a good solution for typing most symbols in major Western European languages by using the US-International layout. For other symbols, a possibility is QMK’s Unicode input feature. See <a href="../non-english/index.html">Typing non-English letters</a>.</p>
 <h2 id="some-keys-are-swapped-qmk">Some keys are swapped (QMK)</h2>
 <p><a href="#some-keys-are-swapped-qmk">🔗 Link</a></p>
 <p><strong>Magic keys:</strong> <a href="https://docs.qmk.fm/#/keycodes_magic">Magic keys</a> and a related <a href="https://docs.qmk.fm/#/feature_command">Command feature</a> are capable of dynamically disabling GUI keys, swapping Ctrl ↔︎ Caps Lock, Alt ↔︎ GUI, and a few other similar such things. A common source of confusion is when these settings are changed unintentionally. Furthermore, magic settings are saved to EEPROM, so they stubbornly survive even when the keyboard is flashed with new firmware. The way to fix this is to clear the EEPROM, which resets any magic settings. Two ways to do that:</p>
@@ -273,12 +277,7 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=10</code></pre></li>
 <li><p>Use the key code <code>EE_CLR</code> in your layout. Pressing this key will clear the EEPROM.</p></li>
 </ul>
 <p>See also <a href="https://docs.qmk.fm/#/faq_keymap?id=some-of-my-keys-are-swapped-or-not-working">Some Of My Keys Are Swapped Or Not Working</a>.</p>
-<p><strong>Non-US QWERTY host layout.</strong> The usual “<code>KC_</code>”-prefixed keycodes assume the host computer is configured to US QWERTY keyboard layout, see <a href="https://docs.qmk.fm/#/faq_keymap?id=what-are-the-default-keycodes">What Are the Default Keycodes</a>. Configuring the computer to a different keyboard layout can result in swapped keys or some shifted keys producing unexpected results.</p>
-<p>It’s not required that the keyboard itself is physically in QWERTY layout. You can arrange your QMK keymap to whatever you like. If you need to set the <em>computer</em> to a non-US QWERTY layout, you can include a header like <code>#include "keymap_german.h"</code> for alternative “<code>DE_</code>”-prefixed keycodes. See <a href="https://docs.qmk.fm/#/feature_unicode?id=additional-language-support">Additional Language Support</a>. See also the next section regarding host layout and <code>SEND_STRING()</code>.</p>
-<p>Why is it like this? When making keyboards with other layouts, it is standard practice to reuse US QWERTY keyboard firmware and simply print different keycap labels. This mismatch is resolved by configuring the host computer to map key codes to the intended layout. From the <a href="https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf">Universal Serial Bus HID Usage Tables, section 10</a>:</p>
-<blockquote>
-<p>Where this list is not specific for a key function in a language, the closest equivalent key position should be used, so that a keyboard may be modified for a different language by simply printing different keycaps. One example is the Y key on a North American keyboard. In Germany this is typically Z. Rather than changing the keyboard firmware to put the Z Usage into that place in the descriptor list, the vendor should use the Y Usage on both the North American and German keyboards. This continues to be the existing practice in the industry, in order to minimize the number of changes to the electronics to accommodate other languages.</p>
-</blockquote>
+<p><strong>Non-US QWERTY host layout.</strong> The usual “<code>KC_</code>”-prefixed keycodes assume the host computer is configured to US QWERTY keyboard layout, see <a href="https://docs.qmk.fm/#/faq_keymap?id=what-are-the-default-keycodes">What Are the Default Keycodes</a>. Configuring the computer to a different layout can result in swapped keys or some shifted keys producing unexpected results. See <a href="../non-english/index.html#using-non-us-layouts">Using non-US layouts</a>.</p>
 <h2 id="send_string-doesnt-work-qmk">SEND_STRING doesn’t work (QMK)</h2>
 <p><a href="#send_string-doesnt-work-qmk">🔗 Link</a></p>
 <p>There are some gotchas with <code>SEND_STRING()</code>:</p>
@@ -288,7 +287,7 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=10</code></pre></li>
 <p>should instead be written as</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>SEND_STRING(<span class="st">&quot;my</span><span class="sc">\\</span><span class="st">favorite</span><span class="sc">\\</span><span class="st">directory&quot;</span>);  <span class="co">// OK</span></span></code></pre></div>
 <p>Similarly, <code>"</code> characters have special meaning, since they mark the beginning and end of the string. For a string with the literal <code>"</code> character, escape it as <code>\"</code>. See also <a href="https://en.wikipedia.org/wiki/Escape_sequences_in_C">Escape sequences in C</a>.</p></li>
-<li><p>By default, <code>SEND_STRING</code> assumes the host computer is set to US QWERTY keyboard layout. It’s not required that the keyboard itself is physically in QWERTY layout, you can arrange your QMK keymap to whatever you like. If you need to set the <em>computer</em> to a non-US QWERTY layout, you can include a header like <code>#include "sendstring_german.h"</code> to make <code>SEND_STRING</code> account for your layout, see <a href="https://docs.qmk.fm/#/reference_keymap_extras?id=sendstring-support">Sendstring Support</a>.</p></li>
+<li><p>By default, <code>SEND_STRING</code> assumes the host computer is set to US QWERTY keyboard layout. If not, see <a href="../non-english/index.html#using-non-us-layouts">Using non-US layouts</a>.</p></li>
 <li><p><code>SEND_STRING</code> is limited to (a subset of) <a href="https://en.wikipedia.org/wiki/ASCII#Character_set">ASCII text</a>. To send a string of Unicode characters, use <code>send_unicode_string()</code> <a href="../macros/index.html#emojis">as in this example</a>.</p></li>
 <li><p><code>SEND_STRING</code>’s argument must be a string literal. To print a string that you generated, use lowercase <code>send_string()</code> instead:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">// Print the index of the highest layer.</span></span>

@@ -282,14 +282,14 @@ table {
 }
 
 table th {
-  padding: .2em 1em;
+  padding: .1em 5pt;
   background-color: #eee;
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
 }
 
 table td {
-  padding: .2em 1em;
+  padding: .1em 5pt;
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
   vertical-align: top;
@@ -346,6 +346,9 @@ div.features a {
 @media only screen and (min-width: 695px) {
   pre, code, kbd, samp {
     font-size: 0.95em;
+  }
+  table th, table td {
+    padding: .2em 1em;
   }
   .eqwide { display: block; }
   .eqtight { display: none; }
