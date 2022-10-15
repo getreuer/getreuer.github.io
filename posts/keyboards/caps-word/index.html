@@ -279,8 +279,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>I’m aware of a few other QMK implementations of Caps Word:</p>
 <ul>
 <li><p>Caps Word is a <a href="https://docs.qmk.fm/#/feature_caps_word">core QMK feature</a> since 2022-05-28. It is functionally the same as the userspace implementation here, though there are a few differences in default settings and API naming.</p></li>
-<li><p><a href="https://github.com/andrewjrae/kyria-keymap/tree/e3ad77dc4d48b8e6a842c9136c76c1021ab5976b#case-modes">andrewjrae’s Kyria keymap</a> has a Caps Word implementation. Caps Word is done as a special case of a “Case Modes” library, which can also be used to conveniently type <code>snake_case_name</code> and <code>camelCaseName</code> identifiers.</p></li>
+<li><p><a href="https://github.com/andrewjrae/kyria-keymap/tree/e3ad77dc4d48b8e6a842c9136c76c1021ab5976b#case-modes">andrewjrae’s Case Modes</a> makes an extension of the Caps Word idea. In addition to Caps Word, it has modes for easily typing <code>snake_case_name</code>, <code>camelCase</code>, <code>kebab-case</code>, and <code>path/to/file</code>. The Space key is modified, e.g. to type <code>_</code> for snake case or set one-shot shift for camel case, and pressing Space twice ends the mode.</p></li>
+<li><p><a href="https://github.com/rafaelromao/keyboards/blob/main/docs/modifiers.md#smart-case-key">rafaelromao’s Smart Case</a> implements Caps Word and Case Modes functionality, including an idle timeout.</p></li>
 <li><p><a href="https://github.com/qmk/qmk_firmware/tree/906108fb486797ab2f3eb7c3a6f70e099c1199e6/users/replicaJunction#capsword-and-numword">replicaJunction’s QMK users folder</a> has a Caps Word implementation. There is also a matching “Num Word” library applying the same idea to using a number layer.</p></li>
+<li><p><a href="https://github.com/Ga68/qmk_firmware/blob/my_layout/keyboards/sofle/keymaps/Ga68/caps_word.c">Ga68’s multi-mode Caps Word</a> implements Case Modes functionality by using QMK Core’s Caps Word with a strategic definition of <code>caps_word_press_user()</code>.</p></li>
 </ul>
 <p>Beyond QMK, Caps Word is <a href="https://zmk.dev/docs/behaviors/caps-word">a core feature in ZMK</a>.</p>
 <h2 id="explanation">Explanation</h2>
