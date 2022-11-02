@@ -98,6 +98,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#should-i-learn-how-to-touch-type">Should I learn how to touch type?</a></li>
 <li><a href="#i-type-xxx-wpm-is-that-fast">I type XXX wpm – Is that fast?</a></li>
 <li><a href="#pressing-a-key-sometimes-types-it-twice">Pressing a key sometimes types it twice</a></li>
+<li><a href="#how-much-lag-do-custom-keyboards-have">How much lag do custom keyboards have?</a></li>
 <li><a href="#home-row-mods-are-hard-to-use">Home row mods are hard to use</a></li>
 <li><a href="#firmware-is-too-large">Firmware is too large!</a></li>
 <li><a href="#how-to-type-non-english-letters-qmk">How to type non-English letters (QMK)</a></li>
@@ -225,6 +226,31 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=10</code></pre></li>
 <li><p><a href="https://my.eng.utah.edu/~cs5780/debouncing.pdf">A Guide to Debouncing</a> – measures bouncing on several real switches, discusses several debouncing strategies in hardware and software</p></li>
 <li><p><a href="https://hackaday.com/2015/12/10/embed-with-elliot-debounce-your-noisy-buttons-part-ii/">Embed with Elliot: Debounce your noisy buttons, Part 2</a> – a sophisticated debouncing algorithm</p></li>
 <li><p><a href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/">Measure and reduce keyboard input latency with QMK</a> – tuning debouncing and other configurations for minimal latency</p></li>
+</ul>
+<h2 id="how-much-lag-do-custom-keyboards-have">How much lag do custom keyboards have?</h2>
+<p><a href="#how-much-lag-do-custom-keyboards-have">🔗 Link</a></p>
+<p>And related question, are custom keyboards good for gaming? I’ll focus on keyboards running QMK firmware, but this is probably representative in general since other keyboard firmwares work similarly under the same constraints.</p>
+<p><em>Input lag</em> of a keyboard is the time between actuating a key to the computer receiving the key report. <strong>Input lag with QMK is typically 2–14 ms, so fast that it is visually imperceptible, less than one frame of 60 fps video (16.7 ms).</strong> QMK keeps up even with the most demanding games. Lag due to keyboard firmware is probably negligible compared to other sources of lag (more on this below).</p>
+<p>The following processes are the main sources of lag. See <a href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/#results">Michael Stapelberg’s investigation</a> for deeper discussion:</p>
+<ol type="1">
+<li><p><strong>Matrix scanning</strong> continually checks the keyboard matrix circuit for changes in key state. The time between successive scans in on the order of 0.2–2 ms. A faster keyboard microcontroller can improve this.</p></li>
+<li><p><strong>Debouncing</strong> is applied to clean up the matrix changes. As a key is pressed, the electrical contacts typically make and breaking contact several times. By default, QMK debounces the signal by waiting for a debounce time of 5 ms, while some keyboards are configured for a longer debounce time. Setting an <a href="https://docs.qmk.fm/#/feature_debounce_type?id=types-of-debounce-algorithms">“eager” debouncing strategy</a> avoids this latency. You can also try reducing the debounce time, though beware that <a href="#pressing-a-key-sometimes-types-it-twice">keys might bounce</a> if the time is too short.</p></li>
+<li><p><strong>USB polling</strong> transfers key reports to the computer. Polling defaults to once every 1 ms, the fastest interval supported by USB Full Speed (USB 1.0).</p></li>
+</ol>
+<p>Beware that <strong>input lag is much larger on keys using certain special QMK features</strong>, namely Tap-Hold keys, Tap Dance keys, Auto Shifted keys, Space Cadet keys, and keys used in Combos. Avoid using them on your gaming layer. Event processing for keys using these features is delayed while QMK waits to determine whether the key is being tapped vs. held or whether other keys are pressed at the same time. This delay may be substantial, up to <code>TAPPING_TERM</code> or 200 ms by default for tap-hold keys or <code>COMBO_TERM</code> or 40 ms by default for keys used in combos.</p>
+<p>Other sources of lag:</p>
+<ul>
+<li><p>Wireless keyboards have additional lag compared to wired. Communication over Bluetooth adds around 8–25 ms of lag. Some keyboards have the option to communicate instead using a proprietary wireless protocol and receiver, which can slim communication lag below 4 ms. For minimal lag, use a wired connection.</p></li>
+<li><p><a href="https://deskthority.net/wiki/Travel#Pretravel">Switch pretravel</a> and actuation force make a difference, that is, how far down and with how much force the key must be pressed to register. Pretravel of 2 mm and actuation force of around 50 cN is typical. There are switches that reduce these parameters, like Kailh Speed Silver and Cherry MX Speed Silver.</p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Display_lag">Display lag</a> of the monitor contributes to the full time between keystroke to its effect being visible on screen. LCD monitors vary, sometimes having in excess of 30 ms display lag (2 or more frames delayed). A gaming monitor with refresh rate of 120 Hz and up can improve this.</p></li>
+</ul>
+<p>Related:</p>
+<ul>
+<li><p><a href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/">Michael Stapelberg – Measure and reduce keyboard input latency with QMK on the Kinesis Advantage (2021)</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=jWL4nU-vtWs">Nicell – Keyboard Input Latency Compared: Wireless BLE ZMK, QMK, and Corsair</a></p></li>
+<li><p><a href="https://www.rtings.com/keyboard/tests/latency">rtings.com – Our Keyboard Typing Experience Tests</a></p></li>
+<li><p><a href="https://docs.qmk.fm/#/how_keyboards_work">How Keys Are Registered, and Interpreted by Computers</a></p></li>
+<li><p><a href="https://pcmonitors.info/articles/factors-affecting-pc-monitor-responsiveness">Factors Affecting PC Monitor Responsiveness</a></p></li>
 </ul>
 <h2 id="home-row-mods-are-hard-to-use">Home row mods are hard to use</h2>
 <p><a href="#home-row-mods-are-hard-to-use">🔗 Link</a></p>
