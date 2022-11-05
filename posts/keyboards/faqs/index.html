@@ -210,10 +210,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><p>For QMK firmware: see the <a href="https://docs.qmk.fm/#/feature_debounce_type">QMK debounce documentation</a>. By default, QMK applies debouncing with a debounce time of 5 ms. Try increasing the debounce time to, say, 10 ms by adding in config.h:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#define DEBOUNCE 10</span></span></code></pre></div></li>
+<li><p>For Oryx: in the Oryx configurator, click the gear ⚙️ in the upper right corner to open advanced settings, then click Debounce.</p></li>
 <li><p>For ZMK firmware: see the <a href="https://zmk.dev/docs/features/debouncing/">ZMK debounce documentation</a>. ZMK applies debouncing by default with a debounce time of 5 ms. Try increasing this to 10 ms by setting in your .conf file:</p>
 <pre><code>CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=10
 CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=10</code></pre></li>
-<li><p>For Oryx: in the Oryx configurator, click the gear ⚙️ in the upper right corner to open advanced settings, then click Debounce.</p></li>
+<li><p>For KMK firmware: the debounce time is set by the <code>interval</code> arg in the constructor of <code>MatrixScanner</code> (or similar key scanner), defaulting to 20 ms. See the <a href="http://kmkfw.io/docs/scanners">Scanners documentation</a>.</p></li>
 </ul>
 <p><strong>Hardware troubleshooting:</strong></p>
 <ul>
@@ -238,13 +239,13 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=10</code></pre></li>
 <li><p><strong>USB polling</strong> transfers key reports to the computer. Polling defaults to once every 1 ms, the fastest interval supported by USB Full Speed (USB 1.0).</p></li>
 </ol>
 <p>Beware that <strong>input lag is much larger on keys using certain special QMK features</strong>, namely Tap-Hold keys, Tap Dance keys, Auto Shifted keys, Space Cadet keys, and keys used in Combos. Avoid using them on your gaming layer. Event processing for keys using these features is delayed while QMK waits to determine whether the key is being tapped vs. held or whether other keys are pressed at the same time. This delay may be substantial, up to <code>TAPPING_TERM</code> or 200 ms by default for tap-hold keys or <code>COMBO_TERM</code> or 40 ms by default for keys used in combos.</p>
-<p>Other sources of lag:</p>
+<p><strong>Other sources of lag:</strong></p>
 <ul>
 <li><p>Wireless keyboards have additional lag compared to wired. Communication over Bluetooth adds around 8–25 ms of lag. Some keyboards have the option to communicate instead using a proprietary wireless protocol and receiver, which can slim communication lag below 4 ms. For minimal lag, use a wired connection.</p></li>
 <li><p><a href="https://deskthority.net/wiki/Travel#Pretravel">Switch pretravel</a> and actuation force make a difference, that is, how far down and with how much force the key must be pressed to register. Pretravel of 2 mm and actuation force of around 50 cN is typical. There are switches that reduce these parameters, like Kailh Speed Silver and Cherry MX Speed Silver.</p></li>
 <li><p><a href="https://en.wikipedia.org/wiki/Display_lag">Display lag</a> of the monitor contributes to the full time between keystroke to its effect being visible on screen. LCD monitors vary, sometimes having in excess of 30 ms display lag (2 or more frames delayed). A gaming monitor with refresh rate of 120 Hz and up can improve this.</p></li>
 </ul>
-<p>Related:</p>
+<p><strong>Related reading:</strong></p>
 <ul>
 <li><p><a href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/">Michael Stapelberg – Measure and reduce keyboard input latency with QMK on the Kinesis Advantage (2021)</a></p></li>
 <li><p><a href="https://www.youtube.com/watch?v=jWL4nU-vtWs">Nicell – Keyboard Input Latency Compared: Wireless BLE ZMK, QMK, and Corsair</a></p></li>
