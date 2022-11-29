@@ -4,13 +4,14 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-07 (updated 2022-05-28)" />
   <title>QMK triggers: reacting to interesting events</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -45,7 +46,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -58,7 +59,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -75,7 +76,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
 <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
 <script type="text/javascript" src="../../../site.js" ></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
+  type="text/javascript"></script>
 </head>
 <body>
 <div id="navbar">
@@ -88,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK triggers: reacting to interesting events</h1>
-<h2 class="author">Pascal Getreuer</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-07 (updated 2022-05-28)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -96,348 +99,522 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><a href="#license">License</a></li>
 </ul></li>
-<li><a href="#on-entering-or-exiting-a-layer">On entering or exiting a layer</a></li>
+<li><a href="#on-entering-or-exiting-a-layer">On entering or exiting a
+layer</a></li>
 <li><a href="#tap-vs.-long-press">Tap vs. long press</a></li>
 <li><a href="#when-mod-combo-is-held">When mod combo is held</a></li>
-<li><a href="#action-on-double-tap-without-delay">Action on double tap, without delay</a></li>
-<li><a href="#when-another-key-is-held">When another key is held</a></li>
-<li><a href="#based-on-previously-typed-keys">Based on previously typed keys</a></li>
-<li><a href="#when-idle-for-x-milliseconds">When idle for X milliseconds</a></li>
+<li><a href="#action-on-double-tap-without-delay">Action on double tap,
+without delay</a></li>
+<li><a href="#when-another-key-is-held">When another key is
+held</a></li>
+<li><a href="#based-on-previously-typed-keys">Based on previously typed
+keys</a></li>
+<li><a href="#when-idle-for-x-milliseconds">When idle for X
+milliseconds</a></li>
 <li><a href="#closing-thoughts">Closing thoughts</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
 <h2 id="overview">Overview</h2>
-<p>We will discuss how to implement different kinds of triggers for an action in QMK. By “triggers,” I mean reacting to events like that a button was double tapped or a layer became active. I assume here you are familiar with things like handling a custom keycode in <code>process_record_user()</code>; if not, check out <a href="../macros/index.html">my QMK macros post</a> first. As covered in that post, a lot of useful effects are possible with a button that performs a custom action. Triggers enable yet more beyond that.</p>
+<p>We will discuss how to implement different kinds of triggers for an
+action in QMK. By “triggers,” I mean reacting to events like that a
+button was double tapped or a layer became active. I assume here you are
+familiar with things like handling a custom keycode in
+<code>process_record_user()</code>; if not, check out <a
+href="../macros/index.html">my QMK macros post</a> first. As covered in
+that post, a lot of useful effects are possible with a button that
+performs a custom action. Triggers enable yet more beyond that.</p>
 <h3 id="license">License</h3>
 <p>Code snippets in this post are shared under Apache 2 license.</p>
 <div style="font-size:85%">
 <blockquote>
 <p>Copyright 2022 Google LLC</p>
-<p>Licensed under the Apache License, Version 2.0 (the “License”); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
-<p><a href="https://www.apache.org/licenses/LICENSE-2.0" class="uri">https://www.apache.org/licenses/LICENSE-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”); you
+may not use this file except in compliance with the License. You may
+obtain a copy of the License at</p>
+<p><a href="https://www.apache.org/licenses/LICENSE-2.0"
+class="uri">https://www.apache.org/licenses/LICENSE-2.0</a></p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
 </blockquote>
 </div>
-<h2 id="on-entering-or-exiting-a-layer">On entering or exiting a layer</h2>
-<p>The <code>layer_state_set_user()</code> callback is called every time the layer state changes. Within this callback, use <code>get_highest_layer(state)</code> to get the index of the highest active layer or <code>IS_LAYER_ON_STATE(state, layer)</code> to check whether <code>layer</code> is on.</p>
-<p>Implement an LED layer indicator by adding something like this in keymap.c:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>layer_state_t layer_state_set_user(layer_state_t state) {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>  writePin(B0, get_highest_layer(state) &gt; <span class="dv">0</span>);</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  <span class="cf">return</span> state;</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Change <code>B0</code> to the pin for the LED to use. The above assumes setting the pin high turns the LED on—if that’s flipped, negate the logic on the second arg.</p>
-<p>Note that <code>layer_state_set_user()</code> is called on every layer state change. To react only when entering or exiting a specific <code>ADJUST</code> layer, use a pattern like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>layer_state_t layer_state_set_user(layer_state_t state) {</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>  <span class="co">// Use `static` variable to remember the previous status.</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>  <span class="dt">static</span> <span class="dt">bool</span> adjust_on = false;</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="cf">if</span> (adjust_on != IS_LAYER_ON_STATE(state, ADJUST)) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    adjust_on = !adjust_on;</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>    <span class="cf">if</span> (adjust_on) {  <span class="co">// Just entered the ADJUST layer.</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>      PLAY_SONG(MAJOR_SONG);</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>    } <span class="cf">else</span> {          <span class="co">// Just exited the ADJUST layer.</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>      PLAY_SONG(GOODBYE_SONG);</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>    }</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>  }</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>  <span class="cf">return</span> state;</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>}</span></code></pre></div>
-<p>See also the QMK documentation on <a href="https://docs.qmk.fm/#/custom_quantum_functions?id=layer-change-code">Layer Change Code</a> and <a href="https://docs.qmk.fm/#/feature_led_indicators">LED Indicators</a>.</p>
+<h2 id="on-entering-or-exiting-a-layer">On entering or exiting a
+layer</h2>
+<p>The <code>layer_state_set_user()</code> callback is called every time
+the layer state changes. Within this callback, use
+<code>get_highest_layer(state)</code> to get the index of the highest
+active layer or <code>IS_LAYER_ON_STATE(state, layer)</code> to check
+whether <code>layer</code> is on.</p>
+<p>Implement an LED layer indicator by adding something like this in
+keymap.c:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  writePin<span class="op">(</span>B0<span class="op">,</span> get_highest_layer<span class="op">(</span>state<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> state<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Change <code>B0</code> to the pin for the LED to use. The above
+assumes setting the pin high turns the LED on—if that’s flipped, negate
+the logic on the second arg.</p>
+<p>Note that <code>layer_state_set_user()</code> is called on every
+layer state change. To react only when entering or exiting a specific
+<code>ADJUST</code> layer, use a pattern like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Use `static` variable to remember the previous status.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">bool</span> adjust_on <span class="op">=</span> false<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>adjust_on <span class="op">!=</span> IS_LAYER_ON_STATE<span class="op">(</span>state<span class="op">,</span> ADJUST<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    adjust_on <span class="op">=</span> <span class="op">!</span>adjust_on<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>adjust_on<span class="op">)</span> <span class="op">{</span>  <span class="co">// Just entered the ADJUST layer.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      PLAY_SONG<span class="op">(</span>MAJOR_SONG<span class="op">);</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>          <span class="co">// Just exited the ADJUST layer.</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      PLAY_SONG<span class="op">(</span>GOODBYE_SONG<span class="op">);</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> state<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>See also the QMK documentation on <a
+href="https://docs.qmk.fm/#/custom_quantum_functions?id=layer-change-code">Layer
+Change Code</a> and <a
+href="https://docs.qmk.fm/#/feature_led_indicators">LED
+Indicators</a>.</p>
 <h2 id="tap-vs.-long-press">Tap vs. long press</h2>
-<p>Taking inspiration from <a href="https://docs.qmk.fm/#/feature_auto_shift">Auto Shift</a>, we can have a key perform different actions on a regular tap vs. holding the key a bit longer. While a similar effect could be done with <a href="https://docs.qmk.fm/#/feature_tap_dance">a tap dance</a>, a better way to do it is to customize a layer-tap <code>LT</code> key. Thanks to <span class="citation" data-cites="filterpaper">@filterpaper</span> and <span class="citation" data-cites="jweickm">@jweickm</span> for teaching me this trick.</p>
-<p>Compared to tap dance, customizing an <code>LT</code> gets the tap-hold decision logic for free, which is more finely configurable to avoid accidental fires on rolled presses and so on. Once you have seen the pattern, it’s also arguably simpler to write.</p>
-<p>First, define a layer-tap key like <code>LT(0, kc)</code>, where <code>kc</code> is a basic keycode to be sent on tap and the layer is a dummy placeholder.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="pp">#define COMM_COPY LT(0, KC_COMM)</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="pp">#define DOT_PASTE LT(0, KC_DOT)</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="pp">#define MPLY_MNXT LT(0, KC_MPLY)</span></span></code></pre></div>
-<p>Then in <code>process_record_user()</code>, we customize the long press action:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">// Helper for implementing tap vs. long-press keys. Given a tap-hold</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co">// key event, replaces the hold function with `long_press_keycode`.</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">bool</span> process_tap_or_long_press_key(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    keyrecord_t* record, <span class="dt">uint16_t</span> long_press_keycode) {</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;tap.count == <span class="dv">0</span>) {  <span class="co">// Key is being held.</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>      tap_code16(long_press_keycode);</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>    }</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>    <span class="cf">return</span> false;  <span class="co">// Skip default handling.</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>  }</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>  <span class="cf">return</span> true;  <span class="co">// Continue default handling.</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>}</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>    <span class="cf">case</span> COMM_COPY:  <span class="co">// Comma on tap, Ctrl+C on long press.</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>      <span class="cf">return</span> process_tap_or_long_press_key(record, C(KC_C));</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>    <span class="cf">case</span> DOT_PASTE:  <span class="co">// Dot on tap, Ctrl+V on long press.</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>      <span class="cf">return</span> process_tap_or_long_press_key(record, C(KC_V));</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>    <span class="cf">case</span> MPLY_MNXT:  <span class="co">// Play/pause on tap, next song on long press.</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>      <span class="cf">return</span> process_tap_or_long_press_key(record, KC_MNXT);</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a>    <span class="co">// Other macros...</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a>  }</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Configure the <a href="https://docs.qmk.fm/#/tap_hold?id=tapping-term">tapping term</a> to determine how long the button needs to be held to be considered a tap vs. long press. See also <a href="https://docs.qmk.fm/#/mod_tap?id=changing-hold-function">changing the hold function</a> in the mod-tap documentation. The above definition of <code>process_tap_or_long_press_key()</code> taps the long press keycode just once when held. If you want the keycode repeated, use the following instead:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">bool</span> process_tap_or_long_press_key(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    keyrecord_t* record, <span class="dt">uint16_t</span> long_press_keycode) {</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;tap.count == <span class="dv">0</span>) {  <span class="co">// Key is being held.</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>      register_code16(long_press_keycode);</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    } <span class="cf">else</span> {</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>      unregister_code16(long_press_keycode);</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    }</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>    <span class="cf">return</span> false;  <span class="co">// Skip default handling.</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>  }</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>  <span class="cf">return</span> true;  <span class="co">// Continue default handling.</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>}</span></code></pre></div>
-<p>The above requires that the tap action is a <a href="https://docs.qmk.fm/#/keycodes_basic">basic keycode</a>, a limitation due to how tap-hold keys are represented. If you need an advanced keycode or will execute custom code for the tap action, this is possible by <a href="https://docs.qmk.fm/#/mod_tap?id=changing-tap-function">changing the tap function</a> as well. Start by defining a layer-tap key in which both the mod and tap keycode are placeholders.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="pp">#define FANCY_KEY  LT(0, KC_1)</span></span></code></pre></div>
-<p>If you define multiple such keys with this approach, use different tap keycodes (say, <code>KC_1</code>, <code>KC_2</code>, <code>KC_3</code>, …) to make them distinct.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="cf">case</span> FANCY_KEY:</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;tap.count &gt; <span class="dv">0</span>) {    <span class="co">// Key is being tapped.</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>      <span class="co">// Handle tap press event...</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>    } <span class="cf">else</span> {</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>      <span class="co">// Handle tap release event...</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>    }</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>  } <span class="cf">else</span> {                        <span class="co">// Key is being held.</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>      <span class="co">// Handle hold press event...</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>    } <span class="cf">else</span> {</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>      <span class="co">// Handle hold release event...</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>    }</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>  }</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>  <span class="cf">return</span> false;  <span class="co">// Skip default handling.</span></span></code></pre></div>
+<p>Taking inspiration from <a
+href="https://docs.qmk.fm/#/feature_auto_shift">Auto Shift</a>, we can
+have a key perform different actions on a regular tap vs. holding the
+key a bit longer. While a similar effect could be done with <a
+href="https://docs.qmk.fm/#/feature_tap_dance">a tap dance</a>, a better
+way to do it is to customize a layer-tap <code>LT</code> key. Thanks to
+<span class="citation" data-cites="filterpaper">@filterpaper</span> and
+<span class="citation" data-cites="jweickm">@jweickm</span> for teaching
+me this trick.</p>
+<p>Compared to tap dance, customizing an <code>LT</code> gets the
+tap-hold decision logic for free, which is more finely configurable to
+avoid accidental fires on rolled presses and so on. Once you have seen
+the pattern, it’s also arguably simpler to write.</p>
+<p>First, define a layer-tap key like <code>LT(0, kc)</code>, where
+<code>kc</code> is a basic keycode to be sent on tap and the layer is a
+dummy placeholder.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define COMM_COPY LT(0, KC_COMM)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define DOT_PASTE LT(0, KC_DOT)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MPLY_MNXT LT(0, KC_MPLY)</span></span></code></pre></div>
+<p>Then in <code>process_record_user()</code>, we customize the long
+press action:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Helper for implementing tap vs. long-press keys. Given a tap-hold</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">// key event, replaces the hold function with `long_press_keycode`.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> process_tap_or_long_press_key<span class="op">(</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    keyrecord_t<span class="op">*</span> record<span class="op">,</span> <span class="dt">uint16_t</span> long_press_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// Key is being held.</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      tap_code16<span class="op">(</span>long_press_keycode<span class="op">);</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> COMM_COPY<span class="op">:</span>  <span class="co">// Comma on tap, Ctrl+C on long press.</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> process_tap_or_long_press_key<span class="op">(</span>record<span class="op">,</span> C<span class="op">(</span>KC_C<span class="op">));</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> DOT_PASTE<span class="op">:</span>  <span class="co">// Dot on tap, Ctrl+V on long press.</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> process_tap_or_long_press_key<span class="op">(</span>record<span class="op">,</span> C<span class="op">(</span>KC_V<span class="op">));</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MPLY_MNXT<span class="op">:</span>  <span class="co">// Play/pause on tap, next song on long press.</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> process_tap_or_long_press_key<span class="op">(</span>record<span class="op">,</span> KC_MNXT<span class="op">);</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Configure the <a
+href="https://docs.qmk.fm/#/tap_hold?id=tapping-term">tapping term</a>
+to determine how long the button needs to be held to be considered a tap
+vs. long press. See also <a
+href="https://docs.qmk.fm/#/mod_tap?id=changing-hold-function">changing
+the hold function</a> in the mod-tap documentation. The above definition
+of <code>process_tap_or_long_press_key()</code> taps the long press
+keycode just once when held. If you want the keycode repeated, use the
+following instead:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> process_tap_or_long_press_key<span class="op">(</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    keyrecord_t<span class="op">*</span> record<span class="op">,</span> <span class="dt">uint16_t</span> long_press_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// Key is being held.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      register_code16<span class="op">(</span>long_press_keycode<span class="op">);</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      unregister_code16<span class="op">(</span>long_press_keycode<span class="op">);</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The above requires that the tap action is a <a
+href="https://docs.qmk.fm/#/keycodes_basic">basic keycode</a>, a
+limitation due to how tap-hold keys are represented. If you need an
+advanced keycode or will execute custom code for the tap action, this is
+possible by <a
+href="https://docs.qmk.fm/#/mod_tap?id=changing-tap-function">changing
+the tap function</a> as well. Start by defining a layer-tap key in which
+both the mod and tap keycode are placeholders.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define FANCY_KEY  LT(0, KC_1)</span></span></code></pre></div>
+<p>If you define multiple such keys with this approach, use different
+tap keycodes (say, <code>KC_1</code>, <code>KC_2</code>,
+<code>KC_3</code>, …) to make them distinct.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> FANCY_KEY<span class="op">:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>    <span class="co">// Key is being tapped.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Handle tap press event...</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Handle tap release event...</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>                        <span class="co">// Key is being held.</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Handle hold press event...</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Handle hold release event...</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span></code></pre></div>
 <h2 id="when-mod-combo-is-held">When mod combo is held</h2>
-<p>You can use pressing Left Shift and Right Shift at the same time as a way to trigger an action, like I did for <a href="../caps-word/index.html">Caps Word</a>. The below method works with the normal Shift keys (<code>KC_LSFT</code>, <code>KC_RSFT</code>) as well as one-shot Shift mods and Space Cadet Shift. The action can also be triggered using mod-tap Shift keys by holding both Shift mod-tap keys until the tapping term, then release them.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint8_t</span> mods = get_mods() | get_oneshot_mods();</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="cf">if</span> (mods == MOD_MASK_SHIFT) {  <span class="co">// Left Shift + Right Shift held.</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>  clear_mods();  <span class="co">// If needed, clear the mods.</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>  <span class="co">// Do something interesting...</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Keep in mind that Shift is active when triggered, so call <code>clear_mods()</code> first if needed before performing the action. You could similarly trigger an action when both Ctrl keys are held by changing <code>MOD_MASK_SHIFT</code> to <code>MOD_MASK_CTRL</code> or even use a mix like Left Alt + Right GUI with <code>(MOD_BIT(KC_LEFT_ALT) |</code> <code>MOD_BIT(KC_RIGHT_GUI))</code>.</p>
-<p>See also <a href="https://docs.qmk.fm/#/feature_advanced_keycodes?id=checking-modifier-state">Checking Modifier State</a>.</p>
-<p><strong>Note about Command:</strong> The <a href="https://docs.qmk.fm/#/feature_command">Command feature</a> also uses the Left Shift + Right Shift mod combination. To avoid conflict, disable Command by adding in rules.mk:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="dt">COMMAND_ENABLE </span><span class="ch">=</span><span class="st"> no</span></span></code></pre></div>
-<p>Or set it to use a different mod combination by defining <code>IS_COMMAND()</code> in config.h:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">// Activate Command with Left Ctrl + Right Ctrl.</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="pp">#define IS_COMMAND() (get_mods() == MOD_MASK_CTRL)</span></span></code></pre></div>
-<h2 id="action-on-double-tap-without-delay">Action on double tap, without delay</h2>
-<p>Suppose you want to perform some action when a Shift or Ctrl key is double tapped, <strong>yet otherwise have the key act as usual without any delays</strong>. This could again be done with a tap dance, but here is a short code snippet to do it directly.</p>
-<p>With this implementation, the Shift key continues to function as usual even as it is double tapped. This is essential in making Shift act without delay. Otherwise when Shift is pressed, we would have to wait out <code>TAPPING_TERM</code> to see whether it gets tapped again before sending keys to the host.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>  <span class="dt">static</span> <span class="dt">bool</span> tapped = false;</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>  <span class="dt">static</span> <span class="dt">uint16_t</span> tap_timer = <span class="dv">0</span>;</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>  <span class="cf">if</span> (keycode == KC_LSFT) {</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>    <span class="cf">if</span> (tapped &amp;&amp; !timer_expired(record-&gt;event.time, tap_timer)) {</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>      <span class="co">// The key was double tapped.</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>      clear_mods();  <span class="co">// If needed, clear the mods.</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>      <span class="co">// Do something interesting...</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>    }</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>    tapped = true;</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>    tap_timer = record-&gt;event.time + TAPPING_TERM;</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a>  } <span class="cf">else</span> {</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a>    <span class="co">// On an event with any other key, reset the double tap state.</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a>    tapped = false;</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true"></a>  }</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true"></a>}</span></code></pre></div>
-<p>When <code>KC_LSFT</code> is pressed, we use a <a href="https://docs.qmk.fm/#/ref_functions?id=software-timers">software timer</a> to check whether it was recently tapped. If so, this is a double tap (or possibly a triple tap or more). Two taps are considered a double tap if the presses are within <code>TAPPING_TERM</code> (200 ms by default).</p>
-<p>For <a href="../mouse-turbo-click/index.html">Mouse Turbo Click</a>, I used double tapping to lock Turbo Click. Its implementation follows the code above.</p>
+<p>You can use pressing Left Shift and Right Shift at the same time as a
+way to trigger an action, like I did for <a
+href="../caps-word/index.html">Caps Word</a>. The below method works
+with the normal Shift keys (<code>KC_LSFT</code>, <code>KC_RSFT</code>)
+as well as one-shot Shift mods and Space Cadet Shift. The action can
+also be triggered using mod-tap Shift keys by holding both Shift mod-tap
+keys until the tapping term, then release them.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint8_t</span> mods <span class="op">=</span> get_mods<span class="op">()</span> <span class="op">|</span> get_oneshot_mods<span class="op">();</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>mods <span class="op">==</span> MOD_MASK_SHIFT<span class="op">)</span> <span class="op">{</span>  <span class="co">// Left Shift + Right Shift held.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  clear_mods<span class="op">();</span>  <span class="co">// If needed, clear the mods.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Do something interesting...</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Keep in mind that Shift is active when triggered, so call
+<code>clear_mods()</code> first if needed before performing the action.
+You could similarly trigger an action when both Ctrl keys are held by
+changing <code>MOD_MASK_SHIFT</code> to <code>MOD_MASK_CTRL</code> or
+even use a mix like Left Alt + Right GUI with
+<code>(MOD_BIT(KC_LEFT_ALT) |</code>
+<code>MOD_BIT(KC_RIGHT_GUI))</code>.</p>
+<p>See also <a
+href="https://docs.qmk.fm/#/feature_advanced_keycodes?id=checking-modifier-state">Checking
+Modifier State</a>.</p>
+<p><strong>Note about Command:</strong> The <a
+href="https://docs.qmk.fm/#/feature_command">Command feature</a> also
+uses the Left Shift + Right Shift mod combination. To avoid conflict,
+disable Command by adding in rules.mk:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">COMMAND_ENABLE </span><span class="ch">=</span><span class="st"> no</span></span></code></pre></div>
+<p>Or set it to use a different mod combination by defining
+<code>IS_COMMAND()</code> in config.h:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Activate Command with Left Ctrl + Right Ctrl.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define IS_COMMAND() (get_mods() == MOD_MASK_CTRL)</span></span></code></pre></div>
+<h2 id="action-on-double-tap-without-delay">Action on double tap,
+without delay</h2>
+<p>Suppose you want to perform some action when a Shift or Ctrl key is
+double tapped, <strong>yet otherwise have the key act as usual without
+any delays</strong>. This could again be done with a tap dance, but here
+is a short code snippet to do it directly.</p>
+<p>With this implementation, the Shift key continues to function as
+usual even as it is double tapped. This is essential in making Shift act
+without delay. Otherwise when Shift is pressed, we would have to wait
+out <code>TAPPING_TERM</code> to see whether it gets tapped again before
+sending keys to the host.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">bool</span> tapped <span class="op">=</span> false<span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">uint16_t</span> tap_timer <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>keycode <span class="op">==</span> KC_LSFT<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>tapped <span class="op">&amp;&amp;</span> <span class="op">!</span>timer_expired<span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>time<span class="op">,</span> tap_timer<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      <span class="co">// The key was double tapped.</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      clear_mods<span class="op">();</span>  <span class="co">// If needed, clear the mods.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Do something interesting...</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    tapped <span class="op">=</span> true<span class="op">;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    tap_timer <span class="op">=</span> record<span class="op">-&gt;</span>event<span class="op">.</span>time <span class="op">+</span> TAPPING_TERM<span class="op">;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// On an event with any other key, reset the double tap state.</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    tapped <span class="op">=</span> false<span class="op">;</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>When <code>KC_LSFT</code> is pressed, we use a <a
+href="https://docs.qmk.fm/#/ref_functions?id=software-timers">software
+timer</a> to check whether it was recently tapped. If so, this is a
+double tap (or possibly a triple tap or more). Two taps are considered a
+double tap if the presses are within <code>TAPPING_TERM</code> (200 ms
+by default).</p>
+<p>For <a href="../mouse-turbo-click/index.html">Mouse Turbo Click</a>,
+I used double tapping to lock Turbo Click. Its implementation follows
+the code above.</p>
 <h2 id="when-another-key-is-held">When another key is held</h2>
-<p>Besides held modifiers, an action can be conditionally triggered based on another key being held.</p>
-<p>For instance with the following, the J and K keys become PgDn and PgUp while Backspace is held. The Backspace key continues to function as usual without any added delay, making it an interesting alternative to combos and layer-tap keys.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>  <span class="dt">static</span> <span class="dt">bool</span> bspc_is_held = false;</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>    <span class="cf">case</span> KC_BSPC:</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>      bspc_is_held = record-&gt;event.pressed;</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>      <span class="cf">break</span>;</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>    <span class="cf">case</span> KC_J: {  <span class="co">// Backspace + J = PgDn.</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a>      <span class="dt">static</span> <span class="dt">uint8_t</span> registered_key = KC_NO;</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a>      <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a>        registered_key = (bspc_is_held) ? KC_PGDN : KC_J;</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true"></a>        register_code(registered_key);</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a>      } <span class="cf">else</span> {</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true"></a>        unregister_code(registered_key);</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true"></a>      }</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true"></a>    } <span class="cf">return</span> false;</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true"></a></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true"></a>    <span class="cf">case</span> KC_K: {  <span class="co">// Backspace + K = PgUp.</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true"></a>      <span class="dt">static</span> <span class="dt">uint8_t</span> registered_key = KC_NO;</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true"></a>      <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true"></a>        registered_key = (bspc_is_held) ? KC_PGUP : KC_K;</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true"></a>        register_code(registered_key);</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true"></a>      } <span class="cf">else</span> {</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true"></a>        unregister_code(registered_key);</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true"></a>      }</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true"></a>    } <span class="cf">return</span> false;</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true"></a>  }</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true"></a></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true"></a>} </span></code></pre></div>
-<h2 id="based-on-previously-typed-keys">Based on previously typed keys</h2>
-<p>Some effects depend on previously typed keys. For example, an alternative to <a href="https://docs.qmk.fm/#/feature_leader_key">Leader Key</a>: when a special pattern “<code>qem</code>” is typed, automatically send backspaces to remove it followed by keys to type your email address. Or as I did in <a href="../autocorrection/index.html">Autocorrection</a>, when a typo is typed, automatically send keys to correct it.</p>
-<p>There are some technicalities in identifying “typed” keys properly:</p>
+<p>Besides held modifiers, an action can be conditionally triggered
+based on another key being held.</p>
+<p>For instance with the following, the J and K keys become PgDn and
+PgUp while Backspace is held. The Backspace key continues to function as
+usual without any added delay, making it an interesting alternative to
+combos and layer-tap keys.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">bool</span> bspc_is_held <span class="op">=</span> false<span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_BSPC<span class="op">:</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      bspc_is_held <span class="op">=</span> record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_J<span class="op">:</span> <span class="op">{</span>  <span class="co">// Backspace + J = PgDn.</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">static</span> <span class="dt">uint8_t</span> registered_key <span class="op">=</span> KC_NO<span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        registered_key <span class="op">=</span> <span class="op">(</span>bspc_is_held<span class="op">)</span> <span class="op">?</span> KC_PGDN <span class="op">:</span> KC_J<span class="op">;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        register_code<span class="op">(</span>registered_key<span class="op">);</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        unregister_code<span class="op">(</span>registered_key<span class="op">);</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_K<span class="op">:</span> <span class="op">{</span>  <span class="co">// Backspace + K = PgUp.</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>      <span class="dt">static</span> <span class="dt">uint8_t</span> registered_key <span class="op">=</span> KC_NO<span class="op">;</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>        registered_key <span class="op">=</span> <span class="op">(</span>bspc_is_held<span class="op">)</span> <span class="op">?</span> KC_PGUP <span class="op">:</span> KC_K<span class="op">;</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>        register_code<span class="op">(</span>registered_key<span class="op">);</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>        unregister_code<span class="op">(</span>registered_key<span class="op">);</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> </span></code></pre></div>
+<h2 id="based-on-previously-typed-keys">Based on previously typed
+keys</h2>
+<p>Some effects depend on previously typed keys. For example, an
+alternative to <a href="https://docs.qmk.fm/#/feature_leader_key">Leader
+Key</a>: when a special pattern “<code>qem</code>” is typed,
+automatically send backspaces to remove it followed by keys to type your
+email address. Or as I did in <a
+href="../autocorrection/index.html">Autocorrection</a>, when a typo is
+typed, automatically send keys to correct it.</p>
+<p>There are some technicalities in identifying “typed” keys
+properly:</p>
 <ol type="1">
-<li><p>Not all key presses type text. For instance, pressing the Left Shift key (<code>KC_LSFT</code>) generates a press event, but it does not on its own type text. Similarly, a mod-tap or layer-tap key types no text when it is held, but it might when it is tapped.</p></li>
-<li><p>Navigation keys (like arrows) and keys pressed with mods other than shift (hotkeys like Ctrl+W) may move the cursor or change the application state. When this happens, it is best to forget whatever keys had been typed up to that point.</p></li>
-<li><p>Similarly, the mouse may move the cursor or change application state. Unfortunately, unless the user uses <a href="https://docs.qmk.fm/#/feature_mouse_keys">Mouse Keys</a>, there is no practical way for QMK to know what the mouse does.</p></li>
+<li><p>Not all key presses type text. For instance, pressing the Left
+Shift key (<code>KC_LSFT</code>) generates a press event, but it does
+not on its own type text. Similarly, a mod-tap or layer-tap key types no
+text when it is held, but it might when it is tapped.</p></li>
+<li><p>Navigation keys (like arrows) and keys pressed with mods other
+than shift (hotkeys like Ctrl+W) may move the cursor or change the
+application state. When this happens, it is best to forget whatever keys
+had been typed up to that point.</p></li>
+<li><p>Similarly, the mouse may move the cursor or change application
+state. Unfortunately, unless the user uses <a
+href="https://docs.qmk.fm/#/feature_mouse_keys">Mouse Keys</a>, there is
+no practical way for QMK to know what the mouse does.</p></li>
 </ol>
-<p>For the first two points, we can check the <code>keycode</code> for what kind of key it is and <code>get_mods()</code> for non-shift modifiers. For the third point, a mitigation is to use a timer: if no keys are typed within <code>TIMEOUT_MS</code>, the buffer of typed keys is cleared.</p>
-<p>The following implements a sliding buffer of the last 8 typed keys.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;string.h&gt;</span><span class="pp"> </span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="pp">#define TIMEOUT_MS 5000  </span><span class="co">// Timeout in milliseconds.</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a><span class="pp">#define RECENT_SIZE 8    </span><span class="co">// Number of keys in `recent` buffer.</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">uint16_t</span> recent[RECENT_SIZE] = {KC_NO};</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">uint16_t</span> deadline = <span class="dv">0</span>;</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">void</span> clear_recent_keys(<span class="dt">void</span>) {</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>  memset(recent, <span class="dv">0</span>, <span class="kw">sizeof</span>(recent));  <span class="co">// Set all zeros (KC_NO).</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>}</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true"></a><span class="co">// Handles one event. Returns true if the key was appended to `recent`.</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">bool</span> update_recent_keys(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a>  <span class="cf">if</span> (!record-&gt;event.pressed) { <span class="cf">return</span> false; }</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true"></a>  <span class="cf">if</span> (((get_mods() | get_oneshot_mods()) &amp; ~MOD_MASK_SHIFT) != <span class="dv">0</span>) {</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true"></a>    clear_recent_keys();  <span class="co">// Avoid interfering with hotkeys.</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true"></a>    <span class="cf">return</span> false;</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true"></a>  }</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true"></a></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true"></a>  <span class="co">// Handle tap-hold keys.</span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true"></a>    <span class="cf">case</span> QK_MOD_TAP ... QK_MOD_TAP_MAX:</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true"></a>    <span class="cf">case</span> QK_LAYER_TAP ... QK_LAYER_TAP_MAX:</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true"></a>      <span class="cf">if</span> (record-&gt;tap.count == <span class="dv">0</span>) { <span class="cf">return</span> false; }</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true"></a>      keycode &amp;= <span class="bn">0xff</span>;  <span class="co">// Get tapping keycode.</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true"></a>  }</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true"></a></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true"></a>    <span class="cf">case</span> KC_A ... KC_SLASH:  <span class="co">// These keys type letters, digits, symbols.</span></span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true"></a>      <span class="cf">break</span>;</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true"></a></span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true"></a>    <span class="cf">case</span> KC_LSFT:  <span class="co">// These keys don&#39;t type anything on their own.</span></span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true"></a>    <span class="cf">case</span> KC_RSFT:</span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true"></a>    <span class="cf">case</span> QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX:</span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true"></a></span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true"></a>    <span class="cf">default</span>:  <span class="co">// Avoid acting otherwise, particularly on navigation keys.</span></span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true"></a>      clear_recent_keys();</span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true"></a>  }</span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true"></a>    </span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true"></a>  <span class="co">// Slide the buffer left by one element.</span></span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true"></a>  memmove(recent, recent + <span class="dv">1</span>, (RECENT_SIZE - <span class="dv">1</span>) * <span class="kw">sizeof</span>(*recent));</span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true"></a></span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true"></a>  recent[RECENT_SIZE - <span class="dv">1</span>] = keycode;</span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true"></a>  deadline = record-&gt;event.time + TIMEOUT_MS;</span>
-<span id="cb13-49"><a href="#cb13-49" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb13-50"><a href="#cb13-50" aria-hidden="true"></a>}</span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true"></a></span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true"></a><span class="dt">void</span> matrix_scan_user(<span class="dt">void</span>) {</span>
-<span id="cb13-53"><a href="#cb13-53" aria-hidden="true"></a>  <span class="cf">if</span> (recent[RECENT_SIZE - <span class="dv">1</span>] &amp;&amp; timer_expired(timer_read(), deadline)) {</span>
-<span id="cb13-54"><a href="#cb13-54" aria-hidden="true"></a>    clear_recent_keys();  <span class="co">// Timed out; clear the buffer.</span></span>
-<span id="cb13-55"><a href="#cb13-55" aria-hidden="true"></a>  }</span>
-<span id="cb13-56"><a href="#cb13-56" aria-hidden="true"></a>}</span>
-<span id="cb13-57"><a href="#cb13-57" aria-hidden="true"></a></span>
-<span id="cb13-58"><a href="#cb13-58" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb13-59"><a href="#cb13-59" aria-hidden="true"></a>  <span class="cf">if</span> (update_recent_keys(keycode, record)) {</span>
-<span id="cb13-60"><a href="#cb13-60" aria-hidden="true"></a>    <span class="co">// Continued below...</span></span></code></pre></div>
-<p>On each event, <code>update_recent_keys()</code> is called to add the key to the buffer.</p>
-<p>The code above is long as it is, yet there is more that can be done in the key handling logic such as ignoring layer switch keys, handling shifted keycodes, and implementing Backspace to remove the last key from the buffer. See the <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection.c">Autocorrection source code</a> for a thorough implementation. For the buffer itself, there are of course other ways it could be done. Particularly, while general keycodes are <code>uint16_t</code> values, you could choose to store them as <code>uint8_t</code> if the logic that follows is limited to basic keycodes.</p>
-<p>From there, we can implement the “<code>qem</code>” email address example described above:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>  <span class="cf">if</span> (update_recent_keys(keycode, record)) {</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>    <span class="co">// Expand &quot;qem&quot; to my email address.</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>    <span class="cf">if</span> (recent[RECENT_SIZE - <span class="dv">3</span>] == KC_Q &amp;&amp;</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>        recent[RECENT_SIZE - <span class="dv">2</span>] == KC_E &amp;&amp;</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>        recent[RECENT_SIZE - <span class="dv">1</span>] == KC_M) {</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>      SEND_STRING(SS_TAP(X_BSPC) SS_TAP(X_BSPC) <span class="st">&quot;myname@email.com&quot;</span>);</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a>    }</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a>    <span class="co">// Expand &quot;qph&quot; to my phone number.</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a>    <span class="cf">if</span> (recent[RECENT_SIZE - <span class="dv">3</span>] == KC_Q &amp;&amp;</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a>        recent[RECENT_SIZE - <span class="dv">2</span>] == KC_P &amp;&amp;</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a>        recent[RECENT_SIZE - <span class="dv">1</span>] == KC_H) {</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a>      SEND_STRING(SS_TAP(X_BSPC) SS_TAP(X_BSPC) <span class="st">&quot;123-546-7890&quot;</span>);</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true"></a>    }</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true"></a>  }</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true"></a></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Another application is “adaptive keys” to type common bigrams more comfortably. For example (assuming QWERTY layout) an adaptive U key where typing <code>iu</code> produces <code>in</code>. For this use, I would set <code>TIMEOUT_MS</code> to something rather low like 250 ms so that only quick typing triggers it.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>  <span class="cf">if</span> (update_recent_keys(keycode, record)) {</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>    <span class="cf">if</span> (recent[RECENT_SIZE - <span class="dv">2</span>] == KC_I &amp;&amp;</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>        recent[RECENT_SIZE - <span class="dv">1</span>] == KC_U) {</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>      tap_code(KC_N);  <span class="co">// Type &#39;n&#39; instead of &#39;u&#39;.</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a>      <span class="cf">return</span> false;</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a>    }</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a>  }</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a>}</span></code></pre></div>
-<p>If you are testing the <code>recent</code> buffer for a dozen or so patterns, it is reasonable to do it as above, checking for one after another. However, for a larger number of patterns, more elaborate data structures and algorithms may be a win. Autocorrection <a href="../autocorrection/index.html#how-does-it-work">uses a trie data structure</a> to efficiently test for possibly hundreds to low thousands of typos.</p>
+<p>For the first two points, we can check the <code>keycode</code> for
+what kind of key it is and <code>get_mods()</code> for non-shift
+modifiers. For the third point, a mitigation is to use a timer: if no
+keys are typed within <code>TIMEOUT_MS</code>, the buffer of typed keys
+is cleared.</p>
+<p>The following implements a sliding buffer of the last 8 typed
+keys.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;string.h&gt;</span><span class="pp"> </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TIMEOUT_MS 5000  </span><span class="co">// Timeout in milliseconds.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define RECENT_SIZE 8    </span><span class="co">// Number of keys in `recent` buffer.</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">uint16_t</span> recent<span class="op">[</span>RECENT_SIZE<span class="op">]</span> <span class="op">=</span> <span class="op">{</span>KC_NO<span class="op">};</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">uint16_t</span> deadline <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">void</span> clear_recent_keys<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  memset<span class="op">(</span>recent<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span>recent<span class="op">));</span>  <span class="co">// Set all zeros (KC_NO).</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">// Handles one event. Returns true if the key was appended to `recent`.</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> update_recent_keys<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(((</span>get_mods<span class="op">()</span> <span class="op">|</span> get_oneshot_mods<span class="op">())</span> <span class="op">&amp;</span> <span class="op">~</span>MOD_MASK_SHIFT<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    clear_recent_keys<span class="op">();</span>  <span class="co">// Avoid interfering with hotkeys.</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Handle tap-hold keys.</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QK_MOD_TAP <span class="op">...</span> QK_MOD_TAP_MAX<span class="op">:</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QK_LAYER_TAP <span class="op">...</span> QK_LAYER_TAP_MAX<span class="op">:</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>      keycode <span class="op">&amp;=</span> <span class="bn">0xff</span><span class="op">;</span>  <span class="co">// Get tapping keycode.</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_A <span class="op">...</span> KC_SLASH<span class="op">:</span>  <span class="co">// These keys type letters, digits, symbols.</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_LSFT<span class="op">:</span>  <span class="co">// These keys don&#39;t type anything on their own.</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_RSFT<span class="op">:</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QK_ONE_SHOT_MOD <span class="op">...</span> QK_ONE_SHOT_MOD_MAX<span class="op">:</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span>  <span class="co">// Avoid acting otherwise, particularly on navigation keys.</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>      clear_recent_keys<span class="op">();</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Slide the buffer left by one element.</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>  memmove<span class="op">(</span>recent<span class="op">,</span> recent <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> <span class="op">(</span>RECENT_SIZE <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(*</span>recent<span class="op">));</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>  recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> keycode<span class="op">;</span></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>  deadline <span class="op">=</span> record<span class="op">-&gt;</span>event<span class="op">.</span>time <span class="op">+</span> TIMEOUT_MS<span class="op">;</span></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">&amp;&amp;</span> timer_expired<span class="op">(</span>timer_read<span class="op">(),</span> deadline<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>    clear_recent_keys<span class="op">();</span>  <span class="co">// Timed out; clear the buffer.</span></span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>update_recent_keys<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Continued below...</span></span></code></pre></div>
+<p>On each event, <code>update_recent_keys()</code> is called to add the
+key to the buffer.</p>
+<p>The code above is long as it is, yet there is more that can be done
+in the key handling logic such as ignoring layer switch keys, handling
+shifted keycodes, and implementing Backspace to remove the last key from
+the buffer. See the <a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection.c">Autocorrection
+source code</a> for a thorough implementation. For the buffer itself,
+there are of course other ways it could be done. Particularly, while
+general keycodes are <code>uint16_t</code> values, you could choose to
+store them as <code>uint8_t</code> if the logic that follows is limited
+to basic keycodes.</p>
+<p>From there, we can implement the “<code>qem</code>” email address
+example described above:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>update_recent_keys<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Expand &quot;qem&quot; to my email address.</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">3</span><span class="op">]</span> <span class="op">==</span> KC_Q <span class="op">&amp;&amp;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">2</span><span class="op">]</span> <span class="op">==</span> KC_E <span class="op">&amp;&amp;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">==</span> KC_M<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>      SEND_STRING<span class="op">(</span>SS_TAP<span class="op">(</span>X_BSPC<span class="op">)</span> SS_TAP<span class="op">(</span>X_BSPC<span class="op">)</span> <span class="st">&quot;myname@email.com&quot;</span><span class="op">);</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Expand &quot;qph&quot; to my phone number.</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">3</span><span class="op">]</span> <span class="op">==</span> KC_Q <span class="op">&amp;&amp;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">2</span><span class="op">]</span> <span class="op">==</span> KC_P <span class="op">&amp;&amp;</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">==</span> KC_H<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      SEND_STRING<span class="op">(</span>SS_TAP<span class="op">(</span>X_BSPC<span class="op">)</span> SS_TAP<span class="op">(</span>X_BSPC<span class="op">)</span> <span class="st">&quot;123-546-7890&quot;</span><span class="op">);</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Another application is “adaptive keys” to type common bigrams more
+comfortably. For example (assuming QWERTY layout) an adaptive U key
+where typing <code>iu</code> produces <code>in</code>. For this use, I
+would set <code>TIMEOUT_MS</code> to something rather low like 250 ms so
+that only quick typing triggers it.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>update_recent_keys<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">2</span><span class="op">]</span> <span class="op">==</span> KC_I <span class="op">&amp;&amp;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">==</span> KC_U<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>      tap_code<span class="op">(</span>KC_N<span class="op">);</span>  <span class="co">// Type &#39;n&#39; instead of &#39;u&#39;.</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>If you are testing the <code>recent</code> buffer for a dozen or so
+patterns, it is reasonable to do it as above, checking for one after
+another. However, for a larger number of patterns, more elaborate data
+structures and algorithms may be a win. Autocorrection <a
+href="../autocorrection/index.html#how-does-it-work">uses a trie data
+structure</a> to efficiently test for possibly hundreds to low thousands
+of typos.</p>
 <h2 id="when-idle-for-x-milliseconds">When idle for X milliseconds</h2>
-<p>You might want to turn off a layer, disable RGB, cancel an effect, etc. if the keyboard has gone idle. For instance with <a href="../caps-word/index.html">Caps Word</a>, I find it useful to turn it off after 5 seconds of inactivity.</p>
-<p>This section describes two ways to do this: using the deferred execution API or using software timers. The deferred execution method is easier to use, but has the drawback that it adds a little more to the firmware size to enable the deferred execution feature.</p>
-<p><strong>Using the deferred execution API.</strong> This method uses the <a href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">Deferred Execution API</a>. First, add <code>DEFERRED_EXEC_ENABLE = yes</code> in rules.mk. Then keymap.c, set up a callback method to be called.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="pp">#define IDLE_TIMEOUT_MS 5000  </span><span class="co">// Idle timeout in milliseconds.</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">uint32_t</span> idle_callback(<span class="dt">uint32_t</span> trigger_time, <span class="dt">void</span>* cb_arg) {</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>  <span class="co">// If execution reaches here, the keyboard has gone idle.</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>  SEND_STRING(<span class="st">&quot;Idle!);</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>  <span class="cf">return</span> <span class="dv">0</span>;</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>}</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>  <span class="co">// On every key event, start or extend the deferred execution to call</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a>  <span class="co">// `idle_callback()` after IDLE_TIMEOUT_MS.</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a>  <span class="dt">static</span> deferred_token idle_token = INVALID_DEFERRED_TOKEN;</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a>  <span class="cf">if</span> (!extend_deferred_exec(idle_token, IDLE_TIMEOUT_MS)) {</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a>    idle_token = defer_exec(IDLE_TIMEOUT_MS, idle_callback, NULL);</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a>  }</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true"></a>  <span class="co">// Macros...</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true"></a></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true"></a>}</span></code></pre></div>
-<p>The <code>defer_exec()</code> function schedules <code>idle_callback()</code> to run after <code>IDLE_TIMEOUT_MS</code>. It also returns a “token” <code>idle_token</code> that can be used with other APIs to extend or cancel the execution.</p>
-<p><strong>Using a software timer.</strong> A lower-lever method is to use a <a href="https://docs.qmk.fm/#/ref_functions?id=software-timers">software timer</a> within the <a href="https://docs.qmk.fm/#/custom_quantum_functions?id=matrix-scanning-code">matrix_scan_user function</a> as follows.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="pp">#define IDLE_TIMEOUT_MS 5000  </span><span class="co">// Idle timeout in milliseconds.</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">uint16_t</span> idle_timer = <span class="dv">0</span>;</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a><span class="dt">void</span> matrix_scan_user(<span class="dt">void</span>) {</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>  <span class="cf">if</span> (idle_timer &amp;&amp; timer_expired(timer_read(), idle_timer)) {</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a>    <span class="co">// If execution reaches here, the keyboard has gone idle.</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a>    SEND_STRING(<span class="st">&quot;Idle!);</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a>    idle_timer = <span class="dv">0</span>;</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a>  }</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a>}</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true"></a>  <span class="co">// On every key event, set idle_timer to expire after IDLE_TIMEOUT_MS.</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true"></a>  <span class="co">// We use idle_timer == 0 to indicate that the timer is inactive, so</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true"></a>  <span class="co">// the value is bitwise or&#39;d with 1 to ensure it is nonzero.</span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true"></a>  idle_timer = (record-&gt;event.time + IDLE_TIMEOUT_MS) | <span class="dv">1</span>;</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true"></a></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true"></a>  <span class="co">// Macros...</span></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true"></a></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true"></a>}</span></code></pre></div>
-<p>The above uses a 16-bit timer, which wraps around every <span class="math inline">\(2^{16} = 65536\)</span> milliseconds or about once a minute. The <code>timer_expired()</code> function works for deadlines that are at most half that duration in the future, 32768 milliseconds, so <code>IDLE_TIMEOUT_MS</code> can’t be larger than that. This range is often enough, but if you need longer-term timing, QMK also has a 32-bit flavor of timers with the APIs <code>timer_read32()</code>, <code>timer_elapsed32()</code>, <code>timer_expired32()</code> (<a href="https://github.com/qmk/qmk_firmware/blob/master/platforms/timer.h">code link</a>).</p>
+<p>You might want to turn off a layer, disable RGB, cancel an effect,
+etc. if the keyboard has gone idle. For instance with <a
+href="../caps-word/index.html">Caps Word</a>, I find it useful to turn
+it off after 5 seconds of inactivity.</p>
+<p>This section describes two ways to do this: using the deferred
+execution API or using software timers. The deferred execution method is
+easier to use, but has the drawback that it adds a little more to the
+firmware size to enable the deferred execution feature.</p>
+<p><strong>Using the deferred execution API.</strong> This method uses
+the <a
+href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">Deferred
+Execution API</a>. First, add <code>DEFERRED_EXEC_ENABLE = yes</code> in
+rules.mk. Then keymap.c, set up a callback method to be called.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define IDLE_TIMEOUT_MS 5000  </span><span class="co">// Idle timeout in milliseconds.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">uint32_t</span> idle_callback<span class="op">(</span><span class="dt">uint32_t</span> trigger_time<span class="op">,</span> <span class="dt">void</span><span class="op">*</span> cb_arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If execution reaches here, the keyboard has gone idle.</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  SEND_STRING<span class="op">(</span><span class="st">&quot;Idle!);</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">// On every key event, start or extend the deferred execution to call</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// `idle_callback()` after IDLE_TIMEOUT_MS.</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> deferred_token idle_token <span class="op">=</span> INVALID_DEFERRED_TOKEN<span class="op">;</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>extend_deferred_exec<span class="op">(</span>idle_token<span class="op">,</span> IDLE_TIMEOUT_MS<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    idle_token <span class="op">=</span> defer_exec<span class="op">(</span>IDLE_TIMEOUT_MS<span class="op">,</span> idle_callback<span class="op">,</span> NULL<span class="op">);</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Macros...</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The <code>defer_exec()</code> function schedules
+<code>idle_callback()</code> to run after <code>IDLE_TIMEOUT_MS</code>.
+It also returns a “token” <code>idle_token</code> that can be used with
+other APIs to extend or cancel the execution.</p>
+<p><strong>Using a software timer.</strong> A lower-lever method is to
+use a <a
+href="https://docs.qmk.fm/#/ref_functions?id=software-timers">software
+timer</a> within the <a
+href="https://docs.qmk.fm/#/custom_quantum_functions?id=matrix-scanning-code">matrix_scan_user
+function</a> as follows.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define IDLE_TIMEOUT_MS 5000  </span><span class="co">// Idle timeout in milliseconds.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">uint16_t</span> idle_timer <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>idle_timer <span class="op">&amp;&amp;</span> timer_expired<span class="op">(</span>timer_read<span class="op">(),</span> idle_timer<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// If execution reaches here, the keyboard has gone idle.</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span><span class="st">&quot;Idle!);</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    idle_timer <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// On every key event, set idle_timer to expire after IDLE_TIMEOUT_MS.</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">// We use idle_timer == 0 to indicate that the timer is inactive, so</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">// the value is bitwise or&#39;d with 1 to ensure it is nonzero.</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  idle_timer <span class="op">=</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>time <span class="op">+</span> IDLE_TIMEOUT_MS<span class="op">)</span> <span class="op">|</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Macros...</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The above uses a 16-bit timer, which wraps around every <span
+class="math inline">\(2^{16} = 65536\)</span> milliseconds or about once
+a minute. The <code>timer_expired()</code> function works for deadlines
+that are at most half that duration in the future, 32768 milliseconds,
+so <code>IDLE_TIMEOUT_MS</code> can’t be larger than that. This range is
+often enough, but if you need longer-term timing, QMK also has a 32-bit
+flavor of timers with the APIs <code>timer_read32()</code>,
+<code>timer_elapsed32()</code>, <code>timer_expired32()</code> (<a
+href="https://github.com/qmk/qmk_firmware/blob/master/platforms/timer.h">code
+link</a>).</p>
 <h2 id="closing-thoughts">Closing thoughts</h2>
-<p>There are a variety of ways to trigger an action in QMK, enabling a range of interesting effects. I’m excited in particular about actions based on previously typed keys. Knowing what <em>word</em> was just typed, not just the last key, opens new possibilities.</p>
+<p>There are a variety of ways to trigger an action in QMK, enabling a
+range of interesting effects. I’m excited in particular about actions
+based on previously typed keys. Knowing what <em>word</em> was just
+typed, not just the last key, opens new possibilities.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 

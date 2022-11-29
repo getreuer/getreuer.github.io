@@ -4,13 +4,14 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2022-11-05)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -45,7 +46,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -58,7 +59,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -87,311 +88,717 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2022-11-05)</h2>
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#meta-how-to-ask-for-help">Meta: How to ask for help</a></li>
+<li><a href="#meta-how-to-ask-for-help">Meta: How to ask for
+help</a></li>
 <li><a href="#keyboard-shopping-tips">Keyboard shopping tips</a></li>
-<li><a href="#how-long-to-get-used-to-a-split-columnar-keyboard">How long to get used to a split columnar keyboard?</a></li>
-<li><a href="#should-i-use-a-wrist-rest">Should I use a wrist rest?</a></li>
-<li><a href="#should-i-learn-how-to-touch-type">Should I learn how to touch type?</a></li>
-<li><a href="#i-type-xxx-wpm-is-that-fast">I type XXX wpm – Is that fast?</a></li>
-<li><a href="#pressing-a-key-sometimes-types-it-twice">Pressing a key sometimes types it twice</a></li>
-<li><a href="#how-much-lag-do-custom-keyboards-have">How much lag do custom keyboards have?</a></li>
-<li><a href="#home-row-mods-are-hard-to-use">Home row mods are hard to use</a></li>
+<li><a href="#how-long-to-get-used-to-a-split-columnar-keyboard">How
+long to get used to a split columnar keyboard?</a></li>
+<li><a href="#should-i-use-a-wrist-rest">Should I use a wrist
+rest?</a></li>
+<li><a href="#should-i-learn-how-to-touch-type">Should I learn how to
+touch type?</a></li>
+<li><a href="#i-type-xxx-wpm-is-that-fast">I type XXX wpm – Is that
+fast?</a></li>
+<li><a href="#pressing-a-key-sometimes-types-it-twice">Pressing a key
+sometimes types it twice</a></li>
+<li><a href="#how-much-lag-do-custom-keyboards-have">How much lag do
+custom keyboards have?</a></li>
+<li><a href="#home-row-mods-are-hard-to-use">Home row mods are hard to
+use</a></li>
 <li><a href="#firmware-is-too-large">Firmware is too large!</a></li>
-<li><a href="#how-to-type-non-english-letters-qmk">How to type non-English letters (QMK)</a></li>
-<li><a href="#some-keys-are-swapped-qmk">Some keys are swapped (QMK)</a></li>
-<li><a href="#send_string-doesnt-work-qmk">SEND_STRING doesn’t work (QMK)</a></li>
-<li><a href="#what-is-this-weird-c-syntax-qmk">What is this weird C syntax (QMK)</a></li>
+<li><a href="#how-to-type-non-english-letters-qmk">How to type
+non-English letters (QMK)</a></li>
+<li><a href="#some-keys-are-swapped-qmk">Some keys are swapped
+(QMK)</a></li>
+<li><a href="#send_string-doesnt-work-qmk">SEND_STRING doesn’t work
+(QMK)</a></li>
+<li><a href="#what-is-this-weird-c-syntax-qmk">What is this weird C
+syntax (QMK)</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
-<p>Certain topics come up pretty regularly on <a href="https://www.reddit.com/r/olkb/">r/olkb</a>, so I’ve collected some thoughts here. Each section includes a section link 🔗 for easy sharing.</p>
-<p>If you don’t find what you are looking for here, try also the <a href="https://docs.qmk.fm/#/faq_keymap">Keymap FAQ</a> in the QMK documentation and <a href="../links/index.html">Links about keyboards</a>.</p>
+<p>Certain topics come up pretty regularly on <a
+href="https://www.reddit.com/r/olkb/">r/olkb</a>, so I’ve collected some
+thoughts here. Each section includes a section link 🔗 for easy
+sharing.</p>
+<p>If you don’t find what you are looking for here, try also the <a
+href="https://docs.qmk.fm/#/faq_keymap">Keymap FAQ</a> in the QMK
+documentation and <a href="../links/index.html">Links about
+keyboards</a>.</p>
 <h2 id="meta-how-to-ask-for-help">Meta: How to ask for help</h2>
 <p><a href="#meta-how-to-ask-for-help">🔗 Link</a></p>
-<p><a href="https://www.reddit.com/r/olkb/">r/olkb</a> and <a href="https://www.reddit.com/r/MechanicalKeyboards/">r/MechanicalKeyboards</a> are great places to ask for keyboard troubleshooting help. Here are some suggestions to make it easier for others to help you:</p>
-<p>Instead of saying something “doesn’t work,” be specific about what steps produce the problem (say, a certain sequence of button presses), and clarify what you <em>want</em> to happen vs. what <em>actually</em> happens. Or alternatively, state what is your <em>goal</em> and what is the <em>problem</em>.</p>
-<p>Include details and any research. When troubleshooting QMK keymap code, of course, share the relevant part of your keymap. If possible, share a link to your full keymap as well. An easy way to do this is as a <a href="https://gist.github.com/">GitHub Gist</a>.</p>
+<p><a href="https://www.reddit.com/r/olkb/">r/olkb</a> and <a
+href="https://www.reddit.com/r/MechanicalKeyboards/">r/MechanicalKeyboards</a>
+are great places to ask for keyboard troubleshooting help. Here are some
+suggestions to make it easier for others to help you:</p>
+<p>Instead of saying something “doesn’t work,” be specific about what
+steps produce the problem (say, a certain sequence of button presses),
+and clarify what you <em>want</em> to happen vs. what <em>actually</em>
+happens. Or alternatively, state what is your <em>goal</em> and what is
+the <em>problem</em>.</p>
+<p>Include details and any research. When troubleshooting QMK keymap
+code, of course, share the relevant part of your keymap. If possible,
+share a link to your full keymap as well. An easy way to do this is as a
+<a href="https://gist.github.com/">GitHub Gist</a>.</p>
 <h2 id="keyboard-shopping-tips">Keyboard shopping tips</h2>
 <p><a href="#keyboard-shopping-tips">🔗 Link</a></p>
-<p>For typing comfort, I highly recommend a keyboard that is <strong>split, columnar, and with QMK or other programmable firmware</strong>. <a href="../tour/index.html">Here is a tour</a> of what makes these keyboards so good. An example is the ZSA Moonlander keyboard. Some other popular examples are the Lily58, Sofle, and Corne split keyboards.</p>
+<p>For typing comfort, I highly recommend a keyboard that is
+<strong>split, columnar, and with QMK or other programmable
+firmware</strong>. <a href="../tour/index.html">Here is a tour</a> of
+what makes these keyboards so good. An example is the ZSA Moonlander
+keyboard. Some other popular examples are the Lily58, Sofle, and Corne
+split keyboards.</p>
 <figure>
-<img src="../moonlander.jpg" alt="" /><figcaption>ZSA Moonlander</figcaption>
+<img src="../moonlander.jpg" alt="ZSA Moonlander" />
+<figcaption aria-hidden="true">ZSA Moonlander</figcaption>
 </figure>
-<p>The r/ErgoMechKeyboards wiki has a <a href="https://www.reddit.com/r/ErgoMechKeyboards/wiki/resources/#wiki_vendors">list of vendors</a> that sell split and ergonomic keyboards, organized by region. You can also try <a href="https://www.reddit.com/r/mechmarket/">r/mechmarket</a>.</p>
+<p>The r/ErgoMechKeyboards wiki has a <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/wiki/resources/#wiki_vendors">list
+of vendors</a> that sell split and ergonomic keyboards, organized by
+region. You can also try <a
+href="https://www.reddit.com/r/mechmarket/">r/mechmarket</a>.</p>
 <p><strong>A few notes to give fair warning…</strong></p>
 <ul>
-<li><p>These keyboards are not exactly cheap, in the ballpark of $250 USD. This is an investment in your comfort.</p></li>
-<li><p>Custom keyboards are often sold as kits that you assemble yourself. If you don’t want to do that, look for <em>prebuilt</em> keyboards or vendors with a <em>build service</em> to assemble a kit for you.</p></li>
-<li><p>Typing on a split columnar keyboard takes some time to adjust, <a href="#how-long-to-get-used-to-a-split-columnar-keyboard">around a couple weeks</a> for many people.</p></li>
+<li><p>These keyboards are not exactly cheap, in the ballpark of $250
+USD. This is an investment in your comfort.</p></li>
+<li><p>Custom keyboards are often sold as kits that you assemble
+yourself. If you don’t want to do that, look for <em>prebuilt</em>
+keyboards or vendors with a <em>build service</em> to assemble a kit for
+you.</p></li>
+<li><p>Typing on a split columnar keyboard takes some time to adjust, <a
+href="#how-long-to-get-used-to-a-split-columnar-keyboard">around a
+couple weeks</a> for many people.</p></li>
 </ul>
-<h2 id="how-long-to-get-used-to-a-split-columnar-keyboard">How long to get used to a split columnar keyboard?</h2>
-<p><a href="#how-long-to-get-used-to-a-split-columnar-keyboard">🔗 Link</a></p>
-<p><strong>It took me a couple weeks of use to adapt to typing on a split columnar keyboard.</strong> Others have reported similar experience. My first such keyboard was a Dactyl Ergodox, which in addition to being split and columnar is also concave.</p>
+<h2 id="how-long-to-get-used-to-a-split-columnar-keyboard">How long to
+get used to a split columnar keyboard?</h2>
+<p><a href="#how-long-to-get-used-to-a-split-columnar-keyboard">🔗
+Link</a></p>
+<p><strong>It took me a couple weeks of use to adapt to typing on a
+split columnar keyboard.</strong> Others have reported similar
+experience. My first such keyboard was a Dactyl Ergodox, which in
+addition to being split and columnar is also concave.</p>
 <figure>
-<img src="../dactyl-ergodox.jpg" alt="" /><figcaption>Dactyl Ergodox</figcaption>
+<img src="../dactyl-ergodox.jpg" alt="Dactyl Ergodox" />
+<figcaption aria-hidden="true">Dactyl Ergodox</figcaption>
 </figure>
-<p>I was fumbling at first. It took practice and patience to develop the right muscle memory. Additionally, if there are non-standard quirks to your typing habits, you might need to correct for that. I initially wanted to type the key in <code>Y</code> QWERTY position with my left hand, but on a split keyboard that cross-hand jump becomes a big one!</p>
-<p>But it’s definitely worth it. A columnar split keyboard makes it easier to keep wrists straight while typing with hands at a relaxed shoulder width apart. It’s the most effective change I’ve made for my typing comfort.</p>
+<p>I was fumbling at first. It took practice and patience to develop the
+right muscle memory. Additionally, if there are non-standard quirks to
+your typing habits, you might need to correct for that. I initially
+wanted to type the key in <code>Y</code> QWERTY position with my left
+hand, but on a split keyboard that cross-hand jump becomes a big
+one!</p>
+<p>But it’s definitely worth it. A columnar split keyboard makes it
+easier to keep wrists straight while typing with hands at a relaxed
+shoulder width apart. It’s the most effective change I’ve made for my
+typing comfort.</p>
 <h2 id="should-i-use-a-wrist-rest">Should I use a wrist rest?</h2>
 <p><a href="#should-i-use-a-wrist-rest">🔗 Link</a></p>
-<p>Wrist rests are not necessary for good ergonomics. I don’t use them myself. If anything, <strong>a wrist rest should support the heel or palm of the hand, not the wrists.</strong> Pressure on the soft area of the wrist puts pressure on the tendons and nerves.</p>
-<p>From <a href="https://ergocanada.com/ergo/rests/ergonomic_usage_of_wrist_rests.html">Ergonomic Usage of Wrist Rests and Palm Supports</a>:</p>
+<p>Wrist rests are not necessary for good ergonomics. I don’t use them
+myself. If anything, <strong>a wrist rest should support the heel or
+palm of the hand, not the wrists.</strong> Pressure on the soft area of
+the wrist puts pressure on the tendons and nerves.</p>
+<p>From <a
+href="https://ergocanada.com/ergo/rests/ergonomic_usage_of_wrist_rests.html">Ergonomic
+Usage of Wrist Rests and Palm Supports</a>:</p>
 <blockquote>
-<p>In the vast majority of cases, wrist rests do not provide any significant ergonomic benefit and in fact will usually increase the number of risk factors for injury in your computer workstation. The reason is that if you ‘rest’ your ‘wrist’ on any type of support, be it foam, gel, webbing, cloth, etc. you are applying pressure to the underside of your wrist which will compress the tissues, resulting in decreased blood flow. More specifically, you can compress the carpal tunnel and possibly pinch the median nerve, which can lead not only to long term injury, but short term symptoms such as tingling, numbness or coldness in the hands, and finger muscles which fatigue quicker due to reduced circulation.</p>
+<p>In the vast majority of cases, wrist rests do not provide any
+significant ergonomic benefit and in fact will usually increase the
+number of risk factors for injury in your computer workstation. The
+reason is that if you ‘rest’ your ‘wrist’ on any type of support, be it
+foam, gel, webbing, cloth, etc. you are applying pressure to the
+underside of your wrist which will compress the tissues, resulting in
+decreased blood flow. More specifically, you can compress the carpal
+tunnel and possibly pinch the median nerve, which can lead not only to
+long term injury, but short term symptoms such as tingling, numbness or
+coldness in the hands, and finger muscles which fatigue quicker due to
+reduced circulation.</p>
 </blockquote>
-<p><a href="https://www.osha.gov/etools/computer-workstations/components/wrist-palm-support">OSHA on Wrist/Palm Supports</a>:</p>
+<p><a
+href="https://www.osha.gov/etools/computer-workstations/components/wrist-palm-support">OSHA
+on Wrist/Palm Supports</a>:</p>
 <blockquote>
 <p><strong>Potential Hazards</strong></p>
 <ul>
-<li>Performing keying tasks without a wrist rest may increase the angle to which users’ wrists are bent. Increasing the angle of bend increases the contact stress and irritation on tendons and tendon sheathes. This is especially true with high repetition or prolonged keying tasks. Keying without a wrist rest can also increase contact stress between the users wrist and hard or sharp workstation components.</li>
-<li>Resting the wrist/palm on a support while typing may inhibit motion of the wrist and could increase <a href="https://www.osha.gov/etools/computer-workstations/components/keyboards#accordion-70073-collapse3">awkward wrist postures</a>.</li>
+<li>Performing keying tasks without a wrist rest may increase the angle
+to which users’ wrists are bent. Increasing the angle of bend increases
+the contact stress and irritation on tendons and tendon sheathes. This
+is especially true with high repetition or prolonged keying tasks.
+Keying without a wrist rest can also increase contact stress between the
+users wrist and hard or sharp workstation components.</li>
+<li>Resting the wrist/palm on a support while typing may inhibit motion
+of the wrist and could increase <a
+href="https://www.osha.gov/etools/computer-workstations/components/keyboards#accordion-70073-collapse3">awkward
+wrist postures</a>.</li>
 </ul>
 <p><strong>Possible Solutions</strong></p>
 <ul>
-<li>Your hands should move freely and be elevated above the wrist/palm rest while typing. When resting, the pad should contact the heel or palm of your hand, not your wrist.</li>
-<li>If used, wrist/palm rests should be part of an ergonomically-coordinated computer workstation.</li>
-<li>Reduce bending of the wrists by adjusting other workstation components (chair, desk, keyboard) so the wrist can maintain an in-line, neutral posture.</li>
-<li>Match the wrist support to the width, height, and slope of the front edge of the keyboard (keeping in mind that the goal is to keep wrist postures as straight as possible).</li>
-<li>Provide wrist/palm supports that are fairly soft and rounded to minimize pressure on the wrist. The support should be at least 1.5 inches (3.8 cm) deep.</li>
+<li>Your hands should move freely and be elevated above the wrist/palm
+rest while typing. When resting, the pad should contact the heel or palm
+of your hand, not your wrist.</li>
+<li>If used, wrist/palm rests should be part of an
+ergonomically-coordinated computer workstation.</li>
+<li>Reduce bending of the wrists by adjusting other workstation
+components (chair, desk, keyboard) so the wrist can maintain an in-line,
+neutral posture.</li>
+<li>Match the wrist support to the width, height, and slope of the front
+edge of the keyboard (keeping in mind that the goal is to keep wrist
+postures as straight as possible).</li>
+<li>Provide wrist/palm supports that are fairly soft and rounded to
+minimize pressure on the wrist. The support should be at least 1.5
+inches (3.8 cm) deep.</li>
 </ul>
 </blockquote>
 <p><strong>Related reading:</strong></p>
 <ul>
-<li><p><a href="https://improveworkspace.com/are-wrist-rests-ergonomic/">Are Wrist Rests Ergonomic?</a></p></li>
-<li><p><a href="https://www.pcgamer.com/ask-a-medic-should-i-use-a-wrist-rest-with-my-keyboard-and-mouse/">Ask a Medic: Should I use a wrist rest with my keyboard and mouse?</a></p></li>
-<li><p><a href="https://ergo-plus.com/truth-vs-myth-wrist-rests-prevent-carpal-tunnel-syndrome/">Truth vs. Myth: Do wrist rests prevent carpal tunnel syndrome?</a></p></li>
+<li><p><a
+href="https://improveworkspace.com/are-wrist-rests-ergonomic/">Are Wrist
+Rests Ergonomic?</a></p></li>
+<li><p><a
+href="https://www.pcgamer.com/ask-a-medic-should-i-use-a-wrist-rest-with-my-keyboard-and-mouse/">Ask
+a Medic: Should I use a wrist rest with my keyboard and
+mouse?</a></p></li>
+<li><p><a
+href="https://ergo-plus.com/truth-vs-myth-wrist-rests-prevent-carpal-tunnel-syndrome/">Truth
+vs. Myth: Do wrist rests prevent carpal tunnel syndrome?</a></p></li>
 </ul>
-<h2 id="should-i-learn-how-to-touch-type">Should I learn how to touch type?</h2>
+<h2 id="should-i-learn-how-to-touch-type">Should I learn how to touch
+type?</h2>
 <p><a href="#should-i-learn-how-to-touch-type">🔗 Link</a></p>
-<p>Do you want better speed, accuracy, and typing comfort? Then the answer is yes. Learning proper touch typing technique helps all of that.</p>
-<p><a href="https://en.wikipedia.org/wiki/Touch_typing">Touch typing</a> is a style of typing. The eight fingers are placed along the home row, and each finger has designated keys that it can reach. This systematic method lets you type each key with little motion and by sense of touch alone, enabling you to <strong>type faster and more efficiently</strong>. Additionally, it <strong>reduces neck strain</strong> and improves posture by keeping your eyes on the screen, not constantly glancing at the keyboard to find the keys.</p>
+<p>Do you want better speed, accuracy, and typing comfort? Then the
+answer is yes. Learning proper touch typing technique helps all of
+that.</p>
+<p><a href="https://en.wikipedia.org/wiki/Touch_typing">Touch typing</a>
+is a style of typing. The eight fingers are placed along the home row,
+and each finger has designated keys that it can reach. This systematic
+method lets you type each key with little motion and by sense of touch
+alone, enabling you to <strong>type faster and more
+efficiently</strong>. Additionally, it <strong>reduces neck
+strain</strong> and improves posture by keeping your eyes on the screen,
+not constantly glancing at the keyboard to find the keys.</p>
 <p><strong>Resources to learn touch typing:</strong></p>
 <ul>
-<li><a href="https://www.youtube.com/watch?v=sU3-XnU_YS4">Octahedron - How To Type Faster // Practice Guide</a></li>
+<li><a href="https://www.youtube.com/watch?v=sU3-XnU_YS4">Octahedron -
+How To Type Faster // Practice Guide</a></li>
 <li><a href="https://www.typingclub.com/">TypingClub</a></li>
-<li><a href="https://www.ratatype.com/learn/">Ratatype - Learn how to touch type</a></li>
+<li><a href="https://www.ratatype.com/learn/">Ratatype - Learn how to
+touch type</a></li>
 </ul>
 <p><strong>Related reading:</strong></p>
 <ul>
-<li><a href="https://docs.google.com/document/d/1D9hzmKMCWzbqIBqpA4j02a2XjuhJbILimBMAFM2Deis/">Gary Internet’s Typing Guide</a></li>
-<li><a href="https://aliabdaal.com/how-to-type-faster/">How To Type Faster: 8 Actionable Tips To Increase Your Typing Speed</a></li>
-<li><a href="https://medium.com/@mantasd/touch-typing-how-long-does-it-take-to-reach-100-wpm-129ba855d038">Touch Typing: how long does it take to reach 100 WPM?</a></li>
+<li><a
+href="https://docs.google.com/document/d/1D9hzmKMCWzbqIBqpA4j02a2XjuhJbILimBMAFM2Deis/">Gary
+Internet’s Typing Guide</a></li>
+<li><a href="https://aliabdaal.com/how-to-type-faster/">How To Type
+Faster: 8 Actionable Tips To Increase Your Typing Speed</a></li>
+<li><a
+href="https://medium.com/@mantasd/touch-typing-how-long-does-it-take-to-reach-100-wpm-129ba855d038">Touch
+Typing: how long does it take to reach 100 WPM?</a></li>
 </ul>
 <h2 id="i-type-xxx-wpm-is-that-fast">I type XXX wpm – Is that fast?</h2>
 <p><a href="#i-type-xxx-wpm-is-that-fast">🔗 Link</a></p>
-<p>How fast is “fast”? The typing site onlinetyping.org published <a href="https://onlinetyping.org/blog/average-typing-speed.php">distributions of typing speed</a>, based on tests on their site. By this data, <strong>if you can type over 70 words per minute (wpm), you are faster than about 95% of people.</strong> But see also the caveats below.</p>
+<p>How fast is “fast”? The typing site onlinetyping.org published <a
+href="https://onlinetyping.org/blog/average-typing-speed.php">distributions
+of typing speed</a>, based on tests on their site. By this data,
+<strong>if you can type over 70 words per minute (wpm), you are faster
+than about 95% of people.</strong> But see also the caveats below.</p>
 <p><img src="wpm-hists.svg" /></p>
-<p>Some people can type well over 100 wpm. A few can type over 200 wpm. If you include stenography, some fast stenotypists can type over 300 wpm.</p>
-<p>Want to type faster?—see the resources for <a href="#should-i-learn-how-to-touch-type">Should I learn how to touch type?</a></p>
+<p>Some people can type well over 100 wpm. A few can type over 200 wpm.
+If you include stenography, some fast stenotypists can type over
+300 wpm.</p>
+<p>Want to type faster?—see the resources for <a
+href="#should-i-learn-how-to-touch-type">Should I learn how to touch
+type?</a></p>
 <p><strong>Caveats:</strong></p>
 <p>A lot of factors influence typing speed. Some big ones:</p>
 <ul>
-<li><strong>Duration:</strong> Like running a race, it’s a different thing to sprint type a single sentence vs. marathon type nonstop for multiple minutes.</li>
-<li><strong>Vocabulary:</strong> You tend to be faster on words that you type more often. Typing top-100 English words like “<code>they were not there</code>” is easier than general English words like “<code>exotic delicatessen</code>.”</li>
-<li><strong>Accuracy:</strong> Some typing tests tolerate a rate of typos, and you might type faster if you allow more typos. But obviously both fast and accurate is desirable.</li>
+<li><strong>Duration:</strong> Like running a race, it’s a different
+thing to sprint type a single sentence vs. marathon type nonstop for
+multiple minutes.</li>
+<li><strong>Vocabulary:</strong> You tend to be faster on words that you
+type more often. Typing top-100 English words like
+“<code>they were not there</code>” is easier than general English words
+like “<code>exotic delicatessen</code>.”</li>
+<li><strong>Accuracy:</strong> Some typing tests tolerate a rate of
+typos, and you might type faster if you allow more typos. But obviously
+both fast and accurate is desirable.</li>
 </ul>
 <p><strong>Sources:</strong></p>
 <ul>
-<li><a href="https://docs.google.com/document/d/1D9hzmKMCWzbqIBqpA4j02a2XjuhJbILimBMAFM2Deis/">Gary Internet’s Typing Guide</a></li>
-<li><a href="https://onlinetyping.org/blog/average-typing-speed.php">Online Typing.org - Average typing speed (WPM)</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Typing#Alphanumeric_entry">Wikipedia - Typing</a></li>
+<li><a
+href="https://docs.google.com/document/d/1D9hzmKMCWzbqIBqpA4j02a2XjuhJbILimBMAFM2Deis/">Gary
+Internet’s Typing Guide</a></li>
+<li><a
+href="https://onlinetyping.org/blog/average-typing-speed.php">Online
+Typing.org - Average typing speed (WPM)</a></li>
+<li><a
+href="https://en.wikipedia.org/wiki/Typing#Alphanumeric_entry">Wikipedia
+- Typing</a></li>
 </ul>
-<h2 id="pressing-a-key-sometimes-types-it-twice">Pressing a key sometimes types it twice</h2>
+<h2 id="pressing-a-key-sometimes-types-it-twice">Pressing a key
+sometimes types it twice</h2>
 <p><a href="#pressing-a-key-sometimes-types-it-twice">🔗 Link</a></p>
-<p>When you press a key once, does it sometimes type twice (or more)? A common cause is contact bounce (or chatter) in the key switch. Electrical contacts are usually springy material. When the switch is pressed, the contacts bounce, making and breaking contact for some milliseconds before settling to a steady contact. So rather than a clean 0 to 1 transition, the raw digital reading bounces between 0 and 1.</p>
+<p>When you press a key once, does it sometimes type twice (or more)? A
+common cause is contact bounce (or chatter) in the key switch.
+Electrical contacts are usually springy material. When the switch is
+pressed, the contacts bounce, making and breaking contact for some
+milliseconds before settling to a steady contact. So rather than a clean
+0 to 1 transition, the raw digital reading bounces between 0 and 1.</p>
 <p><img src="bounce.svg" /></p>
-<p>A similar bouncing problem occurs in the other direction when the key is released. The settling time depends on the kind of switch and may be different for press vs. release. Additionally, the settling time tends to increase as the switch is worn from use. Some keys are pressed more frequently than others (extreme example: <code>E</code> key vs. the <code>[</code> key), so switches wear down at different rates. This can explain observing bouncing on some keys but not others, especially if you reused some switches.</p>
-<p><strong>Diagnosis:</strong> Go to the <a href="https://config.qmk.fm/#/test">QMK Configurator test page</a> and press each key (this works also for non-QMK keyboards). If any key events appear suspiciously fast, a message appears “CHATTER HAS BEEN DETECTED” and the key is highlighted red.</p>
-<p><strong>Software troubleshooting:</strong> It’s typical to apply filtering algorithms in software to “debounce” the button. (See the Related reading below for several algorithms.)</p>
+<p>A similar bouncing problem occurs in the other direction when the key
+is released. The settling time depends on the kind of switch and may be
+different for press vs. release. Additionally, the settling time tends
+to increase as the switch is worn from use. Some keys are pressed more
+frequently than others (extreme example: <code>E</code> key vs. the
+<code>[</code> key), so switches wear down at different rates. This can
+explain observing bouncing on some keys but not others, especially if
+you reused some switches.</p>
+<p><strong>Diagnosis:</strong> Go to the <a
+href="https://config.qmk.fm/#/test">QMK Configurator test page</a> and
+press each key (this works also for non-QMK keyboards). If any key
+events appear suspiciously fast, a message appears “CHATTER HAS BEEN
+DETECTED” and the key is highlighted red.</p>
+<p><strong>Software troubleshooting:</strong> It’s typical to apply
+filtering algorithms in software to “debounce” the button. (See the
+Related reading below for several algorithms.)</p>
 <ul>
-<li><p>For QMK firmware: see the <a href="https://docs.qmk.fm/#/feature_debounce_type">QMK debounce documentation</a>. By default, QMK applies debouncing with a debounce time of 5 ms. Try increasing the debounce time to, say, 10 ms by adding in config.h:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#define DEBOUNCE 10</span></span></code></pre></div></li>
-<li><p>For Oryx: in the Oryx configurator, click the gear ⚙️ in the upper right corner to open advanced settings, then click Debounce.</p></li>
-<li><p>For ZMK firmware: see the <a href="https://zmk.dev/docs/features/debouncing/">ZMK debounce documentation</a>. ZMK applies debouncing by default with a debounce time of 5 ms. Try increasing this to 10 ms by setting in your .conf file:</p>
+<li><p>For QMK firmware: see the <a
+href="https://docs.qmk.fm/#/feature_debounce_type">QMK debounce
+documentation</a>. By default, QMK applies debouncing with a debounce
+time of 5 ms. Try increasing the debounce time to, say, 10 ms by adding
+in config.h:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define DEBOUNCE 10</span></span></code></pre></div></li>
+<li><p>For Oryx: in the Oryx configurator, click the gear ⚙️ in the
+upper right corner to open advanced settings, then click
+Debounce.</p></li>
+<li><p>For ZMK firmware: see the <a
+href="https://zmk.dev/docs/features/debouncing/">ZMK debounce
+documentation</a>. ZMK applies debouncing by default with a debounce
+time of 5 ms. Try increasing this to 10 ms by setting in your .conf
+file:</p>
 <pre><code>CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=10
 CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=10</code></pre></li>
-<li><p>For KMK firmware: the debounce time is set by the <code>interval</code> arg in the constructor of <code>MatrixScanner</code> (or similar key scanner), defaulting to 20 ms. See the <a href="http://kmkfw.io/docs/scanners">Scanners documentation</a>.</p></li>
+<li><p>For KMK firmware: the debounce time is set by the
+<code>interval</code> arg in the constructor of
+<code>MatrixScanner</code> (or similar key scanner), defaulting to
+20 ms. See the <a href="http://kmkfw.io/docs/scanners">Scanners
+documentation</a>.</p></li>
 </ul>
 <p><strong>Hardware troubleshooting:</strong></p>
 <ul>
-<li>Try replacing the switch. If your keyboard is hot-swappable, this is easy to do with a switch puller—see for instance <a href="https://www.zsa.io/moonlander/change-it-yourself/">ZSA: Change your own keyswitches</a>.</li>
-<li>Check the connections on the wire matrices and the board itself.</li>
+<li>Try replacing the switch. If your keyboard is hot-swappable, this is
+easy to do with a switch puller—see for instance <a
+href="https://www.zsa.io/moonlander/change-it-yourself/">ZSA: Change
+your own keyswitches</a>.</li>
+<li>Check the connections on the wire matrices and the board
+itself.</li>
 <li>Try resoldering the microcontroller pins.</li>
 </ul>
 <p><strong>Related reading:</strong></p>
 <ul>
-<li><p><a href="https://my.eng.utah.edu/~cs5780/debouncing.pdf">A Guide to Debouncing</a> – measures bouncing on several real switches, discusses several debouncing strategies in hardware and software</p></li>
-<li><p><a href="https://hackaday.com/2015/12/10/embed-with-elliot-debounce-your-noisy-buttons-part-ii/">Embed with Elliot: Debounce your noisy buttons, Part 2</a> – a sophisticated debouncing algorithm</p></li>
-<li><p><a href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/">Measure and reduce keyboard input latency with QMK</a> – tuning debouncing and other configurations for minimal latency</p></li>
+<li><p><a href="https://my.eng.utah.edu/~cs5780/debouncing.pdf">A Guide
+to Debouncing</a> – measures bouncing on several real switches,
+discusses several debouncing strategies in hardware and
+software</p></li>
+<li><p><a
+href="https://hackaday.com/2015/12/10/embed-with-elliot-debounce-your-noisy-buttons-part-ii/">Embed
+with Elliot: Debounce your noisy buttons, Part 2</a> – a sophisticated
+debouncing algorithm</p></li>
+<li><p><a
+href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/">Measure
+and reduce keyboard input latency with QMK</a> – tuning debouncing and
+other configurations for minimal latency</p></li>
 </ul>
-<h2 id="how-much-lag-do-custom-keyboards-have">How much lag do custom keyboards have?</h2>
+<h2 id="how-much-lag-do-custom-keyboards-have">How much lag do custom
+keyboards have?</h2>
 <p><a href="#how-much-lag-do-custom-keyboards-have">🔗 Link</a></p>
-<p>And related question, are custom keyboards good for gaming? I’ll focus on keyboards running QMK firmware, but this is probably representative in general since other keyboard firmwares work similarly under the same constraints.</p>
-<p><em>Input lag</em> of a keyboard is the time between actuating a key to the computer receiving the key report. <strong>Input lag with QMK is typically 2–14 ms, so fast that it is visually imperceptible, less than one frame of 60 fps video (16.7 ms).</strong> QMK keeps up even with the most demanding games. Lag due to keyboard firmware is probably negligible compared to other sources of lag (more on this below).</p>
-<p>The following processes are the main sources of lag. See <a href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/#results">Michael Stapelberg’s investigation</a> for deeper discussion:</p>
+<p>And related question, are custom keyboards good for gaming? I’ll
+focus on keyboards running QMK firmware, but this is probably
+representative in general since other keyboard firmwares work similarly
+under the same constraints.</p>
+<p><em>Input lag</em> of a keyboard is the time between actuating a key
+to the computer receiving the key report. <strong>Input lag with QMK is
+typically 2–14 ms, so fast that it is visually imperceptible, less than
+one frame of 60 fps video (16.7 ms).</strong> QMK keeps up even with the
+most demanding games. Lag due to keyboard firmware is probably
+negligible compared to other sources of lag (more on this below).</p>
+<p>The following processes are the main sources of lag. See <a
+href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/#results">Michael
+Stapelberg’s investigation</a> for deeper discussion:</p>
 <ol type="1">
-<li><p><strong>Matrix scanning</strong> continually checks the keyboard matrix circuit for changes in key state. The time between successive scans in on the order of 0.2–2 ms. A faster keyboard microcontroller can improve this.</p></li>
-<li><p><strong>Debouncing</strong> is applied to clean up the matrix changes. As a key is pressed, the electrical contacts typically make and breaking contact several times. By default, QMK debounces the signal by waiting for a debounce time of 5 ms, while some keyboards are configured for a longer debounce time. Setting an <a href="https://docs.qmk.fm/#/feature_debounce_type?id=types-of-debounce-algorithms">“eager” debouncing strategy</a> avoids this latency. You can also try reducing the debounce time, though beware that <a href="#pressing-a-key-sometimes-types-it-twice">keys might bounce</a> if the time is too short.</p></li>
-<li><p><strong>USB polling</strong> transfers key reports to the computer. Polling defaults to once every 1 ms, the fastest interval supported by USB Full Speed (USB 1.0).</p></li>
+<li><p><strong>Matrix scanning</strong> continually checks the keyboard
+matrix circuit for changes in key state. The time between successive
+scans in on the order of 0.2–2 ms. A faster keyboard microcontroller can
+improve this.</p></li>
+<li><p><strong>Debouncing</strong> is applied to clean up the matrix
+changes. As a key is pressed, the electrical contacts typically make and
+breaking contact several times. By default, QMK debounces the signal by
+waiting for a debounce time of 5 ms, while some keyboards are configured
+for a longer debounce time. Setting an <a
+href="https://docs.qmk.fm/#/feature_debounce_type?id=types-of-debounce-algorithms">“eager”
+debouncing strategy</a> avoids this latency. You can also try reducing
+the debounce time, though beware that <a
+href="#pressing-a-key-sometimes-types-it-twice">keys might bounce</a> if
+the time is too short.</p></li>
+<li><p><strong>USB polling</strong> transfers key reports to the
+computer. Polling defaults to once every 1 ms, the fastest interval
+supported by USB Full Speed (USB 1.0).</p></li>
 </ol>
-<p>Beware that <strong>input lag is much larger on keys using certain special QMK features</strong>, namely Tap-Hold keys, Tap Dance keys, Auto Shifted keys, Space Cadet keys, and keys used in Combos. Avoid using them on your gaming layer. Event processing for keys using these features is delayed while QMK waits to determine whether the key is being tapped vs. held or whether other keys are pressed at the same time. This delay may be substantial, up to <code>TAPPING_TERM</code> or 200 ms by default for tap-hold keys or <code>COMBO_TERM</code> or 40 ms by default for keys used in combos.</p>
+<p>Beware that <strong>input lag is much larger on keys using certain
+special QMK features</strong>, namely Tap-Hold keys, Tap Dance keys,
+Auto Shifted keys, Space Cadet keys, and keys used in Combos. Avoid
+using them on your gaming layer. Event processing for keys using these
+features is delayed while QMK waits to determine whether the key is
+being tapped vs. held or whether other keys are pressed at the same
+time. This delay may be substantial, up to <code>TAPPING_TERM</code> or
+200 ms by default for tap-hold keys or <code>COMBO_TERM</code> or 40 ms
+by default for keys used in combos.</p>
 <p><strong>Other sources of lag:</strong></p>
 <ul>
-<li><p>Wireless keyboards have additional lag compared to wired. Communication over Bluetooth adds around 8–25 ms of lag. Some keyboards have the option to communicate instead using a proprietary wireless protocol and receiver, which can slim communication lag below 4 ms. For minimal lag, use a wired connection.</p></li>
-<li><p><a href="https://deskthority.net/wiki/Travel#Pretravel">Switch pretravel</a> and actuation force make a difference, that is, how far down and with how much force the key must be pressed to register. Pretravel of 2 mm and actuation force of around 50 cN is typical. There are switches that reduce these parameters, like Kailh Speed Silver and Cherry MX Speed Silver.</p></li>
-<li><p><a href="https://en.wikipedia.org/wiki/Display_lag">Display lag</a> of the monitor contributes to the full time between keystroke to its effect being visible on screen. LCD monitors vary, sometimes having in excess of 30 ms display lag (2 or more frames delayed). A gaming monitor with refresh rate of 120 Hz and up can improve this.</p></li>
+<li><p>Wireless keyboards have additional lag compared to wired.
+Communication over Bluetooth adds around 8–25 ms of lag. Some keyboards
+have the option to communicate instead using a proprietary wireless
+protocol and receiver, which can slim communication lag below 4 ms. For
+minimal lag, use a wired connection.</p></li>
+<li><p><a href="https://deskthority.net/wiki/Travel#Pretravel">Switch
+pretravel</a> and actuation force make a difference, that is, how far
+down and with how much force the key must be pressed to register.
+Pretravel of 2 mm and actuation force of around 50 cN is typical. There
+are switches that reduce these parameters, like Kailh Speed Silver and
+Cherry MX Speed Silver.</p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Display_lag">Display
+lag</a> of the monitor contributes to the full time between keystroke to
+its effect being visible on screen. LCD monitors vary, sometimes having
+in excess of 30 ms display lag (2 or more frames delayed). A gaming
+monitor with refresh rate of 120 Hz and up can improve this.</p></li>
 </ul>
 <p><strong>Related reading:</strong></p>
 <ul>
-<li><p><a href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/">Michael Stapelberg – Measure and reduce keyboard input latency with QMK on the Kinesis Advantage (2021)</a></p></li>
-<li><p><a href="https://www.youtube.com/watch?v=jWL4nU-vtWs">Nicell – Keyboard Input Latency Compared: Wireless BLE ZMK, QMK, and Corsair</a></p></li>
-<li><p><a href="https://www.rtings.com/keyboard/tests/latency">rtings.com – Our Keyboard Typing Experience Tests</a></p></li>
-<li><p><a href="https://docs.qmk.fm/#/how_keyboards_work">How Keys Are Registered, and Interpreted by Computers</a></p></li>
-<li><p><a href="https://pcmonitors.info/articles/factors-affecting-pc-monitor-responsiveness">Factors Affecting PC Monitor Responsiveness</a></p></li>
+<li><p><a
+href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/">Michael
+Stapelberg – Measure and reduce keyboard input latency with QMK on the
+Kinesis Advantage (2021)</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=jWL4nU-vtWs">Nicell –
+Keyboard Input Latency Compared: Wireless BLE ZMK, QMK, and
+Corsair</a></p></li>
+<li><p><a
+href="https://www.rtings.com/keyboard/tests/latency">rtings.com – Our
+Keyboard Typing Experience Tests</a></p></li>
+<li><p><a href="https://docs.qmk.fm/#/how_keyboards_work">How Keys Are
+Registered, and Interpreted by Computers</a></p></li>
+<li><p><a
+href="https://pcmonitors.info/articles/factors-affecting-pc-monitor-responsiveness">Factors
+Affecting PC Monitor Responsiveness</a></p></li>
 </ul>
-<h2 id="home-row-mods-are-hard-to-use">Home row mods are hard to use</h2>
+<h2 id="home-row-mods-are-hard-to-use">Home row mods are hard to
+use</h2>
 <p><a href="#home-row-mods-are-hard-to-use">🔗 Link</a></p>
-<p>It’s not just you. Home row mods are tricky for most people. <strong>Configuration is critical, and on top of that it takes time to get used to it.</strong></p>
-<p>Home row mods are nontrivial to use reliably because of accidental mod triggers during fast typing. You might think of normal typing as pressing and releasing one key at a time like “<code>T</code> down, <code>T</code> up, <code>H</code> down, <code>H</code> up.” But fast typing is often sloppier than this like “<code>T</code> down, <code>H</code> down, <code>T</code> up, <code>H</code> up,” especially in “rolled” sequences of adjacent keys like <code>io</code> or <code>ast</code> in QWERTY. There’s also the complementary problem of failing to trigger a mod when it was intended.</p>
-<p>If you haven’t already, read <a href="https://precondition.github.io/home-row-mods">Precondition’s guide to home row mods</a>. It explains a bunch of tap-hold configurations and variations to mitigate these problems.</p>
+<p>It’s not just you. Home row mods are tricky for most people.
+<strong>Configuration is critical, and on top of that it takes time to
+get used to it.</strong></p>
+<p>Home row mods are nontrivial to use reliably because of accidental
+mod triggers during fast typing. You might think of normal typing as
+pressing and releasing one key at a time like “<code>T</code> down,
+<code>T</code> up, <code>H</code> down, <code>H</code> up.” But fast
+typing is often sloppier than this like “<code>T</code> down,
+<code>H</code> down, <code>T</code> up, <code>H</code> up,” especially
+in “rolled” sequences of adjacent keys like <code>io</code> or
+<code>ast</code> in QWERTY. There’s also the complementary problem of
+failing to trigger a mod when it was intended.</p>
+<p>If you haven’t already, read <a
+href="https://precondition.github.io/home-row-mods">Precondition’s guide
+to home row mods</a>. It explains a bunch of tap-hold configurations and
+variations to mitigate these problems.</p>
 <p><strong>Suggested settings:</strong></p>
 <ul>
-<li><p>For QMK firmware, I suggest starting with these settings in config.h:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="pp">#define TAPPING_TERM 200</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="pp">#define IGNORE_MOD_TAP_INTERRUPT</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="pp">#define PERMISSIVE_HOLD</span></span></code></pre></div>
-<p>See also my <a href="../achordion/index.html">Achordion library</a>, which prevents mods from firing on same-hand combinations of keys.</p></li>
-<li><p>For ZMK firmware, see the <a href="https://zmk.dev/docs/behaviors/hold-tap#home-row-mods">suggested configurations</a> for home row mods.</p></li>
+<li><p>For QMK firmware, I suggest starting with these settings in
+config.h:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM 200</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define IGNORE_MOD_TAP_INTERRUPT</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PERMISSIVE_HOLD</span></span></code></pre></div>
+<p>See also my <a href="../achordion/index.html">Achordion library</a>,
+which prevents mods from firing on same-hand combinations of
+keys.</p></li>
+<li><p>For ZMK firmware, see the <a
+href="https://zmk.dev/docs/behaviors/hold-tap#home-row-mods">suggested
+configurations</a> for home row mods.</p></li>
 </ul>
-<p><strong>In addition to good configuration, I suggest you may need a couple months to get used to home row mods.</strong> Everyone’s typing habits are a little different. I struggled badly when I started with accidental mod triggers, despite using Precondition’s recommended settings. But after a couple months of persistence, my typing adapted. Now I use home row mods with confidence.</p>
+<p><strong>In addition to good configuration, I suggest you may need a
+couple months to get used to home row mods.</strong> Everyone’s typing
+habits are a little different. I struggled badly when I started with
+accidental mod triggers, despite using Precondition’s recommended
+settings. But after a couple months of persistence, my typing adapted.
+Now I use home row mods with confidence.</p>
 <p><strong>Other tips:</strong></p>
 <ul>
-<li><p><strong>Repeat a mod-tap key:</strong> A little known feature! If you quickly tap and then hold the key, its tap action is repeated. In QMK, this is enabled by default and disabled with <a href="https://docs.qmk.fm/#/tap_hold?id=tapping-force-hold">TAPPING_FORCE_HOLD</a>. In ZMK, it is enabled with <a href="https://zmk.dev/docs/behaviors/hold-tap/#quick-tap-ms">quick-tap-ms</a>.</p></li>
-<li><p><strong>ALL_CAPS typing:</strong> Typing in all-caps is awkward with home row Shifts. Use a Caps Word implementation to get around this: <a href="../caps-word/index.html">Caps Word in QMK</a>, <a href="https://zmk.dev/docs/behaviors/caps-word/">Caps Word in ZMK</a>. Caps Word is like the standard Caps Lock, but turns off automatically at the end of the word. This is useful for typing abbreviations like “QMK” and all-caps identifiers in code like “<code>KC_LSFT</code>.”</p></li>
-<li><p><strong>Next sentence macro:</strong> As another way to avoid Shift, consider a macro that types period, space, and sets a one-shot Shift mod to capitalize the next letter (<a href="../macros/index.html#next-sentence-macro">QMK implementation</a>).</p></li>
-<li><p><strong>One-shot home row mods:</strong> You may find it helpful to make some or all of your home row mods behave like one-shot mods. Thanks to <span class="citation" data-cites="rafaelromao">@rafaelromao</span> for this idea. This can be done in QMK by adding in keymap.c:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">// Copyright 2022 Google LLC.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co">// SPDX-License-Identifier: Apache-2.0</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co">// Replaces a mod-tap key&#39;s hold function with its one-shot counterpart.</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="dt">static</span> <span class="dt">bool</span> oneshot_mod_tap(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>  <span class="cf">if</span> (record-&gt;tap.count == <span class="dv">0</span>) {  <span class="co">// Key is being held.</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>    <span class="cf">if</span> (record-&gt;event.pressed) {</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>      <span class="dt">const</span> <span class="dt">uint8_t</span> mods = (keycode &gt;&gt; <span class="dv">8</span>) &amp; <span class="bn">0x1f</span>;</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>      add_oneshot_mods(((mods &amp; <span class="bn">0x10</span>) == <span class="dv">0</span>) ? mods : (mods &lt;&lt; <span class="dv">4</span>));</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>    }</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    <span class="cf">return</span> false;  <span class="co">// Skip default handling.</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>  }</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>  <span class="cf">return</span> true;  <span class="co">// Continue default handling.</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>}</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>    <span class="cf">case</span> LSFT_T(KC_D):</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>    <span class="cf">case</span> RSFT_T(KC_K):</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>      <span class="cf">return</span> oneshot_mod_tap(keycode, record);</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a>  }</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>}</span></code></pre></div>
-<p>See also the QMK documentation on <a href="https://docs.qmk.fm/#/mod_tap?id=changing-hold-function">changing the hold function</a> and <a href="https://github.com/rafaelromao/keyboards">rafaelromao’s keymap</a>.</p></li>
+<li><p><strong>Repeat a mod-tap key:</strong> A little known feature! If
+you quickly tap and then hold the key, its tap action is repeated. In
+QMK, this is enabled by default and disabled with <a
+href="https://docs.qmk.fm/#/tap_hold?id=tapping-force-hold">TAPPING_FORCE_HOLD</a>.
+In ZMK, it is enabled with <a
+href="https://zmk.dev/docs/behaviors/hold-tap/#quick-tap-ms">quick-tap-ms</a>.</p></li>
+<li><p><strong>ALL_CAPS typing:</strong> Typing in all-caps is awkward
+with home row Shifts. Use a Caps Word implementation to get around this:
+<a href="../caps-word/index.html">Caps Word in QMK</a>, <a
+href="https://zmk.dev/docs/behaviors/caps-word/">Caps Word in ZMK</a>.
+Caps Word is like the standard Caps Lock, but turns off automatically at
+the end of the word. This is useful for typing abbreviations like “QMK”
+and all-caps identifiers in code like “<code>KC_LSFT</code>.”</p></li>
+<li><p><strong>Next sentence macro:</strong> As another way to avoid
+Shift, consider a macro that types period, space, and sets a one-shot
+Shift mod to capitalize the next letter (<a
+href="../macros/index.html#next-sentence-macro">QMK
+implementation</a>).</p></li>
+<li><p><strong>One-shot home row mods:</strong> You may find it helpful
+to make some or all of your home row mods behave like one-shot mods.
+Thanks to <span class="citation"
+data-cites="rafaelromao">@rafaelromao</span> for this idea. This can be
+done in QMK by adding in keymap.c:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Copyright 2022 Google LLC.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="an">SPDX-License-Identifier:</span><span class="co"> Apache-2.0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Replaces a mod-tap key&#39;s hold function with its one-shot counterpart.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> oneshot_mod_tap<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// Key is being held.</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">const</span> <span class="dt">uint8_t</span> mods <span class="op">=</span> <span class="op">(</span>keycode <span class="op">&gt;&gt;</span> <span class="dv">8</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x1f</span><span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      add_oneshot_mods<span class="op">(((</span>mods <span class="op">&amp;</span> <span class="bn">0x10</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">?</span> mods <span class="op">:</span> <span class="op">(</span>mods <span class="op">&lt;&lt;</span> <span class="dv">4</span><span class="op">));</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_D<span class="op">):</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RSFT_T<span class="op">(</span>KC_K<span class="op">):</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> oneshot_mod_tap<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">);</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>See also the QMK documentation on <a
+href="https://docs.qmk.fm/#/mod_tap?id=changing-hold-function">changing
+the hold function</a> and <a
+href="https://github.com/rafaelromao/keyboards">rafaelromao’s
+keymap</a>.</p></li>
 </ul>
 <h2 id="firmware-is-too-large">Firmware is too large!</h2>
 <p><a href="#firmware-is-too-large">🔗 Link</a></p>
-<p>A build error like “<code>firmware is too large! X bytes over</code>” means the compiled firmware is too large to fit in the microcontroller’s programmable flash memory. This is easily a problem on microcontrollers with less than 32KB flash space.</p>
-<p>This suggestion may come too late, but when building a keyboard, it’s worth using a microcontroller with larger flash space to avoid this problem in the first place. Some QMK-compatible options with more space are <a href="https://qmk.fm/proton-c/">Proton C</a> (STM32F303xC) with 256KB flash, <a href="https://github.com/WeActTC/MiniSTM32F4x1">WeAct Blackpill</a> (STM32F411) with 512KB flash, and <a href="https://nicekeyboards.com/docs/nice-nano/">Nice Nano</a> (nRF52840) with 1MB flash. See also <a href="https://docs.qmk.fm/#/compatible_microcontrollers?id=compatible-microcontrollers">QMK Compatible Microcontrollers</a> and <a href="https://zmk.dev/docs/hardware/">ZMK Supported Hardware</a>.</p>
-<p>Otherwise, you need to reduce the firmware size. The main contributors to firmware size are enabled features. By “feature,” I mean a behavior that can be independently enabled, like <a href="https://docs.qmk.fm/#/feature_mouse_keys">Mouse Keys</a> and <a href="https://docs.qmk.fm/#/feature_space_cadet">Space Cadet Shift</a> in QMK. Each enabled feature adds around 1000–4000 bytes, depending on what it is. So a good way to reduce firmware size is to cull unused and non-essential features.</p>
-<p><strong>Specific to QMK:</strong> Make sure to enable LTO (link-time optimization) in rules.mk:</p>
+<p>A build error like “<code>firmware is too large! X bytes over</code>”
+means the compiled firmware is too large to fit in the microcontroller’s
+programmable flash memory. This is easily a problem on microcontrollers
+with less than 32KB flash space.</p>
+<p>This suggestion may come too late, but when building a keyboard, it’s
+worth using a microcontroller with larger flash space to avoid this
+problem in the first place. Some QMK-compatible options with more space
+are <a href="https://qmk.fm/proton-c/">Proton C</a> (STM32F303xC) with
+256KB flash, <a href="https://github.com/WeActTC/MiniSTM32F4x1">WeAct
+Blackpill</a> (STM32F411) with 512KB flash, and <a
+href="https://nicekeyboards.com/docs/nice-nano/">Nice Nano</a>
+(nRF52840) with 1MB flash. See also <a
+href="https://docs.qmk.fm/#/compatible_microcontrollers?id=compatible-microcontrollers">QMK
+Compatible Microcontrollers</a> and <a
+href="https://zmk.dev/docs/hardware/">ZMK Supported Hardware</a>.</p>
+<p>Otherwise, you need to reduce the firmware size. The main
+contributors to firmware size are enabled features. By “feature,” I mean
+a behavior that can be independently enabled, like <a
+href="https://docs.qmk.fm/#/feature_mouse_keys">Mouse Keys</a> and <a
+href="https://docs.qmk.fm/#/feature_space_cadet">Space Cadet Shift</a>
+in QMK. Each enabled feature adds around 1000–4000 bytes, depending on
+what it is. So a good way to reduce firmware size is to cull unused and
+non-essential features.</p>
+<p><strong>Specific to QMK:</strong> Make sure to enable LTO (link-time
+optimization) in rules.mk:</p>
 <pre><code>LTO_ENABLE = yes</code></pre>
-<p>Firmware will take longer to build, but the result will be smaller. See <a href="https://docs.qmk.fm/#/squeezing_avr?id=squeezing-the-most-out-of-avr">Squeezing the most out of AVR</a> (applicable also with non-AVR MCUs) for further tips.</p>
-<h2 id="how-to-type-non-english-letters-qmk">How to type non-English letters (QMK)</h2>
+<p>Firmware will take longer to build, but the result will be smaller.
+See <a
+href="https://docs.qmk.fm/#/squeezing_avr?id=squeezing-the-most-out-of-avr">Squeezing
+the most out of AVR</a> (applicable also with non-AVR MCUs) for further
+tips.</p>
+<h2 id="how-to-type-non-english-letters-qmk">How to type non-English
+letters (QMK)</h2>
 <p><a href="#how-to-type-non-english-letters-qmk">🔗 Link</a></p>
-<p>There is a good solution for typing most symbols in major Western European languages by using the US-International layout. For other symbols, a possibility is QMK’s Unicode input feature. See <a href="../non-english/index.html">Typing non-English letters</a>.</p>
+<p>There is a good solution for typing most symbols in major Western
+European languages by using the US-International layout. For other
+symbols, a possibility is QMK’s Unicode input feature. See <a
+href="../non-english/index.html">Typing non-English letters</a>.</p>
 <h2 id="some-keys-are-swapped-qmk">Some keys are swapped (QMK)</h2>
 <p><a href="#some-keys-are-swapped-qmk">🔗 Link</a></p>
-<p><strong>Magic keys:</strong> <a href="https://docs.qmk.fm/#/keycodes_magic">Magic keys</a> and a related <a href="https://docs.qmk.fm/#/feature_command">Command feature</a> are capable of dynamically disabling GUI keys, swapping Ctrl ↔︎ Caps Lock, Alt ↔︎ GUI, and a few other similar such things. A common source of confusion is when these settings are changed unintentionally. Furthermore, magic settings are saved to EEPROM, so they stubbornly survive even when the keyboard is flashed with new firmware. The way to fix this is to clear the EEPROM, which resets any magic settings. Two ways to do that:</p>
+<p><strong>Magic keys:</strong> <a
+href="https://docs.qmk.fm/#/keycodes_magic">Magic keys</a> and a related
+<a href="https://docs.qmk.fm/#/feature_command">Command feature</a> are
+capable of dynamically disabling GUI keys, swapping Ctrl ↔︎ Caps Lock,
+Alt ↔︎ GUI, and a few other similar such things. A common source of
+confusion is when these settings are changed unintentionally.
+Furthermore, magic settings are saved to EEPROM, so they stubbornly
+survive even when the keyboard is flashed with new firmware. The way to
+fix this is to clear the EEPROM, which resets any magic settings. Two
+ways to do that:</p>
 <ul>
-<li><p>Hold down the Space and Backspace keys while plugging in the keyboard.</p></li>
-<li><p>Use the key code <code>EE_CLR</code> in your layout. Pressing this key will clear the EEPROM.</p></li>
+<li><p>Hold down the Space and Backspace keys while plugging in the
+keyboard.</p></li>
+<li><p>Use the key code <code>EE_CLR</code> in your layout. Pressing
+this key will clear the EEPROM.</p></li>
 </ul>
-<p>See also <a href="https://docs.qmk.fm/#/faq_keymap?id=some-of-my-keys-are-swapped-or-not-working">Some Of My Keys Are Swapped Or Not Working</a>.</p>
-<p><strong>Non-US QWERTY host layout.</strong> The usual “<code>KC_</code>”-prefixed keycodes assume the host computer is configured to US QWERTY keyboard layout, see <a href="https://docs.qmk.fm/#/faq_keymap?id=what-are-the-default-keycodes">What Are the Default Keycodes</a>. Configuring the computer to a different layout can result in swapped keys or some shifted keys producing unexpected results. See <a href="../non-english/index.html#using-non-us-layouts">Using non-US layouts</a>.</p>
+<p>See also <a
+href="https://docs.qmk.fm/#/faq_keymap?id=some-of-my-keys-are-swapped-or-not-working">Some
+Of My Keys Are Swapped Or Not Working</a>.</p>
+<p><strong>Non-US QWERTY host layout.</strong> The usual
+“<code>KC_</code>”-prefixed keycodes assume the host computer is
+configured to US QWERTY keyboard layout, see <a
+href="https://docs.qmk.fm/#/faq_keymap?id=what-are-the-default-keycodes">What
+Are the Default Keycodes</a>. Configuring the computer to a different
+layout can result in swapped keys or some shifted keys producing
+unexpected results. See <a
+href="../non-english/index.html#using-non-us-layouts">Using non-US
+layouts</a>.</p>
 <h2 id="send_string-doesnt-work-qmk">SEND_STRING doesn’t work (QMK)</h2>
 <p><a href="#send_string-doesnt-work-qmk">🔗 Link</a></p>
 <p>There are some gotchas with <code>SEND_STRING()</code>:</p>
 <ul>
-<li><p>String literals in C are defined by surrounding a sequence of characters with double quotes. Most characters are written directly. But backslash <code>\</code> has special meaning, for instance <code>\n</code> for new line. If you want a string with the literal <code>\</code> character , it must be escaped as <code>\\</code>. Say, a Windows directory path</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>SEND_STRING(<span class="st">&quot;my</span><span class="sc">\f</span><span class="st">avorite\directory&quot;</span>);    <span class="co">// DON&#39;T DO THIS!</span></span></code></pre></div>
+<li><p>String literals in C are defined by surrounding a sequence of
+characters with double quotes. Most characters are written directly. But
+backslash <code>\</code> has special meaning, for instance
+<code>\n</code> for new line. If you want a string with the literal
+<code>\</code> character , it must be escaped as <code>\\</code>. Say, a
+Windows directory path</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\f</span><span class="st">avorite\directory&quot;</span><span class="op">);</span>    <span class="co">// DON&#39;T DO THIS!</span></span></code></pre></div>
 <p>should instead be written as</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>SEND_STRING(<span class="st">&quot;my</span><span class="sc">\\</span><span class="st">favorite</span><span class="sc">\\</span><span class="st">directory&quot;</span>);  <span class="co">// OK</span></span></code></pre></div>
-<p>Similarly, <code>"</code> characters have special meaning, since they mark the beginning and end of the string. For a string with the literal <code>"</code> character, escape it as <code>\"</code>. See also <a href="https://en.wikipedia.org/wiki/Escape_sequences_in_C">Escape sequences in C</a>.</p></li>
-<li><p>By default, <code>SEND_STRING</code> assumes the host computer is set to US QWERTY keyboard layout. If not, see <a href="../non-english/index.html#using-non-us-layouts">Using non-US layouts</a>.</p></li>
-<li><p><code>SEND_STRING</code> is limited to (a subset of) <a href="https://en.wikipedia.org/wiki/ASCII#Character_set">ASCII text</a>. To send a string of Unicode characters, use <code>send_unicode_string()</code> <a href="../macros/index.html#emojis">as in this example</a>.</p></li>
-<li><p><code>SEND_STRING</code>’s argument must be a string literal. To print a string that you generated, use lowercase <code>send_string()</code> instead:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">// Print the index of the highest layer.</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">char</span>* str = get_u8_str(get_highest_layer(layer_state), <span class="ch">&#39; &#39;</span>);</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>send_string(str);</span></code></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\\</span><span class="st">favorite</span><span class="sc">\\</span><span class="st">directory&quot;</span><span class="op">);</span>  <span class="co">// OK</span></span></code></pre></div>
+<p>Similarly, <code>"</code> characters have special meaning, since they
+mark the beginning and end of the string. For a string with the literal
+<code>"</code> character, escape it as <code>\"</code>. See also <a
+href="https://en.wikipedia.org/wiki/Escape_sequences_in_C">Escape
+sequences in C</a>.</p></li>
+<li><p>By default, <code>SEND_STRING</code> assumes the host computer is
+set to US QWERTY keyboard layout. If not, see <a
+href="../non-english/index.html#using-non-us-layouts">Using non-US
+layouts</a>.</p></li>
+<li><p><code>SEND_STRING</code> is limited to (a subset of) <a
+href="https://en.wikipedia.org/wiki/ASCII#Character_set">ASCII text</a>.
+To send a string of Unicode characters, use
+<code>send_unicode_string()</code> <a
+href="../macros/index.html#emojis">as in this example</a>.</p></li>
+<li><p><code>SEND_STRING</code>’s argument must be a string literal. To
+print a string that you generated, use lowercase
+<code>send_string()</code> instead:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Print the index of the highest layer.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">char</span><span class="op">*</span> str <span class="op">=</span> get_u8_str<span class="op">(</span>get_highest_layer<span class="op">(</span>layer_state<span class="op">),</span> <span class="ch">&#39; &#39;</span><span class="op">);</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>send_string<span class="op">(</span>str<span class="op">);</span></span></code></pre></div></li>
 </ul>
-<h2 id="what-is-this-weird-c-syntax-qmk">What is this weird C syntax (QMK)</h2>
+<h2 id="what-is-this-weird-c-syntax-qmk">What is this weird C syntax
+(QMK)</h2>
 <p><a href="#what-is-this-weird-c-syntax-qmk">🔗 Link</a></p>
-<p>QMK code is embedded code written in C11, the 2011 standard of the C programming language, with nonstandard GNU extensions. You may run into some unfamiliar syntax even if you are otherwise versed in C/C++:</p>
+<p>QMK code is embedded code written in C11, the 2011 standard of the C
+programming language, with nonstandard GNU extensions. You may run into
+some unfamiliar syntax even if you are otherwise versed in C/C++:</p>
 <ul>
-<li><p><a href="https://www.e-tinkers.com/2020/05/do-you-know-arduino-progmem-demystified/">PROGMEM</a> is a variable modifier used in embedded code to store data in flash memory, aka program memory or “progmem,” instead of SRAM. Often, microcontrollers have more flash memory than SRAM, and arrays of constant data are declared as <code>PROGMEM</code> to take advantage of this. Under the hood, <code>PROGMEM</code> is a macro expanding to an attribute like <code>__attribute__</code> <code>((section(".irom.text")))</code>.</p>
-<p>In a QMK keymap, a visible example of <code>PROGMEM</code> is the <code>keymaps</code> array:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  [BASE] = LAYOUT(...), </span></code></pre></div></li>
-<li><p><a href="https://en.cppreference.com/w/c/language/array_initialization">Array designators</a> is a C99 feature that enables an explicit syntax when initializing an array. Elements may be specified sparsely or out of order:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">// a = {10, 0, 20, 30}</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="dt">int</span> a[<span class="dv">4</span>] = {[<span class="dv">0</span>] = <span class="dv">10</span>, [<span class="dv">3</span>] = <span class="dv">30</span>, [<span class="dv">2</span>] = <span class="dv">20</span>};</span></code></pre></div>
-<p>The <code>keymaps</code> array is conventionally initialized using this syntax, like</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>  [<span class="dv">0</span>] = LAYOUT(...),</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>  [<span class="dv">1</span>] = LAYOUT(...),</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>  [<span class="dv">2</span>] = LAYOUT(...),</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>};</span></code></pre></div>
-<p>or equivalently but more readably, naming the layers <a href="https://en.cppreference.com/w/c/language/enum">with enum constants</a> like</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="kw">enum</span> layers { BASE, LOWER, RAISE };</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>  [BASE] = LAYOUT(...),</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>  [LOWER] = LAYOUT(...),</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>  [RAISE] = LAYOUT(...),</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>};</span></code></pre></div>
-<p>This pattern of array designators with <code>enum</code> constants also appears in using certain features like <a href="https://docs.qmk.fm/#/feature_tap_dance?id=simple-example">Tap Dance</a>.</p></li>
-<li><p><a href="https://en.cppreference.com/w/cpp/language/aggregate_initialization">Designated initializers</a> is a C99 feature that allows structs to be created with a readable syntax like (example is from the <a href="https://docs.qmk.fm/#/feature_key_overrides?id=modifiers-as-layer-keys">Key Overrides documentation</a>):</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="dt">const</span> key_override_t fn_override = {</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>  .trigger_mods      = MOD_BIT(KC_RGUI) | MOD_BIT(KC_RCTL),</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>  .layers            = ~(<span class="dv">1</span> &lt;&lt; LAYER_FN),</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>  .suppressed_mods   = MOD_BIT(KC_RGUI) | MOD_BIT(KC_RCTL),</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>  .options           = ko_option_no_unregister_on_other_key_down,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>  .negative_mod_mask = (<span class="dt">uint8_t</span>) ~(MOD_BIT(KC_RGUI) | MOD_BIT(KC_RCTL)),</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>  .custom_action     = momentary_layer,</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a>  .context           = (<span class="dt">void</span> *)LAYER_FN,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>  .trigger           = KC_NO,</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>  .replacement       = KC_NO,</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>  .enabled           = NULL,</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a>};</span></code></pre></div></li>
-<li><p><a href="https://gcc.gnu.org/onlinedocs/gcc/Case-Ranges.html#Case-Ranges">Case ranges</a> is a GNU extension to write a range of consecutive values as a single <code>case</code> in a <code>switch</code> statement:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="cf">case</span> KC_A ... KC_Z:  <span class="co">// Keycodes KC_A through KC_Z.</span></span></code></pre></div></li>
-<li><p><a href="https://en.wikipedia.org/wiki/Weak_symbol">Weak symbols</a> is a GNU extension where a function definition annotated with <code>__attribute__((weak))</code> can can be overridden by another definition at linking time. This is useful to allow the user to customize some aspect of a library through redefining a function. The default definition of the function is annotated as weak (example is from the <a href="https://github.com/qmk/qmk_firmware/blob/e99d6d582cd1ebdda35b2fda1cc170d6d24ad58b/quantum/action_tapping.c#L40-L42">tap-hold key implementation</a>):</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">// quantum/action_tapping.c</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>__attribute__((weak)) <span class="dt">bool</span> get_tapping_force_hold(<span class="dt">uint16_t</span> keycode,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>                                                  keyrecord_t* record) {</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>  <span class="cf">return</span> false;</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>}</span></code></pre></div>
-<p>The user can override it by making a “strong” redefinition of the function:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co">// keymap.c</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="dt">bool</span> get_tapping_force_hold(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>  <span class="cf">switch</span> (keycode) {</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>    <span class="cf">case</span> LSFT_T(KC_A):</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>      <span class="cf">return</span> true;</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>  }</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>  <span class="cf">return</span> false;</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>}</span></code></pre></div></li>
-<li><p><a href="https://en.cppreference.com/w/c/preprocessor/impl">#pragma once</a> is a nonstandard yet widely supported preprocessor directive typically used as the first line of a .h header file. It indicates that the header should be processed once, even if #included multiple times in the same source file. It is arguably more readable than <a href="https://en.wikipedia.org/wiki/Include_guard">include guards</a>.</p></li>
+<li><p><a
+href="https://www.e-tinkers.com/2020/05/do-you-know-arduino-progmem-demystified/">PROGMEM</a>
+is a variable modifier used in embedded code to store data in flash
+memory, aka program memory or “progmem,” instead of SRAM. Often,
+microcontrollers have more flash memory than SRAM, and arrays of
+constant data are declared as <code>PROGMEM</code> to take advantage of
+this. Under the hood, <code>PROGMEM</code> is a macro expanding to an
+attribute like <code>__attribute__</code>
+<code>((section(".irom.text")))</code>.</p>
+<p>In a QMK keymap, a visible example of <code>PROGMEM</code> is the
+<code>keymaps</code> array:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>BASE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span> </span></code></pre></div></li>
+<li><p><a
+href="https://en.cppreference.com/w/c/language/array_initialization">Array
+designators</a> is a C99 feature that enables an explicit syntax when
+initializing an array. Elements may be specified sparsely or out of
+order:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// a = {10, 0, 20, 30}</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="dv">10</span><span class="op">,</span> <span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="dv">30</span><span class="op">,</span> <span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> <span class="dv">20</span><span class="op">};</span></span></code></pre></div>
+<p>The <code>keymaps</code> array is conventionally initialized using
+this syntax, like</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>or equivalently but more readably, naming the layers <a
+href="https://en.cppreference.com/w/c/language/enum">with enum
+constants</a> like</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> layers <span class="op">{</span> BASE<span class="op">,</span> LOWER<span class="op">,</span> RAISE <span class="op">};</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>BASE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>LOWER<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>RAISE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>This pattern of array designators with <code>enum</code> constants
+also appears in using certain features like <a
+href="https://docs.qmk.fm/#/feature_tap_dance?id=simple-example">Tap
+Dance</a>.</p></li>
+<li><p><a
+href="https://en.cppreference.com/w/cpp/language/aggregate_initialization">Designated
+initializers</a> is a C99 feature that allows structs to be created with
+a readable syntax like (example is from the <a
+href="https://docs.qmk.fm/#/feature_key_overrides?id=modifiers-as-layer-keys">Key
+Overrides documentation</a>):</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> key_override_t fn_override <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>trigger_mods      <span class="op">=</span> MOD_BIT<span class="op">(</span>KC_RGUI<span class="op">)</span> <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RCTL<span class="op">),</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>layers            <span class="op">=</span> <span class="op">~(</span><span class="dv">1</span> <span class="op">&lt;&lt;</span> LAYER_FN<span class="op">),</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>suppressed_mods   <span class="op">=</span> MOD_BIT<span class="op">(</span>KC_RGUI<span class="op">)</span> <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RCTL<span class="op">),</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>options           <span class="op">=</span> ko_option_no_unregister_on_other_key_down<span class="op">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>negative_mod_mask <span class="op">=</span> <span class="op">(</span><span class="dt">uint8_t</span><span class="op">)</span> <span class="op">~(</span>MOD_BIT<span class="op">(</span>KC_RGUI<span class="op">)</span> <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RCTL<span class="op">)),</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>custom_action     <span class="op">=</span> momentary_layer<span class="op">,</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>context           <span class="op">=</span> <span class="op">(</span><span class="dt">void</span> <span class="op">*)</span>LAYER_FN<span class="op">,</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>trigger           <span class="op">=</span> KC_NO<span class="op">,</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>replacement       <span class="op">=</span> KC_NO<span class="op">,</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>enabled           <span class="op">=</span> NULL<span class="op">,</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div></li>
+<li><p><a
+href="https://gcc.gnu.org/onlinedocs/gcc/Case-Ranges.html#Case-Ranges">Case
+ranges</a> is a GNU extension to write a range of consecutive values as
+a single <code>case</code> in a <code>switch</code> statement:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span>  <span class="co">// Keycodes KC_A through KC_Z.</span></span></code></pre></div></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Weak_symbol">Weak
+symbols</a> is a GNU extension where a function definition annotated
+with <code>__attribute__((weak))</code> can can be overridden by another
+definition at linking time. This is useful to allow the user to
+customize some aspect of a library through redefining a function. The
+default definition of the function is annotated as weak (example is from
+the <a
+href="https://github.com/qmk/qmk_firmware/blob/e99d6d582cd1ebdda35b2fda1cc170d6d24ad58b/quantum/action_tapping.c#L40-L42">tap-hold
+key implementation</a>):</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">// quantum/action_tapping.c</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>__attribute__<span class="op">((</span>weak<span class="op">))</span> <span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                                  keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The user can override it by making a “strong” redefinition of the
+function:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">// keymap.c</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_A<span class="op">):</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
+<li><p><a
+href="https://en.cppreference.com/w/c/preprocessor/impl">#pragma
+once</a> is a nonstandard yet widely supported preprocessor directive
+typically used as the first line of a .h header file. It indicates that
+the header should be processed once, even if #included multiple times in
+the same source file. It is arguably more readable than <a
+href="https://en.wikipedia.org/wiki/Include_guard">include
+guards</a>.</p></li>
 </ul>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>

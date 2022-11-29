@@ -4,13 +4,14 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2022-11-28)" />
   <title>Autocorrection with QMK</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -45,7 +46,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -58,7 +59,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -87,26 +88,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Autocorrection with QMK</h1>
-<h2 class="author">Pascal Getreuer</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2022-11-28)</h2>
 </div>
 <div id="TOC">
 <ul>
 <li><a href="#overview">Overview</a></li>
-<li><a href="#add-autocorrection-to-your-keymap">Add autocorrection to your keymap</a>
+<li><a href="#add-autocorrection-to-your-keymap">Add autocorrection to
+your keymap</a>
 <ul>
-<li><a href="#taking-autocorrection-for-a-test-drive">Taking autocorrection for a test drive</a></li>
-<li><a href="#firmware-size-and-cpu-costs">Firmware size and CPU costs</a></li>
+<li><a href="#taking-autocorrection-for-a-test-drive">Taking
+autocorrection for a test drive</a></li>
+<li><a href="#firmware-size-and-cpu-costs">Firmware size and CPU
+costs</a></li>
 </ul></li>
 <li><a href="#how-does-it-work">How does it work?</a></li>
-<li><a href="#changing-the-autocorrection-dictionary">Changing the autocorrection dictionary</a></li>
+<li><a href="#changing-the-autocorrection-dictionary">Changing the
+autocorrection dictionary</a></li>
 <li><a href="#troubleshooting">Troubleshooting</a>
 <ul>
 <li><a href="#avoiding-false-triggers">Avoiding false triggers</a></li>
-<li><a href="#overriding-autocorrection">Overriding autocorrection</a></li>
+<li><a href="#overriding-autocorrection">Overriding
+autocorrection</a></li>
 </ul></li>
 <li><a href="#acknowledgements">Acknowledgements</a></li>
 <li><a href="#closing-thoughts">Closing thoughts</a></li>
-<li><a href="#appendix-trie-binary-data-format">Appendix: Trie binary data format</a>
+<li><a href="#appendix-trie-binary-data-format">Appendix: Trie binary
+data format</a>
 <ul>
 <li><a href="#encoding">Encoding</a></li>
 <li><a href="#decoding">Decoding</a></li>
@@ -122,46 +129,100 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 }
 </style>
 <p><a href="../index.html">← More about keyboards</a></p>
+<div
+style="border-radius:4px; border:solid 2.5px #e6b153; padding:0 1em 0 1em">
+<p>🚀  <strong>Autocorrect is now a core QMK feature!</strong>  🚀</p>
+<p>Autocorrect was merged into QMK master on 2022-11-26. To use it, <a
+href="https://docs.qmk.fm/#/newbs_git_using_your_master_branch?id=updating-your-master-branch">update
+your QMK set up</a> and see the <a
+href="https://docs.qmk.fm/#/feature_autocorrect">QMK Autocorrect
+documentation</a>. Or if you want, you may continue to use the userspace
+implementation described in this page.</p>
+</div>
 <h2 id="overview">Overview</h2>
-<p>Some words are more prone to typos than others. I have a habit of typo-ing <tt><span class="typo">ouput</span></tt> and <tt><span class="typo">fitler</span></tt>. This post describes a rudimentary autocorrection implementation that runs on your keyboard with QMK.</p>
-<p>The animation below shows the effect as I type <tt><span class="typo">aparent</span></tt>. As I press the final <code>t</code>, the autocorrection feature detects the typo and automatically sends keys to correct it:</p>
+<p>Some words are more prone to typos than others. I have a habit of
+typo-ing <tt><span class="typo">ouput</span></tt> and <tt><span
+class="typo">fitler</span></tt>. This post describes a rudimentary
+autocorrection implementation that runs on your keyboard with QMK.</p>
+<p>The animation below shows the effect as I type <tt><span
+class="typo">aparent</span></tt>. As I press the final <code>t</code>,
+the autocorrection feature detects the typo and automatically sends keys
+to correct it:</p>
 <figure>
-<img src="apparent.gif" alt="" /><figcaption>Example: Autocorrecting <tt><span class="typo">aparent</span></tt> → <code>apparent</code>.</figcaption>
+<img src="apparent.gif"
+alt="Example: Autocorrecting aparent → apparent." />
+<figcaption aria-hidden="true">Example: Autocorrecting <tt><span
+class="typo">aparent</span></tt> → <code>apparent</code>.</figcaption>
 </figure>
 <p><strong>Features:</strong></p>
 <ul>
-<li><p>It runs on your keyboard, so it is always active no matter what software.</p></li>
-<li><p>Low resource cost: for an autocorrection dictionary of 71 entries, firmware size cost is 1672 bytes and average CPU cost per key press is about 20 µs.</p></li>
-<li><p>It is case insensitive. It corrects <tt><span class="typo">Fitler</span></tt> to <code>Filter</code> and <tt><span class="typo">FITLER</span></tt> to <code>FILTER</code>.</p></li>
-<li><p>It works within words. It corrects <tt><span class="typo">fitler</span>ed</tt>, <tt><span class="typo">fitler</span>ing</tt>, and useful for programming, within longer identifiers like <tt>DesignButterworth<span class="typo">Fitler</span></tt>.</p></li>
+<li><p>It runs on your keyboard, so it is always active no matter what
+software.</p></li>
+<li><p>Low resource cost: for an autocorrection dictionary of 71
+entries, firmware size cost is 1672 bytes and average CPU cost per key
+press is about 20 µs.</p></li>
+<li><p>It is case insensitive. It corrects <tt><span
+class="typo">Fitler</span></tt> to <code>Filter</code> and <tt><span
+class="typo">FITLER</span></tt> to <code>FILTER</code>.</p></li>
+<li><p>It works within words. It corrects <tt><span
+class="typo">fitler</span>ed</tt>, <tt><span
+class="typo">fitler</span>ing</tt>, and useful for programming, within
+longer identifiers like <tt>DesignButterworth<span
+class="typo">Fitler</span></tt>.</p></li>
 </ul>
-<p><strong>Limitations:</strong> Running autocorrection on the keyboard comes with some constraints. It is rudimentary like I said:</p>
+<p><strong>Limitations:</strong> Running autocorrection on the keyboard
+comes with some constraints. It is rudimentary like I said:</p>
 <ul>
-<li><p>It is limited to alphabet characters <code>a</code>–<code>z</code>, apostrophes <code>'</code>, and “word breaks.” No accented or Unicode letters; I’m sorry this probably isn’t useful for languages besides English.</p></li>
-<li><p>It does not follow mouse or hotkey driven cursor movement.</p></li>
+<li><p>It is limited to alphabet characters
+<code>a</code>–<code>z</code>, apostrophes <code>'</code>, and “word
+breaks.” No accented or Unicode letters; I’m sorry this probably isn’t
+useful for languages besides English.</p></li>
+<li><p>It does not follow mouse or hotkey driven cursor
+movement.</p></li>
 </ul>
-<h2 id="add-autocorrection-to-your-keymap">Add autocorrection to your keymap</h2>
+<h2 id="add-autocorrection-to-your-keymap">Add autocorrection to your
+keymap</h2>
 <p>There are a few steps to the implementation. Please bear with me.</p>
-<p><strong>Step 1:</strong> In the directory containing your <code>keymap.c</code>, create a <code>features</code> subdirectory and copy the following files there:</p>
+<p><strong>Step 1:</strong> In the directory containing your
+<code>keymap.c</code>, create a <code>features</code> subdirectory and
+copy the following files there:</p>
 <ul>
-<li><a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection.c">autocorrection.c</a>: the autocorrection engine.</li>
-<li><a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection.h">autocorrection.h</a>: corresponding header file.</li>
-<li><a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_data.h">autocorrection_data.h</a>: file encoding the typos to be corrected. This is a practical example, but it can be changed; see below for details.</li>
+<li><a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection.c">autocorrection.c</a>:
+the autocorrection engine.</li>
+<li><a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection.h">autocorrection.h</a>:
+corresponding header file.</li>
+<li><a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_data.h">autocorrection_data.h</a>:
+file encoding the typos to be corrected. This is a practical example,
+but it can be changed; see below for details.</li>
 </ul>
-<p><strong>Step 2:</strong> In your <code>keymap.c</code> file, call autocorrection from your <code>process_record_user()</code> function as</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;features/autocorrection.h&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="dt">bool</span> process_record_user(<span class="dt">uint16_t</span> keycode, keyrecord_t* record) {</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  <span class="cf">if</span> (!process_autocorrection(keycode, record)) { <span class="cf">return</span> false; }</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>  <span class="co">// Your macros...</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  <span class="cf">return</span> true;</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>}</span></code></pre></div>
+<p><strong>Step 2:</strong> In your <code>keymap.c</code> file, call
+autocorrection from your <code>process_record_user()</code> function
+as</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/autocorrection.h&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_autocorrection<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros...</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p><strong>Step 3:</strong> In your <code>rules.mk</code>, add</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/autocorrection.c</span></span></code></pre></div>
-<h3 id="taking-autocorrection-for-a-test-drive">Taking autocorrection for a test drive</h3>
-<p>With the above flashed to your keyboard, try for instance typing the misspelled word <tt><span class="typo">ouput</span></tt>. The instant you type the final <code>t</code>, the word should be speedily autocorrected to <code>output</code>. As further tests, try <tt><span class="typo">becuase</span></tt> and <tt><span class="typo">invliad</span></tt>.</p>
-<p>Here is the full list of typos corrected using the provided <code>autocorrection_data.h</code> file. <code>:</code> is a special character denoting a word break. See below for how to change the autocorrection dictionary.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/autocorrection.c</span></span></code></pre></div>
+<h3 id="taking-autocorrection-for-a-test-drive">Taking autocorrection
+for a test drive</h3>
+<p>With the above flashed to your keyboard, try for instance typing the
+misspelled word <tt><span class="typo">ouput</span></tt>. The instant
+you type the final <code>t</code>, the word should be speedily
+autocorrected to <code>output</code>. As further tests, try <tt><span
+class="typo">becuase</span></tt> and <tt><span
+class="typo">invliad</span></tt>.</p>
+<p>Here is the full list of typos corrected using the provided
+<code>autocorrection_data.h</code> file. <code>:</code> is a special
+character denoting a word break. See below for how to change the
+autocorrection dictionary.</p>
 <textarea name="autocorrection dictionary" rows="25" cols="75" readonly>
 :guage        -> gauge
 :the:the:     -> the
@@ -236,35 +297,87 @@ udpate        -> update
 widht         -> width
 </textarea>
 <h3 id="firmware-size-and-cpu-costs">Firmware size and CPU costs</h3>
-<p>I am anxiously aware that a keyboard microcontroller has limited resources. So I was sure to measure how much memory and CPU time autocorrection consumes during development. These measurements are for the example autocorrection dictionary as used above, which has 71 entries:</p>
+<p>I am anxiously aware that a keyboard microcontroller has limited
+resources. So I was sure to measure how much memory and CPU time
+autocorrection consumes during development. These measurements are for
+the example autocorrection dictionary as used above, which has 71
+entries:</p>
 <ul>
-<li><p><strong>Firmware size:</strong> Autocorrection increases my firmware size by a total of <strong>1672 bytes</strong>. Breaking that down, 1120 bytes are for the <code>autocorrection_data</code> array and 552 bytes for the autocorrection code.</p></li>
-<li><p><strong>CPU time:</strong> On my Elite-C microcontrollers, the average CPU time for <code>process_autocorrection</code> to process an alpha key press is around <strong>20 µs</strong>. Consider this a rough order-of-magnitude cost. Processing cost increases (more trie nodes are visited) when recent input is close to a known typo, with the max being when a long typo is matched.</p></li>
+<li><p><strong>Firmware size:</strong> Autocorrection increases my
+firmware size by a total of <strong>1672 bytes</strong>. Breaking that
+down, 1120 bytes are for the <code>autocorrection_data</code> array and
+552 bytes for the autocorrection code.</p></li>
+<li><p><strong>CPU time:</strong> On my Elite-C microcontrollers, the
+average CPU time for <code>process_autocorrection</code> to process an
+alpha key press is around <strong>20 µs</strong>. Consider this a rough
+order-of-magnitude cost. Processing cost increases (more trie nodes are
+visited) when recent input is close to a known typo, with the max being
+when a long typo is matched.</p></li>
 </ul>
-<p>The costs are not free but reasonable. For reference, the firmware size cost for mouse keys is 2124 bytes and the CPU time to process a layer switch is about 70 µs, so autocorrection is cheaper than those things. Of course, the cost scales with the size of the autocorrection dictionary, so keep that in mind if you add a lot more entries.</p>
-<p><em>Side note:</em> <a href="https://thomasbaart.nl/2018/12/01/reducing-firmware-size-in-qmk/">as Thomas Baart describes</a>, link time optimization (LTO) helps a lot to reduce firmware size. In your <code>rules.mk</code>, add: <code>LTO_ENABLE = yes</code></p>
+<p>The costs are not free but reasonable. For reference, the firmware
+size cost for mouse keys is 2124 bytes and the CPU time to process a
+layer switch is about 70 µs, so autocorrection is cheaper than those
+things. Of course, the cost scales with the size of the autocorrection
+dictionary, so keep that in mind if you add a lot more entries.</p>
+<p><em>Side note:</em> <a
+href="https://thomasbaart.nl/2018/12/01/reducing-firmware-size-in-qmk/">as
+Thomas Baart describes</a>, link time optimization (LTO) helps a lot to
+reduce firmware size. In your <code>rules.mk</code>, add:
+<code>LTO_ENABLE = yes</code></p>
 <h2 id="how-does-it-work">How does it work?</h2>
-<p>The function <code>process_autocorrection</code> maintains a small buffer of recent key presses. On each key press, it checks whether the buffer ends in a recognized typo, and if so, automatically sends keystrokes to correct it.</p>
-<p>The tricky part is how to efficiently check the buffer for typos. We don’t want to spend too much memory or time on storing or searching the typos. A good solution is to represent the typos with a <a href="https://en.wikipedia.org/wiki/Trie">trie data structure</a>. A trie is a tree data structure where each node is a letter, and words are formed by following a path to one of the leaves.</p>
+<p>The function <code>process_autocorrection</code> maintains a small
+buffer of recent key presses. On each key press, it checks whether the
+buffer ends in a recognized typo, and if so, automatically sends
+keystrokes to correct it.</p>
+<p>The tricky part is how to efficiently check the buffer for typos. We
+don’t want to spend too much memory or time on storing or searching the
+typos. A good solution is to represent the typos with a <a
+href="https://en.wikipedia.org/wiki/Trie">trie data structure</a>. A
+trie is a tree data structure where each node is a letter, and words are
+formed by following a path to one of the leaves.</p>
 <figure>
-<img src="trie.svg" alt="" /><figcaption>An example trie.</figcaption>
+<img src="trie.svg" alt="An example trie." />
+<figcaption aria-hidden="true">An example trie.</figcaption>
 </figure>
-<p>Since we search whether the buffer <em>ends</em> in a typo, we store the trie writing in reverse. The trie is queried starting from the last letter, then second to last letter, and so on, until either a letter doesn’t match or we reach a leaf, meaning a typo was found.</p>
-<h2 id="changing-the-autocorrection-dictionary">Changing the autocorrection dictionary</h2>
-<p>The file <code>autocorrection_data.h</code> encodes the typos to correct. While you could simply use the version of this file provided above for a practical configuration, you can make your own to personalize the autocorrection to your most troublesome typos:</p>
+<p>Since we search whether the buffer <em>ends</em> in a typo, we store
+the trie writing in reverse. The trie is queried starting from the last
+letter, then second to last letter, and so on, until either a letter
+doesn’t match or we reach a leaf, meaning a typo was found.</p>
+<h2 id="changing-the-autocorrection-dictionary">Changing the
+autocorrection dictionary</h2>
+<p>The file <code>autocorrection_data.h</code> encodes the typos to
+correct. While you could simply use the version of this file provided
+above for a practical configuration, you can make your own to
+personalize the autocorrection to your most troublesome typos:</p>
 <ol type="1">
-<li><p>First, create an autocorrection dictionary <code>autocorrection_dict.txt</code>, like</p>
+<li><p>First, create an autocorrection dictionary
+<code>autocorrection_dict.txt</code>, like</p>
 <pre><code>:thier        -&gt; their
 dosen&#39;t       -&gt; doesn&#39;t
 fitler        -&gt; filter
 ouput         -&gt; output
 widht         -&gt; width</code></pre>
-<p>For a practical 71-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict.txt">autocorrection_dict.txt</a>. And for a yet larger 400-entry example, see <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict_extra.txt">autocorrection_dict_extra.txt</a>.</p>
-<p>The syntax is <code>typo -&gt; correction</code>. Typos and corrections are case insensitive, and any whitespace before or after the typo and correction is ignored. The typo must be only the characters <code>a</code>–<code>z</code>, <code>'</code>, or the special character <code>:</code> representing a word break. The correction may have just about any printable ASCII characters.</p></li>
-<li><p>Use the <a href="https://github.com/getreuer/qmk-keymap/blob/main/features/make_autocorrection_data.py">make_autocorrection_data.py</a> Python script to process the dictionary. Put <code>autocorrection_dict.txt</code> in the same directory as the Python script and run</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>$ <span class="ex">python3</span> make_autocorrection_data.py</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">Processed</span> 71 autocorrection entries to table with 1120 bytes.</span></code></pre></div>
-<p>The script arranges the entries in <code>autocorrection_dict.txt</code> into a trie and generates <code>autocorrection_data.h</code> with the serialized trie embedded as an array. The .h file will be written in the same directory.</p></li>
+<p>For a practical 71-entry example, see <a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict.txt">autocorrection_dict.txt</a>.
+And for a yet larger 400-entry example, see <a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict_extra.txt">autocorrection_dict_extra.txt</a>.</p>
+<p>The syntax is <code>typo -&gt; correction</code>. Typos and
+corrections are case insensitive, and any whitespace before or after the
+typo and correction is ignored. The typo must be only the characters
+<code>a</code>–<code>z</code>, <code>'</code>, or the special character
+<code>:</code> representing a word break. The correction may have just
+about any printable ASCII characters.</p></li>
+<li><p>Use the <a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/make_autocorrection_data.py">make_autocorrection_data.py</a>
+Python script to process the dictionary. Put
+<code>autocorrection_dict.txt</code> in the same directory as the Python
+script and run</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python3 make_autocorrection_data.py</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Processed</span> 71 autocorrection entries to table with 1120 bytes.</span></code></pre></div>
+<p>The script arranges the entries in
+<code>autocorrection_dict.txt</code> into a trie and generates
+<code>autocorrection_data.h</code> with the serialized trie embedded as
+an array. The .h file will be written in the same directory.</p></li>
 <li><p>Finally, recompile and flash your keymap.</p></li>
 </ol>
 <p>The generated C header looks like this:</p>
@@ -341,8 +454,18 @@ static const uint8_t autocorrection_data[1120] PROGMEM = {108, 43, 0, 6,
 </textarea>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="avoiding-false-triggers">Avoiding false triggers</h3>
-<p>By default, typos are searched <em>within</em> words, to find typos within longer identifiers like <tt>max<span class="typo">FitlerOuput</span></tt>. While this is useful, a consequence is that autocorrection will falsely trigger when a typo happens to be a substring of a correctly-spelled word. For instance, if we had <code>thier -&gt; their</code> as an entry, it would falsely trigger on (correct, though relatively uncommon) words like “wealthier” and “filthier.”</p>
-<p>The solution is to set a word break <code>:</code> before and/or after the typo to constrain matching. <code>:</code> matches space, period, comma, underscore, digits, and most other non-alpha characters.</p>
+<p>By default, typos are searched <em>within</em> words, to find typos
+within longer identifiers like <tt>max<span
+class="typo">FitlerOuput</span></tt>. While this is useful, a
+consequence is that autocorrection will falsely trigger when a typo
+happens to be a substring of a correctly-spelled word. For instance, if
+we had <code>thier -&gt; their</code> as an entry, it would falsely
+trigger on (correct, though relatively uncommon) words like “wealthier”
+and “filthier.”</p>
+<p>The solution is to set a word break <code>:</code> before and/or
+after the typo to constrain matching. <code>:</code> matches space,
+period, comma, underscore, digits, and most other non-alpha
+characters.</p>
 <div class="eqscroll">
 <table>
 <tr>
@@ -415,67 +538,167 @@ no
 </tr>
 </table>
 </div>
-<p><code>:thier:</code> is most restrictive, matching only when <code>thier</code> is a whole word.</p>
-<p>The <code>make_autocorrection_data.py</code> script makes an effort to check for entries that would false trigger as substrings of correct words. It searches each typo against a dictionary of 25K English words from the <a href="https://pypi.org/project/english-words">english_words Python package</a>, provided it’s installed.</p>
+<p><code>:thier:</code> is most restrictive, matching only when
+<code>thier</code> is a whole word.</p>
+<p>The <code>make_autocorrection_data.py</code> script makes an effort
+to check for entries that would false trigger as substrings of correct
+words. It searches each typo against a dictionary of 25K English words
+from the <a href="https://pypi.org/project/english-words">english_words
+Python package</a>, provided it’s installed.</p>
 <h3 id="overriding-autocorrection">Overriding autocorrection</h3>
-<p>Occasionally you might actually want to type a typo (for instance, while editing <code>autocorrection_dict.txt</code>) without being autocorrected. Here is a way to do that:</p>
+<p>Occasionally you might actually want to type a typo (for instance,
+while editing <code>autocorrection_dict.txt</code>) without being
+autocorrected. Here is a way to do that:</p>
 <ol type="1">
 <li>Begin typing the typo.</li>
-<li>Before typing the last letter, press and release the Ctrl or Alt key.</li>
+<li>Before typing the last letter, press and release the Ctrl or Alt
+key.</li>
 <li>Type the remaining letters.</li>
 </ol>
-<p>This works because the autocorrection implementation doesn’t understand hotkeys, so it resets itself whenever a modifier other than shift is held.</p>
+<p>This works because the autocorrection implementation doesn’t
+understand hotkeys, so it resets itself whenever a modifier other than
+shift is held.</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
-<p>Huge thanks to <span class="citation" data-cites="drashna">@drashna</span> and <span class="citation" data-cites="filterpaper">@filterpaper</span> on GitHub for feedback, ideas, and improvements to make autocorrection better, and to <span class="citation" data-cites="drashna">@drashna</span> for leading the effort to add autocorrection as a core QMK feature.</p>
+<p>Huge thanks to <span class="citation"
+data-cites="drashna">@drashna</span> and <span class="citation"
+data-cites="filterpaper">@filterpaper</span> on GitHub for feedback,
+ideas, and improvements to make autocorrection better, and to <span
+class="citation" data-cites="drashna">@drashna</span> for leading the
+effort to add autocorrection as a core QMK feature.</p>
 <h2 id="closing-thoughts">Closing thoughts</h2>
-<p>Based on my own use, an autocorrection dictionary of a few dozen entries is enough to help in day-to-day writing. On the other hand, it is of course far from comprehensively checking that every word is spelled correctly. Keyboard microcontrollers might not have the resources check against a full English dictionary any time soon, but a lot of editors and other software have good integrated spell check features.</p>
-<p>I suggest to enable and use spell check in combination with autocorrection:</p>
+<p>Based on my own use, an autocorrection dictionary of a few dozen
+entries is enough to help in day-to-day writing. On the other hand, it
+is of course far from comprehensively checking that every word is
+spelled correctly. Keyboard microcontrollers might not have the
+resources check against a full English dictionary any time soon, but a
+lot of editors and other software have good integrated spell check
+features.</p>
+<p>I suggest to enable and use spell check in combination with
+autocorrection:</p>
 <ul>
-<li><p><strong>Sublime:</strong> Open the View menu and enable “Spell Check.”</p></li>
-<li><p><strong>Eclipse:</strong> Open the Window menu, click Preferences, and search for “Spelling.”</p></li>
-<li><p><strong>Vim:</strong> Type <code>:set spell</code>, and misspellings will be highlighted. Use <code>]s</code> to jump to the next misspelled word and <code>z=</code> to get suggested corrections for the word under the cursor. See the <a href="http://vimdoc.sourceforge.net/htmldoc/spell.html"><tt>:help spell</tt> documentation</a>. Vim also has an abbreviations feature that can autocorrect misspellings (see <a href="http://vimdoc.sourceforge.net/htmldoc/map.html#abbreviations"><tt>:help abbreviations</tt></a>).</p></li>
-<li><p><strong>Emacs:</strong> Use <code>M-x flyspell-mode</code> to enable Flyspell mode in the current buffer. Or for programming, use <code>M-x flyspell-prog-mode</code> to check comments and strings only. See the <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html">spelling documentation</a>. There is also an <a href="https://www.emacswiki.org/emacs/AutoCorrection">abbreviations feature that can do autocorrection</a>.</p></li>
+<li><p><strong>Sublime:</strong> Open the View menu and enable “Spell
+Check.”</p></li>
+<li><p><strong>Eclipse:</strong> Open the Window menu, click
+Preferences, and search for “Spelling.”</p></li>
+<li><p><strong>Vim:</strong> Type <code>:set spell</code>, and
+misspellings will be highlighted. Use <code>]s</code> to jump to the
+next misspelled word and <code>z=</code> to get suggested corrections
+for the word under the cursor. See the <a
+href="http://vimdoc.sourceforge.net/htmldoc/spell.html"><tt>:help
+spell</tt> documentation</a>. Vim also has an abbreviations feature that
+can autocorrect misspellings (see <a
+href="http://vimdoc.sourceforge.net/htmldoc/map.html#abbreviations"><tt>:help
+abbreviations</tt></a>).</p></li>
+<li><p><strong>Emacs:</strong> Use <code>M-x flyspell-mode</code> to
+enable Flyspell mode in the current buffer. Or for programming, use
+<code>M-x flyspell-prog-mode</code> to check comments and strings only.
+See the <a
+href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Spelling.html">spelling
+documentation</a>. There is also an <a
+href="https://www.emacswiki.org/emacs/AutoCorrection">abbreviations
+feature that can do autocorrection</a>.</p></li>
 </ul>
 <p>Some useful resources:</p>
 <ul>
-<li><p>Wikipedia has <a href="https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines">a large list of common typos</a>.</p></li>
-<li><p>EmacsWiki has another <a href="https://www.emacswiki.org/emacs/autocorrection_abbrev_defs">list of typos</a>.</p></li>
-<li><p>You can find data on English word frequencies at <a href="https://www.wordfrequency.info/samples.asp">www.wordfrequency.info</a>.</p></li>
+<li><p>Wikipedia has <a
+href="https://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings/For_machines">a
+large list of common typos</a>.</p></li>
+<li><p>EmacsWiki has another <a
+href="https://www.emacswiki.org/emacs/autocorrection_abbrev_defs">list
+of typos</a>.</p></li>
+<li><p>You can find data on English word frequencies at <a
+href="https://www.wordfrequency.info/samples.asp">www.wordfrequency.info</a>.</p></li>
 </ul>
-<h2 id="appendix-trie-binary-data-format">Appendix: Trie binary data format</h2>
-<p>This section details how the trie is serialized to byte data in <code>autocorrection_data</code>. You don’t need to care about this to use this autocorrection implementation. But I document it for the record in case anyone is interested in modifying the implementation, or just curious how it works.</p>
-<p>What I did here is fairly arbitrary, but it is simple to decode and gets the job done.</p>
+<h2 id="appendix-trie-binary-data-format">Appendix: Trie binary data
+format</h2>
+<p>This section details how the trie is serialized to byte data in
+<code>autocorrection_data</code>. You don’t need to care about this to
+use this autocorrection implementation. But I document it for the record
+in case anyone is interested in modifying the implementation, or just
+curious how it works.</p>
+<p>What I did here is fairly arbitrary, but it is simple to decode and
+gets the job done.</p>
 <h3 id="encoding">Encoding</h3>
-<p>All autocorrection data is stored in a single flat array <code>autocorrection_data</code>. Each trie node is associated with a byte offset into this array, where data for that node is encoded, beginning with root at offset 0. There are three kinds of nodes. The highest two bits of the first byte of the node indicate what kind:</p>
+<p>All autocorrection data is stored in a single flat array
+<code>autocorrection_data</code>. Each trie node is associated with a
+byte offset into this array, where data for that node is encoded,
+beginning with root at offset 0. There are three kinds of nodes. The
+highest two bits of the first byte of the node indicate what kind:</p>
 <ul>
 <li><code>00</code> ⇒ chain node: a trie node with a single child.</li>
-<li><code>01</code> ⇒ branching node: a trie node with multiple children.</li>
-<li><code>10</code> ⇒ leaf node: a leaf, corresponding to a typo and storing its correction.</li>
+<li><code>01</code> ⇒ branching node: a trie node with multiple
+children.</li>
+<li><code>10</code> ⇒ leaf node: a leaf, corresponding to a typo and
+storing its correction.</li>
 </ul>
 <figure>
-<img src="trie.svg" alt="" /><figcaption>An example trie.</figcaption>
+<img src="trie.svg" alt="An example trie." />
+<figcaption aria-hidden="true">An example trie.</figcaption>
 </figure>
-<p><strong>Branching node.</strong> Each branch is encoded with one byte for the keycode (<code>KC_A</code>–<code>KC_Z</code>) followed by a link to the child node. Links between nodes are 16-bit byte offsets relative to the beginning of the array, serialized in little endian order.</p>
-<p>All branches are serialized this way, one after another, and terminated with a zero byte. As described above, the node is identified as a branch by setting the two high bits of the first byte to <code>01</code>, done by bitwise ORing the first keycode with 64. keycode. The root node for the above figure would be serialized like:</p>
+<p><strong>Branching node.</strong> Each branch is encoded with one byte
+for the keycode (<code>KC_A</code>–<code>KC_Z</code>) followed by a link
+to the child node. Links between nodes are 16-bit byte offsets relative
+to the beginning of the array, serialized in little endian order.</p>
+<p>All branches are serialized this way, one after another, and
+terminated with a zero byte. As described above, the node is identified
+as a branch by setting the two high bits of the first byte to
+<code>01</code>, done by bitwise ORing the first keycode with 64.
+keycode. The root node for the above figure would be serialized
+like:</p>
 <pre><code>+-------+-------+-------+-------+-------+-------+-------+
 | R|64  |    node 2     |   T   |    node 3     |   0   |
 +-------+-------+-------+-------+-------+-------+-------+</code></pre>
-<p><strong>Chain node.</strong> Tries tend to have long chains of single-child nodes, as seen in the example above with <code>f-i-t-l</code> in <tt><span class="typo">fitler</span></tt>. So to save space, we use a different format to encode chains than branching nodes. A chain is encoded as a string of keycodes, beginning with the node closest to the root, and terminated with a zero byte. The child of the last node in the chain is encoded immediately after. That child could be either a branching node or a leaf.</p>
+<p><strong>Chain node.</strong> Tries tend to have long chains of
+single-child nodes, as seen in the example above with
+<code>f-i-t-l</code> in <tt><span class="typo">fitler</span></tt>. So to
+save space, we use a different format to encode chains than branching
+nodes. A chain is encoded as a string of keycodes, beginning with the
+node closest to the root, and terminated with a zero byte. The child of
+the last node in the chain is encoded immediately after. That child
+could be either a branching node or a leaf.</p>
 <p>In the figure above, the <code>f-i-t-l</code> chain is encoded as</p>
 <pre><code>+-------+-------+-------+-------+-------+
 |   L   |   T   |   I   |   F   |   0   |
 +-------+-------+-------+-------+-------+</code></pre>
-<p>If we were to encode this chain using the same format used for branching nodes, we would encode a 16-bit node link with every node, costing 8 more bytes in this example. Across the whole trie, this adds up. Conveniently, we can point to intermediate points in the chain and interpret the bytes in the same way as before. E.g. starting at the <code>i</code> instead of the <code>l</code>, and the subchain has the same format.</p>
-<p><strong>Leaf node.</strong> A leaf node corresponds to a particular typo and stores data to correct the typo. The leaf begins with a byte for the number of backspaces to type, and is followed by a null-terminated ASCII string of the replacement text. The idea is, after tapping backspace the indicated number of times, we can simply pass this string to QMK’s <code>send_string_P</code> function. For <tt><span class="typo">fitler</span></tt>, we need to tap backspace 3 times (not 4, because we catch the typo as the final ‘r’ is pressed) and replace it with <code>lter</code>. To identify the node as a leaf, the two high bits are set to <code>10</code> by ORing the backspace count with 128:</p>
+<p>If we were to encode this chain using the same format used for
+branching nodes, we would encode a 16-bit node link with every node,
+costing 8 more bytes in this example. Across the whole trie, this adds
+up. Conveniently, we can point to intermediate points in the chain and
+interpret the bytes in the same way as before. E.g. starting at the
+<code>i</code> instead of the <code>l</code>, and the subchain has the
+same format.</p>
+<p><strong>Leaf node.</strong> A leaf node corresponds to a particular
+typo and stores data to correct the typo. The leaf begins with a byte
+for the number of backspaces to type, and is followed by a
+null-terminated ASCII string of the replacement text. The idea is, after
+tapping backspace the indicated number of times, we can simply pass this
+string to QMK’s <code>send_string_P</code> function. For <tt><span
+class="typo">fitler</span></tt>, we need to tap backspace 3 times (not
+4, because we catch the typo as the final ‘r’ is pressed) and replace it
+with <code>lter</code>. To identify the node as a leaf, the two high
+bits are set to <code>10</code> by ORing the backspace count with
+128:</p>
 <pre><code>+-------+-------+-------+-------+-------+-------+
 | 3|128 |  &#39;l&#39;  |  &#39;t&#39;  |  &#39;e&#39;  |  &#39;r&#39;  |   0   |
 +-------+-------+-------+-------+-------+-------+</code></pre>
 <h3 id="decoding">Decoding</h3>
-<p>This format is by design decodable with fairly simple logic. A 16-bit variable <code>state</code> represents our current position in the trie, initialized with 0 to start at the root node. Then, for each keycode, test the highest two bits in the byte at <code>state</code> to identify the kind of node.</p>
+<p>This format is by design decodable with fairly simple logic. A 16-bit
+variable <code>state</code> represents our current position in the trie,
+initialized with 0 to start at the root node. Then, for each keycode,
+test the highest two bits in the byte at <code>state</code> to identify
+the kind of node.</p>
 <ul>
-<li><p><code>00</code> ⇒ <strong>chain node:</strong> If the node’s byte matches the keycode, increment <code>state</code> by one to go to the next byte. If the next byte is zero, increment again to go to the following node.</p></li>
-<li><p><code>01</code> ⇒ <strong>branching node:</strong> Search the branches for one that matches the keycode, and follow its node link.</p></li>
-<li><p><code>10</code> ⇒ <strong>leaf node:</strong> a typo has been found! We read its first byte for the number of backspaces to type, then pass its following bytes to <code>send_string_P</code> to type the correction.</p></li>
+<li><p><code>00</code> ⇒ <strong>chain node:</strong> If the node’s byte
+matches the keycode, increment <code>state</code> by one to go to the
+next byte. If the next byte is zero, increment again to go to the
+following node.</p></li>
+<li><p><code>01</code> ⇒ <strong>branching node:</strong> Search the
+branches for one that matches the keycode, and follow its node
+link.</p></li>
+<li><p><code>10</code> ⇒ <strong>leaf node:</strong> a typo has been
+found! We read its first byte for the number of backspaces to type, then
+pass its following bytes to <code>send_string_P</code> to type the
+correction.</p></li>
 </ul>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
