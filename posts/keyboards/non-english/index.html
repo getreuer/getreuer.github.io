@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-09-13" />
+  <meta name="author" content="Pascal Getreuer, 2022-09-13 (updated 2022-11-30)" />
   <title>QMK: Typing non-English letters</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Typing non-English letters</h1>
-<h2 class="author">Pascal Getreuer, 2022-09-13</h2>
+<h2 class="author">Pascal Getreuer, 2022-09-13 (updated 2022-11-30)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -300,17 +300,17 @@ symbols.</p>
 <p><strong>Step 1.</strong> In rules.mk, add</p>
 <pre><code>UNICODEMAP_ENABLE = yes</code></pre>
 <p><strong>Step 2.</strong> In config.h, define which input method QMK
-should use. For Mac, use <code>UC_MAC</code> and enable Unicode Hex
-Input under System Preferences → Keyboard → Input Sources. For Linux,
-use <code>UC_LNX</code>. For Windows, use <code>UC_WINC</code> and
-install <a
+should use. For Mac, use <code>UNICODE_MODE_MACOS</code> and enable
+Unicode Hex Input under System Preferences → Keyboard → Input Sources.
+For Linux, use <code>UNICODE_MODE_LINUX</code>. For Windows, use
+<code>UNICODE_MODE_WINCOMPOSE</code> and install <a
 href="https://github.com/samhocevar/wincompose">WinCompose</a>. It is
 also possible to list multiple methods here, useful if you use your
 keyboard with more than one OS. See the <a
 href="https://docs.qmk.fm/#/feature_unicode?id=input-modes">Unicode
 input method</a> documentation for further details.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Set Unicode input method for Linux.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define UNICODE_SELECTED_MODES UC_LNX</span></span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define UNICODE_SELECTED_MODES UNICODE_MODE_LINUX</span></span></code></pre></div>
 <p><strong>Step 3.</strong> In keymap.c, define the
 <code>unicode_map</code> array, which lists the Unicode codepoint for
 each symbol you want to use. For shift-able symbols, define both the
