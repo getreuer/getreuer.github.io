@@ -587,6 +587,38 @@ the hold function</a> and <a
 href="https://github.com/rafaelromao/keyboards">rafaelromao’s
 keymap</a>.</p></li>
 </ul>
+<p><strong>Alternatives:</strong> If home row mods are not for you, here
+are several alternative approaches to modifiers that you might
+consider.</p>
+<ul>
+<li><p>Bottom row mods: move the mod-taps down to <code>Z X C V</code>
+and <code>M , . /</code> QWERTY positions on the row below home row. The
+bottom row keys tend to be used a lot less than the home row, making
+accidental mod triggers less of a problem. Several other variations are
+suggested in <a
+href="https://precondition.github.io/home-row-mods#alternatives">Precondition’s
+guide</a>.</p></li>
+<li><p><a
+href="https://github.com/callum-oakley/qmk_firmware/tree/master/users/callum">Callum
+Oakley’s mods</a> (callum-style mods) are sticky (one-shot) mods on the
+home row of a separate layer. No timers are involved so that mod keys
+can be tapped as fast as you like. A similar idea is in <a
+href="https://stevep99.github.io/seniply/">SteveP’s Seniply keymap</a>,
+with sticky mods on the Extend layer, inspired by the use of mods in <a
+href="https://dreymar.colemak.org/layers-extend.html">DreymaR’s original
+Extend layer</a>.</p></li>
+<li><p><a
+href="https://stevelosh.com/blog/2012/10/a-modern-space-cadet/#s17-shift-parentheses">Space
+Cadet Shift</a> makes the Shift mods dual-role keys, typing
+<code>(</code> and <code>)</code> when tapped quickly. <a
+href="https://docs.qmk.fm/#/feature_space_cadet">QMK’s Space Cadet
+feature</a> elaborates this idea to the Ctrl and Alt keys.</p></li>
+<li><p>With <a href="https://docs.qmk.fm/#/feature_auto_shift">QMK’s
+Auto Shift</a>, long-pressing a key types the shifted version of the
+key. For ZMK, see the Autoshift example in the <a
+href="https://zmk.dev/docs/behaviors/hold-tap#example-use-cases">Hold-Tap
+use-cases</a> for similar behavior.</p></li>
+</ul>
 <h2 id="firmware-is-too-large">Firmware is too large!</h2>
 <p><a href="#firmware-is-too-large">🔗 Link</a></p>
 <p>A build error like “<code>firmware is too large! X bytes over</code>”
