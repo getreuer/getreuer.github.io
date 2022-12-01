@@ -295,6 +295,11 @@ table td {
   vertical-align: top;
 }
 
+table.plain, table.plain th, table.plain td {
+  padding: .1em 8pt;
+  border: 0px
+}
+
 .author {
   font-size: 1.2em;
   text-align: center;

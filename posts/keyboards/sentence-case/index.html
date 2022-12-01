@@ -1,0 +1,664 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer, 2022-11-30" />
+  <title>Sentence Case: automatically capitalize sentences</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
+<script type="text/javascript" src="../../../site.js" ></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">Sentence Case: automatically capitalize sentences</h1>
+<h2 class="author">Pascal Getreuer, 2022-11-30</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#add-it-to-your-keymap">Add it to your keymap</a></li>
+<li><a href="#alternatives">Alternatives</a></li>
+<li><a href="#sentence-detection">Sentence detection</a></li>
+<li><a href="#customization">Customization</a>
+<ul>
+<li><a href="#indicating-primed-state">Indicating primed state</a></li>
+<li><a href="#idle-timeout">Idle timeout</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#defining-exceptions">Defining exceptions</a></li>
+<li><a href="#letters-and-punctuations">Letters and
+punctuations</a></li>
+</ul></li>
+<li><a href="#explanation">Explanation</a></li>
+<li><a href="#closing-thoughts">Closing thoughts</a></li>
+</ul>
+</div>
+<style>
+.state-match {
+  background-color: #20c8f8;
+  color: #000;
+}
+.state-abbrev {
+  background-color: #d0c0c0;
+}
+.state-ending {
+  background-color: #ffe040;
+}
+.state-primed {
+  background-color: #f8f068;
+}
+.legend {display:inline-block; vertical-align:middle; width:1.2em; height:0.9em;
+border:1px solid #666; border-radius:3px}
+</style>
+<p><a href="../index.html">← More about keyboards</a></p>
+<h2 id="overview">Overview</h2>
+<p>The first letter of each sentence is capitalized in typical English
+writing and other languages with a case distinction. This post describes
+a QMK userspace feature that automatically applies Shift to capitalize
+when starting a new sentence. This reduces how often you need to use the
+Shift keys, which is convenient particularly if you use home row mods or
+Auto Shift.</p>
+<p>To use it, you simply type as usual but without shifting at the start
+of sentences. The feature detects when new sentences begin and
+capitalizes automatically.</p>
+<p><strong>Example:</strong> The color highlighting indicates how the
+following input is interpreted.</p>
+<blockquote>
+<p>
+<tt> Include these details when reporting a bug<span
+class="state-ending">.</span><span class="state-primed">  </span><span
+class="state-match">w</span>hat steps produce the problem</span><span
+class="state-ending">?</span><span class="state-primed">  </span><span
+class="state-match">d</span>escribe your configuration <span
+class="state-abbrev">e.g.</span> non-default settings, extensions, <span
+class="state-abbrev">etc.</span> where relevant<span
+class="state-ending">.</span><span class="state-primed">  </span><span
+class="state-match">p</span>lease attach any error logs to this
+form<span class="state-ending">.</span>
+</p>
+</tt>
+</blockquote>
+<p><span class="legend"
+style="background-color:#ffe040;"> </span>  Sentence ending<br> <span
+class="legend" style="background-color:#20c8f8;"> </span>  Sentence
+start<br> <span class="legend"
+style="background-color:#d0c0c0;"> </span>  Abbreviation</p>
+<p>The output produced is:</p>
+<blockquote>
+<p>
+<tt> Include these details when reporting a bug.  What steps produce the
+problem?  Describe your configuration e.g. non-default settings,
+extensions, etc. where relevant.  Please attach any error logs to this
+form.
+</p>
+</tt>
+</blockquote>
+<h2 id="add-it-to-your-keymap">Add it to your keymap</h2>
+<p>If you are new to QMK macros, see my <a
+href="../macros/index.html">macro buttons</a> post for an intro.</p>
+<p><strong>Step 1:</strong> In keymap.c, define or add to your
+<code>process_record_user()</code> function to call
+<code>process_sentence_case()</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/sentence_case.h&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_sentence_case<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros ...</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Step 2:</strong> In your <code>rules.mk</code> file, add</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/sentence_case.c</span></span></code></pre></div>
+<p><strong>Step 3:</strong> In the directory containing your
+<code>keymap.c</code>, create a <code>features</code> subdirectory and
+copy <a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/sentence_case.h">sentence_case.h</a>
+and <a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/sentence_case.c">sentence_case.c</a>
+there.</p>
+<p><strong>Note:</strong> One-shot keys must be enabled to use Sentence
+Case. One-shot keys are enabled by default, but can be disabled by
+<code>#define NO_ACTION_ONESHOT</code> in config.h. If your config.h
+includes such a line, please remove it.</p>
+<p><strong>How to use it:</strong> With the above done and flashed to
+your keyboard, use Sentence Case simply by typing as normal but without
+shifting at the start of sentences. For example, typing</p>
+<p><code>hey. hello.</code></p>
+<p>should produce</p>
+<p><code>hey. Hello.</code></p>
+<p>The feature kicks in after seeing a sentence <em>ending</em>, so the
+<code>h</code> in <code>hey</code> might not be capitalized.</p>
+<p><strong>Overriding Sentence Case:</strong> It is possible that
+Sentence Case false-triggers and capitalizes when it isn’t wanted. This
+happens especially with abbreviations having a single period at the end,
+like “<code>misc.</code>”, which to the simple detection rule looks like
+a sentence ending (while the rule correctly recognizes abbreviations
+like “<code>e.g.</code>” containing intermediate periods as not real
+endings). To override false triggers:</p>
+<ul>
+<li><p>You can intervene manually: if Sentence Case falsely capitalizes
+a letter, you can backspace and re-type the letter.</p></li>
+<li><p>If you regularly use an abbreviation where Sentence Case false
+triggers, define an exception for it in
+<code>sentence_case_check_ending()</code>. See <a
+href="#defining-exceptions">Defining exceptions</a>.</p></li>
+<li><p>If Sentence Case isn’t wanted in some circumstances, maybe while
+gaming or writing code, you can disable it temporarily with
+<code>sentence_case_off()</code> and later turn it back on with
+<code>sentence_case_on()</code>. See the <a
+href="#functions">Functions</a> below.</p></li>
+</ul>
+<h2 id="alternatives">Alternatives</h2>
+<p>Instead of Sentence Case, an alternative method to capitalize the
+start of sentences is the <a
+href="../macros/index.html#next-sentence-macro">next sentence macro</a>,
+which types a period, space, then sets a one-shot mod so that the next
+key typed is shifted. This could be initiated with macro button, or as
+in <a
+href="https://github.com/precondition/dactyl-manuform-keymap">precondition’s
+keymap</a> through a tap dance. Compared to Sentence Case, the main
+difference is the macro is explicitly activated at the end of the
+sentence instead of detecting automatically.</p>
+<p>Auto-capitalization of sentences is a built-in feature in some
+editors, including Microsoft Office, Libre Office, and Google Docs. In
+Emacs, you can use <a
+href="https://www.emacswiki.org/emacs/auto-capitalize.el">auto-capitalize.el</a>
+or Xah Lee’s <a
+href="http://xahlee.info/emacs/emacs/emacs_upcase_sentence.html">xah-upcase-sentence</a>.
+In Vim, a method is described by <a
+href="https://davidxmoody.com/2014/vim-auto-capitalisation/">David
+Moody</a>.</p>
+<h2 id="sentence-detection">Sentence detection</h2>
+<p>Detecting sentences is more involved than it might first seem. To use
+this feature effectively, it helps to know how the detection works.</p>
+<p>Let’s look again at this example:</p>
+<blockquote>
+<p>
+<tt> Include these details when reporting a bug<span
+class="state-ending">.</span><span class="state-primed">  </span><span
+class="state-match">w</span>hat steps produce the problem</span><span
+class="state-ending">?</span><span class="state-primed">  </span><span
+class="state-match">d</span>escribe your configuration <span
+class="state-abbrev">e.g.</span> non-default settings, extensions, <span
+class="state-abbrev">etc.</span> where relevant<span
+class="state-ending">.</span><span class="state-primed">  </span><span
+class="state-match">p</span>lease attach any error logs to this
+form<span class="state-ending">.</span>
+</p>
+</tt>
+</blockquote>
+<p><span class="legend"
+style="background-color:#ffe040;"> </span>  Sentence ending<br> <span
+class="legend" style="background-color:#20c8f8;"> </span>  Sentence
+start<br> <span class="legend"
+style="background-color:#d0c0c0;"> </span>  Abbreviation</p>
+<p>A new sentence is detected when the following sequence occurs:</p>
+<ol type="1">
+<li>One or more letter characters (<em>a word</em>).</li>
+<li>Followed by sentence-ending punctuation <code>.</code>
+<code>?</code> or <code>!</code> <span class="legend"
+style="background-color:#ffe040;"> </span>. The following exceptions are
+considered abbreviations <span class="legend"
+style="background-color:#d0c0c0;"> </span> instead of real sentence
+endings:
+<ul>
+<li>Word containing multiple periods, like <code>U.S.</code> or
+<code>i.e.</code>.</li>
+<li>The common abbreviations <code>vs.</code> and <code>etc.</code> are
+specifically recognized (see below for how to define further
+exceptions).</li>
+</ul></li>
+<li>Followed by one or more spaces.</li>
+<li>Followed by a letter character <span class="legend"
+style="background-color:#20c8f8;"> </span> <br> <strong>⇒ Sentence start
+detected!</strong> The letter is shifted to capitalize.</li>
+</ol>
+<h2 id="customization">Customization</h2>
+<h3 id="indicating-primed-state">Indicating primed state</h3>
+<p>You can use the callback <code>sentence_case_primed()</code> to
+indicated with an LED or otherwise that Sentence Case is “primed.” A
+primed state means that a sentence ending was detected, and if the next
+key typed is a letter, it will be capitalized. In your keymap.c, add</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sentence_case_primed<span class="op">(</span><span class="dt">bool</span> primed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Change B0 to the pin for the LED to use.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  writePin<span class="op">(</span>B0<span class="op">,</span> primed<span class="op">);</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Knowing when Sentence Case is primed is useful feedback to use the
+feature effectively.</p>
+<h3 id="idle-timeout">Idle timeout</h3>
+<p>Sentence Case may optionally be configured to reset its state if the
+keyboard is idle for some time. This is useful to mitigate unintended
+shifting when switching between typing and using the mouse. In your
+config.h, define <code>SENTENCE_CASE_TIMEOUT</code> with a time in
+milliseconds:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SENTENCE_CASE_TIMEOUT 2000  </span><span class="co">// Reset state after 2 seconds.</span></span></code></pre></div>
+<p>and in your keymap.c, define (or add to)
+<code>matrix_scan_user()</code> as</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  sentence_case_task<span class="op">();</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks...</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The default behavior (when <code>SENTENCE_CASE_TIMEOUT</code> isn’t
+set, or set to 0) is that Sentence Case never times out.</p>
+<h3 id="functions">Functions</h3>
+<p>Functions to manipulate Sentence Case:</p>
+<div class="eqscroll">
+<table>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sentence_case_on()</code></td>
+<td>Enables Sentence Case.</td>
+</tr>
+<tr class="even">
+<td><code>sentence_case_off()</code></td>
+<td>Disables Sentence Case.</td>
+</tr>
+<tr class="odd">
+<td><code>sentence_case_toggle()</code></td>
+<td>Toggles Sentence Case.</td>
+</tr>
+<tr class="even">
+<td><code>is_sentence_case_on()</code></td>
+<td>Gets whether currently enabled.</td>
+</tr>
+<tr class="odd">
+<td><code>sentence_case_clear()</code></td>
+<td>Clears Sentence Case to initial state.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These functions can be used to enable, disable, toggle, or clear
+Sentence Case from your keymap with a macro, combo, tap dance, or
+whatever means.</p>
+<h3 id="defining-exceptions">Defining exceptions</h3>
+<p>The <code>sentence_case_check_ending()</code> callback is called when
+a punctuating key is typed to decide whether it is a real sentence
+ending, meaning the first letter of the following word should be
+capitalized. For instance, abbreviations like “vs.” are usually not real
+sentence endings. The input argument is a buffer of the last
+<code>SENTENCE_CASE_BUFFER_SIZE</code> keycodes (by default, the last 8
+keycodes). Returning true means it is a real sentence ending and
+automatic capitalization applies; returning false means it is not.</p>
+<p>The default implementation checks for the abbreviations
+“<code>vs.</code>” and “<code>etc.</code>”:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> sentence_case_check_ending<span class="op">(</span><span class="dt">const</span> <span class="dt">uint16_t</span><span class="op">*</span> buffer<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Don&#39;t consider the abbreviations &quot;vs.&quot; and &quot;etc.&quot; to end the sentence.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_V<span class="op">,</span> KC_S<span class="op">,</span> KC_DOT<span class="op">)</span> <span class="op">||</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_E<span class="op">,</span> KC_T<span class="op">,</span> KC_C<span class="op">,</span> KC_DOT<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Not a real sentence ending.</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Real sentence ending; capitalize next letter.</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Here, <code>SENTENCE_CASE_JUST_TYPED()</code> is a helper macro that
+checks whether the key buffer ends in a given keycode pattern. The
+expression</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_V<span class="op">,</span> KC_S<span class="op">,</span> KC_DOT<span class="op">)</span></span></code></pre></div>
+<p>returns true if “space, <code>v</code>, <code>s</code>,
+<code>.</code>” were the last four keys typed.</p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>Patterns must be at most <code>SENTENCE_CASE_BUFFER_SIZE</code> keys
+long, 8 by default.</li>
+<li>Patterns are case-insensitive, modifiers are not considered in this
+check.</li>
+</ul>
+<p>Add other abbreviations by adding them in the condition. For example
+to check also for “<code>misc.</code>”:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_V<span class="op">,</span> KC_S<span class="op">,</span> KC_DOT<span class="op">)</span> <span class="op">||</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_E<span class="op">,</span> KC_T<span class="op">,</span> KC_C<span class="op">,</span> KC_DOT<span class="op">)</span> <span class="op">||</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_M<span class="op">,</span> KC_I<span class="op">,</span> KC_S<span class="op">,</span> KC_C<span class="op">,</span> KC_DOT<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Not a real sentence ending.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="letters-and-punctuations">Letters and punctuations</h3>
+<p>The callback <code>sentence_case_press_user()</code> defines which
+keys are letters, punctuation, or something else. Defining this function
+may be useful if you type non-US letters or have customized the shift
+behavior of the punctuation keys.</p>
+<p>The return value is a char code telling Sentence Case how to
+interpret the key:</p>
+<table>
+<tr>
+<th>
+Code
+</th>
+<th>
+Description
+</th>
+</tr>
+<tr>
+<td>
+<code>'a'</code>
+</td>
+<td>
+Key is a letter, by default <code>KC_A</code> to <code>KC_Z</code>. If
+occurring at the start of a sentence, Sentence Case applies shift to
+capitalize it.
+</td>
+</tr>
+<tr>
+<td>
+<code>'.'</code>
+</td>
+<td>
+Key is sentence-ending punctuation. Default: <code>KC_DOT</code>, Shift
++ <code>KC_SLSH</code> (<code>?</code>), Shift + <code>KC_1</code>
+(<code>!</code>)
+</td>
+</tr>
+<tr>
+<td>
+<code>'#'</code>
+</td>
+<td>
+Key types a backspaceable character that isn’t part of a word. Default:
+<code>KC_SLSH</code>, Shift + <code>KC_DOT</code> (<code>&gt;</code>),
+digits 0–9, and <code>KC_MINS ... KC_COMM</code>, which includes <tt>- =
+[ ] ; ’ ` , \</tt>
+</td>
+</tr>
+<tr>
+<td>
+<code>' '</code>
+</td>
+<td>
+Key is a space. Default: <code>KC_SPC</code>
+</td>
+</tr>
+<tr>
+<td>
+<code>'\0'</code>
+</td>
+<td>
+Sentence Case should ignore this key.
+</td>
+</tr>
+</table>
+<p>If a hotkey or navigation key is pressed (or another key that
+performs an action that backspace doesn’t undo), then the callback
+should call <code>sentence_case_clear()</code> to clear the state and
+then return <code>'\0'</code>.</p>
+<p>The default <code>sentence_case_press_user()</code> is:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> sentence_case_press_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                              keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">uint8_t</span> mods<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">((</span>mods <span class="op">&amp;</span> <span class="op">~(</span>MOD_MASK_SHIFT <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RALT<span class="op">)))</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">const</span> <span class="dt">bool</span> shifted <span class="op">=</span> mods <span class="op">&amp;</span> MOD_MASK_SHIFT<span class="op">;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> QK_MODS <span class="op">...</span> QK_MODS_MAX<span class="op">:</span>  <span class="co">// Mod keys.</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;\0&#39;</span><span class="op">;</span>  <span class="co">// These keys are ignored.</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;a&#39;</span><span class="op">;</span>  <span class="co">// Letter key.</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_DOT<span class="op">:</span>  <span class="co">// . is punctuation, Shift . is a symbol (&gt;)</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">!</span>shifted <span class="op">?</span> <span class="ch">&#39;.&#39;</span> <span class="op">:</span> <span class="ch">&#39;#&#39;</span><span class="op">;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_1<span class="op">:</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_SLSH<span class="op">:</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> shifted <span class="op">?</span> <span class="ch">&#39;.&#39;</span> <span class="op">:</span> <span class="ch">&#39;#&#39;</span><span class="op">;</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_2 <span class="op">...</span> KC_0<span class="op">:</span>        <span class="co">// 2 3 4 5 6 7 8 9 0</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_MINS <span class="op">...</span> KC_COMM<span class="op">:</span>  <span class="co">// - = [ ] ; &#39; ` , backslash</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;#&#39;</span><span class="op">;</span>  <span class="co">// Symbol key.</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_SPC<span class="op">:</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39; &#39;</span><span class="op">;</span>  <span class="co">// Space key.</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Otherwise clear Sentence Case to initial state.</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  sentence_case_clear<span class="op">();</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="ch">&#39;\0&#39;</span><span class="op">;</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>To customize, copy the above function into your keymap and add/remove
+keycodes to the above cases.</p>
+<h2 id="explanation">Explanation</h2>
+<p>We search for sentence beginnings using a simple finite state
+machine. It matches things like “<code>a. a</code>” and
+“<code>a.  a</code>” but not “<code>a.. a</code>” or
+“<code>a.a. a</code>”. The states are</p>
+<table>
+<thead>
+<tr class="header">
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>INIT</code></td>
+<td>Initial enabled state.</td>
+</tr>
+<tr class="even">
+<td><code>WORD</code></td>
+<td>Within a word.</td>
+</tr>
+<tr class="odd">
+<td><code>MATCHED</code></td>
+<td>Matched the start of a sentence.</td>
+</tr>
+<tr class="even">
+<td><code>ABBREV</code></td>
+<td>Within an abbreviation like “e.g.”.</td>
+</tr>
+<tr class="odd">
+<td><code>ENDING</code></td>
+<td>Sentence ended.</td>
+</tr>
+<tr class="even">
+<td><code>PRIMED</code></td>
+<td>“Primed” state, in the space following an ending.</td>
+</tr>
+</tbody>
+</table>
+<p>Given the char code from <code>sentence_case_press_user()</code>, the
+state transition matrix is:</p>
+<table class="plain">
+<tr>
+<td>
+</td>
+<td style="border-bottom: 1px solid #444">
+<code>'a'</code>
+</td>
+<td style="border-bottom: 1px solid #444">
+<code>'.'</code>
+</td>
+<td style="border-bottom: 1px solid #444">
+<code>' '</code>
+</td>
+</tr>
+<tr>
+<td style="border-right: 1px solid #444">
+<tt>INIT</tt>
+</td>
+<td>
+<tt>WORD</tt>
+</td>
+<td>
+<tt>INIT</tt>
+</td>
+<td>
+<tt>INIT</tt>
+</td>
+</tr>
+<tr>
+<td style="border-right: 1px solid #444">
+<tt>WORD</tt>
+</td>
+<td>
+<tt>WORD</tt>
+</td>
+<td>
+<tt>ENDING</tt>
+</td>
+<td>
+<tt>INIT</tt>
+</td>
+</tr>
+<tr>
+<td style="border-right: 1px solid #444">
+<tt>MATCHED</tt>
+</td>
+<td>
+<tt>WORD</tt>
+</td>
+<td>
+<tt>ENDING</tt>
+</td>
+<td>
+<tt>INIT</tt>
+</td>
+</tr>
+<tr>
+<td style="border-right: 1px solid #444">
+<tt>ABBREV</tt>
+</td>
+<td>
+<tt>ABBREV</tt>
+</td>
+<td>
+<tt>ABBREV</tt>
+</td>
+<td>
+<tt>INIT</tt>
+</td>
+</tr>
+<tr>
+<td style="border-right: 1px solid #444">
+<tt>ENDING</tt>
+</td>
+<td>
+<tt>ABBREV</tt>
+</td>
+<td>
+<tt>INIT</tt>
+</td>
+<td>
+<tt>PRIMED</tt>
+</td>
+</tr>
+<tr>
+<td style="border-right: 1px solid #444">
+<tt>PRIMED</tt>
+</td>
+<td>
+<tt>MATCHED</tt>
+</td>
+<td>
+<tt>INIT</tt>
+</td>
+<td>
+<tt>PRIMED</tt>
+</td>
+</tr>
+</table>
+<p>Or when the char code is <code>'#'</code> (symbol), the state is set
+to <code>INIT</code>, or when the char code is <code>'\0'</code>,
+Sentence Case ignores the key.</p>
+<ul>
+<li><p>When the state changes to <code>ENDING</code>, the
+<code>sentence_case_check_ending()</code> callback is called. If it
+returns false, the state is set to <code>INIT</code>.</p></li>
+<li><p>When the state changes to or from <code>PRIMED</code>, the
+<code>sentence_case_primed()</code> callback is called.</p></li>
+<li><p>When the state changes to <code>MATCHED</code>, one-shot Shift is
+set to capitalize the letter.</p></li>
+</ul>
+<h2 id="closing-thoughts">Closing thoughts</h2>
+<p>It’s exciting what effects may be possible with features that track
+the context of what was just typed beyond the current key. Check out <a
+href="../triggers/index.html#based-on-previously-typed-keys">triggering
+based on previously typed keys</a> for thoughts on how to implement such
+effects generally.</p>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
