@@ -331,6 +331,28 @@ div.features a {
 .eqscroll, .eqtight { overflow-x: auto; margin: 0; padding: 0; }
 .eqscroll p, .eqtight p { margin: 0; padding: 0 }
 
+div.callout {
+  margin: 1.25rem 0 1.25rem 0;
+  border: 1px solid #ccc;
+  border-left: 5px solid #77c731;
+  border-radius:0.25rem;
+}
+
+div.callout-header {
+  background-color: #e5f2d8;
+  font-size: 90%;
+}
+
+div.callout p {
+  padding: 0.2rem 0.5rem 0 0.5rem;
+  margin: 0.2rem 0 0.5rem 0;
+}
+
+div.callout-header p {
+  margin: 0;
+  font-weight: bold;
+}
+
 @media only screen and (min-width: 400px) {
   blockquote {
     padding-left: 2em;
