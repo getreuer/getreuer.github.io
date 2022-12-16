@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-01-23" />
+  <meta name="author" content="Pascal Getreuer, 2022-01-23 (updated 2022-12-16)" />
   <title>QMK: Mouse Turbo Click</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,10 +88,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Mouse Turbo Click</h1>
-<h2 class="author">Pascal Getreuer, 2022-01-23</h2>
+<h2 class="author">Pascal Getreuer, 2022-01-23 (updated 2022-12-16)</h2>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
-<p>This post describes a QMK macro “Turbo Click” button that clicks the
+<p>This post describes a QMK macro “Mouse Turbo Click” that clicks the
 mouse rapidly:</p>
 <ul>
 <li><p>Pressing and holding the Turbo Click button sends rapid mouse
@@ -139,20 +139,40 @@ href="https://github.com/getreuer/qmk-keymap/blob/main/features/mouse_turbo_clic
 and <a
 href="https://github.com/getreuer/qmk-keymap/blob/main/features/mouse_turbo_click.c">mouse_turbo_click.c</a>
 there.</p>
+<h2 id="customization">Customization</h2>
+<h3 id="click-period">Click period</h3>
+<p>The clicking speed is controlled by
+<code>MOUSE_TURBO_CLICK_PERIOD</code>, set to a period of 80
+milliseconds by default for 1000 / 80 = 12.5 clicks per second. To
+change the click rate, define <code>MOUSE_TURBO_CLICK_PERIOD</code> in
+config.h like</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Click every 200 ms for 5 clicks per second.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MOUSE_TURBO_CLICK_PERIOD 200</span></span></code></pre></div>
+<p>A smaller period implies faster clicking. Beyond some point, it is
+conceivable that QMK or the application running on the computer is
+overwhelmed with handling the rapid mouse clicks. I suggest setting the
+period no smaller than 10 ms or hundred clicks per second.</p>
+<h3 id="click-key">Click key</h3>
+<p>By default, Turbo Click clicks the first mouse button
+<code>KC_MS_BTN1</code>. To click a different button, define
+<code>MOUSE_TURBO_CLICK_KEY</code> in config.h. For instance, you could
+spam the Space key instead with</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Repeatedly click the Space key.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MOUSE_TURBO_CLICK_KEY KC_SPC</span></span></code></pre></div>
+<p><code>MOUSE_TURBO_CLICK_KEY</code> may be set to any <a
+href="https://docs.qmk.fm/#/keycodes_basic">basic keycode</a> or 16-bit
+keycode that works with <code>register_code16()</code>, which includes
+at least modifier + basic key chords. If set to a non-mouse key,
+<code>MOUSEKEY_ENABLE = yes</code> is no longer required.</p>
 <h2 id="explanation">Explanation</h2>
 <p>The implementation uses mouse keys and a periodic callback using the
 <a
 href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">deferred
 execution API</a>. When Turbo Click starts,
 <code>turbo_click_callback()</code> is scheduled. The callback executes
-twice per click, alternating between pressing and releasing the left
-mouse button key (<code>KC_MS_BTN1</code>). When Turbo Click stops, the
-callback is canceled and the mouse button is released if needed.</p>
-<p>The constant <code>CLICK_PERIOD_MS</code> determines the click period
-in units of milliseconds. The configured period of 80 ms gives 1000/80 =
-12.5 clicks per second. Smaller period implies faster clicking. Beware
-that the keyboard might become unresponsive if the period is too small.
-I suggest setting this no smaller than 10.</p>
+twice per click, alternating between pressing and releasing
+<code>MOUSE_TURBO_CLICK_KEY</code>. When Turbo Click stops, the callback
+is canceled and the key is released if needed.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
