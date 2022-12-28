@@ -11,7 +11,9 @@
 <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
 <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
 <script type="text/javascript" src="../../site.js" ></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
+  type="text/javascript"></script>
 </head>
 <body>
 <div id="navbar">
@@ -27,12 +29,18 @@
 <h2 class="author">Pascal Getreuer</h2>
 </div>
 <hr />
-<p><strong>Update:</strong> tvreg has been revised and published as four articles on IPOL:</p>
+<p><strong>Update:</strong> tvreg has been revised and published as four
+articles on IPOL:</p>
 <ul>
-<li><a href="../../papers/getreuer2012tvdenoising/index.html">Rudin-Osher-Fatemi Total Variation Denoising using Split Bregman</a></li>
-<li><a href="../../papers/getreuer2012tvdeconvolution/index.html">Total Variation Deconvolution using Split Bregman</a></li>
-<li><a href="../../papers/getreuer2012tvinpainting/index.html">Total Variation Inpainting using Split Bregman</a></li>
-<li><a href="../../papers/getreuer2012chanvese/index.html">Chan–Vese Segmentation</a></li>
+<li><a
+href="../../papers/getreuer2012tvdenoising/index.html">Rudin-Osher-Fatemi
+Total Variation Denoising using Split Bregman</a></li>
+<li><a href="../../papers/getreuer2012tvdeconvolution/index.html">Total
+Variation Deconvolution using Split Bregman</a></li>
+<li><a href="../../papers/getreuer2012tvinpainting/index.html">Total
+Variation Inpainting using Split Bregman</a></li>
+<li><a href="../../papers/getreuer2012chanvese/index.html">Chan–Vese
+Segmentation</a></li>
 </ul>
 <hr />
 <div class="features">
@@ -42,17 +50,31 @@
  
 </div>
 <figure>
-<img src="tvreg.jpg" alt="" /><figcaption>From left to right: progressively stronger TV denoising.</figcaption>
+<img src="tvreg.jpg"
+alt="From left to right: progressively stronger TV denoising." />
+<figcaption aria-hidden="true">From left to right: progressively
+stronger TV denoising.</figcaption>
 </figure>
-<p>The tvreg package performs total variation (TV) regularized image denoising, deconvolution, and inpainting. Three noise models are supported: Gaussian (L2), Laplace (L1), and Poisson. It solves the general TV restoration problem</p>
+<p>The tvreg package performs total variation (TV) regularized image
+denoising, deconvolution, and inpainting. Three noise models are
+supported: Gaussian (L2), Laplace (L1), and Poisson. It solves the
+general TV restoration problem</p>
 <p><span class="math display">\[ \min_u \int |\nabla u|
 + \int \lambda F\bigl(Ku, f\bigr) \]</span></p>
-<p>to perform denoising, deconvolution, and inpainting as special cases. It is efficiently solved using the split Bregman method. Also included is an efficient implementation of Chan–Vese two-phase segmentation.</p>
-<p>See <code>tvreg.pdf</code>, included in the download, for details.</p>
+<p>to perform denoising, deconvolution, and inpainting as special cases.
+It is efficiently solved using the split Bregman method. Also included
+is an efficient implementation of Chan–Vese two-phase segmentation.</p>
+<p>See <code>tvreg.pdf</code>, included in the download, for
+details.</p>
 <h2 id="get-started-quickly">Get Started Quickly</h2>
 <ol type="1">
-<li><p>Install the FFTW3 library. Windows users can <a href="http://www.fftw.org/install/windows.html">download precompiled DLL files</a>.</p></li>
-<li><p>Compile the programs with GCC using <code>make -f makefile.gcc</code> or Microsoft Visual C++ using <code>nmake -f makefile.vc</code>. See section 7 of tvreg.pdf for help.</p></li>
+<li><p>Install the FFTW3 library. Windows users can <a
+href="http://www.fftw.org/install/windows.html">download precompiled DLL
+files</a>.</p></li>
+<li><p>Compile the programs with GCC using
+<code>make -f makefile.gcc</code> or Microsoft Visual C++ using
+<code>nmake -f makefile.vc</code>. See section 7 of tvreg.pdf for
+help.</p></li>
 <li><p>Try the demos</p>
 <ul>
 <li>tvdenoise_demo: Denoising demo</li>
@@ -61,7 +83,8 @@
 <li>chanvese_demo: Segmentation demo</li>
 </ul></li>
 </ol>
-<h2 id="get-started-quickly-in-matlab">Get Started Quickly in Matlab</h2>
+<h2 id="get-started-quickly-in-matlab">Get Started Quickly in
+Matlab</h2>
 <p>Compiling is not required to use tvreg in Matlab. Try the demos</p>
 <ul>
 <li>tvdenoise_demo: Denoising demo</li>
@@ -69,9 +92,16 @@
 <li>tvinpaint_demo: Inpainting demo</li>
 <li>chanvese_demo: Segmentation demo</li>
 </ul>
-<p>For improved performance, run the included script <code>complex_mex.m</code> to compile the main computation routines as MEX functions. This requires that FFTW3 is installed, please see section 7.3 of the documentation.</p>
+<p>For improved performance, run the included script
+<code>complex_mex.m</code> to compile the main computation routines as
+MEX functions. This requires that FFTW3 is installed, please see section
+7.3 of the documentation.</p>
 <p class="copynote">
-This material is based upon work supported by the National Science Foundation under Award No. DMS-1004694. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+This material is based upon work supported by the National Science
+Foundation under Award No. DMS-1004694. Any opinions, findings, and
+conclusions or recommendations expressed in this material are those of
+the author(s) and do not necessarily reflect the views of the National
+Science Foundation.
 </p>
 </div>
 

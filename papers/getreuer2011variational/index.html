@@ -10,6 +10,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -44,7 +45,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -57,7 +58,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -74,7 +75,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
 <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
 <script type="text/javascript" src="../../site.js" ></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
+  type="text/javascript"></script>
 </head>
 <body>
 <div id="navbar">
@@ -86,31 +89,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="content">
 <div id="header">
-<h1 class="title">A variational model for the restoration of MR images corrupted by blur and Rician noise</h1>
+<h1 class="title">A variational model for the restoration of MR images
+corrupted by blur and Rician noise</h1>
 </div>
 <div class="features">
-<p><a href="ftp://ftp.math.ucla.edu/pub/camreport/cam11-67.pdf">Full text</a></p>
+<p><a href="ftp://ftp.math.ucla.edu/pub/camreport/cam11-67.pdf">Full
+text</a></p>
 </div>
 <div style="clear: both">
  
 </div>
-<p>Pascal Getreuer, Melissa Tong, and Luminita A. Vese. “A variational model for the restoration of MR images corrupted by blur and Rician noise.” <em>International Symposium on Visual Computing.</em> Springer, Berlin, Heidelberg, 2011. DOI: 10.1007/978-3-642-24028-7_63.</p>
-<p>Article permalink: <a href="https://doi.org/10.1007/978-3-642-24028-7_63" class="uri">https://doi.org/10.1007/978-3-642-24028-7_63</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="va">@inproceedings</span>{<span class="ot">getreuer2011variational</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>  <span class="dt">title</span>={A variational model for the restoration of {MR} images</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>         corrupted by blur and {Rician} noise},</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  <span class="dt">author</span>={Getreuer, Pascal and Tong, Melissa and Vese, Luminita A},</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>  <span class="dt">booktitle</span>={International Symposium on Visual Computing},</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>  <span class="dt">pages</span>={686--698},</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  <span class="dt">year</span>={2011},</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>  <span class="dt">organization</span>={Springer}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Pascal Getreuer, Melissa Tong, and Luminita A. Vese. “A variational
+model for the restoration of MR images corrupted by blur and Rician
+noise.” <em>International Symposium on Visual Computing.</em> Springer,
+Berlin, Heidelberg, 2011. DOI: 10.1007/978-3-642-24028-7_63.</p>
+<p>Article permalink: <a
+href="https://doi.org/10.1007/978-3-642-24028-7_63"
+class="uri">https://doi.org/10.1007/978-3-642-24028-7_63</a></p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">@inproceedings</span>{<span class="ot">getreuer2011variational</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>={A variational model for the restoration of {MR} images</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>         corrupted by blur and {Rician} noise},</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>={Getreuer, Pascal and Tong, Melissa and Vese, Luminita A},</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">booktitle</span>={International Symposium on Visual Computing},</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">pages</span>={686--698},</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>={2011},</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">organization</span>={Springer}</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h2 id="abstract">Abstract</h2>
 <blockquote>
-<p>In this paper, we propose a variational model to restore images degraded by blur and Rician noise. This model uses total variation regularization with a fidelity term involving the Rician probability distribution. For its numerical solution, we apply and compare the <span class="math inline">\(L^2\)</span> and Sobolev (<span class="math inline">\(H^1\)</span>) gradient descents, and the iterative method called split Bregman (with a convexified fidelity term). Numerical results are shown on synthetic magnetic resonance imaging (MRI) data corrupted with Rician noise and Gaussian blur, both with known standard deviations.Theoretical analysis of the proposed model is briefly discussed.</p>
+<p>In this paper, we propose a variational model to restore images
+degraded by blur and Rician noise. This model uses total variation
+regularization with a fidelity term involving the Rician probability
+distribution. For its numerical solution, we apply and compare the <span
+class="math inline">\(L^2\)</span> and Sobolev (<span
+class="math inline">\(H^1\)</span>) gradient descents, and the iterative
+method called split Bregman (with a convexified fidelity term).
+Numerical results are shown on synthetic magnetic resonance imaging
+(MRI) data corrupted with Rician noise and Gaussian blur, both with
+known standard deviations.Theoretical analysis of the proposed model is
+briefly discussed.</p>
 </blockquote>
 <p class="copynote">
-The final publication is available at <a href="https://doi.org/10.1007/978-3-642-24028-7_63" class="uri">https://doi.org/10.1007/978-3-642-24028-7_63</a>
+The final publication is available at <a
+href="https://doi.org/10.1007/978-3-642-24028-7_63"
+class="uri">https://doi.org/10.1007/978-3-642-24028-7_63</a>
 </p>
 </div>
 

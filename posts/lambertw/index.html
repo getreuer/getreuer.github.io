@@ -11,6 +11,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -45,7 +46,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -58,7 +59,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -75,7 +76,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
 <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
 <script type="text/javascript" src="../../site.js" ></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
+  type="text/javascript"></script>
 </head>
 <body>
 <div id="navbar">
@@ -96,74 +99,148 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div style="clear: both">
  
 </div>
-<p>The Matlab function <code>lambertw</code> included in this package is a self-contained M-function implementing the Lambert W function, also known as the Ω function or “product log.” It is equivalent to the numerical mode of the Symbolic Math Toolbox’s lambertw, however, no toolboxes are required to use this function.</p>
+<p>The Matlab function <code>lambertw</code> included in this package is
+a self-contained M-function implementing the Lambert W function, also
+known as the Ω function or “product log.” It is equivalent to the
+numerical mode of the Symbolic Math Toolbox’s lambertw, however, no
+toolboxes are required to use this function.</p>
 <h2 id="license-bsd">License (BSD)</h2>
 <div style="font-size: 90%">
 <p>Copyright © 2006, Pascal Getreuer<br> All rights reserved.</p>
-<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:</p>
 <ul>
-<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
-<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the
+distribution.</li>
 </ul>
-<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+“AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 </div>
 <h2 id="function-use">Function Use</h2>
-<p><code>w = lambertw(z)</code> computes the principal value of the Lambert W function, <span class="math inline">\(W_0\)</span>. The input <code>z</code> may be a complex scalar or array. For real <code>z</code>, the result is real on the principal branch for <code>z</code> ≥ −1/e.</p>
-<p><code>w = lambertw(b,z)</code> specifies which branch of the Lambert W function to compute. If <code>z</code> is an array, <code>b</code> may be either an integer array of the same size as <code>z</code> or an integer scalar. If <code>z</code> is a scalar, <code>b</code> may be an array of any size.</p>
+<p><code>w = lambertw(z)</code> computes the principal value of the
+Lambert W function, <span class="math inline">\(W_0\)</span>. The input
+<code>z</code> may be a complex scalar or array. For real
+<code>z</code>, the result is real on the principal branch for
+<code>z</code> ≥ −1/e.</p>
+<p><code>w = lambertw(b,z)</code> specifies which branch of the Lambert
+W function to compute. If <code>z</code> is an array, <code>b</code> may
+be either an integer array of the same size as <code>z</code> or an
+integer scalar. If <code>z</code> is a scalar, <code>b</code> may be an
+array of any size.</p>
 <h2 id="background">Background</h2>
 <p>The Lambert W function is defined as the function W(z) such that</p>
-<p><span class="math display">\[ W(z) \mathrm{e}^{W(z)} = z \]</span></p>
-<p>for all complex values z. As log z is the inverse of e<sup>z</sup>, W(z) is the inverse of z e<sup>z</sup>. Like the complex logarithm, the Lambert W function is multivalued with a countably infinite number of branches. The branches are enumerated by the integers and are conventionally denoted by <span class="math inline">\(W_k\)</span> for the kth branch.</p>
-<p>The principal branch, <span class="math inline">\(W_0(z)\)</span>, is real-valued for −1/e ≤ z. If −1/e ≤ z &lt; 0, then the branch <span class="math inline">\(W_{-1}(z)\)</span> is also real-valued. In the complex plane, a surface plot of <span class="math inline">\(|W_0(z)|\)</span> is</p>
+<p><span class="math display">\[ W(z) \mathrm{e}^{W(z)} = z
+\]</span></p>
+<p>for all complex values z. As log z is the inverse of e<sup>z</sup>,
+W(z) is the inverse of z e<sup>z</sup>. Like the complex logarithm, the
+Lambert W function is multivalued with a countably infinite number of
+branches. The branches are enumerated by the integers and are
+conventionally denoted by <span class="math inline">\(W_k\)</span> for
+the kth branch.</p>
+<p>The principal branch, <span class="math inline">\(W_0(z)\)</span>, is
+real-valued for −1/e ≤ z. If −1/e ≤ z &lt; 0, then the branch <span
+class="math inline">\(W_{-1}(z)\)</span> is also real-valued. In the
+complex plane, a surface plot of <span
+class="math inline">\(|W_0(z)|\)</span> is</p>
 <div style="float: right; width: 18em">
 <figure>
-<img src="lambertw_01.png" alt="" /><figcaption>Surface plot of complex magnitude.</figcaption>
+<img src="lambertw_01.png" alt="Surface plot of complex magnitude." />
+<figcaption aria-hidden="true">Surface plot of complex
+magnitude.</figcaption>
 </figure>
 </div>
 <div style="float: left; width: 18em">
-<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="va">x</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">51</span>)<span class="op">;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="va">y</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">51</span>)<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>[<span class="va">x</span><span class="op">,</span><span class="va">y</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span>)<span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>(<span class="va">x</span> <span class="op">+</span> <span class="va">i</span><span class="op">*</span><span class="va">y</span>)<span class="op">;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="va">surf</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span><span class="op">,</span><span class="va">abs</span>(<span class="va">w</span>))<span class="op">;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="va">axis</span>([<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">0</span><span class="op">,</span><span class="fl">2.5</span>])<span class="op">;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="va">view</span>(<span class="fl">40</span><span class="op">,</span><span class="fl">32</span>)<span class="op">;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="va">xlabel</span>(<span class="ss">&#39;Re z&#39;</span>)<span class="op">;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="va">ylabel</span>(<span class="ss">&#39;Im z&#39;</span>)<span class="op">;</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="va">title</span>(<span class="ss">&#39;|W_0(z)|&#39;</span>)<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">x</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">51</span>)<span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">y</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">51</span>)<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>[<span class="va">x</span><span class="op">,</span><span class="va">y</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span>)<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>(<span class="va">x</span> <span class="op">+</span> <span class="va">i</span><span class="op">*</span><span class="va">y</span>)<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">surf</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span><span class="op">,</span><span class="va">abs</span>(<span class="va">w</span>))<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="va">axis</span>([<span class="op">-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,-</span><span class="fl">6</span><span class="op">,</span><span class="fl">6</span><span class="op">,</span><span class="fl">0</span><span class="op">,</span><span class="fl">2.5</span>])<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="va">view</span>(<span class="fl">40</span><span class="op">,</span><span class="fl">32</span>)<span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="va">xlabel</span>(<span class="ss">&#39;Re z&#39;</span>)<span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="va">ylabel</span>(<span class="ss">&#39;Im z&#39;</span>)<span class="op">;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="va">title</span>(<span class="ss">&#39;|W_0(z)|&#39;</span>)<span class="op">;</span></span></code></pre></div>
 </div>
 <div style="clear: both">
  
 </div>
-<h2 id="algebra-with-the-lambert-w-function">Algebra with the Lambert W Function</h2>
-<p>Although the Lambert W function may not be so widely known as the inverse trigonometry functions, it has essentially the same purpose as acos, asin, etc. as a building-block tool for solving equations. Generally, the goal is to manipulate all occurrences of the unknown variable x into an expression of the form <span class="math inline">\(f(x) \mathrm{e}^{f(x)}\)</span>, and then apply the Lambert W function.</p>
-<p><strong>Problem 1.</strong> Solve <span class="math inline">\(y = (x − 1) \mathrm{e}^{2x}\)</span> for x.</p>
-<p><em>Solution:</em> The right-hand side is close to the necessary form <span class="math inline">\(f(x)\mathrm{e}^{f(x)}\)</span>, but some manipulation is necessary to change the factor <span class="math inline">\((x - 1)\)</span> and the exponent 2x into the same expression. Multiplying both sides by 2,</p>
-<p><span class="math display">\[2y = (2x - 2) \mathrm{e}^{2x}.\]</span></p>
-<p>This form is closer, the exponent is only missing the −2. Multiplying both sides by e<sup>−2</sup> gets the desired form,</p>
-<p><span class="math display">\[2\mathrm{e}^{-2}y = (2x - 2) \mathrm{e}^{2x-2}.\]</span></p>
+<h2 id="algebra-with-the-lambert-w-function">Algebra with the Lambert W
+Function</h2>
+<p>Although the Lambert W function may not be so widely known as the
+inverse trigonometry functions, it has essentially the same purpose as
+acos, asin, etc. as a building-block tool for solving equations.
+Generally, the goal is to manipulate all occurrences of the unknown
+variable x into an expression of the form <span
+class="math inline">\(f(x) \mathrm{e}^{f(x)}\)</span>, and then apply
+the Lambert W function.</p>
+<p><strong>Problem 1.</strong> Solve <span class="math inline">\(y = (x
+− 1) \mathrm{e}^{2x}\)</span> for x.</p>
+<p><em>Solution:</em> The right-hand side is close to the necessary form
+<span class="math inline">\(f(x)\mathrm{e}^{f(x)}\)</span>, but some
+manipulation is necessary to change the factor <span
+class="math inline">\((x - 1)\)</span> and the exponent 2x into the same
+expression. Multiplying both sides by 2,</p>
+<p><span class="math display">\[2y = (2x - 2)
+\mathrm{e}^{2x}.\]</span></p>
+<p>This form is closer, the exponent is only missing the −2. Multiplying
+both sides by e<sup>−2</sup> gets the desired form,</p>
+<p><span class="math display">\[2\mathrm{e}^{-2}y = (2x - 2)
+\mathrm{e}^{2x-2}.\]</span></p>
 <p>Now we can apply the Lambert W function to get</p>
-<p><span class="math display">\[W(2\mathrm{e}^{-2}y) = 2x - 2,\]</span></p>
-<p>which rearranges to the solution <span class="math inline">\(x = W(2\mathrm{e}^{-2} y)/2 + 1\)</span>. Note that since W is multivalued, the solution is multivalued; there are multiple values of x satisfying the equation.</p>
-<p><strong>Problem 2.</strong> Solve <span class="math inline">\(b^x = x^\alpha\)</span> for x.</p>
-<p><em>Solution:</em> There is initially no visible instance of the exponential function, but rewrite <span class="math inline">\(b^x\)</span> as <span class="math inline">\(\mathrm{e}^{x \log b}\)</span> to reveal <span class="math display">\[\begin{align}
+<p><span class="math display">\[W(2\mathrm{e}^{-2}y) = 2x -
+2,\]</span></p>
+<p>which rearranges to the solution <span class="math inline">\(x =
+W(2\mathrm{e}^{-2} y)/2 + 1\)</span>. Note that since W is multivalued,
+the solution is multivalued; there are multiple values of x satisfying
+the equation.</p>
+<p><strong>Problem 2.</strong> Solve <span class="math inline">\(b^x =
+x^\alpha\)</span> for x.</p>
+<p><em>Solution:</em> There is initially no visible instance of the
+exponential function, but rewrite <span
+class="math inline">\(b^x\)</span> as <span
+class="math inline">\(\mathrm{e}^{x \log b}\)</span> to reveal <span
+class="math display">\[\begin{align}
 \mathrm{e}^{x\log b} &amp;= x^\alpha \\
 \mathrm{e}^{x(\log b) / \alpha} &amp;= x.
 \end{align}\]</span></p>
-<p>Now divide the exponential over to the right-hand side and multiply by <span class="math inline">\(-(\log b)/\alpha\)</span>:</p>
+<p>Now divide the exponential over to the right-hand side and multiply
+by <span class="math inline">\(-(\log b)/\alpha\)</span>:</p>
 <div class="eqscroll">
 <p><span class="math display">\[\begin{align}
 1 &amp;= x \mathrm{e}^{-x (\log b)/\alpha} \\
--(\log b)/\alpha &amp;= (-x (\log b)/\alpha) \mathrm{e}^{-x (\log b)/\alpha}.
+-(\log b)/\alpha &amp;= (-x (\log b)/\alpha) \mathrm{e}^{-x (\log
+b)/\alpha}.
 \end{align}\]</span></p>
 </div>
-<p>The right-hand side is now in the form <span class="math inline">\(f(x)\mathrm{e}^{f(x)}\)</span> where the Lambert W function can be applied:</p>
-<p><span class="math display">\[W\bigl(-(\log b)/\alpha\bigr) = -x (\log b)/\alpha. \]</span></p>
-<p>The solution is <span class="math inline">\(x = -(\alpha / \log b) W\bigl(-(\log b)/\alpha\bigr)\)</span>.</p>
-<p><strong>Problem 3.</strong> An old result [1] is the closed-form expression for iterated exponentiation:</p>
-<p><span class="math display">\[z^{z^{z^\cdots}} = \frac{W(-\log z)}{-\log z}.\]</span></p>
-<p>Find z such that <span class="math inline">\(z^{z^{z^\cdots}} = 2\)</span>.</p>
+<p>The right-hand side is now in the form <span
+class="math inline">\(f(x)\mathrm{e}^{f(x)}\)</span> where the Lambert W
+function can be applied:</p>
+<p><span class="math display">\[W\bigl(-(\log b)/\alpha\bigr) = -x (\log
+b)/\alpha. \]</span></p>
+<p>The solution is <span class="math inline">\(x = -(\alpha / \log b)
+W\bigl(-(\log b)/\alpha\bigr)\)</span>.</p>
+<p><strong>Problem 3.</strong> An old result [1] is the closed-form
+expression for iterated exponentiation:</p>
+<p><span class="math display">\[z^{z^{z^\cdots}} = \frac{W(-\log
+z)}{-\log z}.\]</span></p>
+<p>Find z such that <span class="math inline">\(z^{z^{z^\cdots}} =
+2\)</span>.</p>
 <p><em>Solution:</em> Using the formula,</p>
 <p><span class="math display">\[ -W(-\log z) / \log z = 2 \]</span></p>
 <p>implies</p>
@@ -174,50 +251,65 @@ W(-\log z) &amp;= -2\log z \\
 z &amp;= \sqrt{2}.
 \end{align}\]</span></p>
 <h2 id="demos">Demos</h2>
-<p>The following command evaluates <span class="math inline">\(W_k(1)\)</span> for <span class="math inline">\(k = -4,\ldots,4\)</span>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>((<span class="op">-</span><span class="fl">4</span><span class="op">:</span><span class="fl">4</span>)<span class="op">.&#39;,</span><span class="fl">1</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="va">w</span> <span class="op">=</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">3.1630</span> <span class="op">-</span><span class="fl">23.4277i</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">2.8536</span> <span class="op">-</span><span class="fl">17.1135i</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">2.4016</span> <span class="op">-</span><span class="fl">10.7763i</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">1.5339</span> <span class="op">-</span> <span class="fl">4.3752i</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>   <span class="fl">0.5671</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">1.5339</span> <span class="op">+</span> <span class="fl">4.3752i</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">2.4016</span> <span class="op">+</span><span class="fl">10.7763i</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">2.8536</span> <span class="op">+</span><span class="fl">17.1135i</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>  <span class="op">-</span><span class="fl">3.1630</span> <span class="op">+</span><span class="fl">23.4277i</span></span></code></pre></div>
-<p>These values are all solutions of <span class="math inline">\(w\mathrm{e}^w = 1\)</span>. It is easy to verify numerically that they are solutions:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="va">w</span><span class="op">.*</span><span class="va">exp</span>(<span class="va">w</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="va">ans</span> <span class="op">=</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>   <span class="fl">1.0000</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>   <span class="fl">1.0000</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>   <span class="fl">1.0000</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span></code></pre></div>
-<p>Problem 3 in the previous section mentioned the formula for evaluating iterated exponentiation: <span class="math display">\[z^{z^{z^\cdots}} = \frac{W(-\log z)}{-\log z}.\]</span></p>
-<p>For example, set <code>z = 1.3</code>, then its iterated exponentiation is approximately <code>zlim = 1.4710</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="va">zlim</span> <span class="op">=</span> <span class="op">-</span><span class="va">lambertw</span>(<span class="op">-</span><span class="va">log</span>(<span class="va">z</span>))<span class="op">/</span><span class="va">log</span>(<span class="va">z</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="va">zlim</span> <span class="op">=</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="fl">1.4710</span></span></code></pre></div>
-<p>To verify this, computing <code>z^z^z^...^z</code> through 40 iterations shows that the iterated exponentiation does indeed converge to <code>zlim</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="va">zz</span>(<span class="fl">1</span>) <span class="op">=</span> <span class="va">z</span><span class="op">;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="va">zlim</span> <span class="op">=</span> <span class="op">-</span><span class="va">lambertw</span>(<span class="op">-</span><span class="va">log</span>(<span class="va">z</span>))<span class="op">/</span><span class="va">log</span>(<span class="va">z</span>)<span class="op">;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>   <span class="va">zz</span>(<span class="va">k</span><span class="op">+</span><span class="fl">1</span>) <span class="op">=</span> <span class="va">z</span><span class="op">^</span><span class="va">zz</span>(<span class="va">k</span>)<span class="op">;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="kw">end</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="va">plot</span>(<span class="va">zz</span><span class="op">,</span><span class="ss">&#39;.-&#39;</span>)<span class="op">;</span></span></code></pre></div>
+<p>The following command evaluates <span
+class="math inline">\(W_k(1)\)</span> for <span class="math inline">\(k
+= -4,\ldots,4\)</span>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>((<span class="op">-</span><span class="fl">4</span><span class="op">:</span><span class="fl">4</span>)<span class="op">.&#39;,</span><span class="fl">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">w</span> <span class="op">=</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span><span class="fl">3.1630</span> <span class="op">-</span><span class="fl">23.4277i</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span><span class="fl">2.8536</span> <span class="op">-</span><span class="fl">17.1135i</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span><span class="fl">2.4016</span> <span class="op">-</span><span class="fl">10.7763i</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span><span class="fl">1.5339</span> <span class="op">-</span> <span class="fl">4.3752i</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>   <span class="fl">0.5671</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span><span class="fl">1.5339</span> <span class="op">+</span> <span class="fl">4.3752i</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span><span class="fl">2.4016</span> <span class="op">+</span><span class="fl">10.7763i</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span><span class="fl">2.8536</span> <span class="op">+</span><span class="fl">17.1135i</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">-</span><span class="fl">3.1630</span> <span class="op">+</span><span class="fl">23.4277i</span></span></code></pre></div>
+<p>These values are all solutions of <span
+class="math inline">\(w\mathrm{e}^w = 1\)</span>. It is easy to verify
+numerically that they are solutions:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">w</span><span class="op">.*</span><span class="va">exp</span>(<span class="va">w</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">ans</span> <span class="op">=</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>   <span class="fl">1.0000</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>   <span class="fl">1.0000</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>   <span class="fl">1.0000</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>   <span class="fl">1.0000</span> <span class="op">-</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>   <span class="fl">1.0000</span> <span class="op">+</span> <span class="fl">0.0000i</span></span></code></pre></div>
+<p>Problem 3 in the previous section mentioned the formula for
+evaluating iterated exponentiation: <span
+class="math display">\[z^{z^{z^\cdots}} = \frac{W(-\log z)}{-\log
+z}.\]</span></p>
+<p>For example, set <code>z = 1.3</code>, then its iterated
+exponentiation is approximately <code>zlim = 1.4710</code>.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">zlim</span> <span class="op">=</span> <span class="op">-</span><span class="va">lambertw</span>(<span class="op">-</span><span class="va">log</span>(<span class="va">z</span>))<span class="op">/</span><span class="va">log</span>(<span class="va">z</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">zlim</span> <span class="op">=</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1.4710</span></span></code></pre></div>
+<p>To verify this, computing <code>z^z^z^...^z</code> through 40
+iterations shows that the iterated exponentiation does indeed converge
+to <code>zlim</code>.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">zz</span>(<span class="fl">1</span>) <span class="op">=</span> <span class="va">z</span><span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">zlim</span> <span class="op">=</span> <span class="op">-</span><span class="va">lambertw</span>(<span class="op">-</span><span class="va">log</span>(<span class="va">z</span>))<span class="op">/</span><span class="va">log</span>(<span class="va">z</span>)<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>   <span class="va">zz</span>(<span class="va">k</span><span class="op">+</span><span class="fl">1</span>) <span class="op">=</span> <span class="va">z</span><span class="op">^</span><span class="va">zz</span>(<span class="va">k</span>)<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="va">plot</span>(<span class="va">zz</span><span class="op">,</span><span class="ss">&#39;.-&#39;</span>)<span class="op">;</span></span></code></pre></div>
 <div style="float: right; width: 18em">
 <figure>
-<img src="lambertw_02.png" alt="" /><figcaption>Iterated exponentiation of z</figcaption>
+<img src="lambertw_02.png" alt="Iterated exponentiation of z" />
+<figcaption aria-hidden="true">Iterated exponentiation of z</figcaption>
 </figure>
 </div>
 <div style="float: left; width: 18em">
@@ -240,21 +332,30 @@ z &amp;= \sqrt{2}.
  
 </div>
 <h2 id="test">Test</h2>
-<p>Ideally, <code>lambertw(b,z)*exp(lambertw(b,z)) = z</code> for any complex <code>z</code> and any integer branch index <code>b</code>, but this is limited by machine precision. The inversion error <code>|lambertw(b,z)*exp(lambertw(b,z)) - z|</code> is small but worth minding.</p>
-<p>Experimentation finds that the error is usually on the order of |z|×10<sup>−16</sup> on the principal branch. This test computes the inversion error over the square [−10,10]×[−10,10] in the complex plane, large enough to characterize the error away from the branch points at z = 0 and −1/e.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="va">N</span> <span class="op">=</span> <span class="fl">81</span><span class="op">;</span>    <span class="co">% Use NxN points to sample the complex plane</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="va">R</span> <span class="op">=</span> <span class="fl">10</span><span class="op">;</span>    <span class="co">% Sample in the square [-R,R]x[-R,R]</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="va">x</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="va">R</span><span class="op">,</span><span class="va">R</span><span class="op">,</span><span class="va">N</span>)<span class="op">;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="va">y</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="va">R</span><span class="op">,</span><span class="va">R</span><span class="op">,</span><span class="va">N</span>)<span class="op">;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>[<span class="va">xx</span><span class="op">,</span><span class="va">yy</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span>)<span class="op">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="va">z</span> <span class="op">=</span> <span class="va">xx</span> <span class="op">+</span> <span class="fl">1i</span><span class="op">*</span><span class="va">yy</span><span class="op">;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">for</span> <span class="va">b</span> <span class="op">=</span> <span class="op">-</span><span class="fl">4</span><span class="op">:</span><span class="fl">4</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>   <span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>(<span class="va">b</span><span class="op">,</span><span class="va">z</span>)<span class="op">;</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>   <span class="va">InvError</span> <span class="op">=</span> <span class="va">abs</span>(<span class="va">w</span><span class="op">.*</span><span class="va">exp</span>(<span class="va">w</span>) <span class="op">-</span> <span class="va">z</span>)<span class="op">;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>   <span class="va">fprintf</span>(<span class="ss">&#39;Largest error for b = %2d:  %.2e\n&#39;</span><span class="op">,</span><span class="va">b</span><span class="op">,</span><span class="va">max</span>(<span class="va">InvError</span>(<span class="op">:</span>)))<span class="op">;</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="kw">end</span></span></code></pre></div>
+<p>Ideally, <code>lambertw(b,z)*exp(lambertw(b,z)) = z</code> for any
+complex <code>z</code> and any integer branch index <code>b</code>, but
+this is limited by machine precision. The inversion error
+<code>|lambertw(b,z)*exp(lambertw(b,z)) - z|</code> is small but worth
+minding.</p>
+<p>Experimentation finds that the error is usually on the order of
+|z|×10<sup>−16</sup> on the principal branch. This test computes the
+inversion error over the square [−10,10]×[−10,10] in the complex plane,
+large enough to characterize the error away from the branch points at z
+= 0 and −1/e.</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">N</span> <span class="op">=</span> <span class="fl">81</span><span class="op">;</span>    <span class="co">% Use NxN points to sample the complex plane</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="va">R</span> <span class="op">=</span> <span class="fl">10</span><span class="op">;</span>    <span class="co">% Sample in the square [-R,R]x[-R,R]</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="va">x</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="va">R</span><span class="op">,</span><span class="va">R</span><span class="op">,</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="va">y</span> <span class="op">=</span> <span class="va">linspace</span>(<span class="op">-</span><span class="va">R</span><span class="op">,</span><span class="va">R</span><span class="op">,</span><span class="va">N</span>)<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>[<span class="va">xx</span><span class="op">,</span><span class="va">yy</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="va">x</span><span class="op">,</span><span class="va">y</span>)<span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="va">z</span> <span class="op">=</span> <span class="va">xx</span> <span class="op">+</span> <span class="fl">1i</span><span class="op">*</span><span class="va">yy</span><span class="op">;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">b</span> <span class="op">=</span> <span class="op">-</span><span class="fl">4</span><span class="op">:</span><span class="fl">4</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>   <span class="va">w</span> <span class="op">=</span> <span class="va">lambertw</span>(<span class="va">b</span><span class="op">,</span><span class="va">z</span>)<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>   <span class="va">InvError</span> <span class="op">=</span> <span class="va">abs</span>(<span class="va">w</span><span class="op">.*</span><span class="va">exp</span>(<span class="va">w</span>) <span class="op">-</span> <span class="va">z</span>)<span class="op">;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>   <span class="va">fprintf</span>(<span class="ss">&#39;Largest error for b = %2d:  %.2e\n&#39;</span><span class="op">,</span><span class="va">b</span><span class="op">,</span><span class="va">max</span>(<span class="va">InvError</span>(<span class="op">:</span>)))<span class="op">;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <pre><code>Largest error for b = -4:  2.51e-014
 Largest error for b = -3:  2.39e-014
 Largest error for b = -2:  1.39e-014
@@ -265,10 +366,22 @@ Largest error for b =  2:  1.39e-014
 Largest error for b =  3:  2.39e-014
 Largest error for b =  4:  2.51e-014</code></pre>
 <h2 id="implementation">Implementation</h2>
-<p>The Lambert W function is implemented numerically with approximations from series expansions followed by root-finding. Depending on the desired branch and the proximity to the branch points at z = 0 and −1/e, different series expansions are used as initializations to the root-finder.</p>
-<p>As developed in [2], <code>lambertw</code> uses Halley’s method, a fourth-order extension of Newton’s root-finding method. Convergence is very fast, usually requiring fewer than 5 iterations to reach machine accuracy.</p>
+<p>The Lambert W function is implemented numerically with approximations
+from series expansions followed by root-finding. Depending on the
+desired branch and the proximity to the branch points at z = 0 and −1/e,
+different series expansions are used as initializations to the
+root-finder.</p>
+<p>As developed in [2], <code>lambertw</code> uses Halley’s method, a
+fourth-order extension of Newton’s root-finding method. Convergence is
+very fast, usually requiring fewer than 5 iterations to reach machine
+accuracy.</p>
 <h2 id="references">References</h2>
-<p>[1] G. Eisenstein, “Entwicklung von α<sup>α<sup>…</sup></sup>.” J. reine angewandte Math., vol. 28, 1844.<br> [2] R.M. Corless, G.H. Gonnet, D.E.G. Hare, G.J. Jeffery, and D.E. Knuth. <a href="http://www.apmaths.uwo.ca/~rcorless/frames/PAPERS/LambertW/">“On the Lambert W Function.”</a> Advances in Computational Mathematics, vol. 5, 1996.</p>
+<p>[1] G. Eisenstein, “Entwicklung von α<sup>α<sup>…</sup></sup>.” J.
+reine angewandte Math., vol. 28, 1844.<br> [2] R.M. Corless, G.H.
+Gonnet, D.E.G. Hare, G.J. Jeffery, and D.E. Knuth. <a
+href="http://www.apmaths.uwo.ca/~rcorless/frames/PAPERS/LambertW/">“On
+the Lambert W Function.”</a> Advances in Computational Mathematics,
+vol. 5, 1996.</p>
 </div>
 
 <div id="footer">

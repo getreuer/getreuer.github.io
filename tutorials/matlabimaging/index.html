@@ -11,6 +11,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -45,7 +46,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -58,7 +59,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -75,7 +76,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
 <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
 <script type="text/javascript" src="../../site.js" ></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
+  type="text/javascript"></script>
 </head>
 <body>
 <div id="navbar">
@@ -90,69 +93,110 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title">Image Processing with Matlab</h1>
 <h2 class="author">Pascal Getreuer</h2>
 </div>
-<p>This tutorial discusses how to use Matlab for image processing. Some familiarity with Matlab is assumed (you should know how to use matrices and write an M-file).</p>
-<p>It is helpful to have the <a href="https://www.mathworks.com/products/image.html">Matlab Image Processing Toolbox</a>, but fortunately, no toolboxes are needed for most operations. Commands requiring the Image Toolbox are indicated with <strong><code>[Image Toolbox]</code></strong>.</p>
+<p>This tutorial discusses how to use Matlab for image processing. Some
+familiarity with Matlab is assumed (you should know how to use matrices
+and write an M-file).</p>
+<p>It is helpful to have the <a
+href="https://www.mathworks.com/products/image.html">Matlab Image
+Processing Toolbox</a>, but fortunately, no toolboxes are needed for
+most operations. Commands requiring the Image Toolbox are indicated with
+<strong><code>[Image Toolbox]</code></strong>.</p>
 <h2 id="image-representation">Image representation</h2>
 <p>There are five types of images in Matlab.</p>
 <ul>
-<li><p><strong>Grayscale.</strong> A grayscale image <span class="math inline">\(M\)</span> pixels tall and <span class="math inline">\(N\)</span> pixels wide is represented as a matrix of double datatype of size <span class="math inline">\(M\times N\)</span>. Element values (e.g., <code>MyImage(m, n)</code>) denote the pixel grayscale intensities in [0, 1] with 0=black and 1=white.</p></li>
-<li><p><strong>Truecolor RGB.</strong> A truecolor red-green-blue (RGB) image is represented as a three-dimensional <span class="math inline">\(M\times N \times 3\)</span> double matrix. Each pixel has red, green, blue components along the third dimension with values in [0, 1], for example, the color components of pixel (m, n) are <code>MyImage(m, n, 1)</code> = red, <code>MyImage(m, n, 2)</code> = green, <code>MyImage(m, n, 3)</code> = blue.</p></li>
-<li><p><strong>Indexed.</strong> Indexed (palette based) images are represented with an index matrix of size <span class="math inline">\(M\times N\)</span> and a colormap matrix of size <span class="math inline">\(K\times 3\)</span>. The colormap holds all colors used in the image and the index matrix represents the pixels by referring to colors in the colormap. For example, if the 22nd color is magenta <code>MyColormap(22, :)</code> = <code>[1, 0, 1]</code>, then <code>MyImage(m, n) = 22</code> is a magenta-colored pixel.</p></li>
-<li><p><strong>Binary.</strong> A binary image is represented by an <span class="math inline">\(M\times N\)</span> logical matrix where pixel values are 1 (true) or 0 (false).</p></li>
-<li><p><strong>uint8.</strong> This type uses less memory and some operations compute faster than with double types. For simplicity, this tutorial does not discuss uint8 further.</p></li>
+<li><p><strong>Grayscale.</strong> A grayscale image <span
+class="math inline">\(M\)</span> pixels tall and <span
+class="math inline">\(N\)</span> pixels wide is represented as a matrix
+of double datatype of size <span class="math inline">\(M\times
+N\)</span>. Element values (e.g., <code>MyImage(m, n)</code>) denote the
+pixel grayscale intensities in [0, 1] with 0=black and 1=white.</p></li>
+<li><p><strong>Truecolor RGB.</strong> A truecolor red-green-blue (RGB)
+image is represented as a three-dimensional <span
+class="math inline">\(M\times N \times 3\)</span> double matrix. Each
+pixel has red, green, blue components along the third dimension with
+values in [0, 1], for example, the color components of pixel (m, n) are
+<code>MyImage(m, n, 1)</code> = red, <code>MyImage(m, n, 2)</code> =
+green, <code>MyImage(m, n, 3)</code> = blue.</p></li>
+<li><p><strong>Indexed.</strong> Indexed (palette based) images are
+represented with an index matrix of size <span
+class="math inline">\(M\times N\)</span> and a colormap matrix of size
+<span class="math inline">\(K\times 3\)</span>. The colormap holds all
+colors used in the image and the index matrix represents the pixels by
+referring to colors in the colormap. For example, if the 22nd color is
+magenta <code>MyColormap(22, :)</code> = <code>[1, 0, 1]</code>, then
+<code>MyImage(m, n) = 22</code> is a magenta-colored pixel.</p></li>
+<li><p><strong>Binary.</strong> A binary image is represented by an
+<span class="math inline">\(M\times N\)</span> logical matrix where
+pixel values are 1 (true) or 0 (false).</p></li>
+<li><p><strong>uint8.</strong> This type uses less memory and some
+operations compute faster than with double types. For simplicity, this
+tutorial does not discuss uint8 further.</p></li>
 </ul>
-<p>When possible, it is convenient to work with grayscale format for image processing. In cases requiring color, an RGB color image can be decomposed and handled as three separate grayscale images. Indexed images must be converted to grayscale or RGB for most operations.</p>
-<p>Below are some common manipulations and conversions. A few commands require the Image Toolbox and are indicated with <strong><code>[Image Toolbox]</code></strong>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">% Display a grayscale or binary image</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="va">image</span>(<span class="va">MyGray</span> <span class="op">*</span> <span class="fl">255</span>)<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="va">axis</span> <span class="va">image</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="va">colormap</span>(<span class="va">gray</span>(<span class="fl">256</span>))<span class="op">;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co">% Display an RGB image (error if any element outside of [0, 1])</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="va">image</span>(<span class="va">MyRGB</span>)<span class="op">;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="va">axis</span> <span class="va">image</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">% Display an RGB image (clips elements to [0, 1])</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="va">image</span>(<span class="va">min</span>(<span class="va">max</span>(<span class="va">MyRGB</span><span class="op">,</span> <span class="fl">0</span>)<span class="op">,</span> <span class="fl">1</span>))<span class="op">;</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="va">axis</span> <span class="va">image</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co">% Display an indexed image</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="va">image</span>(<span class="va">MyIndexed</span>)<span class="op">;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="va">axis</span> <span class="va">image</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="va">colormap</span>(<span class="va">MyColormap</span>)<span class="op">;</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a><span class="co">% Separate the channels of an RGB image</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a><span class="va">MyRed</span> <span class="op">=</span> <span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">1</span>)<span class="op">;</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="va">MyGreen</span> <span class="op">=</span> <span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a><span class="va">MyBlue</span> <span class="op">=</span> <span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">3</span>)<span class="op">;</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a><span class="co">% Put the channels back together</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a><span class="va">MyRGB</span> <span class="op">=</span> <span class="va">cat</span>(<span class="fl">3</span><span class="op">,</span> <span class="va">MyRed</span><span class="op">,</span> <span class="va">MyGreen</span><span class="op">,</span> <span class="va">MyBlue</span>)<span class="op">;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a><span class="co">% Convert grayscale to RGB</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a><span class="va">MyRGB</span> <span class="op">=</span> <span class="va">cat</span>(<span class="fl">3</span><span class="op">,</span> <span class="va">MyGray</span><span class="op">,</span> <span class="va">MyGray</span><span class="op">,</span> <span class="va">MyGray</span>)<span class="op">;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true"></a><span class="co">% Convert RGB to grayscale using simple average</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true"></a><span class="va">MyGray</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">MyRGB</span><span class="op">,</span> <span class="fl">3</span>)<span class="op">;</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true"></a><span class="co">% Convert RGB to grayscale using NTSC weighting [Image Toolbox]</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true"></a><span class="va">MyGray</span> <span class="op">=</span> <span class="va">rgb2gray</span>(<span class="va">MyRGB</span>)<span class="op">;</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true"></a><span class="co">% Convert RGB to grayscale using NTSC weighting</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true"></a><span class="va">MyGray</span> <span class="op">=</span> <span class="fl">0.299</span><span class="op">*</span><span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">1</span>) <span class="op">+</span> <span class="fl">0.587</span><span class="op">*</span><span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">2</span>) <span class="op">+</span> <span class="fl">0.114</span><span class="op">*</span><span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">3</span>)<span class="op">;</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true"></a><span class="co">% Convert indexed image to RGB [Image Toolbox]</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true"></a><span class="va">MyRGB</span> <span class="op">=</span> <span class="va">ind2rgb</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="va">MyColormap</span>)<span class="op">;</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true"></a><span class="co">% Convert indexed image to RGB</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true"></a><span class="va">MyRGB</span> <span class="op">=</span> <span class="va">reshape</span>(<span class="va">cat</span>(<span class="fl">3</span><span class="op">,</span> <span class="va">MyColormap</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">MyColormap</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,...</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true"></a>    <span class="va">MyColormap</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">3</span>))<span class="op">,</span> <span class="va">size</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">size</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,</span> <span class="fl">3</span>)<span class="op">;</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true"></a><span class="co">% Convert an RGB image to indexed using K colors [Image Toolbox]</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true"></a>[<span class="va">MyIndexed</span><span class="op">,</span> <span class="va">MyColormap</span>] <span class="op">=</span> <span class="va">rgb2ind</span>(<span class="va">MyRGB</span><span class="op">,</span> <span class="va">K</span>)<span class="op">;</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true"></a><span class="co">% Convert binary to grayscale</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true"></a><span class="va">MyGray</span> <span class="op">=</span> <span class="va">double</span>(<span class="va">MyBinary</span>)<span class="op">;</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true"></a><span class="co">% Convert grayscale to binary</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true"></a><span class="va">MyBinary</span> <span class="op">=</span> (<span class="va">MyGray</span> <span class="op">&gt;</span> <span class="fl">0.5</span>)<span class="op">;</span></span></code></pre></div>
-<h2 id="reading-and-writing-image-files">Reading and writing image files</h2>
-<p>Matlab can read and write images with the <a href="https://www.mathworks.com/help/matlab/ref/imread.html"><code>imread</code></a> and <a href="https://www.mathworks.com/help/matlab/ref/imwrite.html"><code>imwrite</code></a> commands. Although a fair number of file formats are supported, some are not. Use <code>imformats</code> to see what your installation supports:</p>
+<p>When possible, it is convenient to work with grayscale format for
+image processing. In cases requiring color, an RGB color image can be
+decomposed and handled as three separate grayscale images. Indexed
+images must be converted to grayscale or RGB for most operations.</p>
+<p>Below are some common manipulations and conversions. A few commands
+require the Image Toolbox and are indicated with
+<strong><code>[Image Toolbox]</code></strong>.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Display a grayscale or binary image</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">image</span>(<span class="va">MyGray</span> <span class="op">*</span> <span class="fl">255</span>)<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">axis</span> <span class="va">image</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">colormap</span>(<span class="va">gray</span>(<span class="fl">256</span>))<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">% Display an RGB image (error if any element outside of [0, 1])</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="va">image</span>(<span class="va">MyRGB</span>)<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="va">axis</span> <span class="va">image</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">% Display an RGB image (clips elements to [0, 1])</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="va">image</span>(<span class="va">min</span>(<span class="va">max</span>(<span class="va">MyRGB</span><span class="op">,</span> <span class="fl">0</span>)<span class="op">,</span> <span class="fl">1</span>))<span class="op">;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="va">axis</span> <span class="va">image</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">% Display an indexed image</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="va">image</span>(<span class="va">MyIndexed</span>)<span class="op">;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="va">axis</span> <span class="va">image</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="va">colormap</span>(<span class="va">MyColormap</span>)<span class="op">;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">% Separate the channels of an RGB image</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="va">MyRed</span> <span class="op">=</span> <span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="va">MyGreen</span> <span class="op">=</span> <span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="va">MyBlue</span> <span class="op">=</span> <span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">% Put the channels back together</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="va">MyRGB</span> <span class="op">=</span> <span class="va">cat</span>(<span class="fl">3</span><span class="op">,</span> <span class="va">MyRed</span><span class="op">,</span> <span class="va">MyGreen</span><span class="op">,</span> <span class="va">MyBlue</span>)<span class="op">;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert grayscale to RGB</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="va">MyRGB</span> <span class="op">=</span> <span class="va">cat</span>(<span class="fl">3</span><span class="op">,</span> <span class="va">MyGray</span><span class="op">,</span> <span class="va">MyGray</span><span class="op">,</span> <span class="va">MyGray</span>)<span class="op">;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert RGB to grayscale using simple average</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="va">MyGray</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">MyRGB</span><span class="op">,</span> <span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert RGB to grayscale using NTSC weighting [Image Toolbox]</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="va">MyGray</span> <span class="op">=</span> <span class="va">rgb2gray</span>(<span class="va">MyRGB</span>)<span class="op">;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert RGB to grayscale using NTSC weighting</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="va">MyGray</span> <span class="op">=</span> <span class="fl">0.299</span><span class="op">*</span><span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">1</span>) <span class="op">+</span> <span class="fl">0.587</span><span class="op">*</span><span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">2</span>) <span class="op">+</span> <span class="fl">0.114</span><span class="op">*</span><span class="va">MyRGB</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert indexed image to RGB [Image Toolbox]</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="va">MyRGB</span> <span class="op">=</span> <span class="va">ind2rgb</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="va">MyColormap</span>)<span class="op">;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert indexed image to RGB</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="va">MyRGB</span> <span class="op">=</span> <span class="va">reshape</span>(<span class="va">cat</span>(<span class="fl">3</span><span class="op">,</span> <span class="va">MyColormap</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">MyColormap</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,...</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="va">MyColormap</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">3</span>))<span class="op">,</span> <span class="va">size</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">size</span>(<span class="va">MyIndexed</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,</span> <span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert an RGB image to indexed using K colors [Image Toolbox]</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>[<span class="va">MyIndexed</span><span class="op">,</span> <span class="va">MyColormap</span>] <span class="op">=</span> <span class="va">rgb2ind</span>(<span class="va">MyRGB</span><span class="op">,</span> <span class="va">K</span>)<span class="op">;</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert binary to grayscale</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="va">MyGray</span> <span class="op">=</span> <span class="va">double</span>(<span class="va">MyBinary</span>)<span class="op">;</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">% Convert grayscale to binary</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="va">MyBinary</span> <span class="op">=</span> (<span class="va">MyGray</span> <span class="op">&gt;</span> <span class="fl">0.5</span>)<span class="op">;</span></span></code></pre></div>
+<h2 id="reading-and-writing-image-files">Reading and writing image
+files</h2>
+<p>Matlab can read and write images with the <a
+href="https://www.mathworks.com/help/matlab/ref/imread.html"><code>imread</code></a>
+and <a
+href="https://www.mathworks.com/help/matlab/ref/imwrite.html"><code>imwrite</code></a>
+commands. Although a fair number of file formats are supported, some are
+not. Use <code>imformats</code> to see what your installation
+supports:</p>
 <pre><code>&gt;&gt; imformats
 EXT   ISA     READ      WRITE     ALPHA  DESCRIPTION
 --------------------------------------------------------------------------
@@ -165,229 +209,342 @@ png   ispng   readpng   writepng  1      Portable Network Graphics (PNG)
 pnm   ispnm   readpnm   writepnm  0      Portable Any Map (PNM)
 ppm   isppm   readpnm   writepnm  0      Portable Pixmap (PPM)
 ...</code></pre>
-<p>When reading images, an inconvenience is that <code>imread</code> returns the image data in uint8 datatype, which must be converted to double and rescaled before use. So instead of calling <code>imread</code> directly, I use the following M-file function to read and convert images:</p>
+<p>When reading images, an inconvenience is that <code>imread</code>
+returns the image data in uint8 datatype, which must be converted to
+double and rescaled before use. So instead of calling
+<code>imread</code> directly, I use the following M-file function to
+read and convert images:</p>
 <p><strong><code>getimage.m</code></strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">function</span> <span class="va">Img</span> <span class="op">=</span> <span class="va">getimage</span>(<span class="va">Filename</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">%GETIMAGE  Read an image given a filename</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co">%   V = GETIMAGE(FILENAME) where FILENAME is an image file.  The image is</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co">%   returned either as an MxN double matrix for a grayscale image or as an</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="co">%   MxNx3 double matrix for a color image, with elements in [0,1].</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co">% Pascal Getreuer 2008-2009</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="co">% Read the file</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>[<span class="va">Img</span><span class="op">,</span> <span class="va">Map</span><span class="op">,</span> <span class="va">Alpha</span>] <span class="op">=</span> <span class="va">imread</span>(<span class="va">Filename</span>)<span class="op">;</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="va">Img</span> <span class="op">=</span> <span class="va">double</span>(<span class="va">Img</span>)<span class="op">;</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="kw">if</span> <span class="op">~</span><span class="va">isempty</span>(<span class="va">Map</span>)    <span class="co">% Convert indexed image to RGB.</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>    <span class="va">Img</span> <span class="op">=</span> <span class="va">Img</span> <span class="op">+</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>    <span class="va">Img</span> <span class="op">=</span> <span class="va">reshape</span>(<span class="va">cat</span>(<span class="fl">3</span><span class="op">,</span> <span class="va">Map</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">Map</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,</span> <span class="va">Map</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">3</span>))<span class="op">,</span> <span class="op">...</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>                  <span class="va">size</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">size</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,</span> <span class="fl">3</span>)<span class="op">;</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a><span class="kw">else</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>    <span class="va">Img</span> <span class="op">=</span> <span class="va">Img</span> <span class="op">/</span> <span class="fl">255</span><span class="op">;</span>  <span class="co">% Rescale to [0, 1].</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a><span class="kw">end</span></span></code></pre></div>
-<p>Save this code as getimage.m to use this M-function. If image baboon.png is in the current directory (or somewhere in the Matlab search path), you can read it with <code class="sourceCode matlab"><span class="va">MyImage</span> <span class="op">=</span> <span class="va">getimage</span>(<span class="ss">&#39;baboon.png&#39;</span>)</code>. You can also use partial paths, for example if the image is in <code>&lt;current directory&gt;/images/</code> with <code class="sourceCode matlab"><span class="va">getimage</span>(<span class="ss">&#39;images/baboon.png&#39;</span>)</code>.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">Img</span> <span class="op">=</span> <span class="va">getimage</span>(<span class="va">Filename</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">%GETIMAGE  Read an image given a filename</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">%   V = GETIMAGE(FILENAME) where FILENAME is an image file.  The image is</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">%   returned either as an MxN double matrix for a grayscale image or as an</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">%   MxNx3 double matrix for a color image, with elements in [0,1].</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">% Pascal Getreuer 2008-2009</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">% Read the file</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>[<span class="va">Img</span><span class="op">,</span> <span class="va">Map</span><span class="op">,</span> <span class="va">Alpha</span>] <span class="op">=</span> <span class="va">imread</span>(<span class="va">Filename</span>)<span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="va">Img</span> <span class="op">=</span> <span class="va">double</span>(<span class="va">Img</span>)<span class="op">;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="op">~</span><span class="va">isempty</span>(<span class="va">Map</span>)    <span class="co">% Convert indexed image to RGB.</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">Img</span> <span class="op">=</span> <span class="va">Img</span> <span class="op">+</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">Img</span> <span class="op">=</span> <span class="va">reshape</span>(<span class="va">cat</span>(<span class="fl">3</span><span class="op">,</span> <span class="va">Map</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">Map</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,</span> <span class="va">Map</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">3</span>))<span class="op">,</span> <span class="op">...</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                  <span class="va">size</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">size</span>(<span class="va">Img</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,</span> <span class="fl">3</span>)<span class="op">;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="va">Img</span> <span class="op">=</span> <span class="va">Img</span> <span class="op">/</span> <span class="fl">255</span><span class="op">;</span>  <span class="co">% Rescale to [0, 1].</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>Save this code as getimage.m to use this M-function. If image
+baboon.png is in the current directory (or somewhere in the Matlab
+search path), you can read it with <code
+class="sourceCode matlab"><span class="va">MyImage</span> <span class="op">=</span> <span class="va">getimage</span>(<span class="ss">&#39;baboon.png&#39;</span>)</code>.
+You can also use partial paths, for example if the image is in
+<code>&lt;current directory&gt;/images/</code> with <code
+class="sourceCode matlab"><span class="va">getimage</span>(<span class="ss">&#39;images/baboon.png&#39;</span>)</code>.</p>
 <p>To write a grayscale or RGB image, use</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="va">imwrite</span>(<span class="va">MyImage</span><span class="op">,</span> <span class="ss">&#39;myimage.png&#39;</span>)<span class="op">;</span></span></code></pre></div>
-<p>Take care that <code>MyImage</code> is a double matrix with elements in [0, 1]—if improperly scaled, the saved file will probably be blank.</p>
-<p>When writing image files, I highly recommend using the PNG file format. This format is a reliable choice since it is lossless, supports truecolor RGB, and compresses pretty well. Use other formats with caution.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">imwrite</span>(<span class="va">MyImage</span><span class="op">,</span> <span class="ss">&#39;myimage.png&#39;</span>)<span class="op">;</span></span></code></pre></div>
+<p>Take care that <code>MyImage</code> is a double matrix with elements
+in [0, 1]—if improperly scaled, the saved file will probably be
+blank.</p>
+<p>When writing image files, I highly recommend using the PNG file
+format. This format is a reliable choice since it is lossless, supports
+truecolor RGB, and compresses pretty well. Use other formats with
+caution.</p>
 <h2 id="basic-operations">Basic operations</h2>
-<p>Below are some basic operations on a grayscale image <code>u</code>. Commands requiring the Image Toolbox are indicated with <strong><code>[Image Toolbox]</code></strong>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">% Statistics</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="va">uMax</span> <span class="op">=</span> <span class="va">max</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                            <span class="co">% Compute the maximum value</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="va">uMin</span> <span class="op">=</span> <span class="va">min</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                            <span class="co">% Minimum</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="va">uPower</span> <span class="op">=</span> <span class="va">sum</span>(<span class="va">u</span>(<span class="op">:</span>)<span class="op">.^</span><span class="fl">2</span>)<span class="op">;</span>                       <span class="co">% Power</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="va">uAvg</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                           <span class="co">% Average</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="va">uVar</span> <span class="op">=</span> <span class="va">var</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                            <span class="co">% Variance</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="va">uMed</span> <span class="op">=</span> <span class="va">median</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                         <span class="co">% Median</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="va">hist</span>(<span class="va">u</span>(<span class="op">:</span>)<span class="op">,</span> <span class="va">linspace</span>(<span class="fl">0</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">256</span>))<span class="op">;</span>             <span class="co">% Plot histogram</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">% Basic manipulations</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="va">uClip</span> <span class="op">=</span> <span class="va">min</span>(<span class="va">max</span>(<span class="va">u</span><span class="op">,</span> <span class="fl">0</span>)<span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span>                   <span class="co">% Clip elements to [0,1]</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a><span class="va">uPad</span> <span class="op">=</span> <span class="va">u</span>([<span class="fl">1</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="kw">end</span>]<span class="op">,</span> [<span class="fl">1</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="kw">end</span>])<span class="op">;</span>  <span class="co">% Pad with one-pixel margin</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a><span class="va">uPad</span> <span class="op">=</span> <span class="va">padarray</span>(<span class="va">u</span><span class="op">,</span> [<span class="va">k</span><span class="op">,</span> <span class="va">k</span>]<span class="op">,</span> <span class="ss">&#39;replicate&#39;</span>)<span class="op">;</span>     <span class="co">% Pad of size k [Image Toolbox]</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a><span class="va">uCrop</span> <span class="op">=</span> <span class="va">u</span>(<span class="va">RowStart</span><span class="op">:</span><span class="va">RowEnd</span><span class="op">,</span> <span class="va">ColStart</span><span class="op">:</span><span class="va">ColEnd</span>)<span class="op">;</span> <span class="co">% Crop image</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="va">uFlip</span> <span class="op">=</span> <span class="va">flipud</span>(<span class="va">u</span>)<span class="op">;</span>                           <span class="co">% Flip up/down</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="va">uFlip</span> <span class="op">=</span> <span class="va">fliplr</span>(<span class="va">u</span>)<span class="op">;</span>                           <span class="co">% Flip left/right</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="va">uResize</span> <span class="op">=</span> <span class="va">imresize</span>(<span class="va">u</span><span class="op">,</span> <span class="va">ScaleFactor</span>)<span class="op">;</span>          <span class="co">% Resize [Image Toolbox]</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="va">uRot</span> <span class="op">=</span> <span class="va">rot90</span>(<span class="va">u</span><span class="op">,</span> <span class="va">k</span>)<span class="op">;</span>                          <span class="co">% Rotate by k*90 degrees</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="va">uRot</span> <span class="op">=</span> <span class="va">imrotate</span>(<span class="va">u</span><span class="op">,</span> <span class="va">Angle</span>)<span class="op">;</span>                   <span class="co">% Rotate [Image Toolbox]</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a><span class="va">uc</span> <span class="op">=</span> (<span class="va">u</span> <span class="op">-</span> <span class="va">min</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">/</span>(<span class="va">max</span>(<span class="va">u</span>(<span class="op">:</span>)) <span class="op">-</span> <span class="va">min</span>(<span class="va">u</span>(<span class="op">:</span>)))<span class="op">;</span> <span class="co">% Stretch contrast to [0, 1]</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="va">uq</span> <span class="op">=</span> <span class="va">round</span>(<span class="va">u</span> <span class="op">*</span> (<span class="va">K</span> <span class="op">-</span> <span class="fl">1</span>))<span class="op">/</span>(<span class="va">K</span> <span class="op">-</span> <span class="fl">1</span>)<span class="op">;</span>             <span class="co">% Quantize to K graylevels</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a><span class="co">% Add white Gaussian noise of standard deviation sigma.</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a><span class="va">uNoisy</span> <span class="op">=</span> <span class="va">u</span> <span class="op">+</span> <span class="va">randn</span>(<span class="va">size</span>(<span class="va">u</span>)) <span class="op">*</span> <span class="va">sigma</span><span class="op">;</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a><span class="co">% Simluate salt and pepper noise.</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a><span class="va">uNoisy</span> <span class="op">=</span> <span class="va">u</span><span class="op">;</span> <span class="va">uNoisy</span>(<span class="va">rand</span>(<span class="va">size</span>(<span class="va">u</span>)) <span class="op">&lt;</span> <span class="va">p</span>) <span class="op">=</span> <span class="va">round</span>(<span class="va">rand</span>(<span class="va">size</span>(<span class="va">u</span>)))<span class="op">;</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a><span class="co">% Debugging</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a><span class="va">any</span>(<span class="op">~</span><span class="va">isfinite</span>(<span class="va">u</span>(<span class="op">:</span>)))  <span class="co">% Are any elements are infinite or NaN?</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a><span class="va">nnz</span>(<span class="va">u</span> <span class="op">&gt;</span> <span class="fl">0.5</span>)          <span class="co">% Count elements satisfying some condition.</span></span></code></pre></div>
-<p><em>(Note: For any array, the syntax <code>u(:)</code> means “unroll <code>u</code> into a column vector.” For example, if <code>u = [1,5;0,2]</code>, then <code>u(:)</code> is <code>[1;0;5;2]</code>.)</em></p>
-<p>For example, image signal power is used in computing signal-to-noise ratio (SNR) and peak signal-to-noise ratio (PSNR). Given clean image <code>uclean</code> and noise-contaminated image <code>u</code>,</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">% Compute SNR</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="va">snr</span> <span class="op">=</span> <span class="op">-</span><span class="fl">10</span> <span class="op">*</span> <span class="va">log10</span>( <span class="va">sum</span>((<span class="va">uclean</span>(<span class="op">:</span>) <span class="op">-</span> <span class="va">u</span>(<span class="op">:</span>))<span class="op">.^</span><span class="fl">2</span>) <span class="op">/</span> <span class="va">sum</span>(<span class="va">uclean</span>(<span class="op">:</span>)<span class="op">.^</span><span class="fl">2</span>) )<span class="op">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="co">% Compute PSNR (where the maximum possible value of uclean is 1)</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="va">psnr</span> <span class="op">=</span> <span class="op">-</span><span class="fl">10</span> <span class="op">*</span> <span class="va">log10</span>( <span class="va">mean</span>((<span class="va">uclean</span>(<span class="op">:</span>) <span class="op">-</span> <span class="va">u</span>(<span class="op">:</span>))<span class="op">.^</span><span class="fl">2</span>) )<span class="op">;</span></span></code></pre></div>
-<p><strong>Be careful with <code>norm</code>:</strong> the behavior is <code>norm(v)</code> on vector <code>v</code> computes <code>sqrt(sum(v.^2))</code>, but <code>norm(A)</code> on matrix <code>A</code> computes the induced <span class="math inline">\(L^2\)</span> matrix norm,</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="va">norm</span>(<span class="va">A</span>) <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">max</span>(<span class="va">eig</span>(<span class="va">A</span><span class="op">&#39;</span> <span class="op">*</span> <span class="va">A</span>)))   <span class="co">% gaah!</span></span></code></pre></div>
-<p>So <code>norm(A)</code> is certainly not <code>sqrt(sum(A(:).^2))</code>. It is nevertheless an easy mistake to use <code>norm(A)</code> where it should have been <code>norm(A(:))</code>.</p>
+<p>Below are some basic operations on a grayscale image <code>u</code>.
+Commands requiring the Image Toolbox are indicated with
+<strong><code>[Image Toolbox]</code></strong>.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Statistics</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">uMax</span> <span class="op">=</span> <span class="va">max</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                            <span class="co">% Compute the maximum value</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="va">uMin</span> <span class="op">=</span> <span class="va">min</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                            <span class="co">% Minimum</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="va">uPower</span> <span class="op">=</span> <span class="va">sum</span>(<span class="va">u</span>(<span class="op">:</span>)<span class="op">.^</span><span class="fl">2</span>)<span class="op">;</span>                       <span class="co">% Power</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="va">uAvg</span> <span class="op">=</span> <span class="va">mean</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                           <span class="co">% Average</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="va">uVar</span> <span class="op">=</span> <span class="va">var</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                            <span class="co">% Variance</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="va">uMed</span> <span class="op">=</span> <span class="va">median</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">;</span>                         <span class="co">% Median</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="va">hist</span>(<span class="va">u</span>(<span class="op">:</span>)<span class="op">,</span> <span class="va">linspace</span>(<span class="fl">0</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">256</span>))<span class="op">;</span>             <span class="co">% Plot histogram</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">% Basic manipulations</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="va">uClip</span> <span class="op">=</span> <span class="va">min</span>(<span class="va">max</span>(<span class="va">u</span><span class="op">,</span> <span class="fl">0</span>)<span class="op">,</span> <span class="fl">1</span>)<span class="op">;</span>                   <span class="co">% Clip elements to [0,1]</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="va">uPad</span> <span class="op">=</span> <span class="va">u</span>([<span class="fl">1</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="kw">end</span>]<span class="op">,</span> [<span class="fl">1</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="kw">end</span>])<span class="op">;</span>  <span class="co">% Pad with one-pixel margin</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="va">uPad</span> <span class="op">=</span> <span class="va">padarray</span>(<span class="va">u</span><span class="op">,</span> [<span class="va">k</span><span class="op">,</span> <span class="va">k</span>]<span class="op">,</span> <span class="ss">&#39;replicate&#39;</span>)<span class="op">;</span>     <span class="co">% Pad of size k [Image Toolbox]</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="va">uCrop</span> <span class="op">=</span> <span class="va">u</span>(<span class="va">RowStart</span><span class="op">:</span><span class="va">RowEnd</span><span class="op">,</span> <span class="va">ColStart</span><span class="op">:</span><span class="va">ColEnd</span>)<span class="op">;</span> <span class="co">% Crop image</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="va">uFlip</span> <span class="op">=</span> <span class="va">flipud</span>(<span class="va">u</span>)<span class="op">;</span>                           <span class="co">% Flip up/down</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="va">uFlip</span> <span class="op">=</span> <span class="va">fliplr</span>(<span class="va">u</span>)<span class="op">;</span>                           <span class="co">% Flip left/right</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="va">uResize</span> <span class="op">=</span> <span class="va">imresize</span>(<span class="va">u</span><span class="op">,</span> <span class="va">ScaleFactor</span>)<span class="op">;</span>          <span class="co">% Resize [Image Toolbox]</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="va">uRot</span> <span class="op">=</span> <span class="va">rot90</span>(<span class="va">u</span><span class="op">,</span> <span class="va">k</span>)<span class="op">;</span>                          <span class="co">% Rotate by k*90 degrees</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="va">uRot</span> <span class="op">=</span> <span class="va">imrotate</span>(<span class="va">u</span><span class="op">,</span> <span class="va">Angle</span>)<span class="op">;</span>                   <span class="co">% Rotate [Image Toolbox]</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="va">uc</span> <span class="op">=</span> (<span class="va">u</span> <span class="op">-</span> <span class="va">min</span>(<span class="va">u</span>(<span class="op">:</span>))<span class="op">/</span>(<span class="va">max</span>(<span class="va">u</span>(<span class="op">:</span>)) <span class="op">-</span> <span class="va">min</span>(<span class="va">u</span>(<span class="op">:</span>)))<span class="op">;</span> <span class="co">% Stretch contrast to [0, 1]</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="va">uq</span> <span class="op">=</span> <span class="va">round</span>(<span class="va">u</span> <span class="op">*</span> (<span class="va">K</span> <span class="op">-</span> <span class="fl">1</span>))<span class="op">/</span>(<span class="va">K</span> <span class="op">-</span> <span class="fl">1</span>)<span class="op">;</span>             <span class="co">% Quantize to K graylevels</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">% Add white Gaussian noise of standard deviation sigma.</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="va">uNoisy</span> <span class="op">=</span> <span class="va">u</span> <span class="op">+</span> <span class="va">randn</span>(<span class="va">size</span>(<span class="va">u</span>)) <span class="op">*</span> <span class="va">sigma</span><span class="op">;</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">% Simluate salt and pepper noise.</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="va">uNoisy</span> <span class="op">=</span> <span class="va">u</span><span class="op">;</span> <span class="va">uNoisy</span>(<span class="va">rand</span>(<span class="va">size</span>(<span class="va">u</span>)) <span class="op">&lt;</span> <span class="va">p</span>) <span class="op">=</span> <span class="va">round</span>(<span class="va">rand</span>(<span class="va">size</span>(<span class="va">u</span>)))<span class="op">;</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">% Debugging</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="va">any</span>(<span class="op">~</span><span class="va">isfinite</span>(<span class="va">u</span>(<span class="op">:</span>)))  <span class="co">% Are any elements are infinite or NaN?</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="va">nnz</span>(<span class="va">u</span> <span class="op">&gt;</span> <span class="fl">0.5</span>)          <span class="co">% Count elements satisfying some condition.</span></span></code></pre></div>
+<p><em>(Note: For any array, the syntax <code>u(:)</code> means “unroll
+<code>u</code> into a column vector.” For example, if
+<code>u = [1,5;0,2]</code>, then <code>u(:)</code> is
+<code>[1;0;5;2]</code>.)</em></p>
+<p>For example, image signal power is used in computing signal-to-noise
+ratio (SNR) and peak signal-to-noise ratio (PSNR). Given clean image
+<code>uclean</code> and noise-contaminated image <code>u</code>,</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Compute SNR</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="va">snr</span> <span class="op">=</span> <span class="op">-</span><span class="fl">10</span> <span class="op">*</span> <span class="va">log10</span>( <span class="va">sum</span>((<span class="va">uclean</span>(<span class="op">:</span>) <span class="op">-</span> <span class="va">u</span>(<span class="op">:</span>))<span class="op">.^</span><span class="fl">2</span>) <span class="op">/</span> <span class="va">sum</span>(<span class="va">uclean</span>(<span class="op">:</span>)<span class="op">.^</span><span class="fl">2</span>) )<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">% Compute PSNR (where the maximum possible value of uclean is 1)</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="va">psnr</span> <span class="op">=</span> <span class="op">-</span><span class="fl">10</span> <span class="op">*</span> <span class="va">log10</span>( <span class="va">mean</span>((<span class="va">uclean</span>(<span class="op">:</span>) <span class="op">-</span> <span class="va">u</span>(<span class="op">:</span>))<span class="op">.^</span><span class="fl">2</span>) )<span class="op">;</span></span></code></pre></div>
+<p><strong>Be careful with <code>norm</code>:</strong> the behavior is
+<code>norm(v)</code> on vector <code>v</code> computes
+<code>sqrt(sum(v.^2))</code>, but <code>norm(A)</code> on matrix
+<code>A</code> computes the induced <span
+class="math inline">\(L^2\)</span> matrix norm,</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">norm</span>(<span class="va">A</span>) <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">max</span>(<span class="va">eig</span>(<span class="va">A</span><span class="op">&#39;</span> <span class="op">*</span> <span class="va">A</span>)))   <span class="co">% gaah!</span></span></code></pre></div>
+<p>So <code>norm(A)</code> is certainly not
+<code>sqrt(sum(A(:).^2))</code>. It is nevertheless an easy mistake to
+use <code>norm(A)</code> where it should have been
+<code>norm(A(:))</code>.</p>
 <h2 id="linear-filters">Linear filters</h2>
-<p>Linear filtering is the cornerstone technique of signal processing. To briefly introduce, a linear filter is an operation where at every pixel <span class="math inline">\(x_{m,n}\)</span> of an image, a linear function is evaluated on the pixel and its neighbors to compute a new pixel value <span class="math inline">\(y_{m,n}\)</span>.</p>
-<p>A linear filter in two dimensions has the general form <span class="math display">\[ y_{m,n} = \sum_j \sum_k h_{j,k} x_{m-j,n-k} \]</span> where <span class="math inline">\(x\)</span> is the input, <span class="math inline">\(y\)</span> is the output, and <span class="math inline">\(h\)</span> is the filter impulse response. Different choices of <span class="math inline">\(h\)</span> lead to filters that smooth, sharpen, and detect edges, to name a few applications. The right-hand side of the above equation is denoted concisely as <span class="math inline">\(h*x\)</span> and is called the “convolution of <span class="math inline">\(h\)</span> and <span class="math inline">\(x\)</span>.”</p>
+<p>Linear filtering is the cornerstone technique of signal processing.
+To briefly introduce, a linear filter is an operation where at every
+pixel <span class="math inline">\(x_{m,n}\)</span> of an image, a linear
+function is evaluated on the pixel and its neighbors to compute a new
+pixel value <span class="math inline">\(y_{m,n}\)</span>.</p>
+<p>A linear filter in two dimensions has the general form <span
+class="math display">\[ y_{m,n} = \sum_j \sum_k h_{j,k} x_{m-j,n-k}
+\]</span> where <span class="math inline">\(x\)</span> is the input,
+<span class="math inline">\(y\)</span> is the output, and <span
+class="math inline">\(h\)</span> is the filter impulse response.
+Different choices of <span class="math inline">\(h\)</span> lead to
+filters that smooth, sharpen, and detect edges, to name a few
+applications. The right-hand side of the above equation is denoted
+concisely as <span class="math inline">\(h*x\)</span> and is called the
+“convolution of <span class="math inline">\(h\)</span> and <span
+class="math inline">\(x\)</span>.”</p>
 <h3 id="spatial-domain-filtering">Spatial-domain filtering</h3>
-<p>Two-dimensional linear filtering is implemented in Matlab with <a href="https://www.mathworks.com/help/matlab/ref/conv2.html"><code>conv2</code></a>. Unfortunately, <code>conv2</code> can only handle filtering near the image boundaries by zero-padding, which for images is usually inappropriate. To work around this, we can pad the input image and then use the <code class="sourceCode matlab"><span class="ss">&#39;valid&#39;</span></code> option when calling <code>conv2</code>. The following M-function does this.</p>
+<p>Two-dimensional linear filtering is implemented in Matlab with <a
+href="https://www.mathworks.com/help/matlab/ref/conv2.html"><code>conv2</code></a>.
+Unfortunately, <code>conv2</code> can only handle filtering near the
+image boundaries by zero-padding, which for images is usually
+inappropriate. To work around this, we can pad the input image and then
+use the <code
+class="sourceCode matlab"><span class="ss">&#39;valid&#39;</span></code>
+option when calling <code>conv2</code>. The following M-function does
+this.</p>
 <p><strong><code>conv2padded.m</code></strong></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">function</span> <span class="va">x</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">varargin</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="co">%CONV2PADDED  Two-dimensional convolution with padding.</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="co">%   Y = CONV2PADDED(X,H) applies 2D filter H to X with constant</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co">%   extension padding.</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="co">%</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co">%   Y = CONV2PADDED(H1,H2,X) first applies 1D filter H1 along the rows</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co">%   and then applies 1D filter H2 along the columns.</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a><span class="co">%</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="co">%   If X is a 3D array, filtering is done separately on each channel.</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a><span class="co">% Pascal Getreuer 2009</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="kw">if</span> <span class="va">nargin</span> <span class="op">==</span> <span class="fl">2</span>       <span class="co">% Function was called as &quot;conv2padded(x,h)&quot;</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">1</span>}<span class="op">;</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>    <span class="va">h</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">2</span>}<span class="op">;</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a>    <span class="va">top</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="va">size</span>(<span class="va">h</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">/</span><span class="fl">2</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>    <span class="va">bottom</span> <span class="op">=</span> <span class="va">floor</span>(<span class="va">size</span>(<span class="va">h</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a>    <span class="va">left</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="va">size</span>(<span class="va">h</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">/</span><span class="fl">2</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>    <span class="va">right</span> <span class="op">=</span> <span class="va">floor</span>(<span class="va">size</span>(<span class="va">h</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a><span class="kw">elseif</span> <span class="va">nargin</span> <span class="op">==</span> <span class="fl">3</span>   <span class="co">% Function was called as &quot;conv2padded(h1,h2,x)&quot;</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a>    <span class="va">h1</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">1</span>}<span class="op">;</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true"></a>    <span class="va">h2</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">2</span>}<span class="op">;</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">3</span>}<span class="op">;</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true"></a>    <span class="va">top</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="va">length</span>(<span class="va">h1</span>)<span class="op">/</span><span class="fl">2</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true"></a>    <span class="va">bottom</span> <span class="op">=</span> <span class="va">floor</span>(<span class="va">length</span>(<span class="va">h1</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true"></a>    <span class="va">left</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="va">length</span>(<span class="va">h2</span>)<span class="op">/</span><span class="fl">2</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true"></a>    <span class="va">right</span> <span class="op">=</span> <span class="va">floor</span>(<span class="va">length</span>(<span class="va">h2</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true"></a><span class="kw">else</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true"></a>    <span class="va">error</span>(<span class="ss">&#39;Wrong number of arguments.&#39;</span>)<span class="op">;</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true"></a><span class="kw">end</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true"></a></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true"></a><span class="co">% Pad the input image</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true"></a><span class="va">xPadded</span> <span class="op">=</span> <span class="va">x</span>([<span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">top</span>)<span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">1</span>) <span class="op">+</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">bottom</span>)]<span class="op">,...</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true"></a>      [<span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">left</span>)<span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,</span> <span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">2</span>) <span class="op">+</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">right</span>)]<span class="op">,</span> <span class="op">:</span>)<span class="op">;</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true"></a></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true"></a><span class="co">% Since conv2 cannot handle 3D inputs, do filtering channel by channel</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true"></a><span class="kw">for</span> <span class="va">p</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">3</span>)</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true"></a>    <span class="kw">if</span> <span class="va">nargin</span> <span class="op">==</span> <span class="fl">2</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true"></a>        <span class="va">x</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="va">p</span>) <span class="op">=</span> <span class="va">conv2</span>(<span class="va">xPadded</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="va">p</span>)<span class="op">,</span> <span class="va">h</span><span class="op">,</span> <span class="ss">&#39;valid&#39;</span>)<span class="op">;</span>      <span class="co">% Call conv2</span></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true"></a>    <span class="kw">else</span></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true"></a>        <span class="va">x</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="va">p</span>) <span class="op">=</span> <span class="va">conv2</span>(<span class="va">h1</span><span class="op">,</span> <span class="va">h2</span><span class="op">,</span> <span class="va">xPadded</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="va">p</span>)<span class="op">,</span> <span class="ss">&#39;valid&#39;</span>)<span class="op">;</span> <span class="co">% Call conv2</span></span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true"></a>    <span class="kw">end</span></span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true"></a><span class="kw">end</span></span></code></pre></div>
-<p>Save this code as <code>conv2padded.m</code> to use this M-function. Here are some examples:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">% A light smoothing filter</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="va">h</span> <span class="op">=</span> [<span class="fl">0</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">0</span><span class="op">;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>     <span class="fl">1</span><span class="op">,</span> <span class="fl">4</span><span class="op">,</span> <span class="fl">1</span><span class="op">;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>     <span class="fl">0</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">0</span>]<span class="op">;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="va">h</span> <span class="op">=</span> <span class="va">h</span> <span class="op">/</span> <span class="va">sum</span>(<span class="va">h</span>(<span class="op">:</span>))<span class="op">;</span>  <span class="co">% Normalize the filter</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="va">uSmooth</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">u</span><span class="op">,</span> <span class="va">h</span>)<span class="op">;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a><span class="co">% A sharpening filter</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="va">h</span> <span class="op">=</span> [<span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span><span class="op">,</span> <span class="fl">0</span><span class="op">;</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>     <span class="op">-</span><span class="fl">1</span><span class="op">,</span> <span class="fl">8</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span><span class="op">;</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>     <span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span><span class="op">,</span> <span class="fl">0</span>]<span class="op">;</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a><span class="va">h</span> <span class="op">=</span> <span class="va">h</span> <span class="op">/</span> <span class="va">sum</span>(<span class="va">h</span>(<span class="op">:</span>))<span class="op">;</span>  <span class="co">% Normalize the filter</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a><span class="va">uSharp</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">u</span><span class="op">,</span> <span class="va">h</span>)<span class="op">;</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a><span class="co">% Sobel edge detection</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a><span class="va">hx</span> <span class="op">=</span> [<span class="fl">1</span><span class="op">,</span> <span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span><span class="op">;</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a>     <span class="fl">2</span><span class="op">,</span> <span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">2</span><span class="op">;</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a>     <span class="fl">1</span><span class="op">,</span> <span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span>]<span class="op">;</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a><span class="va">hy</span> <span class="op">=</span> <span class="va">rot90</span>(<span class="va">hx</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span>)<span class="op">;</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a><span class="va">u_x</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">u</span><span class="op">,</span> <span class="va">hx</span>)<span class="op">;</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true"></a><span class="va">u_y</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">u</span><span class="op">,</span> <span class="va">hy</span>)<span class="op">;</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true"></a><span class="va">EdgeStrength</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">u_x</span><span class="op">.^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">u_y</span><span class="op">.^</span><span class="fl">2</span>)<span class="op">;</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true"></a></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true"></a><span class="co">% Moving average</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true"></a><span class="va">WindowSize</span> <span class="op">=</span> <span class="fl">5</span><span class="op">;</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true"></a><span class="va">h1</span> <span class="op">=</span> <span class="va">ones</span>(<span class="va">WindowSize</span><span class="op">,</span> <span class="fl">1</span>) <span class="op">/</span> <span class="va">WindowSize</span><span class="op">;</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true"></a><span class="va">uSmooth</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">h1</span><span class="op">,</span> <span class="va">h1</span><span class="op">,</span> <span class="va">u</span>)<span class="op">;</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true"></a></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true"></a><span class="co">% Gaussian filtering</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true"></a><span class="va">sigma</span> <span class="op">=</span> <span class="fl">3.5</span><span class="op">;</span></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true"></a><span class="va">FilterRadius</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="fl">4</span> <span class="op">*</span> <span class="va">sigma</span>)<span class="op">;</span>  <span class="co">% Truncate the Gaussian at 4*sigma</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true"></a><span class="va">h1</span> <span class="op">=</span> <span class="va">exp</span>(<span class="op">-</span>(<span class="op">-</span><span class="va">FilterRadius</span><span class="op">:</span><span class="va">FilterRadius</span>)<span class="op">.^</span><span class="fl">2</span> <span class="op">/</span> (<span class="fl">2</span> <span class="op">*</span> <span class="va">sigma</span><span class="op">^</span><span class="fl">2</span>))<span class="op">;</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true"></a><span class="va">h1</span> <span class="op">=</span> <span class="va">h1</span> <span class="op">/</span> <span class="va">sum</span>(<span class="va">h1</span>)<span class="op">;</span>               <span class="co">% Normalize the filter</span></span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true"></a><span class="va">uSmooth</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">h1</span><span class="op">,</span> <span class="va">h1</span><span class="op">,</span> <span class="va">u</span>)<span class="op">;</span></span></code></pre></div>
-<p>A 2D filter h is said to be <em>separable</em> if it can be expressed as the outer product of two 1D filters h1 and h2, that is, <code>h = h1(:) * h2(:)'</code>. It is faster to pass h1 and h2 than h, as is done above for the moving average window and the Gaussian filter. In fact, the Sobel filters <code>hx</code> and <code>hy</code> in the above code are also separable—what are h1 and h2?</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="va">x</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">varargin</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">%CONV2PADDED  Two-dimensional convolution with padding.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">%   Y = CONV2PADDED(X,H) applies 2D filter H to X with constant</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">%   extension padding.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">%   Y = CONV2PADDED(H1,H2,X) first applies 1D filter H1 along the rows</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">%   and then applies 1D filter H2 along the columns.</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">%</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">%   If X is a 3D array, filtering is done separately on each channel.</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">% Pascal Getreuer 2009</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="va">nargin</span> <span class="op">==</span> <span class="fl">2</span>       <span class="co">% Function was called as &quot;conv2padded(x,h)&quot;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">1</span>}<span class="op">;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">h</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">2</span>}<span class="op">;</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="va">top</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="va">size</span>(<span class="va">h</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">/</span><span class="fl">2</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="va">bottom</span> <span class="op">=</span> <span class="va">floor</span>(<span class="va">size</span>(<span class="va">h</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="va">left</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="va">size</span>(<span class="va">h</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">/</span><span class="fl">2</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="va">right</span> <span class="op">=</span> <span class="va">floor</span>(<span class="va">size</span>(<span class="va">h</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="kw">elseif</span> <span class="va">nargin</span> <span class="op">==</span> <span class="fl">3</span>   <span class="co">% Function was called as &quot;conv2padded(h1,h2,x)&quot;</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="va">h1</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">1</span>}<span class="op">;</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="va">h2</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">2</span>}<span class="op">;</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="va">x</span> <span class="op">=</span> <span class="va">varargin</span>{<span class="fl">3</span>}<span class="op">;</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="va">top</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="va">length</span>(<span class="va">h1</span>)<span class="op">/</span><span class="fl">2</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="va">bottom</span> <span class="op">=</span> <span class="va">floor</span>(<span class="va">length</span>(<span class="va">h1</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="va">left</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="va">length</span>(<span class="va">h2</span>)<span class="op">/</span><span class="fl">2</span>) <span class="op">-</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="va">right</span> <span class="op">=</span> <span class="va">floor</span>(<span class="va">length</span>(<span class="va">h2</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="kw">else</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="va">error</span>(<span class="ss">&#39;Wrong number of arguments.&#39;</span>)<span class="op">;</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co">% Pad the input image</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="va">xPadded</span> <span class="op">=</span> <span class="va">x</span>([<span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">top</span>)<span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">,</span> <span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">1</span>) <span class="op">+</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">bottom</span>)]<span class="op">,...</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>      [<span class="va">ones</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">left</span>)<span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">,</span> <span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">2</span>) <span class="op">+</span> <span class="va">zeros</span>(<span class="fl">1</span><span class="op">,</span> <span class="va">right</span>)]<span class="op">,</span> <span class="op">:</span>)<span class="op">;</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="co">% Since conv2 cannot handle 3D inputs, do filtering channel by channel</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">p</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">x</span><span class="op">,</span> <span class="fl">3</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="va">nargin</span> <span class="op">==</span> <span class="fl">2</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>        <span class="va">x</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="va">p</span>) <span class="op">=</span> <span class="va">conv2</span>(<span class="va">xPadded</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="va">p</span>)<span class="op">,</span> <span class="va">h</span><span class="op">,</span> <span class="ss">&#39;valid&#39;</span>)<span class="op">;</span>      <span class="co">% Call conv2</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">else</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        <span class="va">x</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="va">p</span>) <span class="op">=</span> <span class="va">conv2</span>(<span class="va">h1</span><span class="op">,</span> <span class="va">h2</span><span class="op">,</span> <span class="va">xPadded</span>(<span class="op">:,</span> <span class="op">:,</span> <span class="va">p</span>)<span class="op">,</span> <span class="ss">&#39;valid&#39;</span>)<span class="op">;</span> <span class="co">% Call conv2</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>Save this code as <code>conv2padded.m</code> to use this M-function.
+Here are some examples:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">% A light smoothing filter</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="va">h</span> <span class="op">=</span> [<span class="fl">0</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>     <span class="fl">1</span><span class="op">,</span> <span class="fl">4</span><span class="op">,</span> <span class="fl">1</span><span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>     <span class="fl">0</span><span class="op">,</span> <span class="fl">1</span><span class="op">,</span> <span class="fl">0</span>]<span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="va">h</span> <span class="op">=</span> <span class="va">h</span> <span class="op">/</span> <span class="va">sum</span>(<span class="va">h</span>(<span class="op">:</span>))<span class="op">;</span>  <span class="co">% Normalize the filter</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="va">uSmooth</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">u</span><span class="op">,</span> <span class="va">h</span>)<span class="op">;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">% A sharpening filter</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="va">h</span> <span class="op">=</span> [<span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span><span class="op">,</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>     <span class="op">-</span><span class="fl">1</span><span class="op">,</span> <span class="fl">8</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span><span class="op">;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>     <span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span><span class="op">,</span> <span class="fl">0</span>]<span class="op">;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="va">h</span> <span class="op">=</span> <span class="va">h</span> <span class="op">/</span> <span class="va">sum</span>(<span class="va">h</span>(<span class="op">:</span>))<span class="op">;</span>  <span class="co">% Normalize the filter</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="va">uSharp</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">u</span><span class="op">,</span> <span class="va">h</span>)<span class="op">;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">% Sobel edge detection</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="va">hx</span> <span class="op">=</span> [<span class="fl">1</span><span class="op">,</span> <span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span><span class="op">;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>     <span class="fl">2</span><span class="op">,</span> <span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">2</span><span class="op">;</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>     <span class="fl">1</span><span class="op">,</span> <span class="fl">0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span>]<span class="op">;</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="va">hy</span> <span class="op">=</span> <span class="va">rot90</span>(<span class="va">hx</span><span class="op">,</span> <span class="op">-</span><span class="fl">1</span>)<span class="op">;</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="va">u_x</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">u</span><span class="op">,</span> <span class="va">hx</span>)<span class="op">;</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="va">u_y</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">u</span><span class="op">,</span> <span class="va">hy</span>)<span class="op">;</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="va">EdgeStrength</span> <span class="op">=</span> <span class="va">sqrt</span>(<span class="va">u_x</span><span class="op">.^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">u_y</span><span class="op">.^</span><span class="fl">2</span>)<span class="op">;</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">% Moving average</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="va">WindowSize</span> <span class="op">=</span> <span class="fl">5</span><span class="op">;</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="va">h1</span> <span class="op">=</span> <span class="va">ones</span>(<span class="va">WindowSize</span><span class="op">,</span> <span class="fl">1</span>) <span class="op">/</span> <span class="va">WindowSize</span><span class="op">;</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="va">uSmooth</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">h1</span><span class="op">,</span> <span class="va">h1</span><span class="op">,</span> <span class="va">u</span>)<span class="op">;</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">% Gaussian filtering</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="va">sigma</span> <span class="op">=</span> <span class="fl">3.5</span><span class="op">;</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="va">FilterRadius</span> <span class="op">=</span> <span class="va">ceil</span>(<span class="fl">4</span> <span class="op">*</span> <span class="va">sigma</span>)<span class="op">;</span>  <span class="co">% Truncate the Gaussian at 4*sigma</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="va">h1</span> <span class="op">=</span> <span class="va">exp</span>(<span class="op">-</span>(<span class="op">-</span><span class="va">FilterRadius</span><span class="op">:</span><span class="va">FilterRadius</span>)<span class="op">.^</span><span class="fl">2</span> <span class="op">/</span> (<span class="fl">2</span> <span class="op">*</span> <span class="va">sigma</span><span class="op">^</span><span class="fl">2</span>))<span class="op">;</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="va">h1</span> <span class="op">=</span> <span class="va">h1</span> <span class="op">/</span> <span class="va">sum</span>(<span class="va">h1</span>)<span class="op">;</span>               <span class="co">% Normalize the filter</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="va">uSmooth</span> <span class="op">=</span> <span class="va">conv2padded</span>(<span class="va">h1</span><span class="op">,</span> <span class="va">h1</span><span class="op">,</span> <span class="va">u</span>)<span class="op">;</span></span></code></pre></div>
+<p>A 2D filter h is said to be <em>separable</em> if it can be expressed
+as the outer product of two 1D filters h1 and h2, that is,
+<code>h = h1(:) * h2(:)'</code>. It is faster to pass h1 and h2 than h,
+as is done above for the moving average window and the Gaussian filter.
+In fact, the Sobel filters <code>hx</code> and <code>hy</code> in the
+above code are also separable—what are h1 and h2?</p>
 <h3 id="fourier-domain-filtering">Fourier-domain filtering</h3>
-<p>For large filters, spatial-domain filtering with <code>conv2</code> is easily a computationally expensive operation. For a K×K filter on an M×N image, <code>conv2</code> costs <span class="math inline">\(O(MNK^2)\)</span> additions and multiplications, or <span class="math inline">\(O(N^4)\)</span> supposing M, N, K are similar magnitudes.</p>
-<p>For large filters, filtering in the Fourier domain is faster since the computational cost is reduced to <span class="math inline">\(O(N^2 \log N)\)</span>. Using the convolution-multiplication property of the Fourier transform, the convolution is equivalently computed by</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">% Compute y = h*x with periodic boundary extension</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>[<span class="va">k1</span><span class="op">,</span> <span class="va">k2</span>] <span class="op">=</span> <span class="va">size</span>(<span class="va">h</span>)<span class="op">;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="va">hpad</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="va">size</span>(<span class="va">x</span>))<span class="op">;</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="va">hpad</span>([<span class="kw">end</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">floor</span>(<span class="va">k1</span><span class="op">/</span><span class="fl">2</span>)<span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">ceil</span>(<span class="va">k1</span><span class="op">/</span><span class="fl">2</span>)]<span class="op">,</span> <span class="op">...</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    [<span class="kw">end</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">floor</span>(<span class="va">k2</span><span class="op">/</span><span class="fl">2</span>)<span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">ceil</span>(<span class="va">k2</span><span class="op">/</span><span class="fl">2</span>)]) <span class="op">=</span> <span class="va">h</span><span class="op">;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="va">y</span> <span class="op">=</span> <span class="va">real</span>(<span class="va">ifft2</span>(<span class="va">fft2</span>(<span class="va">hpad</span>) <span class="op">.*</span> <span class="va">fft2</span>(<span class="va">x</span>)))<span class="op">;</span></span></code></pre></div>
-<p>The result is equivalent to <code>conv2padded(x,h)</code> except near the boundary, where the above computation uses periodic boundary extension.</p>
-<p>Fourier-based filtering can also be done with symmetric boundary extension by reflecting the input in each direction:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co">% Compute y = h*x with symmetric boundary extension</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="va">xSym</span> <span class="op">=</span> [<span class="va">x</span><span class="op">,</span> <span class="va">fliplr</span>(<span class="va">x</span>)]<span class="op">;</span>       <span class="co">% Symmetrize horizontally</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="va">xSym</span> <span class="op">=</span> [<span class="va">xSym</span><span class="op">;</span> <span class="va">flipud</span>(<span class="va">xSym</span>)]<span class="op">;</span> <span class="co">% Symmetrize vertically</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>[<span class="va">k1</span><span class="op">,</span><span class="va">k2</span>] <span class="op">=</span> <span class="va">size</span>(<span class="va">h</span>)<span class="op">;</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a><span class="va">hpad</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="va">size</span>(<span class="va">xSym</span>))<span class="op">;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a><span class="va">hpad</span>([<span class="kw">end</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">floor</span>(<span class="va">k1</span><span class="op">/</span><span class="fl">2</span>)<span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">ceil</span>(<span class="va">k1</span><span class="op">/</span><span class="fl">2</span>)]<span class="op">,</span> <span class="op">...</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>    [<span class="kw">end</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">floor</span>(<span class="va">k2</span><span class="op">/</span><span class="fl">2</span>)<span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">ceil</span>(<span class="va">k2</span><span class="op">/</span><span class="fl">2</span>)]) <span class="op">=</span> <span class="va">h</span><span class="op">;</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="va">y</span> <span class="op">=</span> <span class="va">real</span>(<span class="va">ifft2</span>(<span class="va">fft2</span>(<span class="va">hpad</span>) <span class="op">.*</span> <span class="va">fft2</span>(<span class="va">xSym</span>)))<span class="op">;</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a><span class="va">y</span> <span class="op">=</span> <span class="va">y</span>(<span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">y</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">/</span><span class="fl">2</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">y</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span></code></pre></div>
-<p><em>(Note: An even more efficient method is FFT overlap-add or overlap-save filtering. The Signal Processing Toolbox implements FFT overlap-add in one-dimension in <code>fftfilt</code>.)</em></p>
+<p>For large filters, spatial-domain filtering with <code>conv2</code>
+is easily a computationally expensive operation. For a K×K filter on an
+M×N image, <code>conv2</code> costs <span
+class="math inline">\(O(MNK^2)\)</span> additions and multiplications,
+or <span class="math inline">\(O(N^4)\)</span> supposing M, N, K are
+similar magnitudes.</p>
+<p>For large filters, filtering in the Fourier domain is faster since
+the computational cost is reduced to <span class="math inline">\(O(N^2
+\log N)\)</span>. Using the convolution-multiplication property of the
+Fourier transform, the convolution is equivalently computed by</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Compute y = h*x with periodic boundary extension</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>[<span class="va">k1</span><span class="op">,</span> <span class="va">k2</span>] <span class="op">=</span> <span class="va">size</span>(<span class="va">h</span>)<span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="va">hpad</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="va">size</span>(<span class="va">x</span>))<span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="va">hpad</span>([<span class="kw">end</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">floor</span>(<span class="va">k1</span><span class="op">/</span><span class="fl">2</span>)<span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">ceil</span>(<span class="va">k1</span><span class="op">/</span><span class="fl">2</span>)]<span class="op">,</span> <span class="op">...</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    [<span class="kw">end</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">floor</span>(<span class="va">k2</span><span class="op">/</span><span class="fl">2</span>)<span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">ceil</span>(<span class="va">k2</span><span class="op">/</span><span class="fl">2</span>)]) <span class="op">=</span> <span class="va">h</span><span class="op">;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="va">y</span> <span class="op">=</span> <span class="va">real</span>(<span class="va">ifft2</span>(<span class="va">fft2</span>(<span class="va">hpad</span>) <span class="op">.*</span> <span class="va">fft2</span>(<span class="va">x</span>)))<span class="op">;</span></span></code></pre></div>
+<p>The result is equivalent to <code>conv2padded(x,h)</code> except near
+the boundary, where the above computation uses periodic boundary
+extension.</p>
+<p>Fourier-based filtering can also be done with symmetric boundary
+extension by reflecting the input in each direction:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Compute y = h*x with symmetric boundary extension</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="va">xSym</span> <span class="op">=</span> [<span class="va">x</span><span class="op">,</span> <span class="va">fliplr</span>(<span class="va">x</span>)]<span class="op">;</span>       <span class="co">% Symmetrize horizontally</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="va">xSym</span> <span class="op">=</span> [<span class="va">xSym</span><span class="op">;</span> <span class="va">flipud</span>(<span class="va">xSym</span>)]<span class="op">;</span> <span class="co">% Symmetrize vertically</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>[<span class="va">k1</span><span class="op">,</span><span class="va">k2</span>] <span class="op">=</span> <span class="va">size</span>(<span class="va">h</span>)<span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="va">hpad</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="va">size</span>(<span class="va">xSym</span>))<span class="op">;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="va">hpad</span>([<span class="kw">end</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">floor</span>(<span class="va">k1</span><span class="op">/</span><span class="fl">2</span>)<span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">ceil</span>(<span class="va">k1</span><span class="op">/</span><span class="fl">2</span>)]<span class="op">,</span> <span class="op">...</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    [<span class="kw">end</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">floor</span>(<span class="va">k2</span><span class="op">/</span><span class="fl">2</span>)<span class="op">:</span><span class="kw">end</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">ceil</span>(<span class="va">k2</span><span class="op">/</span><span class="fl">2</span>)]) <span class="op">=</span> <span class="va">h</span><span class="op">;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="va">y</span> <span class="op">=</span> <span class="va">real</span>(<span class="va">ifft2</span>(<span class="va">fft2</span>(<span class="va">hpad</span>) <span class="op">.*</span> <span class="va">fft2</span>(<span class="va">xSym</span>)))<span class="op">;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="va">y</span> <span class="op">=</span> <span class="va">y</span>(<span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">y</span><span class="op">,</span> <span class="fl">1</span>)<span class="op">/</span><span class="fl">2</span><span class="op">,</span> <span class="fl">1</span><span class="op">:</span><span class="va">size</span>(<span class="va">y</span><span class="op">,</span> <span class="fl">2</span>)<span class="op">/</span><span class="fl">2</span>)<span class="op">;</span></span></code></pre></div>
+<p><em>(Note: An even more efficient method is FFT overlap-add or
+overlap-save filtering. The Signal Processing Toolbox implements FFT
+overlap-add in one-dimension in <code>fftfilt</code>.)</em></p>
 <h2 id="nonlinear-filters">Nonlinear filters</h2>
-<p>A nonlinear filter is an operation where each filtered pixel <span class="math inline">\(y_{m,n}\)</span> is a nonlinear function of <span class="math inline">\(x_{m,n}\)</span> and its neighbors. Here we briefly discuss a few types of nonlinear filters.</p>
+<p>A nonlinear filter is an operation where each filtered pixel <span
+class="math inline">\(y_{m,n}\)</span> is a nonlinear function of <span
+class="math inline">\(x_{m,n}\)</span> and its neighbors. Here we
+briefly discuss a few types of nonlinear filters.</p>
 <h3 id="order-statistic-filters">Order statistic filters</h3>
-<p>If you have the Image Toolbox, order statistic filters can be performed with <code>ordfilt2</code> and <code>medfilt2</code>. An order statistic filter sorts the pixel values over a neighborhood and selects the kth largest value. The min, max, and median filters are special cases.</p>
+<p>If you have the Image Toolbox, order statistic filters can be
+performed with <code>ordfilt2</code> and <code>medfilt2</code>. An order
+statistic filter sorts the pixel values over a neighborhood and selects
+the kth largest value. The min, max, and median filters are special
+cases.</p>
 <h3 id="morphological-filters">Morphological filters</h3>
-<p>If you have the Image Toolbox, <code>bwmorph</code> implements various morphological operations on binary images, like erosion, dilation, open, close, and skeleton. There are also commands available for morphology on grayscale images: <code>imerode</code>, <code>imdilate</code>, and <code>imtophat</code>, among others.</p>
+<p>If you have the Image Toolbox, <code>bwmorph</code> implements
+various morphological operations on binary images, like erosion,
+dilation, open, close, and skeleton. There are also commands available
+for morphology on grayscale images: <code>imerode</code>,
+<code>imdilate</code>, and <code>imtophat</code>, among others.</p>
 <h3 id="build-your-own-filter">Build your own filter</h3>
-<p>Occasionally we want to use a new filter that Matlab does not have. The code below is a simple generic template for implementing filters.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>[<span class="va">M</span><span class="op">,</span> <span class="va">N</span>] <span class="op">=</span> <span class="va">size</span>(<span class="va">x</span>)<span class="op">;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="va">y</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="va">size</span>(<span class="va">x</span>))<span class="op">;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="va">r</span> <span class="op">=</span> <span class="fl">1</span><span class="op">;</span>     <span class="co">% Adjust for desired window size</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="kw">for</span> <span class="va">n</span> <span class="op">=</span> <span class="fl">1</span><span class="op">+</span><span class="va">r</span><span class="op">:</span><span class="va">N</span><span class="op">-</span><span class="va">r</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>    <span class="kw">for</span> <span class="va">m</span> <span class="op">=</span> <span class="fl">1</span><span class="op">+</span><span class="va">r</span><span class="op">:</span><span class="va">M</span><span class="op">-</span><span class="va">r</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a>        <span class="co">% Extract a window of size (2r+1)x(2r+1) around (m,n)</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>        <span class="va">w</span> <span class="op">=</span> <span class="va">x</span>(<span class="va">m</span> <span class="op">+</span> (<span class="op">-</span><span class="va">r</span><span class="op">:</span><span class="va">r</span>)<span class="op">,</span><span class="va">n</span> <span class="op">+</span> (<span class="op">-</span><span class="va">r</span><span class="op">:</span><span class="va">r</span>))<span class="op">;</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a>        <span class="co">% ... write the filter here ...</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true"></a>        <span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">result</span><span class="op">;</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a>    <span class="kw">end</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true"></a><span class="kw">end</span></span></code></pre></div>
-<p><em>(Note: A frequent misguided claim is that loops in Matlab are slow and should be avoided. This was once true, back in Matlab 5 and earlier, but loops in modern versions are reasonably fast.)</em></p>
-<p>For example, the alpha-trimmed mean filter ignores the d/2 lowest and d/2 highest values in the window, and averages the remaining values. The filter is a balance between a median filter and a mean filter. The alpha-trimmed mean filter can be implemented in the template as</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co">% The alpha-trimmed mean filter</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="va">w</span> <span class="op">=</span> <span class="va">sort</span>(<span class="va">w</span>(<span class="op">:</span>))<span class="op">;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">mean</span>(<span class="va">w</span>(<span class="fl">1</span><span class="op">+</span><span class="va">d</span><span class="op">/</span><span class="fl">2</span><span class="op">:</span><span class="kw">end</span><span class="op">-</span><span class="va">d</span><span class="op">/</span><span class="fl">2</span>))<span class="op">;</span>   <span class="co">% Compute the result y(m,n)</span></span></code></pre></div>
-<p>As another example, the bilateral filter is <span class="math display">\[ y_{m,n} = \frac{\sum_{j,k} h_{j,k,m,n} x_{m-j,n-k}}{\sum_{j,k} h_{j,k,m,n}} \]</span> where <span class="math inline">\(h_{j,k,m,n}\)</span> is <span class="math display">\[ \mathrm{e}^{-(j^2 + k^2) / (2\sigma_s^2)} \mathrm{e}^{-(x_{m-j,n-k} - x_{m,n})^2 / (2\sigma_d^2)}\]</span></p>
+<p>Occasionally we want to use a new filter that Matlab does not have.
+The code below is a simple generic template for implementing
+filters.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>[<span class="va">M</span><span class="op">,</span> <span class="va">N</span>] <span class="op">=</span> <span class="va">size</span>(<span class="va">x</span>)<span class="op">;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="va">y</span> <span class="op">=</span> <span class="va">zeros</span>(<span class="va">size</span>(<span class="va">x</span>))<span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="va">r</span> <span class="op">=</span> <span class="fl">1</span><span class="op">;</span>     <span class="co">% Adjust for desired window size</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">n</span> <span class="op">=</span> <span class="fl">1</span><span class="op">+</span><span class="va">r</span><span class="op">:</span><span class="va">N</span><span class="op">-</span><span class="va">r</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">for</span> <span class="va">m</span> <span class="op">=</span> <span class="fl">1</span><span class="op">+</span><span class="va">r</span><span class="op">:</span><span class="va">M</span><span class="op">-</span><span class="va">r</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">% Extract a window of size (2r+1)x(2r+1) around (m,n)</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">w</span> <span class="op">=</span> <span class="va">x</span>(<span class="va">m</span> <span class="op">+</span> (<span class="op">-</span><span class="va">r</span><span class="op">:</span><span class="va">r</span>)<span class="op">,</span><span class="va">n</span> <span class="op">+</span> (<span class="op">-</span><span class="va">r</span><span class="op">:</span><span class="va">r</span>))<span class="op">;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">% ... write the filter here ...</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">result</span><span class="op">;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p><em>(Note: A frequent misguided claim is that loops in Matlab are
+slow and should be avoided. This was once true, back in Matlab 5 and
+earlier, but loops in modern versions are reasonably fast.)</em></p>
+<p>For example, the alpha-trimmed mean filter ignores the d/2 lowest and
+d/2 highest values in the window, and averages the remaining values. The
+filter is a balance between a median filter and a mean filter. The
+alpha-trimmed mean filter can be implemented in the template as</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">% The alpha-trimmed mean filter</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="va">w</span> <span class="op">=</span> <span class="va">sort</span>(<span class="va">w</span>(<span class="op">:</span>))<span class="op">;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">mean</span>(<span class="va">w</span>(<span class="fl">1</span><span class="op">+</span><span class="va">d</span><span class="op">/</span><span class="fl">2</span><span class="op">:</span><span class="kw">end</span><span class="op">-</span><span class="va">d</span><span class="op">/</span><span class="fl">2</span>))<span class="op">;</span>   <span class="co">% Compute the result y(m,n)</span></span></code></pre></div>
+<p>As another example, the bilateral filter is <span
+class="math display">\[ y_{m,n} = \frac{\sum_{j,k} h_{j,k,m,n}
+x_{m-j,n-k}}{\sum_{j,k} h_{j,k,m,n}} \]</span> where <span
+class="math inline">\(h_{j,k,m,n}\)</span> is <span
+class="math display">\[ \mathrm{e}^{-(j^2 + k^2) / (2\sigma_s^2)}
+\mathrm{e}^{-(x_{m-j,n-k} - x_{m,n})^2 / (2\sigma_d^2)}\]</span></p>
 <p>The bilateral filter can be implemented as</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="co">% The bilateral filter</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>[<span class="va">k</span><span class="op">,</span> <span class="va">j</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="op">-</span><span class="va">r</span><span class="op">:</span><span class="va">r</span><span class="op">,</span> <span class="op">-</span><span class="va">r</span><span class="op">:</span><span class="va">r</span>)<span class="op">;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="va">h</span> <span class="op">=</span> <span class="va">exp</span>( <span class="op">-</span>(<span class="va">j</span><span class="op">.^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">k</span><span class="op">.^</span><span class="fl">2</span>)<span class="op">/</span>(<span class="fl">2</span><span class="op">*</span><span class="va">sigma_s</span><span class="op">^</span><span class="fl">2</span>) ) <span class="op">.*</span> <span class="op">...</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>    <span class="va">exp</span>( <span class="op">-</span>(<span class="va">w</span> <span class="op">-</span> <span class="va">w</span>(<span class="va">r</span><span class="op">+</span><span class="fl">1</span><span class="op">,</span><span class="va">r</span><span class="op">+</span><span class="fl">1</span>))<span class="op">.^</span><span class="fl">2</span><span class="op">/</span>(<span class="fl">2</span><span class="op">*</span><span class="va">sigma_d</span><span class="op">^</span><span class="fl">2</span>) )<span class="op">;</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">h</span>(<span class="op">:</span>)<span class="op">&#39;*</span><span class="va">w</span>(<span class="op">:</span>) <span class="op">/</span> <span class="va">sum</span>(<span class="va">h</span>(<span class="op">:</span>))<span class="op">;</span></span></code></pre></div>
-<p>If you don’t have the Image Toolbox, the template can be used to write substitutes for missing filters, though they will not be as fast as the Image Toolbox implementations.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">% medfilt2</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">median</span>(<span class="va">w</span>(<span class="op">:</span>))<span class="op">;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="co">% ordfilt2</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="va">w</span> <span class="op">=</span> <span class="va">sort</span>(<span class="va">w</span>(<span class="op">:</span>))<span class="op">;</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">w</span>(<span class="va">k</span>)<span class="op">;</span> <span class="co">% Select the kth largest element</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a><span class="co">% imdilate</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a><span class="co">% Define a structure element as a (2r+1)x(2r+1) array</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a><span class="va">SE</span> <span class="op">=</span> [<span class="fl">0</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">0</span><span class="op">;</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span><span class="op">;</span><span class="fl">0</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">0</span>]<span class="op">;</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">max</span>(<span class="va">w</span>(<span class="va">SE</span>))<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">% The bilateral filter</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>[<span class="va">k</span><span class="op">,</span> <span class="va">j</span>] <span class="op">=</span> <span class="va">meshgrid</span>(<span class="op">-</span><span class="va">r</span><span class="op">:</span><span class="va">r</span><span class="op">,</span> <span class="op">-</span><span class="va">r</span><span class="op">:</span><span class="va">r</span>)<span class="op">;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="va">h</span> <span class="op">=</span> <span class="va">exp</span>( <span class="op">-</span>(<span class="va">j</span><span class="op">.^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">k</span><span class="op">.^</span><span class="fl">2</span>)<span class="op">/</span>(<span class="fl">2</span><span class="op">*</span><span class="va">sigma_s</span><span class="op">^</span><span class="fl">2</span>) ) <span class="op">.*</span> <span class="op">...</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">exp</span>( <span class="op">-</span>(<span class="va">w</span> <span class="op">-</span> <span class="va">w</span>(<span class="va">r</span><span class="op">+</span><span class="fl">1</span><span class="op">,</span><span class="va">r</span><span class="op">+</span><span class="fl">1</span>))<span class="op">.^</span><span class="fl">2</span><span class="op">/</span>(<span class="fl">2</span><span class="op">*</span><span class="va">sigma_d</span><span class="op">^</span><span class="fl">2</span>) )<span class="op">;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">h</span>(<span class="op">:</span>)<span class="op">&#39;*</span><span class="va">w</span>(<span class="op">:</span>) <span class="op">/</span> <span class="va">sum</span>(<span class="va">h</span>(<span class="op">:</span>))<span class="op">;</span></span></code></pre></div>
+<p>If you don’t have the Image Toolbox, the template can be used to
+write substitutes for missing filters, though they will not be as fast
+as the Image Toolbox implementations.</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode matlab"><code class="sourceCode matlab"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">% medfilt2</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">median</span>(<span class="va">w</span>(<span class="op">:</span>))<span class="op">;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">% ordfilt2</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="va">w</span> <span class="op">=</span> <span class="va">sort</span>(<span class="va">w</span>(<span class="op">:</span>))<span class="op">;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">w</span>(<span class="va">k</span>)<span class="op">;</span> <span class="co">% Select the kth largest element</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">% imdilate</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">% Define a structure element as a (2r+1)x(2r+1) array</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="va">SE</span> <span class="op">=</span> [<span class="fl">0</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">0</span><span class="op">;</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">1</span><span class="op">;</span><span class="fl">0</span><span class="op">,</span><span class="fl">1</span><span class="op">,</span><span class="fl">0</span>]<span class="op">;</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="va">y</span>(<span class="va">m</span><span class="op">,</span> <span class="va">n</span>) <span class="op">=</span> <span class="va">max</span>(<span class="va">w</span>(<span class="va">SE</span>))<span class="op">;</span></span></code></pre></div>
 <h2 id="special-topics">Special topics</h2>
-<p>Up to this point, we have covered those operations that are generally useful in imaging processing. You must look beyond this tutorial for the details on the topic of your interest. A large amount of Matlab code and material is freely available online for filter design, wavelet and multiresolution techniques, PDE-based imaging, morphology, and wherever else researchers have made their code publicly available.</p>
+<p>Up to this point, we have covered those operations that are generally
+useful in imaging processing. You must look beyond this tutorial for the
+details on the topic of your interest. A large amount of Matlab code and
+material is freely available online for filter design, wavelet and
+multiresolution techniques, PDE-based imaging, morphology, and wherever
+else researchers have made their code publicly available.</p>
 </div>
 
 <div id="footer">

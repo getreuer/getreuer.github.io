@@ -10,6 +10,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -44,7 +45,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -57,7 +58,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -87,206 +88,269 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">TikZ for High-Quality LaTeX Pictures</h1>
 </div>
-<p>TikZ is a package for <a href="../quick-intro-to-latex/index.html">LaTeX</a> for drawing pictures. It is a frontend to the Portable Graphics Format (PGF) package and is inspired from metafont, pstricks, and the standard LaTeX picture environment. In TikZ, the user programs the picture with commands that draw element by element.</p>
-<p>The advantage of TikZ over imported graphics is that it uses fonts and line widths consistent with the rest of the LaTeX document. In contrast, imported graphics usually embed their fonts and rescaling the graphic also rescales line widths. Also, TikZ pictures are easier to adjust since the commands are part of the document.</p>
+<p>TikZ is a package for <a
+href="../quick-intro-to-latex/index.html">LaTeX</a> for drawing
+pictures. It is a frontend to the Portable Graphics Format (PGF) package
+and is inspired from metafont, pstricks, and the standard LaTeX picture
+environment. In TikZ, the user programs the picture with commands that
+draw element by element.</p>
+<p>The advantage of TikZ over imported graphics is that it uses fonts
+and line widths consistent with the rest of the LaTeX document. In
+contrast, imported graphics usually embed their fonts and rescaling the
+graphic also rescales line widths. Also, TikZ pictures are easier to
+adjust since the commands are part of the document.</p>
 <h2 id="installation">Installation</h2>
 <p>To install TikZ/PGF:</p>
 <ul>
 <li><strong>Debian or Ubuntu</strong>: install the pgf package</li>
-<li><strong>MiKTeX</strong>: use the update wizard to install the pgf and xcolor packages.</li>
+<li><strong>MiKTeX</strong>: use the update wizard to install the pgf
+and xcolor packages.</li>
 </ul>
-<p>Otherwise, download the latest version from <a href="http://sourceforge.net/projects/pgf" class="uri">http://sourceforge.net/projects/pgf</a>, and follow the installation instructions in pgfmanual.pdf.</p>
+<p>Otherwise, download the latest version from <a
+href="http://sourceforge.net/projects/pgf"
+class="uri">http://sourceforge.net/projects/pgf</a>, and follow the
+installation instructions in pgfmanual.pdf.</p>
 <h2 id="an-example">An Example</h2>
 <p>Here is an example LaTeX document with a TikZ picture.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="bu">\documentclass</span>[12pt]{<span class="ex">article</span>}</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">\usepackage</span>{<span class="ex">tikz</span>}</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>This picture was drawn with TikZ:</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[scale=1.5]</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co">% Draw thin grid lines with color 40% gray + 60% white</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="fu">\draw</span> [step=0.5,thin,gray!40] (-1.4,-1.4) grid (1.4,1.4);</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="co">% Draw x and y axis lines</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="fu">\draw</span> [-&gt;] (-1.5,0) -- (1.5,0) node [below] {<span class="ss">$x$</span>};</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="fu">\draw</span> [-&gt;] (0,-1.5) -- (0,1.5) node [left] {<span class="ss">$y$</span>};</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="co">% Draw a blue circle at the origin of radius 1</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="fu">\draw</span> [semithick,blue] (0,0) circle (1);</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a><span class="co">% Draw a triangle with vertices (0,0), (1,0), (1,0.7)</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a><span class="fu">\draw</span> [semithick,blue] (0,0) -- (1,0) -- (1,0.7) -- cycle;</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode latex"><code class="sourceCode latex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">\documentclass</span>[12pt]{<span class="ex">article</span>}</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">\usepackage</span>{<span class="ex">tikz</span>}</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">document</span>}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>This picture was drawn with TikZ:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[scale=1.5]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw thin grid lines with color 40% gray + 60% white</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [step=0.5,thin,gray!40] (-1.4,-1.4) grid (1.4,1.4);</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw x and y axis lines</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [-&gt;] (-1.5,0) -- (1.5,0) node [below] {<span class="ss">$x$</span>};</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [-&gt;] (0,-1.5) -- (0,1.5) node [left] {<span class="ss">$y$</span>};</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw a blue circle at the origin of radius 1</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [semithick,blue] (0,0) circle (1);</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw a triangle with vertices (0,0), (1,0), (1,0.7)</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [semithick,blue] (0,0) -- (1,0) -- (1,0.7) -- cycle;</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">document</span>}</span></code></pre></div>
 <p><img src="tikz1.png" /></p>
 <h2 id="tikz-basics">TikZ Basics</h2>
-<p>A picture is contained in a <code>tikzpicture</code> environment. The various parts of the picture are specified with <code>\draw</code> commands. A <code>\draw</code> command consists of options (color, line width, …) and a path, terminated by a semicolon:</p>
-<p><code>\draw [</code><em>options</em><code>]</code>   <em>path</em> <code>;</code></p>
-<p>All TikZ commands should end with a semicolon (<code>;</code>), beware that forgetting one can produce confusing error messages.</p>
+<p>A picture is contained in a <code>tikzpicture</code> environment. The
+various parts of the picture are specified with <code>\draw</code>
+commands. A <code>\draw</code> command consists of options (color, line
+width, …) and a path, terminated by a semicolon:</p>
+<p><code>\draw [</code><em>options</em><code>]</code>   <em>path</em>
+<code>;</code></p>
+<p>All TikZ commands should end with a semicolon (<code>;</code>),
+beware that forgetting one can produce confusing error messages.</p>
 <h3 id="paths">Paths</h3>
-<p>A <em>path</em> specifies a line, curve, or collection of lines and curves to be drawn. Here are some examples of different paths:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode tex"><code class="sourceCode latex"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">% A line.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="fu">\draw</span> (-5,0) -- (5,2);</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co">% A sequence of connected lines.</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="fu">\draw</span> (-1,0) -- (1,0) -- (0,1) -- (0,-1);</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="co">% A rectangle (specified by two corners).</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="fu">\draw</span> (-2,-1) rectangle (2,1);</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">% A circle.</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="fu">\draw</span> [`*options*`] (4,0) circle (0.5);</span></code></pre></div>
-<p>The units for these are coordinates are cm, though they might not correspond to physical centimeters if the figure is scaled. You can also specify multiple primitives as a single path (not necessarily connected), for example the following draws two circles and a rectangle</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode tex"><code class="sourceCode latex"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="fu">\draw</span> [blue,semithick] </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    (-1,0) circle (0.5)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    (1,0) circle (0.5)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    (0,-0.25) rectangle (2,0.25);</span></code></pre></div>
-<p>Such a path is useful when we want to apply the same drawing options to multiple primitives.</p>
+<p>A <em>path</em> specifies a line, curve, or collection of lines and
+curves to be drawn. Here are some examples of different paths:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">% A line.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> (-5,0) -- (5,2);</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">% A sequence of connected lines.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> (-1,0) -- (1,0) -- (0,1) -- (0,-1);</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">% A rectangle (specified by two corners).</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> (-2,-1) rectangle (2,1);</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">% A circle.</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [`*options*`] (4,0) circle (0.5);</span></code></pre></div>
+<p>The units for these are coordinates are cm, though they might not
+correspond to physical centimeters if the figure is scaled. You can also
+specify multiple primitives as a single path (not necessarily
+connected), for example the following draws two circles and a
+rectangle</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode tex"><code class="sourceCode latex"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [blue,semithick] </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    (-1,0) circle (0.5)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    (1,0) circle (0.5)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    (0,-0.25) rectangle (2,0.25);</span></code></pre></div>
+<p>Such a path is useful when we want to apply the same drawing options
+to multiple primitives.</p>
 <h3 id="drawing-text">Drawing Text</h3>
-<p>LaTeX code can be added to a picture using a <em>node</em>. Nodes can hold text, math, <code>includegraphics</code>, and most other kinds of LaTeX code. For example, the following specifies a node at coordinates (2,3):</p>
-<p><code>\draw (2,3) node [</code><em>node options</em><code>] {</code><em>LaTeX code</em><code>};</code></p>
+<p>LaTeX code can be added to a picture using a <em>node</em>. Nodes can
+hold text, math, <code>includegraphics</code>, and most other kinds of
+LaTeX code. For example, the following specifies a node at coordinates
+(2,3):</p>
+<p><code>\draw (2,3) node [</code><em>node
+options</em><code>] {</code><em>LaTeX code</em><code>};</code></p>
 <p>Nodes also can be specified on the vertices of a path.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="fu">\draw</span> (-1,0) node [below] {Point <span class="ss">$A$</span>} -- </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>      (1,1) node [below] {Point <span class="ss">$B$</span>};</span></code></pre></div>
-<p>Specifying nodes this way is useful to annotate parts of a diagram and to label axes (as with the x and y axes in the first example).</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode latex"><code class="sourceCode latex"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> (-1,0) node [below] {Point <span class="ss">$A$</span>} -- </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>      (1,1) node [below] {Point <span class="ss">$B$</span>};</span></code></pre></div>
+<p>Specifying nodes this way is useful to annotate parts of a diagram
+and to label axes (as with the x and y axes in the first example).</p>
 <h3 id="options">Options</h3>
-<p><em>Options</em> specify how to draw a path or node. TikZ is very flexible in this aspect and supports a great variety of effects. The typically useful drawing options are</p>
+<p><em>Options</em> specify how to draw a path or node. TikZ is very
+flexible in this aspect and supports a great variety of effects. The
+typically useful drawing options are</p>
 <ul>
-<li><p>Add an arrowhead:<br> <code>[-&gt;]</code><br> Similarly, <code>[&lt;-]</code> (reverse) or <code>[&lt;-&gt;]</code> (double-headed).</p></li>
-<li><p>Set line width:<br> <code>[semithick]</code><br> Other widths: <code>very thin</code>, <code>thin</code>, <code>thick</code>, <code>very thick</code>.</p></li>
+<li><p>Add an arrowhead:<br> <code>[-&gt;]</code><br> Similarly,
+<code>[&lt;-]</code> (reverse) or <code>[&lt;-&gt;]</code>
+(double-headed).</p></li>
+<li><p>Set line width:<br> <code>[semithick]</code><br> Other widths:
+<code>very thin</code>, <code>thin</code>, <code>thick</code>,
+<code>very thick</code>.</p></li>
 <li><p>Drawing in color:<br> <code>[blue]</code></p></li>
-<li><p>Specifying a mixed color:<br> <code>[blue!30!red]</code><br> (30% blue + 70% red)</p></li>
+<li><p>Specifying a mixed color:<br> <code>[blue!30!red]</code><br> (30%
+blue + 70% red)</p></li>
 <li><p>Draw translucent objects:<br> <code>[opacity=0.4]</code></p></li>
 </ul>
 <p>Another useful kind of option are geometric transformations:</p>
 <ul>
 <li><p>Translation:<br> <code>[xshift=1cm,yshift=-0.5cm]</code></p></li>
 <li><p>Scaling:<br> <code>[scale=1.2]</code></p></li>
-<li><p>Coordinate scaling, reflection:<br> <code>[xscale=2.5,yscale=-1]</code></p></li>
+<li><p>Coordinate scaling, reflection:<br>
+<code>[xscale=2.5,yscale=-1]</code></p></li>
 <li><p>Rotation:<br> <code>[rotate=35]</code></p></li>
 </ul>
 <h2 id="more-examples">More Examples</h2>
-<p>The following examples demonstrate TikZ for some real world figures. Full explanation of these examples is beyond the scope of this tutorial, but studying the example codes may produce helpful keywords for finding further information.</p>
+<p>The following examples demonstrate TikZ for some real world figures.
+Full explanation of these examples is beyond the scope of this tutorial,
+but studying the example codes may produce helpful keywords for finding
+further information.</p>
 <h3 id="a-wavy-curve">A wavy curve</h3>
-<p>This example demonstrates the in and out options and accomplishing repeated elements with a <code>\foreach</code> loop.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[scale=0.8]</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co">% Draw equation as part of the TikZ picture</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="fu">\draw</span> (-4,0) node {<span class="ss">$P(x_n) = 0, </span><span class="sc">\;</span><span class="ss"> n = 0,</span><span class="sc">\ldots</span><span class="ss">, N,$</span>};</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="fu">\draw</span> (2,0.65) node {<span class="ss">$P(x)$</span>};</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="fu">\draw</span> [-&gt;,gray] (0,0) -- (6.25,0) node [below] {<span class="fu">\small</span> <span class="ss">$x$</span>};</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="co">% Draw a wavy curve through the (x_n)</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="fu">\draw</span> [semithick]  </span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>   (0,0.4) to [out=-40,in=140] (0.5,0) </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>   to [out=-40,in=240] (1.5,0) </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>   to [out=60,in=160] (2.8,0) </span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>   to [out=-20,in=200] (4.5,0) </span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>   to [out=20,in=200] (6,0.5);</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="co">% Label the (x_n) with a loop</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="fu">\foreach</span> <span class="fu">\n</span>/<span class="fu">\x</span> in {0/0.5, 1/1.5, 2/2.8, 3/4.5}</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>{</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a>   <span class="fu">\fill</span> (<span class="fu">\x</span>,0) circle (1.6pt) node [below=5pt] {<span class="ss">$x_{</span><span class="sc">\n</span><span class="ss">}$</span>};</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>}</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code></pre></div>
+<p>This example demonstrates the in and out options and accomplishing
+repeated elements with a <code>\foreach</code> loop.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode latex"><code class="sourceCode latex"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[scale=0.8]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw equation as part of the TikZ picture</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> (-4,0) node {<span class="ss">$P(x_n) = 0, </span><span class="sc">\;</span><span class="ss"> n = 0,</span><span class="sc">\ldots</span><span class="ss">, N,$</span>};</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> (2,0.65) node {<span class="ss">$P(x)$</span>};</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [-&gt;,gray] (0,0) -- (6.25,0) node [below] {<span class="fu">\small</span> <span class="ss">$x$</span>};</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw a wavy curve through the (x_n)</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [semithick]  </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>   (0,0.4) to [out=-40,in=140] (0.5,0) </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>   to [out=-40,in=240] (1.5,0) </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>   to [out=60,in=160] (2.8,0) </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>   to [out=-20,in=200] (4.5,0) </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>   to [out=20,in=200] (6,0.5);</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">% Label the (x_n) with a loop</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="fu">\foreach</span> <span class="fu">\n</span>/<span class="fu">\x</span> in {0/0.5, 1/1.5, 2/2.8, 3/4.5}</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>   <span class="fu">\fill</span> (<span class="fu">\x</span>,0) circle (1.6pt) node [below=5pt] {<span class="ss">$x_{</span><span class="sc">\n</span><span class="ss">}$</span>};</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code></pre></div>
 <p><img src="tikz2.png" /></p>
-<h3 id="figure-illustrating-cubic-eno">Figure illustrating cubic ENO</h3>
-<p>This picture shows how to write a multiline node with the <code>text width</code> option and more examples of <code>\foreach</code>. Also, some math is used in computing the control points such that the curves interpolate the data. It uses a custom color gold; add <code class="sourceCode latex"><span class="fu">\definecolor</span>{gold}{rgb}{0.85,0.65,0}</code> to the preamble to reproduce.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">% Define the y values of the data</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="fu">\newcommand</span>{<span class="ex">\ya</span>}{0.5}</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="fu">\newcommand</span>{<span class="ex">\yb</span>}{0.1}</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="fu">\newcommand</span>{<span class="ex">\yc</span>}{0.1}</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="fu">\newcommand</span>{<span class="ex">\yd</span>}{2}</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="fu">\newcommand</span>{<span class="ex">\ye</span>}{2.1}</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="fu">\newcommand</span>{<span class="ex">\yf</span>}{1.9}</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="fu">\newcommand</span>{<span class="ex">\yg</span>}{1.7}</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[scale=1.2]</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="co">% Draw a gray box with &#39;Cubic ENO: Interpolate q_i with ...&#39;</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a><span class="fu">\draw</span> (-1,2.25) </span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>   node [fill={gray!10},rounded corners,left,text width=32mm] </span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>   {<span class="fu">\footnotesize</span> Cubic ENO: <span class="fu">\\</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>   Interpolate <span class="ss">$q_i$</span> with <span class="fu">\textcolor</span>{red}{<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^a_i$</span>}, </span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>   <span class="fu">\textcolor</span>{gold}{<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^b_i$</span>}, </span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>   or <span class="fu">\textcolor</span>{blue}{<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^c_i$</span>}};</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a><span class="co">% Fill/draw the interval q_i</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a><span class="fu">\fill</span> [gray!15] (0,-0.15) rectangle (1,2.6);</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a><span class="fu">\draw</span> [gray,thin] (0,-0.15) -- (0,2.6) (1,-0.15) -- (1,2.6);</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a><span class="fu">\draw</span> [gray] (0.5,2.6) node [above] {<span class="ss">$q_i$</span>};</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a><span class="co">% Draw x labels</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a><span class="fu">\draw</span> [yshift=-0.15cm,below]</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a>   <span class="fu">\foreach</span> <span class="fu">\i</span> in {-3,-2,-1,+2,+3}</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a>   {</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a>      (<span class="fu">\i</span>,0) node [gray] {<span class="ss">$x_{i</span><span class="sc">\i</span><span class="ss">}$</span>}</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a>   }</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a>   (0,0) node [black] {<span class="ss">$x_i$</span>}</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true"></a>   (1,0) node [black] {<span class="ss">$x_{i+1}$</span>};</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true"></a></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true"></a><span class="co">% Draw Bezier curves, illustrating the three possible interpolations.</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true"></a><span class="co">% The control points are computed such that the curves interpolate.</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true"></a><span class="fu">\draw</span> [red,thick] (-2,<span class="fu">\yb</span>) .. controls </span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true"></a>   (-1,-5*<span class="fu">\yb</span>/6+3*<span class="fu">\yc</span>-9*<span class="fu">\yd</span>/6+2*<span class="fu">\ye</span>/6) and </span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true"></a>   (0,2*<span class="fu">\yb</span>/6-9*<span class="fu">\yc</span>/6+3*<span class="fu">\yd</span>-5*<span class="fu">\ye</span>/6) .. (1,<span class="fu">\ye</span>)</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true"></a>   (-1.5,0.25) node {<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^a_i$</span>};</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true"></a><span class="fu">\draw</span> [gold,thick] (-1,<span class="fu">\yc</span>) .. controls </span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true"></a>   (0,-5*<span class="fu">\yc</span>/6+3*<span class="fu">\yd</span>-9*<span class="fu">\ye</span>/6+2*<span class="fu">\yf</span>/6) and </span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true"></a>   (1,2*<span class="fu">\yc</span>/6-9*<span class="fu">\yd</span>/6+3*<span class="fu">\ye</span>-5*<span class="fu">\yf</span>/6) .. (2,<span class="fu">\yf</span>)</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true"></a>   (-0.5,2) node {<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^b_i$</span>};</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true"></a><span class="fu">\draw</span> [blue,thick] (0,<span class="fu">\yd</span>) .. controls </span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true"></a>   (1,-5*<span class="fu">\yd</span>/6+3*<span class="fu">\ye</span>-9*<span class="fu">\yf</span>/6+2*<span class="fu">\yg</span>/6) and </span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true"></a>   (2,2*<span class="fu">\yd</span>/6-9*<span class="fu">\ye</span>/6+3*<span class="fu">\yf</span>-5*<span class="fu">\yg</span>/6) .. (3,<span class="fu">\yg</span>)</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true"></a>   (2.5,2.25) node {<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^c_i$</span>};</span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true"></a></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true"></a><span class="co">% Draw datapoint markers</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true"></a><span class="fu">\foreach</span> <span class="fu">\p</span> in {(-3,<span class="fu">\ya</span>), (-2,<span class="fu">\yb</span>), (-1,<span class="fu">\yc</span>), </span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true"></a>   (0,<span class="fu">\yd</span>), (1,<span class="fu">\ye</span>), (2,<span class="fu">\yf</span>), (3,<span class="fu">\yg</span>)}</span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true"></a>{</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true"></a>    <span class="fu">\fill</span> <span class="fu">\p</span> circle (1pt);</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true"></a>}</span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code></pre></div>
+<h3 id="figure-illustrating-cubic-eno">Figure illustrating cubic
+ENO</h3>
+<p>This picture shows how to write a multiline node with the
+<code>text width</code> option and more examples of
+<code>\foreach</code>. Also, some math is used in computing the control
+points such that the curves interpolate the data. It uses a custom color
+gold; add <code
+class="sourceCode latex"><span class="fu">\definecolor</span>{gold}{rgb}{0.85,0.65,0}</code>
+to the preamble to reproduce.</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode latex"><code class="sourceCode latex"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Define the y values of the data</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ya</span>}{0.5}</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\yb</span>}{0.1}</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\yc</span>}{0.1}</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\yd</span>}{2}</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\ye</span>}{2.1}</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\yf</span>}{1.9}</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">\newcommand</span>{<span class="ex">\yg</span>}{1.7}</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[scale=1.2]</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw a gray box with &#39;Cubic ENO: Interpolate q_i with ...&#39;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> (-1,2.25) </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>   node [fill={gray!10},rounded corners,left,text width=32mm] </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>   {<span class="fu">\footnotesize</span> Cubic ENO: <span class="fu">\\</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>   Interpolate <span class="ss">$q_i$</span> with <span class="fu">\textcolor</span>{red}{<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^a_i$</span>}, </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>   <span class="fu">\textcolor</span>{gold}{<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^b_i$</span>}, </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>   or <span class="fu">\textcolor</span>{blue}{<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^c_i$</span>}};</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">% Fill/draw the interval q_i</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="fu">\fill</span> [gray!15] (0,-0.15) rectangle (1,2.6);</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [gray,thin] (0,-0.15) -- (0,2.6) (1,-0.15) -- (1,2.6);</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [gray] (0.5,2.6) node [above] {<span class="ss">$q_i$</span>};</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw x labels</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [yshift=-0.15cm,below]</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>   <span class="fu">\foreach</span> <span class="fu">\i</span> in {-3,-2,-1,+2,+3}</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>   {</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>      (<span class="fu">\i</span>,0) node [gray] {<span class="ss">$x_{i</span><span class="sc">\i</span><span class="ss">}$</span>}</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>   (0,0) node [black] {<span class="ss">$x_i$</span>}</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>   (1,0) node [black] {<span class="ss">$x_{i+1}$</span>};</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw Bezier curves, illustrating the three possible interpolations.</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">% The control points are computed such that the curves interpolate.</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [red,thick] (-2,<span class="fu">\yb</span>) .. controls </span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>   (-1,-5*<span class="fu">\yb</span>/6+3*<span class="fu">\yc</span>-9*<span class="fu">\yd</span>/6+2*<span class="fu">\ye</span>/6) and </span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>   (0,2*<span class="fu">\yb</span>/6-9*<span class="fu">\yc</span>/6+3*<span class="fu">\yd</span>-5*<span class="fu">\ye</span>/6) .. (1,<span class="fu">\ye</span>)</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>   (-1.5,0.25) node {<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^a_i$</span>};</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [gold,thick] (-1,<span class="fu">\yc</span>) .. controls </span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>   (0,-5*<span class="fu">\yc</span>/6+3*<span class="fu">\yd</span>-9*<span class="fu">\ye</span>/6+2*<span class="fu">\yf</span>/6) and </span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>   (1,2*<span class="fu">\yc</span>/6-9*<span class="fu">\yd</span>/6+3*<span class="fu">\ye</span>-5*<span class="fu">\yf</span>/6) .. (2,<span class="fu">\yf</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>   (-0.5,2) node {<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^b_i$</span>};</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [blue,thick] (0,<span class="fu">\yd</span>) .. controls </span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>   (1,-5*<span class="fu">\yd</span>/6+3*<span class="fu">\ye</span>-9*<span class="fu">\yf</span>/6+2*<span class="fu">\yg</span>/6) and </span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>   (2,2*<span class="fu">\yd</span>/6-9*<span class="fu">\ye</span>/6+3*<span class="fu">\yf</span>-5*<span class="fu">\yg</span>/6) .. (3,<span class="fu">\yg</span>)</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>   (2.5,2.25) node {<span class="ss">$</span><span class="sc">\mathcal</span><span class="ss">{S}^c_i$</span>};</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw datapoint markers</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="fu">\foreach</span> <span class="fu">\p</span> in {(-3,<span class="fu">\ya</span>), (-2,<span class="fu">\yb</span>), (-1,<span class="fu">\yc</span>), </span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>   (0,<span class="fu">\yd</span>), (1,<span class="fu">\ye</span>), (2,<span class="fu">\yf</span>), (3,<span class="fu">\yg</span>)}</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">\fill</span> <span class="fu">\p</span> circle (1pt);</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code></pre></div>
 <p><img src="tikz3.png" /></p>
 <h3 id="braces">Braces</h3>
-<p>This picture shows how to draw curly braces with the path decoration library. To include this library, add</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="fu">\usetikzlibrary</span>{decorations.pathreplacing}</span></code></pre></div>
-<p>to the preamble just after <code>\usepackage{tikz}</code>. The picture also demonstrates naming nodes with the <code>\node</code> command.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[scale=0.6]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="co">% Draw three filled circles for points a,x,b, and define </span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="co">% them as TikZ nodes</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="fu">\node</span> (a) at (0,1) [fill,circle,inner sep=1.2pt] {};</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="fu">\node</span> (x) at (1.8,0.5) [draw,circle,inner sep=1.2pt] {};</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="fu">\node</span> (b) at (4,2) [fill,circle,inner sep=1.2pt] {};</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a><span class="co">% Label the points</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="fu">\draw</span> (a) node [above] {<span class="ss">$a$</span>}</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>   (x) node [above] {<span class="ss">$x$</span>}</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>   (b) node [above] {<span class="ss">$b$</span>};</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="co">% Draw a curvy line through a,x,b</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="fu">\draw</span> [thick] (a) to [out=-35,in=185] (x) </span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>   (x) to [in=248,out=5] (b);</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a><span class="co">% Draw curly braces using path decoration</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a><span class="fu">\draw</span> [gray,decorate,decoration={brace,amplitude=5pt},</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>       xshift=-4pt,yshift=-9pt]</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a>   (1.8,0.5) -- (0,1) </span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a>   node [black,midway,below=4pt,xshift=-2pt]</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true"></a>   {<span class="fu">\footnotesize</span> <span class="ss">$C_1$</span>};</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a>   </span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true"></a><span class="fu">\draw</span> [gray,decorate,decoration={brace,amplitude=5pt},</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true"></a>       xshift=8pt,yshift=-11pt]</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true"></a>   (4,2) -- (1.8,0.5)</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true"></a>   node [black,midway,below=2pt,xshift=8pt]</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true"></a>   {<span class="fu">\footnotesize</span> <span class="ss">$C_2$</span>};</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code></pre></div>
+<p>This picture shows how to draw curly braces with the path decoration
+library. To include this library, add</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode latex"><code class="sourceCode latex"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">\usetikzlibrary</span>{decorations.pathreplacing}</span></code></pre></div>
+<p>to the preamble just after <code>\usepackage{tikz}</code>. The
+picture also demonstrates naming nodes with the <code>\node</code>
+command.</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode latex"><code class="sourceCode latex"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">\begin</span>{<span class="ex">tikzpicture</span>}[scale=0.6]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw three filled circles for points a,x,b, and define </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">% them as TikZ nodes</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\node</span> (a) at (0,1) [fill,circle,inner sep=1.2pt] {};</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\node</span> (x) at (1.8,0.5) [draw,circle,inner sep=1.2pt] {};</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\node</span> (b) at (4,2) [fill,circle,inner sep=1.2pt] {};</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">% Label the points</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> (a) node [above] {<span class="ss">$a$</span>}</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>   (x) node [above] {<span class="ss">$x$</span>}</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>   (b) node [above] {<span class="ss">$b$</span>};</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw a curvy line through a,x,b</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [thick] (a) to [out=-35,in=185] (x) </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>   (x) to [in=248,out=5] (b);</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">% Draw curly braces using path decoration</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [gray,decorate,decoration={brace,amplitude=5pt},</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>       xshift=-4pt,yshift=-9pt]</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>   (1.8,0.5) -- (0,1) </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>   node [black,midway,below=4pt,xshift=-2pt]</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>   {<span class="fu">\footnotesize</span> <span class="ss">$C_1$</span>};</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="fu">\draw</span> [gray,decorate,decoration={brace,amplitude=5pt},</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>       xshift=8pt,yshift=-11pt]</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>   (4,2) -- (1.8,0.5)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>   node [black,midway,below=2pt,xshift=8pt]</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>   {<span class="fu">\footnotesize</span> <span class="ss">$C_2$</span>};</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="kw">\end</span>{<span class="ex">tikzpicture</span>}</span></code></pre></div>
 <p><img src="tikz4.png" /></p>
 <h2 id="further-information">Further Information</h2>
-<p>More TikZ/PGF examples are available at <a href="http://www.texample.net/tikz/examples">texample</a>. Also see the manual pgfmanual.pdf for both tutorial and detailed reference information (find it in <code>texmf/doc/generic/pgf/pgfmanual.pdf</code> or search the web).</p>
+<p>More TikZ/PGF examples are available at <a
+href="http://www.texample.net/tikz/examples">texample</a>. Also see the
+manual pgfmanual.pdf for both tutorial and detailed reference
+information (find it in <code>texmf/doc/generic/pgf/pgfmanual.pdf</code>
+or search the web).</p>
 </div>
 
 <div id="footer">

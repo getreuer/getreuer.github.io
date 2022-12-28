@@ -10,6 +10,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -44,7 +45,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -57,7 +58,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -85,32 +86,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="content">
 <div id="header">
-<h1 class="title">Trainable frontend for robust and far-field keyword spotting</h1>
+<h1 class="title">Trainable frontend for robust and far-field keyword
+spotting</h1>
 </div>
 <div class="features">
-<p><a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45911.pdf">Full text</a></p>
+<p><a href="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45911.pdf">Full
+text</a></p>
 </div>
 <div style="clear: both">
  
 </div>
-<p>Yuxuan Wang, Pascal Getreuer, Thad Hughes, Richard F. Lyon, Rif A. Saurous, “Trainable frontend for robust and far-field keyword spotting.” <em>2017 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)</em>, pp. 5670–5674, 2017.</p>
-<p>Article permalink: <a href="https://doi.org/10.1109/ICASSP.2017.7953242" class="uri">https://doi.org/10.1109/ICASSP.2017.7953242</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="va">@inproceedings</span>{<span class="ot">wang2017trainable</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>  <span class="dt">title</span>={Trainable frontend for robust and far-field keyword spotting},</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  <span class="dt">author</span>={Wang, Yuxuan and Getreuer, Pascal and Hughes, Thad and Lyon,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>          Richard F and Saurous, Rif A},</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>  <span class="dt">booktitle</span>={2017 IEEE International Conference on</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>             Acoustics, Speech and Signal Processing (ICASSP)},</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  <span class="dt">pages</span>={5670--5674},</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>  <span class="dt">year</span>={2017},</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>  <span class="dt">organization</span>={IEEE}</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Yuxuan Wang, Pascal Getreuer, Thad Hughes, Richard F. Lyon, Rif A.
+Saurous, “Trainable frontend for robust and far-field keyword spotting.”
+<em>2017 IEEE International Conference on Acoustics, Speech and Signal
+Processing (ICASSP)</em>, pp. 5670–5674, 2017.</p>
+<p>Article permalink: <a
+href="https://doi.org/10.1109/ICASSP.2017.7953242"
+class="uri">https://doi.org/10.1109/ICASSP.2017.7953242</a></p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">@inproceedings</span>{<span class="ot">wang2017trainable</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>={Trainable frontend for robust and far-field keyword spotting},</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>={Wang, Yuxuan and Getreuer, Pascal and Hughes, Thad and Lyon,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>          Richard F and Saurous, Rif A},</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">booktitle</span>={2017 IEEE International Conference on</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>             Acoustics, Speech and Signal Processing (ICASSP)},</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">pages</span>={5670--5674},</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>={2017},</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">organization</span>={IEEE}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h2 id="abstract">Abstract</h2>
 <blockquote>
-<p>Robust and far-field speech recognition is critical to enable true hands-free communication. In far-field conditions, signals are attenuated due to distance. To improve robustness to loudness variation, we introduce a novel frontend called per-channel energy normalization (PCEN). The key ingredient of PCEN is the use of an automatic gain control based dynamic compression to replace the widely used static (such as log or root) compression. We evaluate PCEN on the keyword spotting task. On our large rerecorded noisy and far-field eval sets, we show that PCEN significantly improves recognition performance. Furthermore, we model PCEN as neural network layers and optimize high-dimensional PCEN parameters jointly with the keyword spotting acoustic model. The trained PCEN frontend demonstrates significant further improvements without increasing model complexity or inference-time cost.</p>
+<p>Robust and far-field speech recognition is critical to enable true
+hands-free communication. In far-field conditions, signals are
+attenuated due to distance. To improve robustness to loudness variation,
+we introduce a novel frontend called per-channel energy normalization
+(PCEN). The key ingredient of PCEN is the use of an automatic gain
+control based dynamic compression to replace the widely used static
+(such as log or root) compression. We evaluate PCEN on the keyword
+spotting task. On our large rerecorded noisy and far-field eval sets, we
+show that PCEN significantly improves recognition performance.
+Furthermore, we model PCEN as neural network layers and optimize
+high-dimensional PCEN parameters jointly with the keyword spotting
+acoustic model. The trained PCEN frontend demonstrates significant
+further improvements without increasing model complexity or
+inference-time cost.</p>
 </blockquote>
 <p class="copynote">
-©2017 by the Institute of Electrical and Electronics Engineers (IEEE). Personal use of this material is permitted. However, permission to reprint/republish this material for advertising or promotional purposes or for creating new collective works for resale or redistribution to servers or lists, or to reuse any copyrighted component of this work in other works must be obtained from IEEE.
+©2017 by the Institute of Electrical and Electronics Engineers (IEEE).
+Personal use of this material is permitted. However, permission to
+reprint/republish this material for advertising or promotional purposes
+or for creating new collective works for resale or redistribution to
+servers or lists, or to reuse any copyrighted component of this work in
+other works must be obtained from IEEE.
 </p>
 </div>
 
