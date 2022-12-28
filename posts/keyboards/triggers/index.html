@@ -350,10 +350,10 @@ the code above.</p>
 <h2 id="when-another-key-is-held">When another key is held</h2>
 <p>Besides held modifiers, an action can be conditionally triggered
 based on another key being held.</p>
-<p>For instance with the following, the J and K keys become PgDn and
-PgUp while Backspace is held. The Backspace key continues to function as
-usual without any added delay, making it an interesting alternative to
-combos and layer-tap keys.</p>
+<p>For instance with the following, the <kbd>J</kbd> and <kbd>K</kbd>
+keys become PgDn and PgUp while <kbd>Backspace</kbd> is held. The
+Backspace key continues to function as usual without any added delay,
+making it an interesting alternative to combos and layer-tap keys.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">bool</span> bspc_is_held <span class="op">=</span> false<span class="op">;</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -513,10 +513,10 @@ example described above:</p>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Another application is “adaptive keys” to type common bigrams more
-comfortably. For example (assuming QWERTY layout) an adaptive U key
-where typing <code>iu</code> produces <code>in</code>. For this use, I
-would set <code>TIMEOUT_MS</code> to something rather low like 250 ms so
-that only quick typing triggers it.</p>
+comfortably. For example (assuming QWERTY layout) an adaptive
+<kbd>U</kbd> key where typing <code>iu</code> produces <code>in</code>.
+For this use, I would set <code>TIMEOUT_MS</code> to something rather
+low like 250 ms so that only quick typing triggers it.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>update_recent_keys<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>recent<span class="op">[</span>RECENT_SIZE <span class="op">-</span> <span class="dv">2</span><span class="op">]</span> <span class="op">==</span> KC_I <span class="op">&amp;&amp;</span></span>

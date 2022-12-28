@@ -120,7 +120,7 @@ myself. Some subtle gotchas:</p>
 <li><p><strong>Key repeating.</strong> When you hold a key down long
 enough, it normally repeats the character. E.g. you may want this
 repeating behavior to type a row of stars <code>****************</code>
-without having to tap the <code>*</code> key for each star.</p></li>
+without having to tap the <kbd>*</kbd> key for each star.</p></li>
 <li><p><strong>Rolled presses.</strong> Real typing is not always clean,
 individual key presses, especially in fast typing. You may press down
 one key, then while it is held, begin pressing another key—a “roll”
@@ -146,7 +146,7 @@ layout and determines what is typed normally. The
 <code>shifted_keycode</code> is what you want the key to type when
 shifted. (See the <a href="https://docs.qmk.fm/#/keycodes">QMK keycodes
 documentation</a> for possible keycodes.)</p>
-<p>Here is an example. The first row in my table has a <code>.</code>
+<p>Here is an example. The first row in my table has a <kbd>.</kbd>
 (<code>KC_DOT</code>) key that types <code>?</code>
 (<code>KC_QUES</code>) when pressed shifted.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/custom_shift_keys.h&quot;</span></span>

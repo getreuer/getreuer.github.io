@@ -183,7 +183,7 @@ these buttons:</p>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>See also the <a href="https://docs.qmk.fm/#/feature_macros">QMK
 macros documentation</a>.</p>
-<p>With the above implementation, pressing the <code>UPDIR</code> button
+<p>With the above implementation, pressing the <kbd>UPDIR</kbd> button
 on the keyboard has the effect of typing <code>../</code>, for “up
 directory” when in the terminal. This is my favorite macro! I can mash
 it a few times (<code>../../../file</code>) to refer to files several
@@ -287,8 +287,9 @@ Layers</a>).</li>
 <h3 id="arrow-macro-types---or">Arrow macro, types -&gt; or =&gt;</h3>
 <p>For extra functionality, you can do a different action when the macro
 button is pressed with a mod. For instance, the following implements an
-ARROW button so that ARROW + shift types <code>=&gt;</code> and ARROW by
-itself types <code>-&gt;</code>.</p>
+<kbd>ARROW</kbd> button so that Shift + <kbd>ARROW</kbd> types
+<code>=&gt;</code> and <kbd>ARROW</kbd> by itself types
+<code>-&gt;</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Get current mod and one-shot mod states.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint8_t</span> mods <span class="op">=</span> get_mods<span class="op">();</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint8_t</span> oneshot_mods <span class="op">=</span> get_oneshot_mods<span class="op">();</span></span>

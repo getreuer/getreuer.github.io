@@ -353,6 +353,17 @@ div.callout-header p {
   font-weight: bold;
 }
 
+kbd {
+  display: inline-block;
+  line-height: 1.2rem;
+  border: 1px solid #bbb;
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  padding: 1px 8px;
+  vertical-align: middle;
+  font-family: monospace;
+}
+
 @media only screen and (min-width: 400px) {
   blockquote {
     padding-left: 2em;
