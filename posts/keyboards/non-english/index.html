@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-09-13 (updated 2022-11-30)" />
+  <meta name="author" content="Pascal Getreuer, 2022-09-13 (updated 2022-12-29)" />
   <title>QMK: Typing non-English letters</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Typing non-English letters</h1>
-<h2 class="author">Pascal Getreuer, 2022-09-13 (updated 2022-11-30)</h2>
+<h2 class="author">Pascal Getreuer, 2022-09-13 (updated 2022-12-29)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -214,11 +214,11 @@ language support</a> and <a
 href="https://docs.qmk.fm/#/reference_keymap_extras?id=sendstring-support">Sendstring
 support</a>.</p>
 <p>See <a
-href="https://github.com/qmk/qmk_firmware/tree/master/quantum/keymap_extras">quantum/keyboard_extras</a>
-for the full list of such headers. See the headers themselves to find
-keycodes for the additional symbols a particular layout can type. For
-instance keymap_ukrainian.h defines <code>UA_SHCH</code> to type Щ. Here
-is a sampling:</p>
+href="https://docs.qmk.fm/#/reference_keymap_extras?id=header-files">Language-specific
+Keycodes</a> for the full list of such headers. See the headers
+themselves to find keycodes for the additional symbols a particular
+layout can type. For instance keymap_ukrainian.h defines
+<code>UA_SHCH</code> to type Щ. Here is a sampling:</p>
 <ul>
 <li><a
 href="https://github.com/qmk/qmk_firmware/blob/master/quantum/keymap_extras/keymap_czech.h">keymap_czech.h</a></li>
@@ -239,9 +239,10 @@ href="https://github.com/qmk/qmk_firmware/blob/master/quantum/keymap_extras/keym
 <li><a
 href="https://github.com/qmk/qmk_firmware/blob/master/quantum/keymap_extras/keymap_ukrainian.h">keymap_ukrainian.h</a>*</li>
 </ul>
-<p>* Some layouts lack a corresponding “<code>sendstring_</code>”
-header. I believe this means <code>SEND_STRING</code> is unsupported
-under these layouts.</p>
+<p>* <code>SEND_STRING</code> is limited to (a subset of) the ASCII
+character set. Layouts for non-Latin languages lack a corresponding
+“<code>sendstring_</code>” header because they have no keys to enter
+most ASCII characters.</p>
 <p><strong>Side note:</strong> Why do we have this complication of
 different keycodes for each language? When making keyboards with other
 layouts, it is standard practice to reuse US QWERTY keyboard firmware
