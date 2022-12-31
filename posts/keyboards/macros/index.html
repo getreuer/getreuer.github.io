@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2022-05-02)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2022-12-31)" />
   <title>QMK: Macro buttons</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Macro buttons</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2022-05-02)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2022-12-31)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -114,6 +114,7 @@ mods</a>
 <li><a href="#select-line-macro">Select line macro</a></li>
 <li><a href="#web-search-for-current-selection">Web search for current
 selection</a></li>
+<li><a href="#join-lines">Join lines</a></li>
 </ul></li>
 <li><a href="#other-cool-ideas">Other cool ideas</a>
 <ul>
@@ -124,14 +125,21 @@ selection</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
+<div class="callout" style="border-left-color: #e49f34">
+<div class="callout-header" style="background-color: #fdebd5">
+<p>
+⚠  Obligatory Warning
+</p>
+</div>
+<p><strong>Don’t use macros to type passwords or credit card
+numbers.</strong> Otherwise if someone has physical access to your
+keyboard, they can access this info.</p>
+</div>
 <h2 id="overview">Overview</h2>
 <p>One of QMK’s most empowering features is the ability to define macro
 buttons: a button, that when pressed, types a sequence of keys. This
 page is an assortment of practical QMK macros, collected from real
 users’ keymaps.</p>
-<p><strong>Obligatory warning:</strong> don’t use macros to type
-passwords or credit card numbers. Otherwise if someone has physical
-access to your keyboard, they can access this info.</p>
 <h3 id="license">License</h3>
 <p>Code snippets in this post are shared under Apache 2 license.</p>
 <div style="font-size:85%">
@@ -285,11 +293,11 @@ Layers</a>).</li>
 </ul>
 <h2 id="macros-that-respond-to-mods">Macros that respond to mods</h2>
 <h3 id="arrow-macro-types---or">Arrow macro, types -&gt; or =&gt;</h3>
-<p>For extra functionality, you can do a different action when the macro
-button is pressed with a mod. For instance, the following implements an
-<kbd>ARROW</kbd> button so that Shift + <kbd>ARROW</kbd> types
-<code>=&gt;</code> and <kbd>ARROW</kbd> by itself types
-<code>-&gt;</code>.</p>
+<p>For extra functionality on one key, you can perform a different
+action when the macro button is pressed with a mod. For instance, the
+following implements an <kbd>ARROW</kbd> button so that <kbd>Shift</kbd>
++ <kbd>ARROW</kbd> types <code>=&gt;</code> and <kbd>ARROW</kbd> by
+itself types <code>-&gt;</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Get current mod and one-shot mod states.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint8_t</span> mods <span class="op">=</span> get_mods<span class="op">();</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint8_t</span> oneshot_mods <span class="op">=</span> get_oneshot_mods<span class="op">();</span></span>
@@ -298,26 +306,26 @@ button is pressed with a mod. For instance, the following implements an
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> ARROW<span class="op">:</span>  <span class="co">// Arrow macro, types -&gt; or =&gt;.</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">((</span>mods <span class="op">|</span> oneshot_mods<span class="op">)</span> <span class="op">&amp;</span> MOD_MASK_SHIFT<span class="op">)</span> <span class="op">{</span>  <span class="co">// Is shift held?</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        del_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span>  <span class="co">// Temporarily delete shift.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Temporarily delete shift.</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        del_oneshot_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;=&gt;&quot;</span><span class="op">);</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        set_mods<span class="op">(</span>mods<span class="op">);</span>            <span class="co">// Restore mods.</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;-&gt;&quot;</span><span class="op">);</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>The tricky part is that shift or any other active mods will apply to
-the keys sent by <code>SEND_STRING</code>. So without treatment, the
-shift would turn the intended arrow <code>=&gt;</code> into
-<code>+&gt;</code>. We get around this by temporarily deleting shift
-from the mod state. Alternatively, we can turn off all mods temporarily
-with</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>clear_mods<span class="op">();</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>clear_oneshot_mods<span class="op">();</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        unregister_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span>  </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;=&gt;&quot;</span><span class="op">);</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        register_mods<span class="op">(</span>mods<span class="op">);</span>            <span class="co">// Restore mods.</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;-&gt;&quot;</span><span class="op">);</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The tricky part is that Shift or any other active mods will apply to
+the keys sent by <code>SEND_STRING</code>. Without treatment, the Shift
+would turn the intended arrow <code>=&gt;</code> into
+<code>+&gt;</code>. We get around this by temporarily deleting Shift
+from the mod state. Or, we could turn off all mods temporarily with</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>clear_oneshot_mods<span class="op">();</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>unregister_mods<span class="op">(</span>MOD_MASK_CSAG<span class="op">);</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Do stuff...</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>set_mods<span class="op">(</span>mods<span class="op">);</span></span></code></pre></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>register_mods<span class="op">(</span>mods<span class="op">);</span></span></code></pre></div>
 <h3 id="braces-macro-types-or">Braces macro, types [], {}, or
 &lt;&gt;</h3>
 <p>From <a
@@ -333,8 +341,8 @@ curly braces <code>{}</code>. Or with Ctrl, it does angle brackets
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> BRACES<span class="op">:</span>  <span class="co">// Types [], {}, or &lt;&gt; and puts cursor between braces.</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      clear_mods<span class="op">();</span>  <span class="co">// Temporarily disable mods.</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      clear_oneshot_mods<span class="op">();</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      clear_oneshot_mods<span class="op">();</span>  <span class="co">// Temporarily disable mods.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      unregister_mods<span class="op">(</span>MOD_MASK_CSAG<span class="op">);</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">((</span>mods <span class="op">|</span> oneshot_mods<span class="op">)</span> <span class="op">&amp;</span> MOD_MASK_SHIFT<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;{}&quot;</span><span class="op">);</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">((</span>mods <span class="op">|</span> oneshot_mods<span class="op">)</span> <span class="op">&amp;</span> MOD_MASK_CTRL<span class="op">)</span> <span class="op">{</span></span>
@@ -343,7 +351,7 @@ curly braces <code>{}</code>. Or with Ctrl, it does angle brackets
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;[]&quot;</span><span class="op">);</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      tap_code<span class="op">(</span>KC_LEFT<span class="op">);</span>  <span class="co">// Move cursor between braces.</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      set_mods<span class="op">(</span>mods<span class="op">);</span>  <span class="co">// Restore mods.</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      register_mods<span class="op">(</span>mods<span class="op">);</span>  <span class="co">// Restore mods.</span></span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
@@ -389,7 +397,7 @@ select to the beginning of the word:</p>
 post for an elaborated version of this macro.</p>
 <h3 id="select-line-macro">Select line macro</h3>
 <p>This macro selects the current line, by tapping the home key and then
-Shift+end:</p>
+Shift+End:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> SELLINE<span class="op">:</span>  <span class="co">// Selects the current line.</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_TAP<span class="op">(</span>X_HOME<span class="op">)</span> SS_LSFT<span class="op">(</span>SS_TAP<span class="op">(</span>X_END<span class="op">)));</span></span>
@@ -413,6 +421,31 @@ tab.</p>
 taps enter to do the search. Since the browser might need a moment to
 open the new tab, <code>SS_DELAY</code> is used to wait briefly before
 pasting.</p>
+<h3 id="join-lines">Join lines</h3>
+<p>The following works in most text editors to join the current line
+with the following line, similar to Vim’s “<code>J</code>” command. It
+presses End, Delete, and replaces intermediate whitespace with a
+space:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> JOINLN<span class="op">:</span>  <span class="co">// Join lines like Vim&#39;s `J` command.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span> <span class="co">// Go to the end of the line and tap delete.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_END<span class="op">)</span> SS_TAP<span class="op">(</span>X_DEL<span class="op">)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// In case this has joined two words together, insert one space.</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_SPC<span class="op">)</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        SS_LCTL<span class="op">(</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>          <span class="co">// Go to the beginning of the next word.</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>          SS_TAP<span class="op">(</span>X_RGHT<span class="op">)</span> SS_TAP<span class="op">(</span>X_LEFT<span class="op">)</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>          <span class="co">// Select back to the end of the previous word. This should select</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>          <span class="co">// all spaces and tabs between the joined lines from indentation</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>          <span class="co">// or trailing whitespace, including the space inserted earlier.</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>          SS_LSFT<span class="op">(</span>SS_TAP<span class="op">(</span>X_LEFT<span class="op">)</span> SS_TAP<span class="op">(</span>X_RGHT<span class="op">)))</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Replace the selection with a single space.</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_SPC<span class="op">));</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<p><strong>Note:</strong> I’ve noticed slight differences between text
+editors in how hotkeys work at the end of the line. This macro might
+produce incorrect results in some editors.</p>
 <h2 id="other-cool-ideas">Other cool ideas</h2>
 <h3 id="next-sentence-macro">Next sentence macro</h3>
 <p>Inspired by <a
@@ -424,12 +457,12 @@ action into a single button press. The macro types a period, space, then
 sets a <a href="https://docs.qmk.fm/#/one_shot_keys">one-shot mod</a> so
 that the next key typed is shifted, to capitalize the first letter of
 the next sentence:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> NEXTSEN<span class="op">:</span>  <span class="co">// Next sentence macro.</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span><span class="st">&quot;. &quot;</span><span class="op">);</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    add_oneshot_mods<span class="op">(</span>MOD_BIT<span class="op">(</span>KC_LSFT<span class="op">));</span>  <span class="co">// Set one-shot mod for shift.</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> NEXTSEN<span class="op">:</span>  <span class="co">// Next sentence macro.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span><span class="st">&quot;. &quot;</span><span class="op">);</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    add_oneshot_mods<span class="op">(</span>MOD_BIT<span class="op">(</span>KC_LSFT<span class="op">));</span>  <span class="co">// Set one-shot mod for shift.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
 <p>See also the approach taken in <a
 href="https://github.com/precondition/dactyl-manuform-keymap">precondition’s
 keymap</a>: there, the next sentence is triggered by double tapping the
@@ -440,19 +473,21 @@ automatically.</p>
 <h3 id="emojis">Emojis</h3>
 <p><a href="https://docs.juliaebert.com/projects/keyboard">Julia Ebert’s
 blog</a> notes that the way to type a multi-codepoint emoji is to
-implement it as a macro. The following types a US flag emoji 🇺🇸:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> US_FLAG<span class="op">:</span>  <span class="co">// Types US flag emoji.</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// UTF-8 encoding of U+1F1FA, U+1F1F8.</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    send_unicode_string<span class="op">(</span><span class="st">&quot;</span><span class="sc">\xf0\x9f\x87\xba\xf0\x9f\x87\xb8</span><span class="st">&quot;</span><span class="op">);</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
-<p>Note: the above assumes <code>UNICODEMAP_ENABLE = yes</code> is set
-in the rules.mk file. You’ll also need to define
-<code>UNICODE_SELECTED_MODES</code> in config.h <a
-href="https://docs.qmk.fm/#/feature_unicode?id=input-modes">according to
-your OS</a>. See also <a href="../non-english/index.html">Typing
-non-English letters</a>.</p>
+implement it as a macro. The following types a US flag emoji 🇺🇸
+(U+1F1FA, U+1F1F8):</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> US_FLAG<span class="op">:</span>  <span class="co">// Types US flag emoji.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    send_unicode_string<span class="op">(</span><span class="st">&quot;🇺🇸&quot;</span><span class="op">);</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Or if you prefer ASCII-only source files, use escape codes to</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// write the UTF-8 encoding of U+1F1FA, U+1F1F8:</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// send_unicode_string(&quot;\xf0\x9f\x87\xba\xf0\x9f\x87\xb8&quot;);</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<p><strong>Note:</strong> The above assumes a Unicode input method is
+enabled, either Basic Unicode, Unicode Map, or UCIS; see <a
+href="https://docs.qmk.fm/#/feature_unicode">Unicode Support</a>. See
+also <a href="../non-english/index.html">Typing non-English
+letters</a>.</p>
 <h3 id="triggers">Triggers</h3>
 <p>See my following <a href="../triggers/index.html">post about
 triggers</a>: react to layer changes, tap vs. long press, previously
