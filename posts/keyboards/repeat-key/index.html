@@ -181,6 +181,12 @@ third argument:</p>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>If your <code>process_record_user()</code> has other handlers or
+macros, Repeat Key’s handler <code>process_repeat_key()</code> should
+preferably be called before anything else. (If you also use <a
+href="../achordion/index.html">Achordion</a>, then call Achordion’s
+handler first, Repeat Key’s handler second, and then other
+handlers.)</p>
 <p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/repeat_key.c</span></span></code></pre></div>
 <p><strong>Step 4:</strong> In the directory containing your
