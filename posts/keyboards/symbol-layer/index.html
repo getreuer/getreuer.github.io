@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2022-01-02)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-01-01)" />
   <title>Designing a Symbol Layer</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Designing a Symbol Layer</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2022-01-02)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-01-01)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -129,17 +129,18 @@ something about that, this page discusses some design principles and
 observations about symbol layers.</p>
 <h2 id="design-principles">Design principles</h2>
 <p>Symbols are not like alpha characters: they occur less often, and
-they tend to occur in isolation or in short bigrams (for instance in C
-code, things like <code>#</code> and <code>!=</code>). We can learn
-nevertheless from work on optimizing alpha key layouts and apply some of
-those findings to symbol layouts:</p>
+they tend to occur in isolation or in short bigrams (in C code, things
+like <code>#</code> and <code>!=</code>). We can learn nevertheless from
+work on optimizing alpha key layouts and apply some of those findings to
+symbol layouts:</p>
 <p>It’s a good idea to…</p>
 <ul>
 <li><p>put the most used keys on home row and rare keys toward the
 corners.</p></li>
 <li><p>avoid the pinkies for keys that are often double tapped
-(<code>==</code>, <code>++</code>, <code>//</code>, <code>::</code>,
-…).</p></li>
+(<code>==</code>, <code>++</code>, <code>//</code>, <code>::</code>, …).
+Or you might like a <a href="../repeat-key/index.html">Repeat Key</a> to
+circumvent double tapping.</p></li>
 <li><p>make common bigrams (<code>!=</code>, <code>&lt;=</code>,
 <code>+=</code>, <code>-&gt;</code>, …) comfortable to type. Ideally
 they are “inward rolls”. An inward roll is a pattern typed on one hand
@@ -158,8 +159,10 @@ keys can be on the home row and not all bigrams can be inward rolls. We
 need to make compromises.</p>
 <h3 id="automatic-optimization">Automatic optimization?</h3>
 <p>There are keyboard layout optimizer tools (like <a
-href="http://mkweb.bcgsc.ca/carpalx/">Carpalx</a> and <a
-href="https://github.com/xsznix/keygen">xsznix/keygen</a>) that
+href="http://mkweb.bcgsc.ca/carpalx/">Carpalx</a>, <a
+href="https://github.com/xsznix/keygen">xsznix/keygen</a>, <a
+href="https://github.com/semilin/genkey">semilin/genkey</a>, and <a
+href="https://github.com/O-X-E-Y/oxeylyzer">O-X-E-Y/oxeylyzer</a>) that
 automatically search for a layout that balances many above such
 considerations, and these could be applied to design a symbol layer.
 However, automatically designed layouts are notorious for having
