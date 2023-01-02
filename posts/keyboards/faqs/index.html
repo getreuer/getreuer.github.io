@@ -542,7 +542,9 @@ you quickly tap and then hold the key, its tap action is repeated. In
 QMK, this is enabled by default and disabled with <a
 href="https://docs.qmk.fm/#/tap_hold?id=tapping-force-hold">TAPPING_FORCE_HOLD</a>.
 In ZMK, it is enabled with <a
-href="https://zmk.dev/docs/behaviors/hold-tap/#quick-tap-ms">quick-tap-ms</a>.</p></li>
+href="https://zmk.dev/docs/behaviors/hold-tap/#quick-tap-ms">quick-tap-ms</a>.</p>
+<p>Or instead of tap-holding, use a repeat key (<a
+href="../repeat-key/index.html">QMK implementation</a>).</p></li>
 <li><p><strong>ALL_CAPS typing:</strong> Typing in all-caps is awkward
 with home row Shifts. Use a Caps Word implementation to get around this:
 <a href="../caps-word/index.html">Caps Word in QMK</a>, <a
@@ -702,7 +704,7 @@ layouts</a>.</p>
 characters with double quotes. Most characters are written directly. But
 backslash <code>\</code> has special meaning, for instance
 <code>\n</code> for new line. If you want a string with the literal
-<code>\</code> character , it must be escaped as <code>\\</code>. Say, a
+<code>\</code> character, it must be escaped as <code>\\</code>. Say, a
 Windows directory path</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\f</span><span class="st">avorite\directory&quot;</span><span class="op">);</span>    <span class="co">// DON&#39;T DO THIS!</span></span></code></pre></div>
 <p>should instead be written as</p>
