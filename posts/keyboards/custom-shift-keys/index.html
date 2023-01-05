@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2022-05-25)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-01-04)" />
   <title>QMK: Custom shift keys</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Custom shift keys</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2022-05-25)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-01-04)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -209,7 +209,7 @@ there. This is the meat of the implementation.</p>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_custom_shift_keys<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t <span class="op">*</span>record<span class="op">);</span></span></code></pre></div>
 <p><strong>custom_shift_keys.c</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Copyright 2021-2022 Google LLC.</span></span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Copyright 2021-2023 Google LLC.</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="an">SPDX-License-Identifier:</span><span class="co"> Apache-2.0</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;custom_shift_keys.h&quot;</span></span>
@@ -232,39 +232,44 @@ there. This is the meat of the implementation.</p>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="pp">#else</span></span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">((</span>mods <span class="op">|</span> get_weak_mods<span class="op">())</span> <span class="op">&amp;</span> MOD_MASK_SHIFT<span class="op">)</span> <span class="op">{</span>  <span class="co">// Shift is held.</span></span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Search for a custom key with keycode equal to `keycode`.</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NUM_CUSTOM_SHIFT_KEYS<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>keycode <span class="op">==</span> custom_shift_keys<span class="op">[</span>i<span class="op">].</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>          <span class="co">// Continue default handling if this is a tap-hold key being held.</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> <span class="op">(((</span>QK_MOD_TAP <span class="op">&lt;=</span> keycode <span class="op">&amp;&amp;</span> keycode <span class="op">&lt;=</span> QK_MOD_TAP_MAX<span class="op">)</span> <span class="op">||</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>               <span class="op">(</span>QK_LAYER_TAP <span class="op">&lt;=</span> keycode <span class="op">&amp;&amp;</span> keycode <span class="op">&lt;=</span> QK_LAYER_TAP_MAX<span class="op">))</span> <span class="op">&amp;&amp;</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>              record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> true<span class="op">;</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>          del_oneshot_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>          del_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>          del_weak_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>          send_keyboard_report<span class="op">();</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>          registered_keycode <span class="op">=</span> custom_shift_keys<span class="op">[</span>i<span class="op">].</span>shifted_keycode<span class="op">;</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>          register_code16<span class="op">(</span>registered_keycode<span class="op">);</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>          set_mods<span class="op">(</span>mods<span class="op">);</span>  <span class="co">// Restore the mods.</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>          <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue with default handling.</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Continue default handling if this is a tap-hold key being held.</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">((</span>IS_QK_MOD_TAP<span class="op">(</span>keycode<span class="op">)</span> <span class="op">||</span> IS_QK_LAYER_TAP<span class="op">(</span>keycode<span class="op">))</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>          record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Search for a custom shift key whose keycode is `keycode`.</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NUM_CUSTOM_SHIFT_KEYS<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>keycode <span class="op">==</span> custom_shift_keys<span class="op">[</span>i<span class="op">].</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>          registered_keycode <span class="op">=</span> custom_shift_keys<span class="op">[</span>i<span class="op">].</span>shifted_keycode<span class="op">;</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> <span class="op">(</span>IS_QK_MODS<span class="op">(</span>registered_keycode<span class="op">)</span> <span class="op">&amp;&amp;</span>  <span class="co">// Should key be shifted?</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>              <span class="op">(</span>QK_MODS_GET_MODS<span class="op">(</span>registered_keycode<span class="op">)</span> <span class="op">&amp;</span> MOD_LSFT<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>            register_code16<span class="op">(</span>registered_keycode<span class="op">);</span>  <span class="co">// If so, press directly.</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>            <span class="co">// If not, cancel shift mods, press the key, and restore mods.</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>            del_weak_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>            del_oneshot_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>            unregister_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>            register_code16<span class="op">(</span>registered_keycode<span class="op">);</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>            set_mods<span class="op">(</span>mods<span class="op">);</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>          <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue with default handling.</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h2 id="compared-to-key-overrides">Compared to Key Overrides</h2>
-<p>In August 2021, QMK added <a
-href="https://docs.qmk.fm/#/feature_key_overrides">Key Overrides</a>,
-which “overrides” the keys sent for specified modifier-key combinations.
-In particular, it can be used to implement custom shift keys. Add
-“<code>KEY_OVERRIDE_ENABLE = yes</code>” in rules.mk to enable it, then
-the example above is analogously implemented as:</p>
+<p>QMK’s <a href="https://docs.qmk.fm/#/feature_key_overrides">Key
+Overrides</a> feature “overrides” the keys sent for specified
+modifier-key combinations. In particular, it can be used to implement
+custom shift keys. Add “<code>KEY_OVERRIDE_ENABLE = yes</code>” in
+rules.mk to enable it, then the example above is analogously implemented
+as:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> key_override_t dot_key_override <span class="op">=</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    ko_make_basic<span class="op">(</span>MOD_MASK_SHIFT<span class="op">,</span> KC_DOT<span class="op">,</span> KC_QUES<span class="op">);</span>  <span class="co">// Shift . is ?</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> key_override_t comm_key_override <span class="op">=</span></span>
