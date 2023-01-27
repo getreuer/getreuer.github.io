@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-12-29" />
+  <meta name="author" content="Pascal Getreuer, 2022-12-29 (updated 2023-01-26)" />
   <title>QMK: Repeat Key</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Repeat Key</h1>
-<h2 class="author">Pascal Getreuer, 2022-12-29</h2>
+<h2 class="author">Pascal Getreuer, 2022-12-29 (updated 2023-01-26)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -96,19 +96,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#add-it-to-your-keymap">Add it to your keymap</a>
 <ul>
 <li><a href="#repeat-using-a-combo">Repeat using a Combo</a></li>
-<li><a href="#handle-how-a-key-is-repeated">Handle how a key is
-repeated</a></li>
 </ul></li>
 <li><a href="#alternative-implementations">Alternative
 implementations</a></li>
-<li><a href="#reverse-repeat-key">Reverse Repeat Key</a>
-<ul>
-<li><a href="#handling-unmatched-keys">Handling unmatched keys</a></li>
-</ul></li>
+<li><a href="#reverse-repeat-key">Reverse Repeat Key</a></li>
 <li><a href="#customization">Customization</a>
 <ul>
-<li><a href="#functions">Functions</a></li>
+<li><a href="#defining-reverse-keys">Defining reverse keys</a></li>
 <li><a href="#ignoring-certain-keys">Ignoring certain keys</a></li>
+<li><a href="#handle-how-a-key-is-repeated">Handle how a key is
+repeated</a></li>
+<li><a href="#handle-how-a-key-is-reverse-repeated">Handle how a key is
+reverse repeated</a></li>
+<li><a href="#functions">Functions</a></li>
 </ul></li>
 <li><a href="#implementation-details">Implementation details</a>
 <ul>
@@ -187,8 +187,10 @@ preferably be called before anything else. (If you also use <a
 href="../achordion/index.html">Achordion</a>, then call Achordion’s
 handler first, Repeat Key’s handler second, and then other
 handlers.)</p>
-<p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/repeat_key.c</span></span></code></pre></div>
+<p><strong>Step 3:</strong> In rules.mk, add the line</p>
+<pre class="make"><code>SRC += features/repeat_key.c</code></pre>
+<p>Additionally, Repeat Key requires that Combos are enabled. Set</p>
+<pre class="make"><code>COMBO_ENABLE = yes</code></pre>
 <p><strong>Step 4:</strong> In the directory containing your
 <code>keymap.c</code>, create a <code>features</code> subdirectory and
 copy <a
@@ -210,42 +212,12 @@ Shift + <code>Z</code>.</p>
 <a href="https://docs.qmk.fm/#/feature_combo">with a Combo</a>. This can
 be done by adding <code>COMBO_ENABLE = yes</code> in rules.mk and
 defining a combo in keymap.c like</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Period + Backspace =&gt; Repeat.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> repeat_combo<span class="op">[]</span> PROGMEM <span class="op">=</span> <span class="op">{</span>KC_DOT<span class="op">,</span> KC_BSPC<span class="op">,</span> COMBO_END<span class="op">};</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>combo_t key_combos<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    COMBO<span class="op">(</span>repeat_combo<span class="op">,</span> REPEAT<span class="op">),</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> COMBO_LEN <span class="op">=</span> <span class="kw">sizeof</span><span class="op">(</span>key_combos<span class="op">)</span> <span class="op">/</span> <span class="kw">sizeof</span><span class="op">(*</span>key_combos<span class="op">);</span></span></code></pre></div>
-<h3 id="handle-how-a-key-is-repeated">Handle how a key is repeated</h3>
-<p>By default, pressing <kbd>Repeat</kbd> will simply behave as if the
-last key were pressed again. This also works with macro keys with custom
-handlers, invoking the macro again. In case fine-tuning is needed for
-sensible repetition, you can handle how a key is repeated with
-<code>repeat_key_count()</code> within
-<code>process_record_user()</code>.</p>
-<p>When a key is pressed as usual, <code>repeat_key_count()</code> is 0.
-On the first repeat, it is 1, then the second repeat, 2, and so on. For
-instance supposing <code>MY_MACRO</code> is a custom keycode used in the
-layout:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_repeat_key<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MY_MACRO<span class="op">:</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>repeat_key_count<span class="op">()</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// MY_MACRO is being repeated!</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;repeat!&quot;</span><span class="op">);</span>    </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>                       <span class="co">// MY_MACRO is being used normally.</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;macro&quot;</span><span class="op">);</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Period + Backspace =&gt; Repeat.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> repeat_combo<span class="op">[]</span> PROGMEM <span class="op">=</span> <span class="op">{</span>KC_DOT<span class="op">,</span> KC_BSPC<span class="op">,</span> COMBO_END<span class="op">};</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>combo_t key_combos<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    COMBO<span class="op">(</span>repeat_combo<span class="op">,</span> REPEAT<span class="op">),</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> COMBO_LEN <span class="op">=</span> <span class="kw">sizeof</span><span class="op">(</span>key_combos<span class="op">)</span> <span class="op">/</span> <span class="kw">sizeof</span><span class="op">(*</span>key_combos<span class="op">);</span></span></code></pre></div>
 <h2 id="alternative-implementations">Alternative implementations</h2>
 <p>I’m aware of a few existing “repeat last key” implementations:</p>
 <ul>
@@ -273,10 +245,11 @@ data-cites="KapJI">@KapJI</span></li>
 </ul>
 <h2 id="reverse-repeat-key">Reverse Repeat Key</h2>
 <p>An idea thanks to Jonas Hietala is a complementary “Reverse Repeat
-Key.” For instance, when the last key is Page Down, the Reverse Repeat
-Key performs Page Up. The utility of Reverse Repeat is limited, to be
-frank, since only some keys have a clear-cut correspondence to keys with
-the opposing action. Yet it is satisfying when it comes to use.</p>
+Key.” When the last key is Page Down, the Reverse Repeat Key performs
+Page Up. Or when the last key is the common “select by word” hotkey Ctrl
++ Shift + Right Arrow, the Reverse Repeat Key performs Ctrl + Shift +
+Left Arrow, which together with the Repeat Key enables convenient
+selection by words in either direction.</p>
 <p>Do the following to use the Reverse Repeat Key in your keymap.c:</p>
 <ol type="1">
 <li><p>Add a custom keycode for Reverse Repeat, say <code>REVREP</code>,
@@ -287,199 +260,209 @@ Repeat as</p>
 class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>process_repeat_key_with_rev<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">,</span> REVREP<span class="op">))</span> <span class="op">{</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
-<li><p>Copy the following into keymap.c:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> rev_repeat_key_pairs<span class="op">[][</span><span class="dv">2</span><span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_LEFT<span class="op">,</span> KC_RGHT<span class="op">},</span>             <span class="co">// Left / Right Arrow.</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_UP  <span class="op">,</span> KC_DOWN<span class="op">},</span>             <span class="co">// Up / Down Arrow.</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>S<span class="op">(</span>KC_LEFT<span class="op">),</span> S<span class="op">(</span>KC_RGHT<span class="op">)},</span>       <span class="co">// Shift + Left / Right Arrow.</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>S<span class="op">(</span>KC_UP<span class="op">),</span> S<span class="op">(</span>KC_DOWN<span class="op">)},</span>         <span class="co">// Shift + Up / Down Arrow.</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>C<span class="op">(</span>KC_LEFT<span class="op">),</span> C<span class="op">(</span>KC_RGHT<span class="op">)},</span>       <span class="co">// Ctrl + Left / Right Arrow.</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>C<span class="op">(</span>S<span class="op">(</span>KC_LEFT<span class="op">)),</span> C<span class="op">(</span>S<span class="op">(</span>KC_RGHT<span class="op">))},</span> <span class="co">// Ctrl + Shift + Left / Right Arrow.</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_HOME<span class="op">,</span> KC_END <span class="op">},</span>             <span class="co">// Home / End.</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_PGUP<span class="op">,</span> KC_PGDN<span class="op">},</span>             <span class="co">// Page Up / Page Down.</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>C<span class="op">(</span>KC_PGUP<span class="op">),</span> C<span class="op">(</span>KC_PGDN<span class="op">)},</span>       <span class="co">// Ctrl + Page Up / Page Down.</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_TAB <span class="op">,</span> S<span class="op">(</span>KC_TAB<span class="op">)},</span>           <span class="co">// Tab / Shift + Tab.</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_WBAK<span class="op">,</span> KC_WFWD<span class="op">},</span>             <span class="co">// Browser Back / Forward.</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_MNXT<span class="op">,</span> KC_MPRV<span class="op">},</span>             <span class="co">// Next / Previous Media Track.</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_MFFD<span class="op">,</span> KC_MRWD<span class="op">},</span>             <span class="co">// Fast Forward / Rewind Media.</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_VOLU<span class="op">,</span> KC_VOLD<span class="op">},</span>             <span class="co">// Volume Up / Down.</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_BRIU<span class="op">,</span> KC_BRID<span class="op">},</span>             <span class="co">// Brightness Up / Down.</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Navigation hotkeys in Vim, Emacs, and other programs.</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_H   <span class="op">,</span> KC_L   <span class="op">},</span>             <span class="co">// Left / Right.</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_J   <span class="op">,</span> KC_K   <span class="op">},</span>             <span class="co">// Down / Up.</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_W   <span class="op">,</span> KC_B   <span class="op">},</span>             <span class="co">// Forward / Backward by word.</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>C<span class="op">(</span>KC_N<span class="op">),</span> C<span class="op">(</span>KC_P<span class="op">)},</span>             <span class="co">// Next / Previous.</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>C<span class="op">(</span>KC_D<span class="op">),</span> C<span class="op">(</span>KC_U<span class="op">)},</span>             <span class="co">// Down / Up.</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>C<span class="op">(</span>KC_F<span class="op">),</span> C<span class="op">(</span>KC_B<span class="op">)},</span>             <span class="co">// Forward / Backward.</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>A<span class="op">(</span>KC_F<span class="op">),</span> A<span class="op">(</span>KC_B<span class="op">)},</span>             <span class="co">// Forward / Backward by word.</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Mouse keys (if enabled).</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifdef MOUSEKEY_ENABLE</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_MS_L<span class="op">,</span> KC_MS_R<span class="op">},</span>             <span class="co">// Mouse Cursor Left / Right.</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_MS_U<span class="op">,</span> KC_MS_D<span class="op">},</span>             <span class="co">// Mouse Cursor Up / Down.</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_WH_L<span class="op">,</span> KC_WH_R<span class="op">},</span>             <span class="co">// Mouse Wheel Left / Right.</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_WH_U<span class="op">,</span> KC_WH_D<span class="op">},</span>             <span class="co">// Mouse Wheel Up / Down.</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>S<span class="op">(</span>KC_WH_U<span class="op">),</span> S<span class="op">(</span>KC_WH_D<span class="op">)},</span>       <span class="co">// Shift + Mouse Wheel Up / Down.</span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>C<span class="op">(</span>KC_WH_U<span class="op">),</span> C<span class="op">(</span>KC_WH_D<span class="op">)},</span>       <span class="co">// Ctrl + Mouse Wheel Up / Down.</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// MOUSEKEY_ENABLE</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Lighting keys (if enabled).</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifdef BACKLIGHT_ENABLE</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>BL_UP  <span class="op">,</span> BL_DOWN<span class="op">},</span>             <span class="co">// Increase / decrease backlight.</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// BACKLIGHT_ENABLE</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="pp">#if defined(RGBLIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>RGB_MOD<span class="op">,</span> RGB_RMOD<span class="op">},</span>            <span class="co">// Effect mode forward / backward.</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>RGB_HUI<span class="op">,</span> RGB_HUD<span class="op">},</span>             <span class="co">// Increase / decrease hue.</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>RGB_SAI<span class="op">,</span> RGB_SAD<span class="op">},</span>             <span class="co">// Increase / decrease saturation.</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>RGB_VAI<span class="op">,</span> RGB_VAD<span class="op">},</span>             <span class="co">// Increase / decrease value.</span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>RGB_SPI<span class="op">,</span> RGB_SPD<span class="op">},</span>             <span class="co">// Increase / decrease effect speed.</span></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// defined(RGBLIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> NUM_REV_REPEAT_KEY_PAIRS <span class="op">=</span> </span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>  <span class="kw">sizeof</span><span class="op">(</span>rev_repeat_key_pairs<span class="op">)</span> <span class="op">/</span> <span class="kw">sizeof</span><span class="op">(*</span>rev_repeat_key_pairs<span class="op">);</span></span></code></pre></div></li>
 </ol>
-<p>Reverse Repeat considers pairs of keys defined in
-<code>rev_repeat_key_pairs</code>. When Reverse Repeat is used, it
-searches the table for an entry containing
-<code>repeat_key_keycode()</code>, then performs the other keycode in
-the pair. The definition above is a suggestion; edit to customize the
-Reverse Repeat Key for your purposes.</p>
-<p>When <code>repeat_key_keycode()</code> is a basic keycode,
-<code>repeat_key_mods()</code> is considered in the lookup as well so
-that for instance <code>B</code> is distinct from Ctrl + <code>B</code>.
-Handedness of mods is ignored except for Right Alt (AltGr).</p>
-<h3 id="handling-unmatched-keys">Handling unmatched keys</h3>
-<p>If no match is found in the <code>rev_repeat_key_pairs</code> table,
-Reverse Repeat does nothing by default. Optionally, handling for
-unmatched keys may be implemented in <code>process_record_user()</code>.
-In the following, supposing a custom keycode <code>UPDIR</code> has been
-defined. Pressing <kbd>UPDIR</kbd> types “<code>../</code>,” and then
-pressing <kbd>REVREP</kbd> taps Backspace three times to reverse it:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_repeat_key_with_rev<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">,</span> REVREP<span class="op">))</span> <span class="op">{</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> REVREP<span class="op">:</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      <span class="co">// REVREP is being used, but didn&#39;t match, and repeat_key_keycode()</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="co">// is the key being reversed.</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">switch</span> <span class="op">(</span>repeat_key_keycode<span class="op">())</span> <span class="op">{</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> UPDIR<span class="op">:</span>  <span class="co">// Perform the reverse of UPDIR...</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>            tap_code<span class="op">(</span>KC_BSPC<span class="op">);</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>            tap_code<span class="op">(</span>KC_BSPC<span class="op">);</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>            tap_code<span class="op">(</span>KC_BSPC<span class="op">);</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>          <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> UPDIR<span class="op">:</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;../&quot;</span><span class="op">);</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros ...</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The following reverse keys are defined by default. See
+<code>get_rev_repeat_key_keycode_user()</code> below for how to change
+or add to these definitions. Where it makes sense, these definitions
+also include combinations with mods, like Ctrl + Left ↔︎ Ctrl + Right
+Arrow.</p>
+<p><strong>Navigation</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Keycodes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>KC_LEFT</code> ↔︎ <code>KC_RGHT</code></td>
+<td>Left ↔︎ Right Arrow</td>
+</tr>
+<tr class="even">
+<td><code>KC_UP</code> ↔︎ <code>KC_DOWN</code></td>
+<td>Up ↔︎ Down Arrow</td>
+</tr>
+<tr class="odd">
+<td><code>KC_HOME</code> ↔︎ <code>KC_END</code></td>
+<td>Home ↔︎ End</td>
+</tr>
+<tr class="even">
+<td><code>KC_PGUP</code> ↔︎ <code>KC_PGDN</code></td>
+<td>Page Up ↔︎ Page Down</td>
+</tr>
+<tr class="odd">
+<td><code>KC_MS_L</code> ↔︎ <code>KC_MS_R</code></td>
+<td>Mouse Cursor Left ↔︎ Right</td>
+</tr>
+<tr class="even">
+<td><code>KC_MS_U</code> ↔︎ <code>KC_MS_D</code></td>
+<td>Mouse Cursor Up ↔︎ Down</td>
+</tr>
+<tr class="odd">
+<td><code>KC_WH_L</code> ↔︎ <code>KC_WH_R</code></td>
+<td>Mouse Wheel Left ↔︎ Right</td>
+</tr>
+<tr class="even">
+<td><code>KC_WH_U</code> ↔︎ <code>KC_WH_D</code></td>
+<td>Mouse Wheel Up ↔︎ Down</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Misc</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Keycodes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>KC_BSPC</code> ↔︎ <code>KC_DEL</code></td>
+<td>Backspace ↔︎ Delete</td>
+</tr>
+<tr class="even">
+<td><code>KC_LBRC</code> ↔︎ <code>KC_RBRC</code></td>
+<td><code>[</code> ↔︎ <code>]</code></td>
+</tr>
+<tr class="odd">
+<td><code>KC_LCBR</code> ↔︎ <code>KC_RCBR</code></td>
+<td><code>{</code> ↔︎ <code>}</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Media</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Keycodes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>KC_WBAK</code> ↔︎ <code>KC_WFWD</code></td>
+<td>Browser Back ↔︎ Forward</td>
+</tr>
+<tr class="even">
+<td><code>KC_MNXT</code> ↔︎ <code>KC_MPRV</code></td>
+<td>Next ↔︎ Previous Media Track</td>
+</tr>
+<tr class="odd">
+<td><code>KC_MFFD</code> ↔︎ <code>KC_MRWD</code></td>
+<td>Fast Forward ↔︎ Rewind Media</td>
+</tr>
+<tr class="even">
+<td><code>KC_VOLU</code> ↔︎ <code>KC_VOLD</code></td>
+<td>Volume Up ↔︎ Down</td>
+</tr>
+<tr class="odd">
+<td><code>KC_BRIU</code> ↔︎ <code>KC_BRID</code></td>
+<td>Brightness Up ↔︎ Down</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Hotkeys in Vim, Emacs, and other programs</strong></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Keycodes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mod + <code>KC_F</code> ↔︎ mod + <code>KC_B</code></td>
+<td>Forward ↔︎ Backward</td>
+</tr>
+<tr class="even">
+<td>mod + <code>KC_D</code> ↔︎ mod + <code>KC_U</code></td>
+<td>Down ↔︎ Up</td>
+</tr>
+<tr class="odd">
+<td>mod + <code>KC_N</code> ↔︎ mod + <code>KC_P</code></td>
+<td>Next ↔︎ Previous</td>
+</tr>
+<tr class="even">
+<td>mod + <code>KC_A</code> ↔︎ mod + <code>KC_E</code></td>
+<td>Home ↔︎ End</td>
+</tr>
+<tr class="odd">
+<td><code>KC_J</code> ↔︎ <code>KC_K</code></td>
+<td>Down ↔︎ Up</td>
+</tr>
+<tr class="even">
+<td><code>KC_H</code> ↔︎ <code>KC_L</code></td>
+<td>Left ↔︎ Right</td>
+</tr>
+<tr class="odd">
+<td><code>KC_W</code> ↔︎ <code>KC_B</code></td>
+<td>Forward ↔︎ Backward by Word</td>
+</tr>
+</tbody>
+</table>
+<p>(where above, “mod” is Ctrl, Alt, or GUI)</p>
 <h2 id="customization">Customization</h2>
-<h3 id="functions">Functions</h3>
-<table>
-<colgroup>
-<col style="width: 41%" />
-<col style="width: 58%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Function</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>repeat_key_register()</code></td>
-<td>Press down the Repeat Key.</td>
-</tr>
-<tr class="even">
-<td><code>repeat_key_unregister()</code></td>
-<td>Release the Repeat Key.</td>
-</tr>
-<tr class="odd">
-<td><code>repeat_key_tap()</code></td>
-<td>Tap the Repeat Key.</td>
-</tr>
-<tr class="even">
-<td><code>repeat_key_count()</code></td>
-<td>How many times the current key has been repeated: 0 ⇒ key is pressed
-normally, 1 ⇒ first repeat, 2 ⇒ second repeat, etc.</td>
-</tr>
-<tr class="odd">
-<td><code>repeat_key_keycode()</code></td>
-<td>The last keycode, the key to be repeated.</td>
-</tr>
-<tr class="even">
-<td><code>repeat_key_mods()</code></td>
-<td>Modifiers to apply when repeating.</td>
-</tr>
-</tbody>
-</table>
-<p>There are a few analogous functions for the Reverse Repeat Key:</p>
-<div class="eqscroll">
-<table>
-<colgroup>
-<col style="width: 41%" />
-<col style="width: 58%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Function</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>rev_repeat_key_register()</code></td>
-<td>Press down the Reverse Repeat Key.</td>
-</tr>
-<tr class="even">
-<td><code>rev_repeat_key_unregister()</code></td>
-<td>Release the Reverse Repeat Key.</td>
-</tr>
-<tr class="odd">
-<td><code>rev_repeat_key_tap()</code></td>
-<td>Tap the Reverse Repeat Key.</td>
-</tr>
-<tr class="even">
-<td><code>rev_repeat_key_keycode()</code></td>
-<td>Keycode for Reverse Repeat found from
-<code>rev_repeat_key_pairs</code>, or <code>KC_NO</code> if not
-found.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>The <code>repeat_key_register()</code>,
-<code>repeat_key_unregister()</code>, and <code>repeat_key_tap()</code>
-functions and corresponding functions for Reverse Repeat Key are useful
-for invoking Repeat and Reverse Repeat Key from an encoder, leader key
-sequence, or other custom handler. Note that if doing so, you likely
-want to define <code>repeat_key_press_user()</code> as described below
-to ignore the keycode associated with that handler so that the Repeat
-Key does not attempt to repeat or reverse-repeat itself.</p>
+<h3 id="defining-reverse-keys">Defining reverse keys</h3>
+<p>Use the <code>get_rev_repeat_key_keycode_user()</code> callback to
+define the “reverse” key for additional keys or override the default
+definitions described above. For example, to define Ctrl + Y as the
+reverse of Ctrl + Z, and vice versa, add the following in keymap.c:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_rev_repeat_key_keycode_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> <span class="dt">uint8_t</span> mods<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">((</span>mods <span class="op">&amp;</span> MOD_MASK_CTRL<span class="op">))</span> <span class="op">{</span>   <span class="co">// Was Ctrl held?</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_Y<span class="op">:</span> <span class="cf">return</span> C<span class="op">(</span>KC_Z<span class="op">);</span>  <span class="co">// Ctrl + Y reverses to Ctrl + Z.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_Z<span class="op">:</span> <span class="cf">return</span> C<span class="op">(</span>KC_Y<span class="op">);</span>  <span class="co">// Ctrl + Z reverses to Ctrl + Y.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> KC_NO<span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The <code>keycode</code> and <code>mods</code> args are the keycode
+and mods that were active with the last pressed key. The function
+returns the keycode for the reverse key, or <code>KC_NO</code> to defer
+to the default definitions. Any keycode may be returned as a reverse
+key, including custom keycodes.</p>
+<p>Another example, defining Shift + Tab as the reverse of Tab, and vice
+versa:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_rev_repeat_key_keycode_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> <span class="dt">uint8_t</span> mods<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bool</span> shifted <span class="op">=</span> <span class="op">(</span>mods <span class="op">&amp;</span> MOD_MASK_SHIFT<span class="op">);</span>  <span class="co">// Was Shift held?</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_TAB<span class="op">:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>shifted<span class="op">)</span> <span class="op">{</span>      <span class="co">// If the last key was Shift + Tab,</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> KC_TAB<span class="op">;</span>    <span class="co">// ... the reverse is Tab.</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>            <span class="co">// Otherwise, the last key was Tab,</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> S<span class="op">(</span>KC_TAB<span class="op">);</span> <span class="co">// ... and the reverse is Shift + Tab.</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> KC_NO<span class="op">;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="ignoring-certain-keys">Ignoring certain keys</h3>
-<p>By default, the Repeat Key ignores modifier and layer switch keys in
-tracking what the “last” key was. This enables possibly setting some
-mods and changing layers between pressing a key and repeating it. To
-customize which keys are ignored, define
-<code>repeat_key_press_user()</code> in your keymap.c. The default
+<p>By default, the Repeat Key and Reverse Repeat Key ignore modifier and
+layer switch keys in tracking what the “last” key was. This enables
+possibly setting some mods and changing layers between pressing a key
+and repeating it. To customize which keys are ignored, define
+<code>get_repeat_key_eligible()</code> in your keymap.c. The default
 implementation is</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> repeat_key_press_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> get_repeat_key_eligible<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Ignore MO, TO, TG, and TT layer switch keys.</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QK_MOMENTARY <span class="op">...</span> QK_MOMENTARY_MAX<span class="op">:</span></span>
@@ -522,6 +505,173 @@ implementation is</p>
 <span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>This callback is called on every key press. Returning true indicates
 the key is eligible for repeating, while false means it is ignored.</p>
+<p>Besides checking the keycode, this callback could also make
+conditions based on the current layer state (e.g. with
+<code>IS_LAYER_ON(layer)</code>) or mods (<code>get_mods()</code>).</p>
+<h3 id="handle-how-a-key-is-repeated">Handle how a key is repeated</h3>
+<p>By default, pressing <kbd>Repeat</kbd> will simply behave as if the
+last key were pressed again. This also works with macro keys with custom
+handlers, invoking the macro again. In case fine-tuning is needed for
+sensible repetition, you can handle how a key is repeated with
+<code>get_repeat_key_count()</code> within
+<code>process_record_user()</code>.</p>
+<p>The <code>get_repeat_key_count()</code> function returns a signed
+count of how many times the key has been repeated or reverse repeated.
+When a key is pressed as usual, <code>get_repeat_key_count()</code> is
+0. On the first repeat, it is 1, then the second repeat, 2, and so on.
+Negative counts are used similarly for reverse repeating. For instance
+supposing <code>MY_MACRO</code> is a custom keycode used in the
+layout:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_repeat_key<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MY_MACRO<span class="op">:</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>get_repeat_key_count<span class="op">()</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// MY_MACRO is being repeated!</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;repeat!&quot;</span><span class="op">);</span>    </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>                           <span class="co">// MY_MACRO is being used normally.</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;macro&quot;</span><span class="op">);</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="handle-how-a-key-is-reverse-repeated">Handle how a key is
+reverse repeated</h3>
+<p>Pressing the Reverse Repeat Key behaves as if the “reverse” of the
+last pressed key were pressed, provided a reverse is defined. To define
+how a particular key is reverse repeated, use the
+<code>get_rev_repeat_key_keycode_user()</code> callback to define which
+keycode to use as its reverse. Beyond this, use
+<code>get_repeat_key_count()</code> to specially consider reverse
+repeating in custom handlers.</p>
+<p>The following example defines <code>MY_MACRO</code> as its own
+reverse, and defines distinct behavior for repeating and reverse
+repeating:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_rev_repeat_key_keycode_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> <span class="dt">uint8_t</span> mods<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MY_MACRO<span class="op">:</span> <span class="cf">return</span> MY_MACRO<span class="op">;</span>  <span class="co">// Define MY_MACRO as its own reverse.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> KC_NO<span class="op">;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MY_MACRO<span class="op">:</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>get_repeat_key_count<span class="op">()</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>        <span class="co">// Repeating.</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;repeat!&quot;</span><span class="op">);</span>    </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>get_repeat_key_count<span class="op">()</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="co">// Reverse repeating.</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;reverse!&quot;</span><span class="op">);</span>    </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>                                 <span class="co">// Used normally.</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  </span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;macro&quot;</span><span class="op">);</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="functions">Functions</h3>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>get_repeat_key_count()</code></td>
+<td>Signed count of times the key has been repeated or reverse
+repeated.</td>
+</tr>
+<tr class="even">
+<td><code>get_repeat_key_keycode()</code></td>
+<td>The last keycode, the key to be repeated.</td>
+</tr>
+<tr class="odd">
+<td><code>get_repeat_key_mods()</code></td>
+<td>Mods to apply when repeating.</td>
+</tr>
+<tr class="even">
+<td><code>set_repeat_key_keycode(kc)</code></td>
+<td>Set the keycode to be repeated.</td>
+</tr>
+<tr class="odd">
+<td><code>set_repeat_key_mods(mods)</code></td>
+<td>Set the mods to apply when repeating.</td>
+</tr>
+<tr class="even">
+<td><code>repeat_key_register()</code></td>
+<td>Press down the Repeat Key.</td>
+</tr>
+<tr class="odd">
+<td><code>repeat_key_unregister()</code></td>
+<td>Release the Repeat Key.</td>
+</tr>
+<tr class="even">
+<td><code>repeat_key_tap()</code></td>
+<td>Tap the Repeat Key.</td>
+</tr>
+</tbody>
+</table>
+<p>There are a few analogous functions for the Reverse Repeat Key:</p>
+<div class="eqscroll">
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>get_rev_repeat_key_keycode()</code></td>
+<td>Keycode used for reverse repeating, or <code>KC_NO</code> if the
+last key has no reverse.</td>
+</tr>
+<tr class="even">
+<td><code>rev_repeat_key_register()</code></td>
+<td>Press down the Reverse Repeat Key.</td>
+</tr>
+<tr class="odd">
+<td><code>rev_repeat_key_unregister()</code></td>
+<td>Release the Reverse Repeat Key.</td>
+</tr>
+<tr class="even">
+<td><code>rev_repeat_key_tap()</code></td>
+<td>Tap the Reverse Repeat Key.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The <code>repeat_key_register()</code>,
+<code>repeat_key_unregister()</code>, and <code>repeat_key_tap()</code>
+functions and corresponding functions for Reverse Repeat Key are useful
+for invoking Repeat and Reverse Repeat Key from an encoder, leader key
+sequence, or other custom handler. Note that if doing so, you likely
+want to define <code>get_repeat_key_eligible()</code> as described below
+to ignore the keycode associated with that handler so that the Repeat
+Key does not attempt to repeat or reverse-repeat itself.</p>
 <h2 id="implementation-details">Implementation details</h2>
 <p>If you are interested in the technical details, this section is an
 explanation of how Repeat Key and Reverse Repeat Key are
@@ -529,46 +679,36 @@ implemented.</p>
 <h3 id="tracking-the-last-key">Tracking the last key</h3>
 <p>On every key press event, <code>repeat_key_press_user()</code> is
 called to check whether that key is eligible for repeating. If so, the
-keycode, <code>keyrecord_t</code> record, layer state, and modifiers
-state are all stored. The value of <code>repeat_key_count()</code> is
-reset to zero to indicate to subsequent handlers that the key is being
-pressed normally.</p>
+keycode, <code>keyrecord_t</code> record, and modifiers state are all
+stored. The value of <code>repeat_key_count()</code> is reset to zero to
+indicate to subsequent handlers that the key is being pressed
+normally.</p>
 <h3 id="repeat-key">Repeat Key</h3>
-<p>When the Repeat Key is pressed or released, we synthesize a new event
-on the last key using the stored variables. This is done by preparing
-the record and passing it back into the event pipeline:</p>
+<p>When the Repeat Key is pressed or released, we synthesize a new
+keyrecord on the last key using the stored variables, then pass it back
+into the event pipeline:</p>
 <ol type="1">
-<li><p>The stored modifiers and layer state are recalled and applied.
-The event pipeline will look up the keycode based on record’s matrix key
-position and the current layer state, so temporarily switching back to
-the last layer state is needed to engage the intended key.</p></li>
-<li><p>If the event is a repeat, we increment the value of
-<code>repeat_key_count()</code>.</p></li>
+<li><p>On press, the stored modifiers are recalled and applied as weak
+mods, and we we increment the value of
+<code>get_repeat_key_count()</code>.</p></li>
 <li><p>We set the <code>record.event.pressed</code> and
-<code>record.event.time</code> fields for the new event, then pass it
-into the event pipeline by calling <code>process_record()</code> to
+<code>record.event.time</code> fields for the new keyrecord, then pass
+it into the event pipeline by calling <code>process_record()</code> to
 process it. However, as the Repeat Key handler is itself a part the
 event pipeline, a complication is that this call may recurse back into
-the Repeat Key handler. To avoid the possibility for an infinite loop, a
-boolean is set <code>recursing = true</code> while calling
+the Repeat Key handler. To avoid the possibility for an infinite loop,
+we set a <code>processing_repeat_count</code> variable while calling
 <code>process_record()</code> and have the handler return early when
-this boolean is set.</p></li>
-<li><p>When <code>process_record()</code> returns, the modifiers and
-layer state are restored.</p></li>
+this count is set.</p></li>
+<li><p>On release, the weak mods are removed.</p></li>
 </ol>
 <h3 id="reverse-repeat-key-1">Reverse Repeat Key</h3>
-<p>The Reverse Repeat Key is implemented by looking in the
-<code>rev_repeat_key_pairs</code> table for a pair containing the last
-keycode <code>repeat_key_keycode()</code>. The other keycode in the pair
-is used to perform the “reverse” action by calling
-<code>register_code16()</code> and <code>unregister_code16()</code> on
-it.</p>
-<p>When the last keycode isn’t found in the table, the Reverse Repeat
-Key handler returns true so that execution continues into
-<code>process_record_user()</code>. There, the user can handle the event
-by checking for <code>keycode == REVREP</code>, and
-<code>repeat_key_keycode()</code> is the unmatched keycode being
-reversed.</p>
+<p>The Reverse Repeat Key is implemented by looking up a reverse keycode
+for the last key and then, similarly, plumbing an event into
+<code>process_record()</code> for that keycode. An essential piece to
+making this work is that we set the desired reverse keycode in the
+<code>keyrecord_t</code>’s <code>.keycode</code> field, and this field
+is only present when Combos are enabled.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
