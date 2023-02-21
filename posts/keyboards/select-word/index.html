@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-11-12 (updated 2022-02-04)" />
+  <meta name="author" content="Pascal Getreuer, 2021-11-12 (updated 2022-02-20)" />
   <title>Word selection QMK macro</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Word selection QMK macro</h1>
-<h2 class="author">Pascal Getreuer, 2021-11-12 (updated 2022-02-04)</h2>
+<h2 class="author">Pascal Getreuer, 2021-11-12 (updated 2022-02-20)</h2>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
 <h2 id="overview">Overview</h2>
@@ -148,6 +148,21 @@ Windows/Linux editing hotkeys by default. Uncomment the
 <code>#define MAC_HOTKEYS</code> line in <code>select_word.c</code> for
 Mac hotkeys. The Mac implementation is untested, let me know if it has
 problems.</p>
+<h2 id="idle-timeout">Idle timeout</h2>
+<p>Optionally, Select Word may be configured to clear its internal state
+if the keyboard is idle for some time. This is useful to improve
+behavior when using Select Word and a mouse together. In your config.h,
+define <code>SELECT_WORD_TIMEOUT</code> with a time in milliseconds:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SELECT_WORD_TIMEOUT 2000  </span><span class="co">// When idle, clear state after 2 seconds.</span></span></code></pre></div>
+<p>and in your keymap.c, define (or add to)
+<code>matrix_scan_user()</code> as</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  select_word_task<span class="op">();</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks...</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The default behavior (when <code>SELECT_WORD_TIMEOUT</code> isn’t
+set, or set to 0) is that Select Word never times out, and in this case
+it isn’t necessary to call <code>select_word_task()</code>.</p>
 <h2 id="explanation">Explanation</h2>
 <p>The macro checks for events involving <code>sel_keycode</code>. For
 word selection, the first press of the macro sends the keys
