@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-02-05)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-03-11)" />
   <title>QMK: Macro buttons</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Macro buttons</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-02-05)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-03-11)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -170,50 +170,6 @@ keycode “<code>UPDIR</code>” with the value <code>SAFE_RANGE</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> custom_keycodes <span class="op">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  UPDIR <span class="op">=</span> SAFE_RANGE<span class="op">,</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
-<p>Note that while beginning your keycodes at <code>SAFE_RANGE</code> is
-correct for most keyboards, some keyboards expect you to use a different
-constant. <strong>Check your keyboard’s documentation and default keymap
-to determine where user keycodes should begin.</strong> For instance on
-the Moonlander, you would replace “<code>SAFE_RANGE</code>” above with
-<code>ML_SAFE_RANGE</code>.</p>
-<table>
-<thead>
-<tr class="header">
-<th>Keyboard</th>
-<th>User keycodes start at</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>durgod/dgk6x</code></td>
-<td><code>NEW_SAFE_RANGE</code></td>
-</tr>
-<tr class="even">
-<td><code>durgod/k310</code></td>
-<td><code>NEW_SAFE_RANGE</code></td>
-</tr>
-<tr class="odd">
-<td><code>durgod/k320</code></td>
-<td><code>NEW_SAFE_RANGE</code></td>
-</tr>
-<tr class="even">
-<td><code>ergodox_ez</code></td>
-<td><code>EZ_SAFE_RANGE</code></td>
-</tr>
-<tr class="odd">
-<td><code>moonlander</code></td>
-<td><code>ML_SAFE_RANGE</code></td>
-</tr>
-<tr class="even">
-<td><code>planck</code></td>
-<td><code>USER_SAFE_RANGE</code></td>
-</tr>
-<tr class="odd">
-<td><code>planck/ez</code></td>
-<td><code>EZ_SAFE_RANGE</code></td>
-</tr>
-</tbody>
-</table>
 <p><strong>Step 2:</strong> Use these keycodes in your layout, just as
 you would any other keycode:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">[</span>BASE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(</span></span>
