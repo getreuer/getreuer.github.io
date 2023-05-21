@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-12-29 (updated 2023-04-02)" />
+  <meta name="author" content="Pascal Getreuer, 2022-12-29 (updated 2023-05-20)" />
   <title>QMK: Repeat Key</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Repeat Key</h1>
-<h2 class="author">Pascal Getreuer, 2022-12-29 (updated 2023-04-02)</h2>
+<h2 class="author">Pascal Getreuer, 2022-12-29 (updated 2023-05-20)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -417,14 +417,18 @@ Arrow.</p>
 <td>Home ↔︎ End</td>
 </tr>
 <tr class="odd">
+<td>mod + <code>KC_O</code> ↔︎ mod + <code>KC_I</code></td>
+<td>Vim Jumplist Older ↔︎ Newer</td>
+</tr>
+<tr class="even">
 <td><code>KC_J</code> ↔︎ <code>KC_K</code></td>
 <td>Down ↔︎ Up</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>KC_H</code> ↔︎ <code>KC_L</code></td>
 <td>Left ↔︎ Right</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>KC_W</code> ↔︎ <code>KC_B</code></td>
 <td>Forward ↔︎ Backward by Word</td>
 </tr>
@@ -483,29 +487,30 @@ addresses the top 5 same-finger bigrams in QWERTY, so that for instance
 “<code>ed</code>” may be typed as <kbd>E</kbd>, <kbd>Alt
 Repeat</kbd>.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_alt_repeat_key_keycode_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> <span class="dt">uint8_t</span> mods<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> KC_E<span class="op">:</span> <span class="cf">return</span> KC_D<span class="op">;</span>  <span class="co">// For &quot;ED&quot; bigram.</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> KC_D<span class="op">:</span> <span class="cf">return</span> KC_E<span class="op">;</span>  <span class="co">// For &quot;DE&quot; bigram.</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> KC_C<span class="op">:</span> <span class="cf">return</span> KC_E<span class="op">;</span>  <span class="co">// For &quot;CE&quot; bigram.</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> KC_L<span class="op">:</span> <span class="cf">return</span> KC_O<span class="op">;</span>  <span class="co">// For &quot;LO&quot; bigram.</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> KC_U<span class="op">:</span> <span class="cf">return</span> KC_N<span class="op">;</span>  <span class="co">// For &quot;UN&quot; bigram.</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> KC_TRNS<span class="op">;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_E<span class="op">:</span> <span class="cf">return</span> KC_D<span class="op">;</span>  <span class="co">// For &quot;ED&quot; bigram.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_D<span class="op">:</span> <span class="cf">return</span> KC_E<span class="op">;</span>  <span class="co">// For &quot;DE&quot; bigram.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_C<span class="op">:</span> <span class="cf">return</span> KC_E<span class="op">;</span>  <span class="co">// For &quot;CE&quot; bigram.</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_L<span class="op">:</span> <span class="cf">return</span> KC_O<span class="op">;</span>  <span class="co">// For &quot;LO&quot; bigram.</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_U<span class="op">:</span> <span class="cf">return</span> KC_N<span class="op">;</span>  <span class="co">// For &quot;UN&quot; bigram.</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> KC_TRNS<span class="op">;</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="ignoring-certain-keys">Ignoring certain keys</h3>
 <p>In tracking what the “last key” to be repeated is, the Repeat Key and
 Alternate Repeat Key ignore modifier and layer switch keys in tracking
 what the “last” key was. This enables possibly setting some mods and
 changing layers between pressing a key and repeating it. To ignore
-additional keys, define <code>get_repeat_key_eligible_user()</code> in
-your keymap.c. The default implementation simply defines all
-non-modifier, non-layer switch keys as eligible for repeating:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> get_repeat_key_eligible_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="dt">uint8_t</span><span class="op">*</span> remembered_mods<span class="op">)</span> <span class="op">{</span></span>
+additional keys, define <code>remember_last_key_user()</code> in your
+keymap.c. The default implementation simply defines that all
+non-modifier, non-layer switch keys are remembered:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> remember_last_key_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                            <span class="dt">uint8_t</span><span class="op">*</span> remembered_mods<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>This callback is called on every key press. Returning true indicates
-the key is eligible for repeating, while false means it is ignored.</p>
+the key is remembered, and therefore eligible for repeating, while false
+means it is ignored.</p>
 <p>Besides checking the keycode, this callback could also make
 conditions based on the current layer state (e.g. with
 <code>IS_LAYER_ON(layer)</code>) or mods (<code>get_mods()</code>).</p>
@@ -513,8 +518,8 @@ conditions based on the current layer state (e.g. with
 remembered with this key. It can be modified to forget certain mods.
 This may be useful to forget capitalization when repeating shifted
 letters, so that “Aaron” does not become “AAron”:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> get_repeat_key_eligible_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="dt">uint8_t</span><span class="op">*</span> remembered_mods<span class="op">)</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> remember_last_key_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                            <span class="dt">uint8_t</span><span class="op">*</span> remembered_mods<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Forget Shift on letter keys when Shift or AltGr are the only mods.</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span></span>
@@ -579,27 +584,30 @@ repeating:</p>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MY_MACRO<span class="op">:</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>get_repeat_key_count<span class="op">()</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>        <span class="co">// Repeating.</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;repeat!&quot;</span><span class="op">);</span>    </span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>get_repeat_key_count<span class="op">()</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="co">// Alternate repeating.</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;alternate!&quot;</span><span class="op">);</span>    </span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>                                 <span class="co">// Used normally.</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  </span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;macro&quot;</span><span class="op">);</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_repeat_key_with_alt<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">,</span> ALTREP<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MY_MACRO<span class="op">:</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>get_repeat_key_count<span class="op">()</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>        <span class="co">// Repeating.</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;repeat!&quot;</span><span class="op">);</span>    </span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>get_repeat_key_count<span class="op">()</span> <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="co">// Alternate repeating.</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;alternate!&quot;</span><span class="op">);</span>    </span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>                                 <span class="co">// Used normally.</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  </span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;macro&quot;</span><span class="op">);</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="functions">Functions</h3>
 <table>
 <colgroup>
@@ -614,25 +622,25 @@ repeating:</p>
 </thead>
 <tbody>
 <tr class="odd">
+<td><code>get_last_keycode()</code></td>
+<td>The last keycode, the key to be repeated.</td>
+</tr>
+<tr class="even">
+<td><code>get_last_mods()</code></td>
+<td>Mods to apply when repeating.</td>
+</tr>
+<tr class="odd">
+<td><code>set_last_keycode(kc)</code></td>
+<td>Set the keycode to be repeated.</td>
+</tr>
+<tr class="even">
+<td><code>set_last_mods(mods)</code></td>
+<td>Set the mods to apply when repeating.</td>
+</tr>
+<tr class="odd">
 <td><code>get_repeat_key_count()</code></td>
 <td>Signed count of times the key has been repeated or alternate
 repeated.</td>
-</tr>
-<tr class="even">
-<td><code>get_repeat_key_keycode()</code></td>
-<td>The last keycode, the key to be repeated.</td>
-</tr>
-<tr class="odd">
-<td><code>get_repeat_key_mods()</code></td>
-<td>Mods to apply when repeating.</td>
-</tr>
-<tr class="even">
-<td><code>set_repeat_key_keycode(kc)</code></td>
-<td>Set the keycode to be repeated.</td>
-</tr>
-<tr class="odd">
-<td><code>set_repeat_key_mods(mods)</code></td>
-<td>Set the mods to apply when repeating.</td>
 </tr>
 <tr class="even">
 <td><code>repeat_key_register()</code></td>
@@ -687,10 +695,9 @@ last key has no alternate.</td>
 functions and corresponding functions for Alternate Repeat Key are
 useful for invoking Repeat and Alternate Repeat Key from an encoder,
 leader key sequence, or other custom handler. Note that if doing so, you
-likely want to define <code>get_repeat_key_eligible()</code> as
-described below to ignore the keycode associated with that handler so
-that the Repeat Key does not attempt to repeat or alternate-repeat
-itself.</p>
+likely want to define <code>remember_last_key()</code> as described
+below to ignore the keycode associated with that handler so that the
+Repeat Key does not attempt to repeat or alternate-repeat itself.</p>
 <h2 id="implementation-details">Implementation details</h2>
 <p>If you are interested in the technical details, this section is an
 explanation of how Repeat Key and Alternate Repeat Key are
@@ -731,8 +738,9 @@ is only present when Combos are enabled.</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
 <p>Thanks to <span class="citation"
 data-cites="drashna">@drashna</span>, <span class="citation"
-data-cites="Ikcelaks">@Ikcelaks</span>, and <span class="citation"
-data-cites="sigprof">@sigprof</span> for helpful review and feedback to
+data-cites="Ikcelaks">@Ikcelaks</span>, <span class="citation"
+data-cites="sigprof">@sigprof</span>, and <span class="citation"
+data-cites="DreymaR">@DreymaR</span> for helpful review and feedback to
 improve Repeat Key.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
