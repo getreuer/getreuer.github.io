@@ -341,6 +341,7 @@ div.callout {
 div.callout-header {
   background-color: #e5f2d8;
   font-size: 90%;
+  user-select: none;
 }
 
 div.callout p {
