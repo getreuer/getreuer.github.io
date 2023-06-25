@@ -17,12 +17,12 @@ body {
 
 html, body {
   min-width: 320px;
-  height: 100%;
+  min-height: 100vh;
 }
 
 #content {
   max-width: 42em;
-  min-height: calc(100% - 10em);
+  min-height: calc(100vh - 2em);
   color: #333;
   background-color: white;
   margin: auto;

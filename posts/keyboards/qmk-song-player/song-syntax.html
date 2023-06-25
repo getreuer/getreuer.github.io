@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer" />
+  <title>Playing songs in QMK</title>
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+</head>
+<body>
+<div id="content">
+<p><a href="./index.html">&larr; QMK song player</a></p>
+
+<h2 id="qmk-song-syntax">QMK song syntax</h2>
+<p>Here is <code>ODE_TO_JOY</code>, which comes predefined in QMK:</p>
+<pre><code>#define ODE_TO_JOY Q__NOTE(_E4), Q__NOTE(_E4), Q__NOTE(_F4), \
+  Q__NOTE(_G4), Q__NOTE(_G4), Q__NOTE(_F4), Q__NOTE(_E4),    \
+  Q__NOTE(_D4), Q__NOTE(_C4), Q__NOTE(_C4), Q__NOTE(_D4),    \
+  Q__NOTE(_E4), QD_NOTE(_E4), E__NOTE(_D4), H__NOTE(_D4)</code></pre>
+<p>You can find more predefined songs in <a
+href="https://github.com/qmk/qmk_firmware/blob/master/quantum/audio/song_list.h">quantum/audio/song_list.h</a>.</p>
+<p>A song is a comma-separated sequence of notes. Each note has a pitch
+frequency and a duration, represented using C preprocessor macros. For
+example, <code>Q__NOTE(_E4)</code> is a quarter note on the E key, 4th
+octave.</p>
+<p><strong>Note pitch</strong> is one of the twelve semitones
+<code>_C</code>, <code>_CS</code>, <code>_D</code>, <code>_DS</code>,
+<code>_E</code>, <code>_F</code>, <code>_FS</code>, <code>_G</code>,
+<code>_GS</code>, <code>_A</code>, <code>_AS</code>, <code>_B</code>
+followed by an octave <code>0</code> through <code>8</code>, such as
+<code>_CS3</code> for C♯, 3rd octave. Flats can be written similarly
+with <code>F</code>, for instance, <code>_DF3</code> is the same as
+<code>_CS3</code>. Specially, <code>_REST</code> in place of the pitch
+creates a rest.</p>
+<p><strong>Note duration</strong> (quarter note, whole note, etc.) is
+represented with the following:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Macro</th>
+<th>Duration</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>B__NOTE</code></td>
+<td>2 beats, breve note</td>
+</tr>
+<tr class="even">
+<td><code>W__NOTE</code></td>
+<td>1 beat, whole note</td>
+</tr>
+<tr class="odd">
+<td><code>H__NOTE</code></td>
+<td>1/2 beat, half note</td>
+</tr>
+<tr class="even">
+<td><code>Q__NOTE</code></td>
+<td>1/4 beat, quarter note</td>
+</tr>
+<tr class="odd">
+<td><code>E__NOTE</code></td>
+<td>1/8 beat, eighth note</td>
+</tr>
+<tr class="even">
+<td><code>S__NOTE</code></td>
+<td>1/16 beat, sixteenth note</td>
+</tr>
+<tr class="odd">
+<td><code>T__NOTE</code></td>
+<td>1/32 beat, thirty-second note</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://en.wikipedia.org/wiki/Dotted_note">Dotted notes</a>
+are written with a <code>D</code> as <code>QD_NOTE</code> for a 3/8 beat
+note, and similarly for other durations. For full flexibility, a note of
+any duration may be defined with the syntax
+<code>M__NOTE(pitch, duration)</code>, where <code>pitch</code> is a
+pitch and <code>duration</code> is a number in units of 1/64ths of a
+beat. For instance <code>M__NOTE(_C4, 64)</code> is longhand for
+<code>W__NOTE(_C4)</code>.</p>
+<p>Under the hood, song data is stored as a <code>float[][2]</code>
+array, using pair of floats per note. The first float stores the pitch
+frequency in Hz and the second stores the duration in units of 1/64ths
+of a beat.</p>
+
+<p>&nbsp;</p>
+</div>
+</div>
+</body>
+</html>

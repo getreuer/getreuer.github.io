@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer" />
+  <title>Playing songs in QMK</title>
+<link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC" rel="stylesheet" />
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+</head>
+<body>
+<div id="content">
+<p><a href="./index.html">&larr; QMK song player</a></p>
+<h2 id="how-to-add-songs-to-your-keymap">How to add songs to your
+keymap</h2>
+<p><strong>Step 1.</strong> Of course, the keyboard needs a speaker. See
+the <a href="https://docs.qmk.fm/#/feature_audio">audio
+documentation</a> for options. Also, be sure to enable the audio feature
+by adding in your rules.mk:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">AUDIO_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
+<p><strong>Step 2.</strong> In the same folder as your keymap.c, create
+a file called user_song_list.h. Song definitions in this file location
+will be automatically included in the build.</p>
+<p>In user_song_list.h, write a song definition like</p>
+<pre><code>#define MY_SONG H__NOTE(_C2), H__NOTE(_C3), H__NOTE(_C4), W__NOTE(_C5)</code></pre>
+<p>The song notes are written in
+<a href="./song-syntax.html">QMK song syntax</a>. Multiple songs may be
+defined similarly by writing each on its own line. </p>
+<p>To parse correctly, the song name <code>MY_SONG</code> must be a
+valid code identifier and the definition must be either one long line or
+using backslashes <code>\</code> for line continuation:</p>
+<pre><code>#define MY_SONG H__NOTE(_C2), H__NOTE(_C3), \
+                H__NOTE(_C4), W__NOTE(_C5)
+</code></pre>
+<p><strong>Step 3a.</strong> As explained in the <a
+href="https://docs.qmk.fm/#/feature_audio?id=songs">songs
+documentation</a>, QMK has default songs that play for certain
+events, such as <code>STARTUP_SONG</code> when the keyboard starts up.
+You can override the default songs in config.h as:</p>
+<pre><code>#ifdef AUDIO_ENABLE
+#  define STARTUP_SONG SONG(MY_SONG)
+#endif</code></pre>
+<p><strong>Step 3b.</strong> Alternatively, to play the song at a
+particular time, do the following. In keymap.c, add a global definition
+near the top of the file with</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">float</span> my_song<span class="op">[][</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> SONG<span class="op">(</span>MY_SONG<span class="op">);</span></span></code></pre></div>
+<p>Then play the song as</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>PLAY_SONG<span class="op">(</span>my_song<span class="op">);</span></span></code></pre></div>
+
+<p>&nbsp;</p>
+</div>
+</body>
+</html>
