@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-01-04)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-08-05)" />
   <title>QMK: Custom shift keys</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Custom shift keys</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-01-04)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-08-05)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -263,6 +263,12 @@ there. This is the meat of the implementation.</p>
 <span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue with default handling.</span></span>
 <span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Troubleshooting:</strong> If your keymap fails to build, a
+likely reason is that your QMK installation needs to be updated. If you
+have the qmk_firmware git repo cloned locally, do a
+<code>git pull</code>. Or see <a
+href="https://docs.qmk.fm/#/newbs_git_using_your_master_branch?id=updating-your-master-branch">Updating
+your master branch</a> for more details.</p>
 <h2 id="compared-to-key-overrides">Compared to Key Overrides</h2>
 <p>QMK’s <a href="https://docs.qmk.fm/#/feature_key_overrides">Key
 Overrides</a> feature “overrides” the keys sent for specified

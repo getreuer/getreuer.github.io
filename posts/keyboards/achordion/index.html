@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2022-05-18)" />
+  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2023-08-05)" />
   <title>Achordion: Customizing the tap-hold decision</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Achordion: Customizing the tap-hold decision</h1>
-<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2022-05-18)</h2>
+<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2023-08-05)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -120,9 +120,9 @@ delay?</a></li>
 struggle of accidental mod activations from typing rolls. If you are an
 exception, consider yourself lucky! In QMK, the standard mitigations as
 explained <a href="https://precondition.github.io/home-row-mods">in
-precondition’s guide</a> are using <code>IGNORE_MOD_TAP_INTERRUPT</code>
-and <code>PERMISSIVE_HOLD</code> and setting <code>TAPPING_TERM</code>
-reasonably (in the range 160–220 ms is typical).</p>
+precondition’s guide</a> are using <code>PERMISSIVE_HOLD</code> and
+setting <code>TAPPING_TERM</code> reasonably (in the range 160–220 ms is
+typical).</p>
 <p>QMK’s tap-hold implementation provides (with
 e.g. <code>TAPPING_TERM_PER_KEY</code>) the flexibility to tune these
 configurations per key, with callbacks taking the tap-hold keycode as an
@@ -146,9 +146,8 @@ that does that.</p>
 <p>Just to clarify, I’m not suggesting home row mods are broken without
 Achordion. Consider Achordion an “enhancement,” not a fix. I find QMK’s
 implementation usable and enjoyable as it is (with
-<code>IGNORE_MOD_TAP_INTERRUPT</code> and <code>PERMISSIVE_HOLD</code>,
-of course), and it’s been my daily driver for long enough to say it’s
-definitely practical.</p>
+<code>PERMISSIVE_HOLD</code>, of course), and it’s been my daily driver
+for long enough to say it’s definitely practical.</p>
 <h2 id="achordion">Achordion</h2>
 <p><strong>Achordion</strong> is a userspace QMK library that customizes
 when tap-hold keys are considered held vs. tapped based on the next
@@ -231,6 +230,15 @@ there.</p>
 Define mod-tap and layer-tap keys in your keymap in the usual way as
 described in the <a href="https://docs.qmk.fm/#/mod_tap">Mod-Tap
 documentation</a>.</p>
+<p><strong>Troubleshooting:</strong> Achordion makes use of some fairly
+recent QMK APIs. If your keymap fails to build, a likely reason is that
+your QMK installation simply needs to be updated. Particularly, building
+with an outdated QMK version may fail with</p>
+<pre><code>error: implicit declaration of function ‘IS_QK_MOD_TAP’</code></pre>
+<p>If you have the qmk_firmware git repo cloned locally, do a
+<code>git pull</code>. Or see <a
+href="https://docs.qmk.fm/#/newbs_git_using_your_master_branch?id=updating-your-master-branch">Updating
+your master branch</a> for more details.</p>
 <h2 id="how-does-achordion-affect-delay">How does Achordion affect
 delay?</h2>
 <p>Delay is an important drawback of tap-hold keys, so here we cover how
@@ -278,39 +286,39 @@ both the tap-hold key and other key as inputs. The return value is
 <p>The default definition of <code>achordion_chord()</code> returns true
 if the two keys are on opposite hands, producing an effect like
 Bilateral Combinations:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> achordion_chord<span class="op">(</span><span class="dt">uint16_t</span> tap_hold_keycode<span class="op">,</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                     keyrecord_t<span class="op">*</span> tap_hold_record<span class="op">,</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                     <span class="dt">uint16_t</span> other_keycode<span class="op">,</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                     keyrecord_t<span class="op">*</span> other_record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> achordion_opposite_hands<span class="op">(</span>tap_hold_record<span class="op">,</span> other_record<span class="op">);</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>But there is more flexibility than this. You can make any condition
-based on the tap-hold key’s and the other key’s keycodes or records. For
-instance, <a href="https://github.com/getreuer/qmk-keymap">in my
-keymap</a> I made a few exceptions to the opposite hands rule:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> achordion_chord<span class="op">(</span><span class="dt">uint16_t</span> tap_hold_keycode<span class="op">,</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     keyrecord_t<span class="op">*</span> tap_hold_record<span class="op">,</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                     <span class="dt">uint16_t</span> other_keycode<span class="op">,</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                     keyrecord_t<span class="op">*</span> other_record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Exceptionally consider the following chords as holds, even though they</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// are on the same hand in Dvorak.</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>tap_hold_keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_A<span class="op">:</span>  <span class="co">// A + U.</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>other_keycode <span class="op">==</span> HOME_U<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_S<span class="op">:</span>  <span class="co">// S + H and S + G.</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>other_keycode <span class="op">==</span> HOME_H <span class="op">||</span> other_keycode <span class="op">==</span> KC_G<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Also allow same-hand holds when the other key is in the rows below the</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// alphas. I need the `% (MATRIX_ROWS / 2)` because my keyboard is split.</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>other_record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>row <span class="op">%</span> <span class="op">(</span>MATRIX_ROWS <span class="op">/</span> <span class="dv">2</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Otherwise, follow the opposite hands rule.</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> achordion_opposite_hands<span class="op">(</span>tap_hold_record<span class="op">,</span> other_record<span class="op">);</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> achordion_opposite_hands<span class="op">(</span>tap_hold_record<span class="op">,</span> other_record<span class="op">);</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>But there is more flexibility than this. You can make any condition
+based on the tap-hold key’s and the other key’s keycodes or records. For
+instance, <a href="https://github.com/getreuer/qmk-keymap">in my
+keymap</a> I made a few exceptions to the opposite hands rule:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> achordion_chord<span class="op">(</span><span class="dt">uint16_t</span> tap_hold_keycode<span class="op">,</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                     keyrecord_t<span class="op">*</span> tap_hold_record<span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                     <span class="dt">uint16_t</span> other_keycode<span class="op">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                     keyrecord_t<span class="op">*</span> other_record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Exceptionally consider the following chords as holds, even though they</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// are on the same hand in Dvorak.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>tap_hold_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_A<span class="op">:</span>  <span class="co">// A + U.</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>other_keycode <span class="op">==</span> HOME_U<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_S<span class="op">:</span>  <span class="co">// S + H and S + G.</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>other_keycode <span class="op">==</span> HOME_H <span class="op">||</span> other_keycode <span class="op">==</span> KC_G<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Also allow same-hand holds when the other key is in the rows below the</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// alphas. I need the `% (MATRIX_ROWS / 2)` because my keyboard is split.</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>other_record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>row <span class="op">%</span> <span class="op">(</span>MATRIX_ROWS <span class="op">/</span> <span class="dv">2</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Otherwise, follow the opposite hands rule.</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> achordion_opposite_hands<span class="op">(</span>tap_hold_record<span class="op">,</span> other_record<span class="op">);</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>With the above, my layer-tap on <code>A</code> switches layers when
 chorded with <code>U</code> or chorded with keys below the alphas. But
 with any other left-hand key, <code>A</code> is considered tapped.</p>
@@ -325,7 +333,7 @@ keyboards, rows are typically doubled up so that the first
 Dactyl Ergodox, <code>.row =</code> 4 or 10 corresponds to the keys just
 below the alphas and 5 and 11 to the thumb clusters. I exclude them from
 the opposite hands rule with:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>other_record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>row <span class="op">%</span> <span class="op">(</span>MATRIX_ROWS <span class="op">/</span> <span class="dv">2</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>other_record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>row <span class="op">%</span> <span class="op">(</span>MATRIX_ROWS <span class="op">/</span> <span class="dv">2</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span></code></pre></div>
 <p>To work out the matrix correspondence for your keyboard, it may help
 to look up its definition of the “<code>LAYOUT</code>” macro since the
 args in this macro often have names ending in
@@ -333,41 +341,41 @@ args in this macro often have names ending in
 for the Boardsource Microdox keyboard (<a
 href="https://github.com/qmk/qmk_firmware/blob/a8d440e4e043dc8427f17c07631556d0ff3efc20/keyboards/boardsource/microdox/microdox.h#L22-L37">code
 link</a>). The thumb buttons are rows 3 and 7:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LAYOUT_split_3x5_3( \</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">  k01, k02, k03, k04, k05,    k45, k44, k43, k42, k41, \</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="pp">  k11, k12, k13, k14, k15,    k55, k54, k53, k52, k51, \</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="pp">  k21, k22, k23, k24, k25,    k65, k64, k63, k62, k61, \</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="pp">            k33, k34, k35,    k75, k74, k73            \</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="pp">              ) \</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="pp">  { \</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k01, k02, k03, k04, k05 }, \</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k11, k12, k13, k14, k15 }, \</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k21, k22, k23, k24, k25 }, \</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="pp">    { KC_NO,KC_NO, k33, k34, k35 }, \</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k41, k42, k43, k44, k45 }, \</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k51, k52, k53, k54, k55 }, \</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k61, k62, k63, k64, k65 }, \</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="pp">    { KC_NO, KC_NO, k73, k74, k75 } \</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="pp">  }</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LAYOUT_split_3x5_3( \</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">  k01, k02, k03, k04, k05,    k45, k44, k43, k42, k41, \</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="pp">  k11, k12, k13, k14, k15,    k55, k54, k53, k52, k51, \</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="pp">  k21, k22, k23, k24, k25,    k65, k64, k63, k62, k61, \</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="pp">            k33, k34, k35,    k75, k74, k73            \</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="pp">              ) \</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="pp">  { \</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k01, k02, k03, k04, k05 }, \</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k11, k12, k13, k14, k15 }, \</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k21, k22, k23, k24, k25 }, \</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="pp">    { KC_NO,KC_NO, k33, k34, k35 }, \</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k41, k42, k43, k44, k45 }, \</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k51, k52, k53, k54, k55 }, \</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="pp">    { k61, k62, k63, k64, k65 }, \</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="pp">    { KC_NO, KC_NO, k73, k74, k75 } \</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="pp">  }</span></span></code></pre></div>
 <p>It is also perfectly valid to make conditions on
 <code>other_keycode</code>. For instance if you only want the opposite
 hands rule on alpha keys, do</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> <span class="op">(</span>other_keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> QK_MOD_TAP <span class="op">...</span> QK_MOD_TAP_MAX<span class="op">:</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> QK_LAYER_TAP <span class="op">...</span> QK_LAYER_TAP_MAX<span class="op">:</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    other_keycode <span class="op">&amp;=</span> <span class="bn">0xff</span><span class="op">;</span>  <span class="co">// Get base keycode.</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Allow same-hand holds with non-alpha keys.</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>other_keycode <span class="op">&gt;</span> KC_Z<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> achordion_opposite_hands<span class="op">(</span>tap_hold_record<span class="op">,</span> other_record<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> <span class="op">(</span>other_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> QK_MOD_TAP <span class="op">...</span> QK_MOD_TAP_MAX<span class="op">:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> QK_LAYER_TAP <span class="op">...</span> QK_LAYER_TAP_MAX<span class="op">:</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    other_keycode <span class="op">&amp;=</span> <span class="bn">0xff</span><span class="op">;</span>  <span class="co">// Get base keycode.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Allow same-hand holds with non-alpha keys.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>other_keycode <span class="op">&gt;</span> KC_Z<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> achordion_opposite_hands<span class="op">(</span>tap_hold_record<span class="op">,</span> other_record<span class="op">);</span></span></code></pre></div>
 <h3 id="achordion_timeout">achordion_timeout()</h3>
 <p>The <code>achordion_timeout()</code> callback customizes the timeout
 duration per each tap-hold key. By default, the timeout is 1000 ms (1
 second) for all keys:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> achordion_timeout<span class="op">(</span><span class="dt">uint16_t</span> tap_hold_keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">1000</span><span class="op">;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> achordion_timeout<span class="op">(</span><span class="dt">uint16_t</span> tap_hold_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">1000</span><span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The timeout duration must be in the range 0 to 32767 ms, the upper
 limit due to 16-bit timer limitations. I suggest setting it between 500
 and 5000 ms.</p>
@@ -376,15 +384,15 @@ window. If the timeout is too short, Achordion has little effect. A
 timeout of 0 bypasses Achordion, making no modification to QMK’s
 tap-hold decision. In my keymap, I bypass Achordion for a couple
 tap-hold keys, and otherwise use a timeout of 800 ms:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> achordion_timeout<span class="op">(</span><span class="dt">uint16_t</span> tap_hold_keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>tap_hold_keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_SC<span class="op">:</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_Z<span class="op">:</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>  <span class="co">// Bypass Achordion for these keys.</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">800</span><span class="op">;</span>  <span class="co">// Otherwise use a timeout of 800 ms.</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> achordion_timeout<span class="op">(</span><span class="dt">uint16_t</span> tap_hold_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>tap_hold_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_SC<span class="op">:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_Z<span class="op">:</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>  <span class="co">// Bypass Achordion for these keys.</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">800</span><span class="op">;</span>  <span class="co">// Otherwise use a timeout of 800 ms.</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="achordion_eager_mod">achordion_eager_mod()</h3>
 <p>Mod-tap keys have the drawback that they add a delay between pressing
 the button and keys being sent to the host. This is especially sluggish
@@ -410,18 +418,18 @@ following key press takes effect.</p>
 are eager. The <code>mod</code> arg should be compared with
 <code>MOD_</code> prefixed codes, not <code>KC_</code> codes. The
 default callback makes Shift and Ctrl mods eager:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> achordion_eager_mod<span class="op">(</span><span class="dt">uint8_t</span> mod<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>mod<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MOD_LSFT<span class="op">:</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MOD_RSFT<span class="op">:</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MOD_LCTL<span class="op">:</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MOD_RCTL<span class="op">:</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Eagerly apply Shift and Ctrl mods.</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> achordion_eager_mod<span class="op">(</span><span class="dt">uint8_t</span> mod<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>mod<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MOD_LSFT<span class="op">:</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MOD_RSFT<span class="op">:</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MOD_LCTL<span class="op">:</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MOD_RCTL<span class="op">:</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Eagerly apply Shift and Ctrl mods.</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>This makes Achordion much nicer to use with a mouse!</p>
 <p><strong>Note:</strong> Even with eager mods, the initial hold event
 from QMK is still delayed by the tapping term. You can reduce
@@ -432,28 +440,27 @@ a specific key, to reduce delay further.</p>
 tap-hold configuration to get a decent home row mods experience. Here
 are the settings I use.</p>
 <p>In config.h:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Tap-hold configuration for home row mods.</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM 180</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define IGNORE_MOD_TAP_INTERRUPT</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PERMISSIVE_HOLD</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_FORCE_HOLD_PER_KEY</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Tap-hold configuration for home row mods.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM 175</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PERMISSIVE_HOLD</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define QUICK_TAP_TERM_PER_KEY</span></span></code></pre></div>
 <p>In keymap.c:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If you quickly hold a tap-hold key after tapping it, the tap action is</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// repeated. Key repeating is useful e.g. for Vim navigation keys, but can</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// lead to missed triggers in fast typing. Here, returning true means we</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// instead want to &quot;force hold&quot; and disable key repeating.</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Repeating is useful for Vim navigation keys.</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_U<span class="op">:</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_H<span class="op">:</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Repeating Z is useful for spamming undo.</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_Z<span class="op">:</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Enable key repeating.</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Otherwise, force hold and disable key repeating.</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_quick_tap_term<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If you quickly hold a tap-hold key after tapping it, the tap action is</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// repeated. Key repeating is useful e.g. for Vim navigation keys, but can</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// lead to missed triggers in fast typing. Here, returning 0 means we</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// instead want to &quot;force hold&quot; and disable key repeating.</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> HOME_N<span class="op">:</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Repeating is useful for Vim navigation keys.</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QHOME_J<span class="op">:</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QHOME_K<span class="op">:</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QHOME_L<span class="op">:</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> QUICK_TAP_TERM<span class="op">;</span>  <span class="co">// Enable key repeating.</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>  <span class="co">// Otherwise, force hold and disable key repeating.</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>See also the QMK documentation on <a
 href="https://docs.qmk.fm/#/tap_hold">Tap-Hold Configuration Options</a>
 for details on what these options mean and <a
@@ -468,31 +475,31 @@ This changes the hold action so that the mod applies to only the first
 key tapped while the mod-tap is held. Thanks to <span class="citation"
 data-cites="rafaelromao">@rafaelromao</span> for this idea. This can be
 done by adding in keymap.c:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Copyright 2022 Google LLC.</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="an">SPDX-License-Identifier:</span><span class="co"> Apache-2.0</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Replaces a mod-tap key&#39;s hold function with its one-shot counterpart.</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> oneshot_mod_tap<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// Key is being held.</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">const</span> <span class="dt">uint8_t</span> mods <span class="op">=</span> <span class="op">(</span>keycode <span class="op">&gt;&gt;</span> <span class="dv">8</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x1f</span><span class="op">;</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      add_oneshot_mods<span class="op">(((</span>mods <span class="op">&amp;</span> <span class="bn">0x10</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">?</span> mods <span class="op">:</span> <span class="op">(</span>mods <span class="op">&lt;&lt;</span> <span class="dv">4</span><span class="op">));</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_achordion<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_D<span class="op">):</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RSFT_T<span class="op">(</span>KC_K<span class="op">):</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> oneshot_mod_tap<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">);</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Copyright 2022 Google LLC.</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="an">SPDX-License-Identifier:</span><span class="co"> Apache-2.0</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Replaces a mod-tap key&#39;s hold function with its one-shot counterpart.</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> oneshot_mod_tap<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// Key is being held.</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">const</span> <span class="dt">uint8_t</span> mods <span class="op">=</span> <span class="op">(</span>keycode <span class="op">&gt;&gt;</span> <span class="dv">8</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x1f</span><span class="op">;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>      add_oneshot_mods<span class="op">(((</span>mods <span class="op">&amp;</span> <span class="bn">0x10</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">?</span> mods <span class="op">:</span> <span class="op">(</span>mods <span class="op">&lt;&lt;</span> <span class="dv">4</span><span class="op">));</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_achordion<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_D<span class="op">):</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RSFT_T<span class="op">(</span>KC_K<span class="op">):</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> oneshot_mod_tap<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">);</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="tap-vs.-long-press">Tap vs. long press</h3>
 <p>You can have a key perform a different action on tap vs. when held a
 bit longer by customizing a layer-tap <code>LT</code> key. Thanks to
@@ -501,33 +508,33 @@ bit longer by customizing a layer-tap <code>LT</code> key. Thanks to
 me this trick. First, define a layer-tap key like
 <code>LT(0, kc)</code>, where <code>kc</code> is a basic keycode to be
 sent on tap and the layer is a dummy placeholder.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define COMM_COPY LT(0, KC_COMM)</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define COMM_COPY LT(0, KC_COMM)</span></span></code></pre></div>
 <p>Then in <code>process_record_user()</code>, we customize the long
 press action:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Helper for implementing tap vs. long-press keys. Given a tap-hold</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">// key event, replaces the hold function with `long_press_keycode`.</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> process_tap_or_long_press_key<span class="op">(</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    keyrecord_t<span class="op">*</span> record<span class="op">,</span> <span class="dt">uint16_t</span> long_press_keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// Key is being held.</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>      tap_code16<span class="op">(</span>long_press_keycode<span class="op">);</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_achordion<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> COMM_COPY<span class="op">:</span>  <span class="co">// Comma on tap, Ctrl+C on long press.</span></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> process_tap_or_long_press_key<span class="op">(</span>record<span class="op">,</span> C<span class="op">(</span>KC_C<span class="op">));</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Helper for implementing tap vs. long-press keys. Given a tap-hold</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">// key event, replaces the hold function with `long_press_keycode`.</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> process_tap_or_long_press_key<span class="op">(</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    keyrecord_t<span class="op">*</span> record<span class="op">,</span> <span class="dt">uint16_t</span> long_press_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// Key is being held.</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>      tap_code16<span class="op">(</span>long_press_keycode<span class="op">);</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_achordion<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> COMM_COPY<span class="op">:</span>  <span class="co">// Comma on tap, Ctrl+C on long press.</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> process_tap_or_long_press_key<span class="op">(</span>record<span class="op">,</span> C<span class="op">(</span>KC_C<span class="op">));</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>See <a href="../triggers/index.html#tap-vs.-long-press">tap vs. long
 press</a> for further discussion and variations on this idea.</p>
 <h2 id="explanation">Explanation</h2>
@@ -612,8 +619,9 @@ single active tap-hold key at a time.</p>
 data-cites="jdart">@jdart</span>, <span class="citation"
 data-cites="filterpaper">@filterpaper</span>, <span class="citation"
 data-cites="jweickm">@jweickm</span>, <span class="citation"
-data-cites="bschwehn">@bschwehn</span>, and <span class="citation"
-data-cites="jasonkena">@jasonkena</span> and Reddit user u/02ranger for
+data-cites="bschwehn">@bschwehn</span>, <span class="citation"
+data-cites="jasonkena">@jasonkena</span>, <span class="citation"
+data-cites="sommerper">@sommerper</span> and Reddit user u/02ranger for
 feedback and help to improve Achordion.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
