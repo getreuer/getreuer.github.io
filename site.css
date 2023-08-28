@@ -181,7 +181,7 @@ code span {
 }
 
 pre.sourceCode {
-  overflow-x: auto;
+  /* overflow-x: auto; */
 }
 
 b, strong {
