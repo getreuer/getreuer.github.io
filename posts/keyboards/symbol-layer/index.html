@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-05-13)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-09-17)" />
   <title>Designing a Symbol Layer</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -88,7 +88,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Designing a Symbol Layer</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-05-13)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-09-17)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -101,6 +101,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><a href="#a-reasonable-default">A reasonable default</a></li>
 <li><a href="#extend2">Extend2</a></li>
+<li><a href="#sunakus-symbol-layer">Sunaku’s symbol layer</a></li>
 <li><a href="#layer-optimized-for-elixir-code">Layer optimized for
 Elixir code</a></li>
 <li><a href="#beakl-15">BEAKL 15</a></li>
@@ -186,10 +187,10 @@ layer.</figcaption>
 <p>(index fingers rest on <kbd>)</kbd> and <kbd>4</kbd>)</p>
 <p>The layer is easily learnable. Brackets are neatly organized on the
 left hand, and the leftmost two columns are simply the first six number
-row symbols in usual order (<code>! @ # $ % ^</code>). They layer
-manages to squeeze a numpad onto the right hand. While it’s a
-well-designed layer, there is room for improvement, especially for
-typing common bigrams.</p>
+row symbols in usual order (<code>! @ # $ % ^</code>). The layer manages
+to squeeze a numpad onto the right hand. While it’s a well-designed
+layer, there is room for improvement, especially for typing common
+bigrams.</p>
 <h3 id="extend2">Extend2</h3>
 <p>Another good general-purpose symbol layer design is <a
 href="https://dreymar.colemak.org/layers-extend.html">Extend2 of
@@ -199,6 +200,24 @@ navigation keys, and hotkeys.</p>
 <img src="extend2.png" alt="Extend2 layer." />
 <figcaption aria-hidden="true">Extend2 layer.</figcaption>
 </figure>
+<h3 id="sunakus-symbol-layer">Sunaku’s symbol layer</h3>
+<p>Sunaku described this as “the crown jewel of my keyboard’s
+configuration,” resulting from “several hundreds of layout iterations
+over the last 9 years.” The layer is optimized for programming in
+Vim.</p>
+<figure>
+<img src="sunaku.png" alt="Sunaku’s symbol layer." />
+<figcaption aria-hidden="true">Sunaku’s symbol layer.</figcaption>
+</figure>
+<p>(index finger rests on <kbd>$</kbd>)</p>
+<p>Many common syntax bigrams are inward rolls, including
+<code>()</code>, <code>[]</code>, <code>-&gt;</code>,
+<code>&lt;-</code>, <code>!=</code>, <code>&lt;=</code>,
+<code>~/</code>. Keys relating to Vim navigation are grouped in pairs,
+like <code>^ $</code> (start/end of current line) and <code># *</code>
+(search behind/forward). See <a
+href="https://sunaku.github.io/moergo-glove80-keyboard.html#symbol-layer">Sunaku’s
+writeup</a> for further details.</p>
 <h3 id="layer-optimized-for-elixir-code">Layer optimized for Elixir
 code</h3>
 <p>Dusty Pomerleau <a
