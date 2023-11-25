@@ -343,17 +343,17 @@ them here with <code>0x</code> prefix to make C hex constants.</p>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_IQUE_SYM<span class="op">]</span>   <span class="op">=</span> <span class="bn">0x00bf</span><span class="op">,</span>  <span class="co">// ¿</span></span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <p><strong>Step 4.</strong> Define keycodes for the symbols. For ß, ñ,
-ç, use the <code>XP(i, j)</code> macro to represent the pair of
+ç, use the <code>UP(i, j)</code> macro to represent the pair of
 unshifted and shifted symbols associated with the key. For ¿, let’s
-simply ignore shifting and use the <code>X(i)</code> macro:</p>
+simply ignore shifting and use the <code>UM(i)</code> macro:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ß and ẞ keycode.</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_SS XP(U_SS_LOWER, U_SS_UPPER)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_SS UP(U_SS_LOWER, U_SS_UPPER)</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">// ñ and Ñ keycode.</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_NTIL XP(U_NTIL_LOWER, U_NTIL_UPPER)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_NTIL UP(U_NTIL_LOWER, U_NTIL_UPPER)</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">// ç and Ç keycode.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_CCED XP(U_CCED_LOWER, U_CCED_UPPER)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_CCED UP(U_CCED_LOWER, U_CCED_UPPER)</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">// ¿ keycode.</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_IQUE X(U_IQUE_SYM)</span></span></code></pre></div>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_IQUE UM(U_IQUE_SYM)</span></span></code></pre></div>
 <p><strong>Step 5.</strong> Finally, use the keycodes <code>U_SS</code>,
 <code>U_NTIL</code>, <code>U_CCED</code>, <code>U_IQUE</code> in your
 keymap.</p>
@@ -369,7 +369,7 @@ rather than a single codepoint. Use <code>send_unicode_string()</code>
 to type multi-codepoint symbols. See this <a
 href="../macros/index.html#emojis">emoji macro</a> for an
 example.</p></li>
-<li><p>The <code>XP()</code> macro is limited to the first 128 table
+<li><p>The <code>UP()</code> macro is limited to the first 128 table
 entries of <code>unicode_map</code>. This is enough to define a fair
 number of symbols, but keep this in mind if you’re planning something
 elaborate.</p></li>
