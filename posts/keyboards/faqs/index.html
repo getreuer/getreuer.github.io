@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2023-08-27)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2023-11-30)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -90,7 +90,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2023-08-27)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2023-11-30)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -112,6 +112,8 @@ custom keyboards have?</a></li>
 <li><a href="#home-row-mods-are-hard-to-use">Home row mods are hard to
 use</a></li>
 <li><a href="#firmware-is-too-large">Firmware is too large!</a></li>
+<li><a href="#mt-doesnt-work-with-this-keycode-qmk">MT doesn’t work with
+this keycode (QMK)</a></li>
 <li><a href="#how-to-type-non-english-letters-qmk">How to type
 non-English letters (QMK)</a></li>
 <li><a href="#some-keys-are-swapped-qmk">Some keys are swapped
@@ -654,12 +656,91 @@ what it is. So a good way to reduce firmware size is to cull unused and
 non-essential features.</p>
 <p><strong>Specific to QMK:</strong> Make sure to enable LTO (link-time
 optimization) in rules.mk:</p>
-<pre><code>LTO_ENABLE = yes</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">LTO_ENABLE</span> = yes</span></code></pre></div>
 <p>Firmware will take longer to build, but the result will be smaller.
 See <a
 href="https://docs.qmk.fm/#/squeezing_avr?id=squeezing-the-most-out-of-avr">Squeezing
 the most out of AVR</a> (applicable also with non-AVR MCUs) for further
 tips.</p>
+<h2 id="mt-doesnt-work-with-this-keycode-qmk">MT doesn’t work with this
+keycode (QMK)</h2>
+<p><a href="#mt-doesnt-work-with-this-keycode-qmk">🔗 Link</a></p>
+<p>With <a href="https://docs.qmk.fm/#/mod_tap">mod-tap keys</a>
+<code>MT(mod, kc)</code> and <a
+href="https://docs.qmk.fm/#/feature_layers">layer-tap keys</a>
+<code>LT(layer, kc)</code>, a limitation is that the tapping keycode
+<code>kc</code> <em>must</em> be a <a
+href="https://docs.qmk.fm/#/keycodes_basic">basic keycode</a>, a keycode
+in the 0–255 range. All keycodes in QMK are 16 bits, so in order to pack
+identifiers, the mod or layer, and <code>kc</code> in that space, the
+<code>kc</code> portion is limited to 8 bits. As described <a
+href="https://docs.qmk.fm/#/mod_tap?id=caveats">in the Caveats
+section</a>:</p>
+<blockquote>
+<p>Currently, the <code>kc</code> argument of <code>MT()</code> is
+limited to the <a href="https://docs.qmk.fm/#/keycodes_basic">Basic
+Keycode set</a>, meaning you can’t use keycodes like
+<code>LCTL()</code>, <code>KC_TILD</code>, or anything greater than
+<code>0xFF</code>. This is because QMK uses 16-bit keycodes, of which 3
+bits are used for the function identifier, 1 bit for selecting right or
+left mods, and 4 bits to tell which mods are used, leaving only 8 bits
+for the keycode.</p>
+</blockquote>
+<p>Shifted keycodes like <code>KC_QUES</code> (= <kbd>Shift</kbd> +
+<kbd>/</kbd>) and user-defined keycodes are not basic keycodes, so
+attempting something like <code>LT(layer, KC_QUES)</code> or
+<code>LSFT_T(MYMACRO)</code> is unsupported.</p>
+<p>Fortunately, there is a workaround. First, pick a <a
+href="https://docs.qmk.fm/#/keycodes_basic">basic keycode</a> like
+<code>KC_0</code> as a placeholder for the tapping keycode
+<code>kc</code>. This keycode will never be sent, so any arbitrary basic
+keycode will do. Then <a
+href="https://docs.qmk.fm/#/mod_tap?id=changing-tap-function">change the
+tap function</a> to behave as desired.</p>
+<p>In keymap.c:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Copyright 2023 Google LLC.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="an">SPDX-License-Identifier:</span><span class="co"> Apache-2.0</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">// NAV layer on hold, KC_QUES on tap.</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define NAV_QUES     LT(NAV, KC_0)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">// LSFT on hold, MYMACRO on tap.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SFT_MYMACRO  LSFT_T(KC_1)</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Use `NAV_QUES` and `SFT_MYMACRO` in your layout...</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a> <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>   <span class="cf">case</span> NAV_QUES<span class="op">:</span>  <span class="co">// NAV layer on hold, KC_QUES on tap.</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>     <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count<span class="op">)</span> <span class="op">{</span>  <span class="co">// On tap.</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>       <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  <span class="co">// On press.</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>         tap_code16<span class="op">(</span>KC_QUES<span class="op">);</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>       <span class="op">}</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>       <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>     <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>   <span class="cf">case</span> SFT_MYMACRO<span class="op">:</span>  LSFT on hold<span class="op">,</span> MYMACRO on tap<span class="op">.</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>     <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count<span class="op">)</span> <span class="op">{</span>  <span class="co">// On tap.</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>       <span class="co">// Your macro here...</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>       <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>         SEND_STRING<span class="op">(</span><span class="st">&quot;keyboards!&quot;</span><span class="op">);</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>       <span class="op">}</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>       <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>     <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>   <span class="co">// Other macros...</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a> <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Similarly, attempting a one-shot mod-tap as
+“<code>MT(OSM(mod), kc)</code>” is unsupported, but can instead be done
+by <a
+href="https://docs.qmk.fm/#/mod_tap?id=changing-hold-function">changing
+the hold function</a>. See “One-shot home row mods” above in <a
+href="#home-row-mods-are-hard-to-use">Home row mods are hard to use</a>
+for an implementation.</p>
 <h2 id="how-to-type-non-english-letters-qmk">How to type non-English
 letters (QMK)</h2>
 <p><a href="#how-to-type-non-english-letters-qmk">🔗 Link</a></p>
@@ -707,9 +788,9 @@ backslash <code>\</code> has special meaning, for instance
 <code>\n</code> for new line. If you want a string with the literal
 <code>\</code> character, it must be escaped as <code>\\</code>. Say, a
 Windows directory path</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\f</span><span class="st">avorite\directory&quot;</span><span class="op">);</span>    <span class="co">// DON&#39;T DO THIS!</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\f</span><span class="st">avorite\directory&quot;</span><span class="op">);</span>    <span class="co">// DON&#39;T DO THIS!</span></span></code></pre></div>
 <p>should instead be written as</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\\</span><span class="st">favorite</span><span class="sc">\\</span><span class="st">directory&quot;</span><span class="op">);</span>  <span class="co">// OK</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\\</span><span class="st">favorite</span><span class="sc">\\</span><span class="st">directory&quot;</span><span class="op">);</span>  <span class="co">// OK</span></span></code></pre></div>
 <p>Similarly, <code>"</code> characters have special meaning, since they
 mark the beginning and end of the string. For a string with the literal
 <code>"</code> character, escape it as <code>\"</code>. See also <a
@@ -727,10 +808,10 @@ href="../macros/index.html#emojis">as in this example</a>.</p></li>
 <li><p><code>SEND_STRING</code>’s argument must be a string literal. To
 print a string that you generated, use lowercase
 <code>send_string()</code> instead:</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Print the index of the highest layer.</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">char</span><span class="op">*</span> str <span class="op">=</span> get_u8_str<span class="op">(</span>get_highest_layer<span class="op">(</span>layer_state<span class="op">),</span> <span class="ch">&#39; &#39;</span><span class="op">);</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>send_string<span class="op">(</span>str<span class="op">);</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Print the index of the highest layer.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">char</span><span class="op">*</span> str <span class="op">=</span> get_u8_str<span class="op">(</span>get_highest_layer<span class="op">(</span>layer_state<span class="op">),</span> <span class="ch">&#39; &#39;</span><span class="op">);</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>send_string<span class="op">(</span>str<span class="op">);</span></span></code></pre></div></li>
 </ul>
 <h2 id="what-is-this-weird-c-syntax-qmk">What is this weird C syntax
 (QMK)</h2>
@@ -750,33 +831,33 @@ attribute like <code>__attribute__</code>
 <code>((section(".irom.text")))</code>.</p>
 <p>In a QMK keymap, a visible example of <code>PROGMEM</code> is the
 <code>keymaps</code> array:</p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>BASE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span> </span></code></pre></div></li>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>BASE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span> </span></code></pre></div></li>
 <li><p><a
 href="https://en.cppreference.com/w/c/language/array_initialization">Array
 designators</a> is a C99 feature that enables an explicit syntax when
 initializing an array. Elements may be specified sparsely or out of
 order:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// a = {10, 0, 20, 30}</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="dv">10</span><span class="op">,</span> <span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="dv">30</span><span class="op">,</span> <span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> <span class="dv">20</span><span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// a = {10, 0, 20, 30}</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> <span class="dv">10</span><span class="op">,</span> <span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="dv">30</span><span class="op">,</span> <span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> <span class="dv">20</span><span class="op">};</span></span></code></pre></div>
 <p>The <code>keymaps</code> array is conventionally initialized using
 this syntax, like</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <p>or equivalently but more readably, naming the layers <a
 href="https://en.cppreference.com/w/c/language/enum">with enum
 constants</a> like</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> layers <span class="op">{</span> BASE<span class="op">,</span> LOWER<span class="op">,</span> RAISE <span class="op">};</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>BASE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>LOWER<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>RAISE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> layers <span class="op">{</span> BASE<span class="op">,</span> LOWER<span class="op">,</span> RAISE <span class="op">};</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>BASE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>LOWER<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>RAISE<span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(...),</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <p>This pattern of array designators with <code>enum</code> constants
 also appears in using certain features like <a
 href="https://docs.qmk.fm/#/feature_tap_dance?id=simple-example">Tap
@@ -787,25 +868,25 @@ initializers</a> is a C99 feature that allows structs to be created with
 a readable syntax like (example is from the <a
 href="https://docs.qmk.fm/#/feature_key_overrides?id=modifiers-as-layer-keys">Key
 Overrides documentation</a>):</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> key_override_t fn_override <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>trigger_mods      <span class="op">=</span> MOD_BIT<span class="op">(</span>KC_RGUI<span class="op">)</span> <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RCTL<span class="op">),</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>layers            <span class="op">=</span> <span class="op">~(</span><span class="dv">1</span> <span class="op">&lt;&lt;</span> LAYER_FN<span class="op">),</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>suppressed_mods   <span class="op">=</span> MOD_BIT<span class="op">(</span>KC_RGUI<span class="op">)</span> <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RCTL<span class="op">),</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>options           <span class="op">=</span> ko_option_no_unregister_on_other_key_down<span class="op">,</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>negative_mod_mask <span class="op">=</span> <span class="op">(</span><span class="dt">uint8_t</span><span class="op">)</span> <span class="op">~(</span>MOD_BIT<span class="op">(</span>KC_RGUI<span class="op">)</span> <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RCTL<span class="op">)),</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>custom_action     <span class="op">=</span> momentary_layer<span class="op">,</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>context           <span class="op">=</span> <span class="op">(</span><span class="dt">void</span> <span class="op">*)</span>LAYER_FN<span class="op">,</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>trigger           <span class="op">=</span> KC_NO<span class="op">,</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>replacement       <span class="op">=</span> KC_NO<span class="op">,</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>enabled           <span class="op">=</span> NULL<span class="op">,</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> key_override_t fn_override <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>trigger_mods      <span class="op">=</span> MOD_BIT<span class="op">(</span>KC_RGUI<span class="op">)</span> <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RCTL<span class="op">),</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>layers            <span class="op">=</span> <span class="op">~(</span><span class="dv">1</span> <span class="op">&lt;&lt;</span> LAYER_FN<span class="op">),</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>suppressed_mods   <span class="op">=</span> MOD_BIT<span class="op">(</span>KC_RGUI<span class="op">)</span> <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RCTL<span class="op">),</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>options           <span class="op">=</span> ko_option_no_unregister_on_other_key_down<span class="op">,</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>negative_mod_mask <span class="op">=</span> <span class="op">(</span><span class="dt">uint8_t</span><span class="op">)</span> <span class="op">~(</span>MOD_BIT<span class="op">(</span>KC_RGUI<span class="op">)</span> <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RCTL<span class="op">)),</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>custom_action     <span class="op">=</span> momentary_layer<span class="op">,</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>context           <span class="op">=</span> <span class="op">(</span><span class="dt">void</span> <span class="op">*)</span>LAYER_FN<span class="op">,</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>trigger           <span class="op">=</span> KC_NO<span class="op">,</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>replacement       <span class="op">=</span> KC_NO<span class="op">,</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>enabled           <span class="op">=</span> NULL<span class="op">,</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div></li>
 <li><p><a
 href="https://gcc.gnu.org/onlinedocs/gcc/Case-Ranges.html#Case-Ranges">Case
 ranges</a> is a GNU extension to write a range of consecutive values as
 a single <code>case</code> in a <code>switch</code> statement:</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span>  <span class="co">// Keycodes KC_A through KC_Z.</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span>  <span class="co">// Keycodes KC_A through KC_Z.</span></span></code></pre></div></li>
 <li><p><a href="https://en.wikipedia.org/wiki/Weak_symbol">Weak
 symbols</a> is a GNU extension where a function definition annotated
 with <code>__attribute__((weak))</code> can can be overridden by another
@@ -815,22 +896,22 @@ default definition of the function is annotated as weak (example is from
 the <a
 href="https://github.com/qmk/qmk_firmware/blob/e99d6d582cd1ebdda35b2fda1cc170d6d24ad58b/quantum/action_tapping.c#L40-L42">tap-hold
 key implementation</a>):</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">// quantum/action_tapping.c</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>__attribute__<span class="op">((</span>weak<span class="op">))</span> <span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                                  keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">// quantum/action_tapping.c</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>__attribute__<span class="op">((</span>weak<span class="op">))</span> <span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                                                  keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The user can override it by making a “strong” redefinition of the
 function:</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">// keymap.c</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_A<span class="op">):</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> true<span class="op">;</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// keymap.c</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_A<span class="op">):</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
 <li><p><a
 href="https://en.cppreference.com/w/c/preprocessor/impl">#pragma
 once</a> is a nonstandard yet widely supported preprocessor directive
