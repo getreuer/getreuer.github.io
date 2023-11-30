@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-03-11)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-11-30)" />
   <title>QMK: Macro buttons</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -90,7 +90,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Macro buttons</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-03-11)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-11-30)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -116,6 +116,7 @@ mods</a>
 </ul></li>
 <li><a href="#macros-with-special-keys">Macros with special keys</a>
 <ul>
+<li><a href="#mouse-double-click">Mouse double click</a></li>
 <li><a href="#select-word-macro">Select word macro</a></li>
 <li><a href="#select-line-macro">Select line macro</a></li>
 <li><a href="#web-search-for-current-selection">Web search for current
@@ -125,7 +126,7 @@ selection</a></li>
 <li><a href="#other-cool-ideas">Other cool ideas</a>
 <ul>
 <li><a href="#next-sentence-macro">Next sentence macro</a></li>
-<li><a href="#emojis">Emojis</a></li>
+<li><a href="#multi-codepoint-emoji">Multi-codepoint emoji</a></li>
 <li><a href="#triggers">Triggers</a></li>
 </ul></li>
 </ul>
@@ -228,19 +229,27 @@ manually.</p>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="send_string">SEND_STRING</h3>
-<p>Use <code>SEND_STRING</code> to type a sequence of keys when the
-macro button is pressed. You can use this to blast out programming
-syntax like <code>-&gt;</code> or <code>===</code> or patterns in the
-languages you use. For instance, typing the C++ scope operator
-<code>::</code> in most keyboard layouts is an uncomfortable shifted
-double tap on a pinky key. So a well-used feature in my QMK keymap is a
-macro that types <code>::</code>.</p>
+<p>Use <a
+href="https://docs.qmk.fm/#/feature_send_string">SEND_STRING</a> to type
+a sequence of keys when the macro button is pressed. You can use this to
+blast out programming syntax like <code>-&gt;</code> or <code>===</code>
+or patterns in the languages you use. For instance, typing the C++ scope
+operator <code>::</code> in most keyboard layouts is an uncomfortable
+shifted double tap on a pinky key. So a well-used feature in my QMK
+keymap is a macro that types <code>::</code>.</p>
 <p>Macros are also useful for typing common strings, like your name or
 email. Macros could be used to type commands, say
 <code>SEND_STRING("git status")</code>, but for that I suggest <a
 href="https://tldp.org/LDP/abs/html/aliases.html">shell aliases</a> are
-a better solution. For instance in your .bashrc or .zshrc, add
+a better solution. In your .bashrc or .zshrc, add
 <code>alias gs="git status"</code>.</p>
+<p>Again, <strong>don’t use macros to type passwords or credit card
+numbers.</strong> Otherwise if someone has physical access to your
+keyboard, they can access this info.</p>
+<p><code>SEND_STRING</code> has some gotchas when it comes to special
+characters. See <a
+href="../faqs/index.html#send_string-doesnt-work-qmk">SEND_STRING
+doesn’t work</a> for troubleshooting tips.</p>
 <p>You can also use <code>tap_code(kc)</code> to tap an individual key,
 where <code>kc</code> is a <a
 href="https://docs.qmk.fm/#/keycodes_basic">basic keycode</a>. Or for
@@ -288,9 +297,7 @@ href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">Defe
 Execution</a>).</li>
 <li><code>record-&gt;event.key.row</code> and
 <code>record-&gt;event.key.col</code> are the matrix position of the
-key, counting from 0. If the event comes from a <a
-href="https://docs.qmk.fm/#/feature_combo">Combo</a>, this is set to the
-non-physical position <code>(254, 254)</code>.</li>
+key, counting from 0.</li>
 <li>If the event comes from a <a
 href="https://docs.qmk.fm/#/mod_tap">mod-tap</a> (<code>MT</code>) or
 layer-tap (<code>LT</code>) key, then <code>record-&gt;tap.count</code>
@@ -410,6 +417,19 @@ elsewhere.</p>
 ⌘ on Mac)</li>
 </ul>
 <p>A few examples are described next.</p>
+<h3 id="mouse-double-click">Mouse double click</h3>
+<p>Enable <a href="https://docs.qmk.fm/#/feature_mouse_keys">Mouse
+Keys</a> for this macro with <code>MOUSEKEY_ENABLE = yes</code> in
+rules.mk.</p>
+<p>This macro double clicks the left mouse button:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> DBLCLK<span class="op">:</span>  <span class="co">// Double click the left mouse button.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_TAP<span class="op">(</span>X_BTN1<span class="op">)</span> SS_DELAY<span class="op">(</span><span class="dv">50</span><span class="op">)</span> SS_TAP<span class="op">(</span>X_BTN1<span class="op">));</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<p>The OS might debounce and ignore a double click that is too fast. To
+prevent this, the <code>SS_DELAY(50)</code> defines a delay in
+milliseconds between the clicks.</p>
 <h3 id="select-word-macro">Select word macro</h3>
 <p>Most text editors support Ctrl+left / Ctrl+right to move the cursor
 by words. From <a
@@ -417,36 +437,36 @@ href="https://github.com/qmk/qmk_firmware/tree/master/users/ajp10304">ajp10304�
 user directory</a>, this macro selects the current word. It types
 Ctrl+right to move to the end of the word, then Ctrl+Shift+left to
 select to the beginning of the word:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> SELWORD<span class="op">:</span>  <span class="co">// Selects the current word under the cursor.</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_LCTL<span class="op">(</span>SS_TAP<span class="op">(</span>X_RGHT<span class="op">)</span> SS_LSFT<span class="op">(</span>SS_TAP<span class="op">(</span>X_LEFT<span class="op">))));</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mac users, change LCTL to LALT:</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// SEND_STRING(SS_LALT(SS_TAP(X_RGHT) SS_LSFT(SS_TAP(X_LEFT))));</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> SELWORD<span class="op">:</span>  <span class="co">// Selects the current word under the cursor.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_LCTL<span class="op">(</span>SS_TAP<span class="op">(</span>X_RGHT<span class="op">)</span> SS_LSFT<span class="op">(</span>SS_TAP<span class="op">(</span>X_LEFT<span class="op">))));</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mac users, change LCTL to LALT:</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// SEND_STRING(SS_LALT(SS_TAP(X_RGHT) SS_LSFT(SS_TAP(X_LEFT))));</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
 <p>See also my <a href="../select-word/index.html">Word Selection</a>
 post for an elaborated version of this macro.</p>
 <h3 id="select-line-macro">Select line macro</h3>
 <p>This macro selects the current line, by tapping the home key and then
 Shift+End:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> SELLINE<span class="op">:</span>  <span class="co">// Selects the current line.</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_TAP<span class="op">(</span>X_HOME<span class="op">)</span> SS_LSFT<span class="op">(</span>SS_TAP<span class="op">(</span>X_END<span class="op">)));</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mac users, use:</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// SEND_STRING(SS_LCTL(&quot;a&quot; SS_LSFT(&quot;e&quot;)));</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> SELLINE<span class="op">:</span>  <span class="co">// Selects the current line.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_TAP<span class="op">(</span>X_HOME<span class="op">)</span> SS_LSFT<span class="op">(</span>SS_TAP<span class="op">(</span>X_END<span class="op">)));</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mac users, use:</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// SEND_STRING(SS_LCTL(&quot;a&quot; SS_LSFT(&quot;e&quot;)));</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
 <h3 id="web-search-for-current-selection">Web search for current
 selection</h3>
 <p>Suppose you are in a web browser and have selected some text. This
 macro copies the text and does a web search for that text in a new
 tab.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> SRCHSEL<span class="op">:</span>  <span class="co">// Searches the current selection in a new tab.</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mac users, change LCTL to LGUI.</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_LCTL<span class="op">(</span><span class="st">&quot;ct&quot;</span><span class="op">)</span> SS_DELAY<span class="op">(</span><span class="dv">100</span><span class="op">)</span> SS_LCTL<span class="op">(</span><span class="st">&quot;v&quot;</span><span class="op">)</span> SS_TAP<span class="op">(</span>X_ENTER<span class="op">));</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> SRCHSEL<span class="op">:</span>  <span class="co">// Searches the current selection in a new tab.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mac users, change LCTL to LGUI.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_LCTL<span class="op">(</span><span class="st">&quot;ct&quot;</span><span class="op">)</span> SS_DELAY<span class="op">(</span><span class="dv">100</span><span class="op">)</span> SS_LCTL<span class="op">(</span><span class="st">&quot;v&quot;</span><span class="op">)</span> SS_TAP<span class="op">(</span>X_ENTER<span class="op">));</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
 <p>In detail, it copies the selection (Ctrl+C), opens a new tab
 (Ctrl+T), pastes the selection into the omnibar (Ctrl+V), and finally
 taps enter to do the search. Since the browser might need a moment to
@@ -457,23 +477,23 @@ pasting.</p>
 with the following line, similar to Vim’s “<code>J</code>” command. It
 presses End, Delete, and replaces intermediate whitespace with a
 space:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> JOINLN<span class="op">:</span>  <span class="co">// Join lines like Vim&#39;s `J` command.</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span> <span class="co">// Go to the end of the line and tap delete.</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_END<span class="op">)</span> SS_TAP<span class="op">(</span>X_DEL<span class="op">)</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// In case this has joined two words together, insert one space.</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_SPC<span class="op">)</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        SS_LCTL<span class="op">(</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>          <span class="co">// Go to the beginning of the next word.</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>          SS_TAP<span class="op">(</span>X_RGHT<span class="op">)</span> SS_TAP<span class="op">(</span>X_LEFT<span class="op">)</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>          <span class="co">// Select back to the end of the previous word. This should select</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>          <span class="co">// all spaces and tabs between the joined lines from indentation</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>          <span class="co">// or trailing whitespace, including the space inserted earlier.</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>          SS_LSFT<span class="op">(</span>SS_TAP<span class="op">(</span>X_LEFT<span class="op">)</span> SS_TAP<span class="op">(</span>X_RGHT<span class="op">)))</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Replace the selection with a single space.</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_SPC<span class="op">));</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> JOINLN<span class="op">:</span>  <span class="co">// Join lines like Vim&#39;s `J` command.</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span> <span class="co">// Go to the end of the line and tap delete.</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_END<span class="op">)</span> SS_TAP<span class="op">(</span>X_DEL<span class="op">)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// In case this has joined two words together, insert one space.</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_SPC<span class="op">)</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        SS_LCTL<span class="op">(</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>          <span class="co">// Go to the beginning of the next word.</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>          SS_TAP<span class="op">(</span>X_RGHT<span class="op">)</span> SS_TAP<span class="op">(</span>X_LEFT<span class="op">)</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>          <span class="co">// Select back to the end of the previous word. This should select</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>          <span class="co">// all spaces and tabs between the joined lines from indentation</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>          <span class="co">// or trailing whitespace, including the space inserted earlier.</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>          SS_LSFT<span class="op">(</span>SS_TAP<span class="op">(</span>X_LEFT<span class="op">)</span> SS_TAP<span class="op">(</span>X_RGHT<span class="op">)))</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Replace the selection with a single space.</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_SPC<span class="op">));</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
 <p><strong>Note:</strong> I’ve noticed slight differences between text
 editors in how hotkeys work at the end of the line. This macro might
 produce incorrect results in some editors.</p>
@@ -488,12 +508,12 @@ action into a single button press. The macro types a period, space, then
 sets a <a href="https://docs.qmk.fm/#/one_shot_keys">one-shot mod</a> so
 that the next key typed is shifted, to capitalize the first letter of
 the next sentence:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> NEXTSEN<span class="op">:</span>  <span class="co">// Next sentence macro.</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span><span class="st">&quot;. &quot;</span><span class="op">);</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    add_oneshot_mods<span class="op">(</span>MOD_BIT<span class="op">(</span>KC_LSFT<span class="op">));</span>  <span class="co">// Set one-shot mod for shift.</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> NEXTSEN<span class="op">:</span>  <span class="co">// Next sentence macro.</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span><span class="st">&quot;. &quot;</span><span class="op">);</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    add_oneshot_mods<span class="op">(</span>MOD_BIT<span class="op">(</span>KC_LSFT<span class="op">));</span>  <span class="co">// Set one-shot mod for shift.</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
 <p>See also the approach taken in <a
 href="https://github.com/precondition/dactyl-manuform-keymap">precondition’s
 keymap</a>: there, the next sentence is triggered by double tapping the
@@ -501,24 +521,24 @@ period button through a QMK tap dance, rather than using a macro.</p>
 <p>And see also <a href="../sentence-case/index.html">Sentence Case</a>,
 which detects and capitalizes the first letter of sentences
 automatically.</p>
-<h3 id="emojis">Emojis</h3>
-<p><a href="https://docs.juliaebert.com/projects/keyboard">Julia Ebert’s
-blog</a> notes that the way to type a multi-codepoint emoji is to
-implement it as a macro. The following types a US flag emoji 🇺🇸
-(U+1F1FA, U+1F1F8):</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> US_FLAG<span class="op">:</span>  <span class="co">// Types US flag emoji.</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    send_unicode_string<span class="op">(</span><span class="st">&quot;🇺🇸&quot;</span><span class="op">);</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Or if you prefer ASCII-only source files, use escape codes to</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// write the UTF-8 encoding of U+1F1FA, U+1F1F8:</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// send_unicode_string(&quot;\xf0\x9f\x87\xba\xf0\x9f\x87\xb8&quot;);</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
-<p><strong>Note:</strong> The above assumes a Unicode input method is
-enabled, either Basic Unicode, Unicode Map, or UCIS; see <a
+<h3 id="multi-codepoint-emoji">Multi-codepoint emoji</h3>
+<p>Enable a Unicode input method for this macro, either Basic Unicode,
+Unicode Map, or UCIS; see <a
 href="https://docs.qmk.fm/#/feature_unicode">Unicode Support</a>. See
 also <a href="../non-english/index.html">Typing non-English
 letters</a>.</p>
+<p><a href="https://docs.juliaebert.com/projects/keyboard">Julia Ebert’s
+blog</a> notes that the only way to type a multi-codepoint emoji is to
+implement it as a macro. The following types a US flag emoji 🇺🇸
+(U+1F1FA, U+1F1F8):</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> US_FLAG<span class="op">:</span>  <span class="co">// Types US flag emoji.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    send_unicode_string<span class="op">(</span><span class="st">&quot;🇺🇸&quot;</span><span class="op">);</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Or if you prefer ASCII-only source files, use escape codes to</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// write the UTF-8 encoding of U+1F1FA, U+1F1F8:</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// send_unicode_string(&quot;\xf0\x9f\x87\xba\xf0\x9f\x87\xb8&quot;);</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
 <h3 id="triggers">Triggers</h3>
 <p>See my following <a href="../triggers/index.html">post about
 triggers</a>: react to layer changes, tap vs. long press, previously
