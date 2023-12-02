@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2023-11-30)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2023-12-01)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -90,7 +90,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2023-11-30)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2023-12-01)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -136,18 +136,23 @@ keyboards</a>.</p>
 <h2 id="meta-how-to-ask-for-help">Meta: How to ask for help</h2>
 <p><a href="#meta-how-to-ask-for-help">🔗 Link</a></p>
 <p><a href="https://www.reddit.com/r/olkb/">r/olkb</a> and <a
-href="https://www.reddit.com/r/MechanicalKeyboards/">r/MechanicalKeyboards</a>
+href="https://www.reddit.com/r/ErgoMechKeyboards/">r/ErgoMechKeyboards</a>
 are great places to ask for keyboard troubleshooting help. Here are some
 suggestions to make it easier for others to help you:</p>
-<p>Instead of saying something “doesn’t work,” be specific about what
-steps produce the problem (say, a certain sequence of button presses),
-and clarify what you <em>want</em> to happen vs. what <em>actually</em>
-happens. Or alternatively, state what is your <em>goal</em> and what is
-the <em>problem</em>.</p>
-<p>Include details and any research. When troubleshooting QMK keymap
-code, of course, share the relevant part of your keymap. If possible,
-share a link to your full keymap as well. An easy way to do this is as a
-<a href="https://gist.github.com/">GitHub Gist</a>.</p>
+<ul>
+<li><p>To avoid misunderstandings, clearly distinguish what you
+<em>want</em> to happen vs. what <em>actually</em> happens. Or
+alternatively, what is your <em>goal</em> vs. what is the
+<em>problem</em>.</p></li>
+<li><p>Be specific about what steps produce the problem, say, a certain
+sequence of button presses, and describe the problematic behavior that
+results from this.</p></li>
+<li><p>When troubleshooting keymap code, share the relevant part of the
+code. If possible, share a link to the full code as well. An easy way to
+do this is as a <a href="https://gist.github.com/">GitHub
+Gist</a>.</p></li>
+</ul>
+<p>Good luck!</p>
 <h2 id="keyboard-shopping-tips">Keyboard shopping tips</h2>
 <p><a href="#keyboard-shopping-tips">🔗 Link</a></p>
 <p>For typing comfort, I highly recommend a keyboard that is
@@ -688,8 +693,8 @@ for the keycode.</p>
 </blockquote>
 <p>Shifted keycodes like <code>KC_QUES</code> (= <kbd>Shift</kbd> +
 <kbd>/</kbd>) and user-defined keycodes are not basic keycodes, so
-attempting something like <code>LT(layer, KC_QUES)</code> or
-<code>LSFT_T(MYMACRO)</code> is unsupported.</p>
+attempting “<code>LT(layer, KC_QUES)</code>” or
+“<code>LSFT_T(MYMACRO)</code>” is unsupported.</p>
 <p>Fortunately, there is a workaround. First, pick a <a
 href="https://docs.qmk.fm/#/keycodes_basic">basic keycode</a> like
 <code>KC_0</code> as a placeholder for the tapping keycode
@@ -701,39 +706,37 @@ tap function</a> to behave as desired.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Copyright 2023 Google LLC.</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="an">SPDX-License-Identifier:</span><span class="co"> Apache-2.0</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">// NAV layer on hold, KC_QUES on tap.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Define named constants for our customized tap-hold keys.</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define NAV_QUES     LT(NAV, KC_0)</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">// LSFT on hold, MYMACRO on tap.</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SFT_MYMACRO  LSFT_T(KC_1)</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Use `NAV_QUES` and `SFT_MYMACRO` in your layout...</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a> <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>   <span class="cf">case</span> NAV_QUES<span class="op">:</span>  <span class="co">// NAV layer on hold, KC_QUES on tap.</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>     <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count<span class="op">)</span> <span class="op">{</span>  <span class="co">// On tap.</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>       <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  <span class="co">// On press.</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>         tap_code16<span class="op">(</span>KC_QUES<span class="op">);</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>       <span class="op">}</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>       <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>     <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>   <span class="cf">case</span> SFT_MYMACRO<span class="op">:</span>  LSFT on hold<span class="op">,</span> MYMACRO on tap<span class="op">.</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>     <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count<span class="op">)</span> <span class="op">{</span>  <span class="co">// On tap.</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>       <span class="co">// Your macro here...</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>       <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>         SEND_STRING<span class="op">(</span><span class="st">&quot;keyboards!&quot;</span><span class="op">);</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>       <span class="op">}</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>       <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>     <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>   <span class="co">// Other macros...</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a> <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SFT_MYMACRO  LSFT_T(KC_1)</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">// Use `NAV_QUES` and `SFT_MYMACRO` in your layout...</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a> <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>   <span class="cf">case</span> NAV_QUES<span class="op">:</span>  <span class="co">// NAV layer on hold, KC_QUES on tap.</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>     <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count<span class="op">)</span> <span class="op">{</span>  <span class="co">// On tap.</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>       <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  <span class="co">// On press.</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>         tap_code16<span class="op">(</span>KC_QUES<span class="op">);</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>       <span class="op">}</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>       <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>     <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>   <span class="cf">case</span> SFT_MYMACRO<span class="op">:</span>  <span class="co">// LSFT on hold, MYMACRO on tap.</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>     <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count<span class="op">)</span> <span class="op">{</span>  <span class="co">// On tap.</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>       <span class="co">// Your macro here...</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>       <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>         SEND_STRING<span class="op">(</span><span class="st">&quot;keyboards!&quot;</span><span class="op">);</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>       <span class="op">}</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>       <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>     <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>   <span class="co">// Other macros...</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a> <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Similarly, attempting a one-shot mod-tap as
 “<code>MT(OSM(mod), kc)</code>” is unsupported, but can instead be done
 by <a
