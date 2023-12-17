@@ -4,8 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-07 (updated 2022-05-28)" />
-  <title>QMK triggers: reacting to interesting events</title>
+  <meta name="author" content="Pascal Getreuer, 2022-05-07 (updated 2023-12-17)" />
+  <title>QMK macros 2: triggers, reacting to interesting events</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -92,8 +92,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="content">
 <div id="header">
-<h1 class="title">QMK triggers: reacting to interesting events</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-07 (updated 2022-05-28)</h2>
+<h1 class="title">QMK macros 2: triggers, reacting to interesting
+events</h1>
+<h2 class="author">Pascal Getreuer, 2022-05-07 (updated 2023-12-17)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -118,6 +119,15 @@ milliseconds</a></li>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
 <h2 id="overview">Overview</h2>
+<p>This post is second in a series on interesting effects in QMK:</p>
+<ol type="1">
+<li><a href="../macros/index.html">QMK macros 1: intro and assortment of
+practical examples</a> <strong>← start here</strong></li>
+<li><a href="../triggers/index.html">QMK macros 2: triggers, reacting to
+interesting events</a> ← this post</li>
+<li><a href="../macros3/index.html">QMK macros 3: advanced
+effects</a></li>
+</ol>
 <p>We will discuss how to implement different kinds of triggers for an
 action in QMK. By “triggers,” I mean reacting to events like that a
 button was double tapped or a layer became active. I assume here you are
@@ -158,7 +168,9 @@ keymap.c:</p>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Change <code>B0</code> to the pin for the LED to use. The above
 assumes setting the pin high turns the LED on—if that’s flipped, negate
-the logic on the second arg.</p>
+the logic on the second arg. See <a
+href="../macros3/index.html#blinking-leds">Blinking LEDs</a> for an
+elaborated example of LED layer indicators.</p>
 <p>Note that <code>layer_state_set_user()</code> is called on every
 layer state change. To react only when entering or exiting a specific
 <code>ADJUST</code> layer, use a pattern like this:</p>
@@ -613,11 +625,16 @@ flavor of timers with the APIs <code>timer_read32()</code>,
 <code>timer_elapsed32()</code>, <code>timer_expired32()</code> (<a
 href="https://github.com/qmk/qmk_firmware/blob/master/platforms/timer.h">code
 link</a>).</p>
+<p>See <a href="../macros3/index.html#timing-effects">this page</a> for
+more examples of timing effects.</p>
 <h2 id="closing-thoughts">Closing thoughts</h2>
 <p>There are a variety of ways to trigger an action in QMK, enabling a
 range of interesting effects. I’m excited in particular about actions
 based on previously typed keys. Knowing what <em>word</em> was just
 typed, not just the last key, opens new possibilities.</p>
+<p>For yet more macros, check out the next post in this series, <a
+href="../macros3/index.html">QMK macros 3: advanced effects</a>, on
+timing effects, random emojis, and more.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 

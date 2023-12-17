@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-09-17)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-12-17)" />
   <title>Designing a Symbol Layer</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -90,7 +90,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Designing a Symbol Layer</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-09-17)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-12-17)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -103,6 +103,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><a href="#a-reasonable-default">A reasonable default</a></li>
 <li><a href="#extend2">Extend2</a></li>
+<li><a href="#seniply">Seniply</a></li>
 <li><a href="#sunakus-symbol-layer">Sunaku’s symbol layer</a></li>
 <li><a href="#layer-optimized-for-elixir-code">Layer optimized for
 Elixir code</a></li>
@@ -127,10 +128,11 @@ boards.</p>
 <figcaption aria-hidden="true">A symbol layer.</figcaption>
 </figure>
 <p>A lot of effort has gone into optimizing the layout of the alpha
-keys—Dvorak, Colemak, MTGAP, BEAKL, RSTHD, to name a few. Yet I found
-relatively little written about how to design a symbol layer. To do
-something about that, this page discusses some design principles and
-observations about symbol layers.</p>
+keys—Dvorak, Colemak, MTGAP, BEAKL, RSTHD, to name a few (see <a
+href="../alt-layouts/index.html">A guide to alt keyboard layouts</a>).
+Yet I found relatively little written about how to design a symbol
+layer. To do something about that, this page discusses some design
+principles and observations about symbol layers.</p>
 <h2 id="design-principles">Design principles</h2>
 <p>Symbols are not like alpha characters: they occur less often, and
 they tend to occur in isolation or in short bigrams (in C code, things
@@ -202,6 +204,15 @@ navigation keys, and hotkeys.</p>
 <img src="extend2.png" alt="Extend2 layer." />
 <figcaption aria-hidden="true">Extend2 layer.</figcaption>
 </figure>
+<h3 id="seniply">Seniply</h3>
+<p>SteveP’s <a href="https://stevep99.github.io/seniply/">Seniply</a> is
+a 34-key keymap that packs a lot of symbols in one layer, in addition to
+mods on the left-hand home row:</p>
+<figure>
+<img src="seniply.png" alt="Seniply symbol layer." />
+<figcaption aria-hidden="true">Seniply symbol layer.</figcaption>
+</figure>
+<p>(index fingers rest on <kbd>Ctrl</kbd> and <kbd>(</kbd>)</p>
 <h3 id="sunakus-symbol-layer">Sunaku’s symbol layer</h3>
 <p>Sunaku described this as “the crown jewel of my keyboard’s
 configuration,” resulting from “several hundreds of layout iterations

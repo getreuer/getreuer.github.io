@@ -4,8 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-11-30)" />
-  <title>QMK: Macro buttons</title>
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-12-17)" />
+  <title>QMK macros 1: intro and assortment of practical examples</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -89,8 +89,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="content">
 <div id="header">
-<h1 class="title">QMK: Macro buttons</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-11-30)</h2>
+<h1 class="title">QMK macros 1: intro and assortment of practical
+examples</h1>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-12-17)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -127,7 +128,7 @@ selection</a></li>
 <ul>
 <li><a href="#next-sentence-macro">Next sentence macro</a></li>
 <li><a href="#multi-codepoint-emoji">Multi-codepoint emoji</a></li>
-<li><a href="#triggers">Triggers</a></li>
+<li><a href="#more-macros">More macros</a></li>
 </ul></li>
 </ul>
 </div>
@@ -143,6 +144,15 @@ numbers.</strong> Otherwise if someone has physical access to your
 keyboard, they can access this info.</p>
 </div>
 <h2 id="overview">Overview</h2>
+<p>This post is first in a series on interesting effects in QMK:</p>
+<ol type="1">
+<li><a href="../macros/index.html">QMK macros 1: intro and assortment of
+practical examples</a> ← this post</li>
+<li><a href="../triggers/index.html">QMK macros 2: triggers, reacting to
+interesting events</a></li>
+<li><a href="../macros3/index.html">QMK macros 3: advanced
+effects</a></li>
+</ol>
 <p>One of QMK’s most empowering features is the ability to define macro
 buttons: a button, that when pressed, types a sequence of keys. This
 page is an assortment of practical QMK macros, collected from real
@@ -539,10 +549,15 @@ implement it as a macro. The following types a US flag emoji 🇺🇸
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// send_unicode_string(&quot;\xf0\x9f\x87\xba\xf0\x9f\x87\xb8&quot;);</span></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
-<h3 id="triggers">Triggers</h3>
-<p>See my following <a href="../triggers/index.html">post about
-triggers</a>: react to layer changes, tap vs. long press, previously
-typed keys, and more.</p>
+<h3 id="more-macros">More macros</h3>
+<p>See the following posts in this series:</p>
+<ul>
+<li><p><a href="../triggers/index.html">QMK macros 2: triggers, reacting
+to interesting events</a>: react to layer changes, tap vs. long press,
+previously typed keys.</p></li>
+<li><p><a href="../macros3/index.html">QMK macros 3: advanced
+effects</a>: timing effects, random emojis, and more.</p></li>
+</ul>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 

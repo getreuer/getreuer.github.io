@@ -1,0 +1,760 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer, 2023-12-17" />
+  <title>QMK macros 3: advanced effects</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<script type="text/javascript" src="../../../site.js" ></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
+  type="text/javascript"></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">QMK macros 3: advanced effects</h1>
+<h2 class="author">Pascal Getreuer, 2023-12-17</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#overview">Overview</a>
+<ul>
+<li><a href="#license">License</a></li>
+</ul></li>
+<li><a href="#shift-backspace-delete">Shift + Backspace =
+Delete</a></li>
+<li><a href="#prefixing-layer">Prefixing layer</a></li>
+<li><a href="#random-emojis">Random emojis</a></li>
+<li><a href="#quopostrokey">Quopostrokey</a></li>
+<li><a href="#timing-effects">Timing effects</a>
+<ul>
+<li><a href="#exponential-key-repeating">Exponential key
+repeating</a></li>
+<li><a href="#repeating-a-pattern">Repeating a pattern</a></li>
+<li><a href="#a-mouse-jiggler">A mouse jiggler</a></li>
+<li><a href="#blinking-leds">Blinking LEDs</a></li>
+</ul></li>
+<li><a href="#other-cool-things">Other cool things</a></li>
+</ul>
+</div>
+<p><a href="../index.html">← More about keyboards</a></p>
+<h2 id="overview">Overview</h2>
+<p>This post is third in a series on interesting effects in QMK:</p>
+<ol type="1">
+<li><a href="../macros/index.html">QMK macros 1: intro and assortment of
+practical examples</a> <strong>← start here</strong></li>
+<li><a href="../triggers/index.html">QMK macros 2: triggers, reacting to
+interesting events</a></li>
+<li><a href="./index.html">QMK macros 3: advanced effects</a> ← this
+post</li>
+</ol>
+<p>A fantastic feature of QMK is that users have the freedom to insert
+their own C code to define custom keymap behaviors. This enables an
+immense range of possibilities.</p>
+<p>The examples in this post are more involved in use of QMK APIs and
+the C language, so prior familiarity with these is helpful. I’ve tried
+to present code snippets in such a way that it’s hopefully yet doable to
+incorporate them into your keymap without having to sift through all the
+details. If you have trouble, please read <a
+href="../macros/index.html">QMK macros 1</a> first. You may also find
+helpful info in <a
+href="../faqs/index.html#what-is-this-weird-c-syntax-qmk">What is this
+weird C syntax</a>.</p>
+<h3 id="license">License</h3>
+<p>Code snippets in this post are shared under Apache 2 license.</p>
+<div style="font-size:85%">
+<blockquote>
+<p>Copyright 2023 Google LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”); you
+may not use this file except in compliance with the License. You may
+obtain a copy of the License at</p>
+<p><a href="https://www.apache.org/licenses/LICENSE-2.0"
+class="uri">https://www.apache.org/licenses/LICENSE-2.0</a></p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+</blockquote>
+</div>
+<h2 id="shift-backspace-delete">Shift + Backspace = Delete</h2>
+<p>This macro eliminates the need for a dedicated key for (forward)
+Delete. The code below implements the following behavior:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Keys</th>
+<th>Sends</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><kbd>Backspace</kbd></td>
+<td>Backspace as usual</td>
+</tr>
+<tr class="even">
+<td><kbd>Shift</kbd> + <kbd>Backspace</kbd></td>
+<td>Delete</td>
+</tr>
+<tr class="odd">
+<td>Both shift keys + <kbd>Backspace</kbd></td>
+<td>Shift + Delete</td>
+</tr>
+</tbody>
+</table>
+<p>Being able to send Shift + Delete is handy since this is a hotkey in
+some programs. Thanks to <span class="citation"
+data-cites="precondition">@precondition</span> for this idea.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_BSPC<span class="op">:</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">static</span> <span class="dt">uint16_t</span> registered_key <span class="op">=</span> KC_NO<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  <span class="co">// On key press.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">const</span> <span class="dt">uint8_t</span> mods <span class="op">=</span> get_mods<span class="op">();</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">uint8_t</span> shift_mods <span class="op">=</span> <span class="op">(</span>mods <span class="op">|</span> get_oneshot_mods<span class="op">())</span> <span class="op">&amp;</span> MOD_MASK_SHIFT<span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="pp">#else</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">uint8_t</span> shift_mods <span class="op">=</span> mods <span class="op">&amp;</span> MOD_MASK_SHIFT<span class="op">;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>shift_mods<span class="op">)</span> <span class="op">{</span>  <span class="co">// At least one shift key is held.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>          registered_key <span class="op">=</span> KC_DEL<span class="op">;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>          <span class="co">// If one shift is held, clear it from the mods. But if both</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>          <span class="co">// shifts are held, leave as is to send Shift + Del.</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> <span class="op">(</span>shift_mods <span class="op">!=</span> MOD_MASK_SHIFT<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef NO_ACTION_ONESHOT</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            del_oneshot_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_ONESHOT</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            unregister_mods<span class="op">(</span>MOD_MASK_SHIFT<span class="op">);</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>          registered_key <span class="op">=</span> KC_BSPC<span class="op">;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        register_code<span class="op">(</span>registered_key<span class="op">);</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        set_mods<span class="op">(</span>mods<span class="op">);</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>  <span class="co">// On key release.</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        unregister_code<span class="op">(</span>registered_key<span class="op">);</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="prefixing-layer">Prefixing layer</h2>
+<p>Some programs, like tmux and screen, make extensive use of a
+<em>prefix key</em> to indicate command sequences, such as “Ctrl+a, n”
+to switch to the next window. Such commands are easily cumbersome,
+especially if repeated, e.g. “Ctrl+a, n, Ctrl+a, n, Ctrl+a, n” to
+navigate across several windows.</p>
+<p>The following implements a special prefixing layer such that, while
+active, a prefix key is automatically sent before every key press:</p>
+<ol type="1">
+<li><p>Create a layer <code>PREFIX_C_A</code> of all transparent
+keys.</p></li>
+<li><p>Define (or add to) <code>process_record_user()</code> as</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>IS_LAYER_ON<span class="op">(</span>PREFIX_C_A<span class="op">)</span> <span class="op">&amp;&amp;</span> record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    tap_code16<span class="op">(</span>C<span class="op">(</span>KC_A<span class="op">));</span>  <span class="co">// Tap Ctrl+A.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other macros...</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
+</ol>
+<p>Finally, a method to activate the prefixing layer is needed. For
+instance, replace the Tab key with the layer-tap
+<code>LT(PREFIX_C_A, KC_TAB)</code> so that the layer is activated while
+Tab is held. Then, a sequence like “Ctrl+a, n, Ctrl+a, n, Ctrl+a, n” is
+expediently performed as</p>
+<ol type="1">
+<li>hold <kbd>Tab</kbd> down,</li>
+<li>tap <kbd>N</kbd> three times,</li>
+<li>release <kbd>Tab</kbd>.</li>
+</ol>
+<h2 id="random-emojis">Random emojis</h2>
+<p>Enable a Unicode input method for this macro, either Basic Unicode,
+Unicode Map, or UCIS; see <a
+href="https://docs.qmk.fm/#/feature_unicode">Unicode Support</a>. See
+also <a href="../non-english/index.html">Typing non-English
+letters</a>.</p>
+<p>When pseudorandom values are needed, you could use the C standard
+library <code>rand()</code> to generate pseudorandom values. However,
+this function is a bit expensive. On my set up, using
+<code>rand()</code> adds about 400 bytes to the firmware size.</p>
+<p>Here is a cheap substitute that costs about 50 bytes. It is a 16-bit
+<a
+href="https://en.wikipedia.org/wiki/Lehmer_random_number_generator">multiplicative
+congruential generator</a>, a dirt simple method whose output yet
+appears random on casual inspection. Of course, don’t use this for
+generating passwords or other cryptographic purposes. The magic number
+<code>36563</code> could be reasonably replaced with other any number
+having <a href="https://en.wikipedia.org/wiki/Multiplicative_order">high
+multiplicative order</a> modulo 2<sup>16</sup>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Generates a pseudorandom value in 0-255.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">uint8_t</span> simple_rand<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">uint16_t</span> random <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  random <span class="op">*=</span> UINT16_C<span class="op">(</span><span class="dv">36563</span><span class="op">);</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">(</span><span class="dt">uint8_t</span><span class="op">)(</span>random <span class="op">&gt;&gt;</span> <span class="dv">8</span><span class="op">);</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The first few calls of this function return 142, 193, 17, 38, 206.
+The pseudorandom sequence repeats with a period of 2<sup>14</sup> =
+16384. To sample a number <code>x</code> in the closed range [0,
+<code>max</code>], use
+<code>x = ((max + 1) * simple_rand()) &gt;&gt; 8</code>.</p>
+<p>The following uses <code>simple_rand()</code> to pseudorandomly pick
+an emoji from an array and prints it, plus some logic to avoid picking
+the same emoji twice in a row. Define a custom keycode
+<code>HAPPY</code> and use it in your keymap (for further explanation,
+see <a href="../macros/index.html">QMK macros 1</a>). Then in
+<code>process_record_user()</code>, add</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> HAPPY<span class="op">:</span>  <span class="co">// Types a happy random emoji.</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">static</span> <span class="dt">const</span> <span class="dt">char</span><span class="op">*</span> emojis<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="st">&quot;🤩&quot;</span><span class="op">,</span> <span class="st">&quot;🌞&quot;</span><span class="op">,</span> <span class="st">&quot;👾&quot;</span><span class="op">,</span> <span class="st">&quot;👍&quot;</span><span class="op">,</span> <span class="st">&quot;😁&quot;</span><span class="op">};</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">const</span> <span class="dt">int</span> NUM_EMOJIS <span class="op">=</span> <span class="kw">sizeof</span><span class="op">(</span>emojis<span class="op">)</span> <span class="op">/</span> <span class="kw">sizeof</span><span class="op">(*</span>emojis<span class="op">);</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Pseudorandomly pick an index between 0 and NUM_EMOJIS - 2.</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">uint8_t</span> index <span class="op">=</span> <span class="op">((</span>NUM_EMOJIS <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> simple_rand<span class="op">())</span> <span class="op">&gt;&gt;</span> <span class="dv">8</span><span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Don&#39;t pick the same emoji twice in a row.</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">static</span> <span class="dt">uint8_t</span> last_index <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>index <span class="op">&gt;=</span> last_index<span class="op">)</span> <span class="op">{</span> <span class="op">++</span>index<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      last_index <span class="op">=</span> index<span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Produce the emoji.</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      send_unicode_string<span class="op">(</span>emojis<span class="op">[</span>index<span class="op">]);</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other macros...</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>See also this <a
+href="macros/index.html#multi-codepoint-emoji">multi-codepoint emoji
+example</a>.</p>
+<h2 id="quopostrokey">Quopostrokey</h2>
+<p>The “Quopostrokey” is a key whose function depends on the previous
+key. If the previous key typed was a letter, then the Quopostrokey types
+a single quote <code>'</code> as usual. Otherwise, it produces a pair of
+double quotes <code>""</code> and taps <kbd>←</kbd> to put the cursor in
+between. Thanks to Reddit user u/Keybug for this idea.</p>
+<p>Define a custom keycode <code>QUOP</code> and add the following in
+keymap.c:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> process_quopostrokey<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">bool</span> within_word <span class="op">=</span> false<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>keycode <span class="op">==</span> QUOP<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>within_word<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        tap_code<span class="op">(</span>KC_QUOT<span class="op">);</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;</span><span class="sc">\&quot;\&quot;</span><span class="st">&quot;</span> SS_TAP<span class="op">(</span>X_LEFT<span class="op">));</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span>  <span class="co">// Unpack tapping keycode for tap-hold keys.</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef NO_ACTION_TAPPING</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QK_MOD_TAP <span class="op">...</span> QK_MOD_TAP_MAX<span class="op">:</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      keycode <span class="op">=</span> QK_MOD_TAP_GET_TAP_KEYCODE<span class="op">(</span>keycode<span class="op">);</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef NO_ACTION_LAYER</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QK_LAYER_TAP <span class="op">...</span> QK_LAYER_TAP_MAX<span class="op">:</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> true<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>      keycode <span class="op">=</span> QK_LAYER_TAP_GET_TAP_KEYCODE<span class="op">(</span>keycode<span class="op">);</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_LAYER</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// NO_ACTION_TAPPING</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Determine whether the key is a letter.</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>      within_word <span class="op">=</span> true<span class="op">;</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>      within_word <span class="op">=</span> false<span class="op">;</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_quopostrokey<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>See also triggering effects <a
+href="../triggers/index.html#based-on-previously-typed-keys">based on
+previously typed keys</a>.</p>
+<h2 id="timing-effects">Timing effects</h2>
+<p>Enable <a
+href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">Deferred
+Execution</a> for macros in this section by adding in rules.mk:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">DEFERRED_EXEC_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
+<p>These macros could be implemented without Deferred Execution by
+instead using <a
+href="https://docs.qmk.fm/#/ref_functions?id=software-timers">software
+timers</a> and the <a
+href="https://docs.qmk.fm/#/custom_quantum_functions?id=matrix-scanning-code">matrix_scan_user
+function</a>. See <a
+href="../triggers/index.html#when-idle-for-x-milliseconds">this
+example</a> for comparison of these two approaches for implementing
+timing effects.</p>
+<h3 id="exponential-key-repeating">Exponential key repeating</h3>
+<p>Conventionally, key repeating produces repeats of the held key at a
+fixed rate. The following snippet customizes the Backspace key to repeat
+exponentially. The longer it is held, the faster it deletes, up to a
+limit. Thanks to Reddit user u/BubkisBobby for this idea.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> KC_BSPC<span class="op">:</span> <span class="op">{</span>  <span class="co">// Backspace with exponential repeating.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Initial delay before the first repeat.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">const</span> <span class="dt">uint8_t</span> INIT_DELAY_MS <span class="op">=</span> <span class="dv">250</span><span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// This array customizes the rate at which the Backspace key</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// repeats. The delay after the ith repeat is REP_DELAY_MS[i].</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Values must be between 1 and 255.</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">const</span> <span class="dt">uint8_t</span> REP_DELAY_MS<span class="op">[]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="dv">99</span><span class="op">,</span> <span class="dv">79</span><span class="op">,</span> <span class="dv">65</span><span class="op">,</span> <span class="dv">57</span><span class="op">,</span> <span class="dv">49</span><span class="op">,</span> <span class="dv">43</span><span class="op">,</span> <span class="dv">40</span><span class="op">,</span> <span class="dv">35</span><span class="op">,</span> <span class="dv">33</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">28</span><span class="op">,</span> <span class="dv">26</span><span class="op">,</span> <span class="dv">25</span><span class="op">,</span> <span class="dv">23</span><span class="op">,</span> <span class="dv">22</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="dv">20</span><span class="op">,</span> <span class="dv">19</span><span class="op">,</span> <span class="dv">18</span><span class="op">,</span> <span class="dv">17</span><span class="op">,</span> <span class="dv">16</span><span class="op">,</span> <span class="dv">15</span><span class="op">,</span> <span class="dv">15</span><span class="op">,</span> <span class="dv">14</span><span class="op">,</span> <span class="dv">14</span><span class="op">,</span> <span class="dv">13</span><span class="op">,</span> <span class="dv">13</span><span class="op">,</span> <span class="dv">12</span><span class="op">,</span> <span class="dv">12</span><span class="op">,</span> <span class="dv">11</span><span class="op">,</span> <span class="dv">11</span><span class="op">,</span> <span class="dv">10</span><span class="op">};</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> deferred_token token <span class="op">=</span> INVALID_DEFERRED_TOKEN<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">uint8_t</span> rep_count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  <span class="co">// Backspace released: stop repeating.</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    cancel_deferred_exec<span class="op">(</span>token<span class="op">);</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    token <span class="op">=</span> INVALID_DEFERRED_TOKEN<span class="op">;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(!</span>token<span class="op">)</span> <span class="op">{</span>  <span class="co">// Backspace pressed: start repeating.</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    tap_code<span class="op">(</span>KC_BSPC<span class="op">);</span>  <span class="co">// Initial tap of Backspace key.</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    rep_count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint32_t</span> bspc_callback<span class="op">(</span><span class="dt">uint32_t</span> trigger_time<span class="op">,</span> <span class="dt">void</span><span class="op">*</span> cb_arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>      tap_code<span class="op">(</span>KC_BSPC<span class="op">);</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>rep_count <span class="op">&lt;</span> <span class="kw">sizeof</span><span class="op">(</span>REP_DELAY_MS<span class="op">))</span> <span class="op">{</span> <span class="op">++</span>rep_count<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> pgm_read_byte<span class="op">(</span>REP_DELAY_MS <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> rep_count<span class="op">);</span> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    token <span class="op">=</span> defer_exec<span class="op">(</span>INIT_DELAY_MS<span class="op">,</span> bspc_callback<span class="op">,</span> NULL<span class="op">);</span> </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip normal handling.</span></span></code></pre></div>
+<p>How it works:</p>
+<ol type="1">
+<li><p>On press, <code>KC_BSPC</code> is tapped and
+<code>bspc_callback()</code> is scheduled through deferred execution to
+run after <code>INIT_DELAY_MS</code>.</p></li>
+<li><p>When <code>bspc_callback()</code> runs, it taps
+<code>KC_BSPC</code> and schedules to run again with progressively
+shorter delays. These delays are defined in the array
+<code>REP_DELAY_MS</code>. Once 10 ms is reached, repetition continues
+at that period. The variable <code>rep_count</code> keeps track where it
+is in this sequence.</p></li>
+<li><p>When Backspace is released, the callback is canceled and
+repeating stops.</p></li>
+</ol>
+<p>The “acceleration curve” of the repeating behavior can be tuned by
+changing the <code>REP_DELAY_MS</code> array. Its elements are values
+between 1 and 255, with smaller values for faster repeating.</p>
+<p><strong>Technical note:</strong> the code above defines
+<code>bspc_callback()</code> within <code>process_record_user()</code>
+as a <a
+href="https://gcc.gnu.org/onlinedocs/gcc/Nested-Functions.html">nested
+function</a>, a non-standard GNU extension. This is convenient to write
+the callback next to the <code>defer_exec()</code> line that schedules
+it. If you prefer instead to stick with standard C, move the definitions
+of the callback and <code>rep_count</code> above
+<code>process_record_user()</code> at global scope.</p>
+<h3 id="repeating-a-pattern">Repeating a pattern</h3>
+<p>Here is a macro which types an ongoing pattern of
+“<code>~=~=~=~=~=~</code>…” when held:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> WAVE<span class="op">:</span> <span class="op">{</span>  <span class="co">// Types ~=~=~=~=~=~...</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> deferred_token token <span class="op">=</span> INVALID_DEFERRED_TOKEN<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">static</span> <span class="dt">uint8_t</span> phase <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  <span class="co">// On release.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    cancel_deferred_exec<span class="op">(</span>token<span class="op">);</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    token <span class="op">=</span> INVALID_DEFERRED_TOKEN<span class="op">;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Ensure the pattern always ends on a &quot;~&quot;.</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">((</span>phase <span class="op">&amp;</span> <span class="dv">1</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> tap_code16<span class="op">(</span>KC_TILD<span class="op">);</span> <span class="op">}</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    phase <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(!</span>token<span class="op">)</span> <span class="op">{</span>  <span class="co">// On press.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint32_t</span> wave_callback<span class="op">(</span><span class="dt">uint32_t</span> trigger_time<span class="op">,</span> <span class="dt">void</span><span class="op">*</span> cb_arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      tap_code16<span class="op">((++</span>phase <span class="op">&amp;</span> <span class="dv">1</span><span class="op">)</span> <span class="op">?</span> KC_TILD <span class="op">:</span> KC_EQL<span class="op">);</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">16</span><span class="op">;</span>  <span class="co">// Call the callback every 16 ms.</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    token <span class="op">=</span> defer_exec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> wave_callback<span class="op">,</span> NULL<span class="op">);</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<p>When <code>WAVE</code> is pressed, <code>wave_callback()</code> is
+scheduled through deferred execution to run every 16 ms. The callback
+alternates between typing <code>~</code> and <code>=</code> based on the
+<code>phase</code> variable. When <code>WAVE</code> is released, the
+deferred execution is canceled to end the pattern.</p>
+<p>Other patterns can be made similarly through tweaking the logic in
+<code>wave_callback()</code>.</p>
+<h3 id="a-mouse-jiggler">A mouse jiggler</h3>
+<p>This section implements a mouse jiggler. When a <code>JIGGLE</code>
+key is pressed, the jiggler spins the mouse in a circle until another
+key is pressed.</p>
+<figure>
+<img src="jiggle.gif" alt="Active mouse jiggler." />
+<figcaption aria-hidden="true">Active mouse jiggler.</figcaption>
+</figure>
+<p>Additionally enable Mouse Keys for this macro by adding in
+rules.mk:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">MOUSEKEY_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">DEFERRED_EXEC_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
+<p>In keymap.c, define a custom keycode <code>JIGGLE</code> and use it
+in your keymap. Then, define or add to your
+<code>process_record_user()</code> function as follows:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> deferred_token token <span class="op">=</span> INVALID_DEFERRED_TOKEN<span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> report_mouse_t report <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">};</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>token<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="co">// If jiggler is currently running, stop when any key is pressed.</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      cancel_deferred_exec<span class="op">(</span>token<span class="op">);</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      token <span class="op">=</span> INVALID_DEFERRED_TOKEN<span class="op">;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>      report <span class="op">=</span> <span class="op">(</span>report_mouse_t<span class="op">){};</span>  <span class="co">// Clear the mouse.</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      host_mouse_send<span class="op">(&amp;</span>report<span class="op">);</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>keycode <span class="op">==</span> JIGGLE<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">uint32_t</span> jiggler_callback<span class="op">(</span><span class="dt">uint32_t</span> trigger_time<span class="op">,</span> <span class="dt">void</span><span class="op">*</span> cb_arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Deltas to move in a circle of radius 20 pixels over 32 frames.</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">static</span> <span class="dt">const</span> <span class="dt">int8_t</span> deltas<span class="op">[</span><span class="dv">32</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>            <span class="dv">0</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">3</span><span class="op">,</span> <span class="op">-</span><span class="dv">3</span><span class="op">,</span> <span class="op">-</span><span class="dv">4</span><span class="op">,</span> <span class="op">-</span><span class="dv">4</span><span class="op">,</span> <span class="op">-</span><span class="dv">4</span><span class="op">,</span> <span class="op">-</span><span class="dv">4</span><span class="op">,</span> <span class="op">-</span><span class="dv">3</span><span class="op">,</span> <span class="op">-</span><span class="dv">3</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>            <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">};</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">static</span> <span class="dt">uint8_t</span> phase <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Get x delta from table and y delta by rotating a quarter cycle.</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        report<span class="op">.</span>x <span class="op">=</span> deltas<span class="op">[</span>phase<span class="op">];</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        report<span class="op">.</span>y <span class="op">=</span> deltas<span class="op">[(</span>phase <span class="op">+</span> <span class="dv">8</span><span class="op">)</span> <span class="op">&amp;</span> <span class="dv">31</span><span class="op">];</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        phase <span class="op">=</span> <span class="op">(</span>phase <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">&amp;</span> <span class="dv">31</span><span class="op">;</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        host_mouse_send<span class="op">(&amp;</span>report<span class="op">);</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">16</span><span class="op">;</span>  <span class="co">// Call the callback every 16 ms.</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>      token <span class="op">=</span> defer_exec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> jiggler_callback<span class="op">,</span> NULL<span class="op">);</span>  <span class="co">// Schedule callback.</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other macros...</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The <code>jiggler_callback()</code> function executes every 16 ms,
+fast enough to animate the mouse smoothly at 60 frames per second, using
+the <a
+href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">deferred
+execution API</a>. While we could use <a
+href="https://docs.qmk.fm/#/feature_mouse_keys">QMK’s mouse keys</a> to
+move the mouse, the way it does so is complicated and configuration
+dependent. Instead, we construct and send mouse reports directly.</p>
+<p>The <code>deltas</code> table stores a sequence of x deltas to move
+the mouse in a circle. We get the y deltas by rotating the table by a
+quarter cycle (leveraging trigonometric identity <span
+class="math inline">\(\cos(x) = \sin(x + \pi/2)\)</span>). Using the
+<code>phase</code> variable, the callback iterates through this table,
+moving in a circle of radius 20 pixels at 32 frames per cycle.</p>
+<p>The table was generated in Python with:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>radius <span class="op">=</span> <span class="dv">20</span>  <span class="co"># Circle radius in pixels.</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">32</span>       <span class="co"># Frames per cycle.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> radius <span class="op">*</span> np.cos((<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">/</span> n) <span class="op">*</span> np.arange(n <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>deltas <span class="op">=</span> np.<span class="bu">round</span>(np.diff(x))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(deltas.astype(<span class="bu">int</span>))</span></code></pre></div>
+<h3 id="blinking-leds">Blinking LEDs</h3>
+<p>Some boards have LEDs, which can be turned on and off by setting a
+pin high or low with <code>writePin(pin, state)</code>, see also <a
+href="https://docs.qmk.fm/#/feature_led_indicators">LED Indicators</a>.
+Besides simply turning the LED on or off, an interesting possibility is
+to blink the LEDs. Blinking makes important states more noticeable and
+enables communication of more information with each LED.</p>
+<h4 id="setting-up-blinking-leds">Setting up blinking LEDs</h4>
+<p>Add the following in keymap.c:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Number of LEDs on the keyboard.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define NUM_LEDS  3</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Period for LED_BLINK_FAST blinking. Smaller value implies faster.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LED_BLINK_FAST_PERIOD_MS  300</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Possible LED states.</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="op">{</span> LED_OFF <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> LED_ON <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> LED_BLINK_SLOW <span class="op">=</span> <span class="dv">2</span><span class="op">,</span> LED_BLINK_FAST <span class="op">=</span> <span class="dv">3</span> <span class="op">};</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">uint8_t</span> led_blink_state<span class="op">[</span>NUM_LEDS<span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">};</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> keyboard_post_init_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">uint32_t</span> led_blink_callback<span class="op">(</span><span class="dt">uint32_t</span> trigger_time<span class="op">,</span> <span class="dt">void</span><span class="op">*</span> cb_arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> <span class="dt">const</span> <span class="dt">uint8_t</span> pattern<span class="op">[</span><span class="dv">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="bn">0x00</span><span class="op">,</span> <span class="bn">0xff</span><span class="op">,</span> <span class="bn">0x0f</span><span class="op">,</span> <span class="bn">0xaa</span><span class="op">};</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> <span class="dt">uint8_t</span> phase <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    phase <span class="op">=</span> <span class="op">(</span>phase <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> <span class="dv">8</span><span class="op">;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint8_t</span> bit <span class="op">=</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> phase<span class="op">;</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Adjust according to keyboard. See notes below.</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    writePin<span class="op">(</span>B0<span class="op">,</span> <span class="op">(</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">0</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    writePin<span class="op">(</span>B1<span class="op">,</span> <span class="op">(</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">1</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    writePin<span class="op">(</span>B2<span class="op">,</span> <span class="op">(</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">2</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> LED_BLINK_FAST_PERIOD_MS <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  defer_exec<span class="op">(</span><span class="dv">1</span><span class="op">,</span> led_blink_callback<span class="op">,</span> NULL<span class="op">);</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This defines a callback at startup running every 150 ms to animate
+the LEDs. On each call, <code>phase</code> is incremented. The value of
+<code>led_blink_state</code> determines which entry is read from the
+<code>pattern</code> array, and that entry is read one bit at a time to
+define the animation.</p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li><p>Define <code>NUM_LEDS</code> as the number of LEDs on the board,
+and change <code>B0</code>, <code>B1</code>, <code>B2</code> to their
+pins. The above assumes setting the pin high turns the LED on. If that’s
+backwards, negate the second arg in <code>writePin()</code> like</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>writePin<span class="op">(</span>B0<span class="op">,</span> <span class="op">(</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">0</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">);</span></span></code></pre></div></li>
+<li><p><strong>For the Ergodox EZ keyboard</strong>: Replace
+<code>writePin</code> with
+<code>ergodox_right_led_on(</code><em>n</em><code>)</code> and
+<code>ergodox_right_led_off(</code><em>n</em><code>)</code>, where
+<em>n</em> = 1, 2, 3 is the LED index:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Set the Ergodox EZ&#39;s LEDs.</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">uint8_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">((</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span>i<span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    ergodox_right_led_on<span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    ergodox_right_led_off<span class="op">(</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
+<li><p><strong>For the Moonlander keyboard</strong>: Make the following
+changes. Change <code>NUM_LEDS</code> to 6:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define NUM_LEDS  6</span></span></code></pre></div>
+<p>Add the following at the top of
+<code>keyboard_post_init_user()</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">// I want to control the Moonlander&#39;s LEDs myself.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>keyboard_config<span class="op">.</span>led_level <span class="op">=</span> false<span class="op">;</span></span></code></pre></div>
+<p>Finally, replace <code>writePin</code> with
+<code>ML_LED_</code><em>n</em>, where <em>n</em> between 1 and 6 is the
+LED index:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Set the Moonlander&#39;s LEDs.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ML_LED_1<span class="op">((</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">0</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>ML_LED_2<span class="op">((</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">1</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>ML_LED_3<span class="op">((</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">2</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>ML_LED_4<span class="op">((</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">3</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>ML_LED_5<span class="op">((</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">4</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>ML_LED_6<span class="op">((</span>pattern<span class="op">[</span>led_blink_state<span class="op">[</span><span class="dv">5</span><span class="op">]]</span> <span class="op">&amp;</span> bit<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">);</span></span></code></pre></div></li>
+</ul>
+<h4 id="usage-to-display-keyboard-state">Usage to display keyboard
+state</h4>
+<p>With the above in place, <code>led_blink_state[i]</code> may be
+changed at any time to set the animation state of the ith LED to one
+of</p>
+<table>
+<thead>
+<tr class="header">
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>LED_OFF</code></td>
+<td>LED is off</td>
+</tr>
+<tr class="even">
+<td><code>LED_ON</code></td>
+<td>LED is on</td>
+</tr>
+<tr class="odd">
+<td><code>LED_BLINK_SLOW</code></td>
+<td>LED blinks slowly</td>
+</tr>
+<tr class="even">
+<td><code>LED_BLINK_FAST</code></td>
+<td>LED blinks quickly</td>
+</tr>
+</tbody>
+</table>
+<p>Here are examples of a couple possible use cases.</p>
+<p><strong>Layer indicator.</strong> Supposing the keyboard has layers
+<code>BASE</code>, <code>NAV</code>, <code>ADJUST</code> (and possibly
+others), the following sets the first LED to indicate the current
+highest layer:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">uint8_t</span> get_layer_indicator<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>get_highest_layer<span class="op">(</span>state<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> BASE<span class="op">:</span>   <span class="cf">return</span> LED_OFF<span class="op">;</span>         <span class="co">// LED off for BASE layer.</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> NAV<span class="op">:</span>    <span class="cf">return</span> LED_BLINK_SLOW<span class="op">;</span>  <span class="co">// Blink slowly for NAV layer.</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> ADJUST<span class="op">:</span> <span class="cf">return</span> LED_BLINK_FAST<span class="op">;</span>  <span class="co">// Blink quickly for ADJUST layer.</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span>     <span class="cf">return</span> LED_ON<span class="op">;</span>          <span class="co">// LED on for any other layer.</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  led_blink_state<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> get_layer_indicator<span class="op">();</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> state<span class="op">;</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Caps Lock / Caps Word indicator.</strong> The following sets
+the second LED to <code>LED_ON</code> when Caps Lock is on,
+<code>LED_BLINK_FAST</code> when <a
+href="https://docs.qmk.fm/#/feature_caps_word">Caps Word</a> is on, and
+<code>LED_OFF</code> otherwise.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> is_caps_lock_on <span class="op">=</span> false<span class="op">;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">void</span> update_caps_indicator<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>is_caps_lock_on<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    led_blink_state<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> LED_ON<span class="op">;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>is_caps_word_on<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    led_blink_state<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> LED_BLINK_FAST<span class="op">;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    led_blink_state<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> LED_OFF<span class="op">;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> led_update_user<span class="op">(</span>led_t led_state<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  is_caps_lock_on <span class="op">=</span> led_state<span class="op">.</span>caps_lock<span class="op">;</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  update_caps_indicator<span class="op">();</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> caps_word_set_user<span class="op">(</span><span class="dt">bool</span> active<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  update_caps_indicator<span class="op">();</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="other-cool-things">Other cool things</h2>
+<p>We’ve seen a lot of interesting QMK behaviors here and in the
+previous two posts. Looking for more? Check out the following:</p>
+<ul>
+<li><p>As macros get more elaborate, it is a good idea to encapsulate
+them as feature libraries, especially if you want to share them with
+others or contribute them to QMK. See <a
+href="../developing-qmk-features/index.html">Developing QMK
+features</a>.</p></li>
+<li><p>The configurable <a
+href="https://docs.qmk.fm/#/feature_repeat_key?id=alternate-repeating">Alternate
+Repeat Key</a> is a great way to pack more functionality in each key. I
+use this to implement the <a
+href="../alt-layouts/index.html#magic-sturdy">“magic key” in Magic
+Sturdy</a>.</p></li>
+<li><p>“Case modes” or “smart cases” is an idea of extending <a
+href="https://docs.qmk.fm/#/feature_caps_word">Caps Word</a> to
+facilitate other conventional identifier patterns like
+<code>camelCase</code>, <code>snake_case</code>,
+<code>kebab-case</code>, and <code>path/to/file</code>. Several
+implementations:</p>
+<ul>
+<li><a
+href="https://github.com/andrewjrae/kyria-keymap/tree/e3ad77dc4d48b8e6a842c9136c76c1021ab5976b#case-modes">andrewjrae’s
+Case Modes</a></li>
+<li><a
+href="https://github.com/rafaelromao/keyboards/blob/main/docs/modifiers.md#smart-case-key">rafaelromao’s
+Smart Case</a></li>
+<li><a
+href="https://github.com/Ga68/qmk_firmware/blob/my_layout/keyboards/sofle/keymaps/Ga68/caps_word.c">Ga68’s
+multi-mode Caps Word</a></li>
+</ul></li>
+<li><p>Inspired by stenotype, <a
+href="https://github.com/precondition/dactyl-manuform-keymap">precondition’s
+keymap</a> has a “steno-lite” system to type common n-grams using a
+suite of combos. Or for full-fledged stenotype, see QMK’s <a
+href="https://docs.qmk.fm/#/feature_stenography">stenography
+feature</a>.</p></li>
+<li><p>QMK’s <a href="https://docs.qmk.fm/#/feature_rawhid">Raw HID
+feature</a> can <strong>send information from the computer to the
+keyboard</strong>. It no doubt has untapped potential for useful
+effects. Imagine a keymap that adapts to the current focused window or
+the OS input method selection.</p></li>
+</ul>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
