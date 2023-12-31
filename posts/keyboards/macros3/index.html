@@ -114,6 +114,7 @@ repeating</a></li>
 <li><a href="#a-mouse-jiggler">A mouse jiggler</a></li>
 <li><a href="#blinking-leds">Blinking LEDs</a></li>
 </ul></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
 <li><a href="#other-cool-things">Other cool things</a></li>
 </ul>
 </div>
@@ -486,7 +487,7 @@ key is pressed.</p>
 </figure>
 <p>Additionally enable Mouse Keys for this macro by adding in
 rules.mk:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">MOUSEKEY_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">MOUSE_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">DEFERRED_EXEC_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
 <p>In keymap.c, define a custom keycode <code>JIGGLE</code> and use it
 in your keymap. Then, define or add to your
@@ -546,6 +547,8 @@ class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href=
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> radius <span class="op">*</span> np.cos((<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">/</span> n) <span class="op">*</span> np.arange(n <span class="op">+</span> <span class="dv">1</span>))</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>deltas <span class="op">=</span> np.<span class="bu">round</span>(np.diff(x))</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(deltas.astype(<span class="bu">int</span>))</span></code></pre></div>
+<p>See also <a href="../orbital-mouse/index.html">Orbital Mouse</a> for
+more customized control of the mouse.</p>
 <h3 id="blinking-leds">Blinking LEDs</h3>
 <p>Some boards have LEDs, which can be turned on and off by setting a
 pin high or low with <code>writePin(pin, state)</code>, see also <a
@@ -703,6 +706,11 @@ href="https://docs.qmk.fm/#/feature_caps_word">Caps Word</a> is on, and
 <span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> caps_word_set_user<span class="op">(</span><span class="dt">bool</span> active<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  update_caps_indicator<span class="op">();</span></span>
 <span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Thanks to <span class="citation"
+data-cites="precondition">@precondition</span>, <span class="citation"
+data-cites="drashna">@drashna</span> and Reddit users u/Keybug,
+u/BubkisBobby, u/Gattomarino for ideas and feedback on these macros.</p>
 <h2 id="other-cool-things">Other cool things</h2>
 <p>We’ve seen a lot of interesting QMK behaviors here and in the
 previous two posts. Looking for more? Check out the following:</p>

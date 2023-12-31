@@ -1,0 +1,534 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer, 2023-12-31" />
+  <title>Orbital Mouse</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<script type="text/javascript" src="../../../site.js" ></script>
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
+  type="text/javascript"></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">Orbital Mouse</h1>
+<h2 class="author">Pascal Getreuer, 2023-12-31</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#what-is-orbital-mouse">What is Orbital Mouse</a></li>
+<li><a href="#add-orbital-mouse-to-your-keymap">Add Orbital Mouse to
+your keymap</a></li>
+<li><a href="#keycodes">Keycodes</a>
+<ul>
+<li><a href="#selected-mouse-button">Selected mouse button</a></li>
+<li><a href="#mouse-wheel-controls">Mouse wheel controls</a></li>
+</ul></li>
+<li><a href="#configuration">Configuration</a>
+<ul>
+<li><a href="#speed-curve">Speed curve</a></li>
+<li><a href="#options">Options</a></li>
+</ul></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#explanation">Explanation</a></li>
+</ul>
+</div>
+<p><a href="../index.html">← More about keyboards</a></p>
+<h2 id="overview">Overview</h2>
+<p>QMK has a <a href="https://docs.qmk.fm/#/feature_mouse_keys">Mouse
+Keys feature</a> that controls the mouse using keyboard keys. You can
+then avoid switching hands between keyboard and mouse, in theory a
+substantial ergonomic advantage. In reality, this interface is pretty
+awkward.</p>
+<p>This post describes an experiment: Orbital Mouse. I find it is easier
+to control than QMK’s Mouse Keys, or at least it is more fun. To be
+clear, it still pales in comparison to real mouse or trackball
+hardware.</p>
+<h2 id="what-is-orbital-mouse">What is Orbital Mouse</h2>
+<p>Orbital Mouse is a userspace library that replaces QMK Mouse Keys.
+The pointer moves according to a heading direction. Two keys move
+forward and backward along that direction while another two keys
+steer.</p>
+<figure>
+<img src="orbital-mouse.gif" alt="Orbital Mouse movement." />
+<figcaption aria-hidden="true">Orbital Mouse movement.</figcaption>
+</figure>
+<p><em>Figures have been enlarged and annotated in blue for sake of
+visualizing the control scheme. In real use, sadly, there are no
+annotations.</em></p>
+<p>Orbital Mouse is essentially <a
+href="https://en.wikipedia.org/wiki/Tank_controls">tank controls</a>,
+like the player movement in earlier Resident Evil and Tomb Raiders
+games, but no monsters chasing your cursor.</p>
+<p><img src="path.png" /></p>
+<p>When steering, the cursor rotates (orbits!) around a circle to
+indicate change in heading direction. This rotation effect is
+additionally useful as a means of fine-scale control, good for hitting
+small targets like menu items and toolbar buttons.</p>
+<figure>
+<img src="fine-selection.png"
+alt="Through rotation, any of these three menu items are reachable." />
+<figcaption aria-hidden="true">Through rotation, any of these three menu
+items are reachable.</figcaption>
+</figure>
+<h2 id="add-orbital-mouse-to-your-keymap">Add Orbital Mouse to your
+keymap</h2>
+<p><strong>Step 1:</strong> Use the Orbital Mouse keycodes in your
+layout in keymap.c. A description of the keycodes is <a
+href="#keycodes">in the next section</a>. A suggested right-handed
+layout is:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>OM_DBLS<span class="op">,</span> OM_BTNS<span class="op">,</span> OM_U   <span class="op">,</span> OM_BTN2<span class="op">,</span> OM_SEL1<span class="op">,</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>OM_HLDS<span class="op">,</span> OM_L   <span class="op">,</span> OM_D   <span class="op">,</span> OM_R   <span class="op">,</span> OM_SEL2<span class="op">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>OM_RELS<span class="op">,</span> OM_W_D <span class="op">,</span> OM_W_U <span class="op">,</span> OM_BTN3<span class="op">,</span> OM_SEL3<span class="op">,</span></span></code></pre></div>
+<figure>
+<img src="layout.png" alt="A suggested right-handed layout." />
+<figcaption aria-hidden="true">A suggested right-handed
+layout.</figcaption>
+</figure>
+<p><strong>Step 2:</strong> Include the orbital_mouse header by adding
+near the top of keymap.c:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/orbital_mouse.h&quot;</span><span class="pp">`</span></span></code></pre></div>
+<p><strong>Step 3:</strong> Still in keymap.c, handle Orbital Mouse by
+defining (or adding to) <code>process_record_user()</code> and
+<code>matrix_scan_user()</code> as</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_orbital_mouse<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros ...</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  orbital_mouse_task<span class="op">();</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks ...</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Step 4:</strong> In your <code>rules.mk</code> file, add</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/orbital_mouse.c</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">MOUSE_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
+<p>Optionally, if Mouse Keys is enabled, you may disable it with
+“<code>MOUSEKEYS_ENABLE = no</code>” to save some firmware space.</p>
+<p><strong>Step 5:</strong> In the directory containing keymap.c, create
+a <code>features</code> subdirectory and copy <a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/orbital_mouse.h">orbital_mouse.h</a>
+and <a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/orbital_mouse.c">orbital_mouse.c</a>
+there.</p>
+<h2 id="keycodes">Keycodes</h2>
+<p>Orbital Mouse is controlled with the following keycodes.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Keycode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>OM_U</code></td>
+<td>Move forward.</td>
+</tr>
+<tr class="even">
+<td><code>OM_D</code></td>
+<td>Move backward.</td>
+</tr>
+<tr class="odd">
+<td><code>OM_L</code></td>
+<td>Steer left (counter-clockwise).</td>
+</tr>
+<tr class="even">
+<td><code>OM_R</code></td>
+<td>Steer right (clockwise).</td>
+</tr>
+<tr class="odd">
+<td><code>OM_BTNS</code></td>
+<td>Press the selected mouse button.</td>
+</tr>
+<tr class="even">
+<td><code>OM_HLDS</code></td>
+<td>Hold the selected mouse button.</td>
+</tr>
+<tr class="odd">
+<td><code>OM_RELS</code></td>
+<td>Release the selected mouse button.</td>
+</tr>
+<tr class="even">
+<td><code>OM_DBLS</code></td>
+<td>Double click the selected mouse button.</td>
+</tr>
+<tr class="odd">
+<td><code>OM_SEL</code><em>n</em></td>
+<td>Select mouse button <em>n</em>, for <em>n</em> = 1, …, 8.</td>
+</tr>
+<tr class="even">
+<td><code>OM_BTN</code><em>n</em></td>
+<td>Press mouse button <em>n</em>, for <em>n</em> = 1, …, 8.</td>
+</tr>
+<tr class="odd">
+<td><code>OM_W_U</code></td>
+<td>Mouse wheel up.</td>
+</tr>
+<tr class="even">
+<td><code>OM_W_D</code></td>
+<td>Mouse wheel down.</td>
+</tr>
+<tr class="odd">
+<td><code>OM_W_L</code></td>
+<td>Mouse wheel left.</td>
+</tr>
+<tr class="even">
+<td><code>OM_W_R</code></td>
+<td>Mouse wheel right.</td>
+</tr>
+</tbody>
+</table>
+<p>Of course, you don’t have to use all of them in your layout, just use
+what is useful. There are many ways these keys could be arranged in a
+layout. I leave it to you to explore.</p>
+<h3 id="selected-mouse-button">Selected mouse button</h3>
+<p>Keycode <code>OM_BTNS</code> and its companions <code>OM_HLDS</code>,
+<code>OM_RELS</code>, <code>OM_DBLS</code> make use of the “selected”
+mouse button. Initially, mouse button 1 is selected. Keycodes
+<code>OM_SEL1</code> … <code>OM_SEL8</code> set the selected mouse
+button.</p>
+<p><code>OM_HLDS</code> and <code>OM_RELS</code> are useful when a mouse
+button must be held for an extended duration, like click and drag
+inputs. Tapping <code>OM_HLDS</code> holds down the selected mouse
+button. The button is held until <code>OM_RELS</code> is tapped to
+release it.</p>
+<h3 id="mouse-wheel-controls">Mouse wheel controls</h3>
+<p>Keycodes <code>OM_W_U</code>, <code>OM_W_D</code>,
+<code>OM_W_L</code>, <code>OM_W_R</code> scroll the mouse wheel. Unlike
+cursor movement, mouse wheel navigation follows usual Cartesian
+up/down/left/right controls.</p>
+<h2 id="configuration">Configuration</h2>
+<h3 id="speed-curve">Speed curve</h3>
+<p>Mouse keys must facilitate both large motions across the screen as
+well as precise fine motions for selecting menu items and such. An idea
+from the X Windows System is that holding a mouse key should begin
+moving the cursor at a slow speed and accelerate to faster speed. A
+“speed curve” defines how this speed changes as a function of time.</p>
+<p><code>ORBITAL_MOUSE_SPEED_CURVE</code> defines the speed curve as a
+table of 16 values, representing speed in pixels per 16-ms interval. The
+<em>n</em>th table entry is the movement speed after holding the key for
+0.256<em>n</em> seconds. The entries are piecewise linearly interpolated
+at times between these points. Table entries are <code>uint8_t</code>
+values in the range 0–255, larger values meaning faster movement.</p>
+<p>The default curve is a bilevel scheme, beginning at a lower speed of
+24, for fine-scale motions, then transitions after a second to a higher
+speed of 66, for large-scale motions:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_SPEED_CURVE \</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">      {24, 24, 24, 32, 58, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66}</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">//     |               |               |               |           |</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">// t = 0.000           1.024           2.048           3.072       3.840 s</span></span></code></pre></div>
+<figure>
+<img src="default-curve.svg" alt="The default speed curve." />
+<figcaption aria-hidden="true">The default speed curve.</figcaption>
+</figure>
+<p>Define <code>ORBITAL_MOUSE_SPEED_CURVE</code> in your config.h to use
+a different speed curve. You can represent just about any speed curve
+you like in this manner.</p>
+<p>In QMK Mouse Keys, the default Accelerated mode is based on <a
+href="https://en.wikipedia.org/wiki/Mouse_keys#MouseKeysAccel">X Window
+System MouseKeysAccel</a>. Here is a family of curves following that
+design:</p>
+<p><span class="math display">\[ s(t) = s_0 + (s_T - s_0) (t / T)^p.
+\]</span></p>
+<p><input id="slider-s0" type="range" value=24 min=1 max=99 style="width:15em; height:2em; margin-right:1em"></input>
+<label for="slider-s0">Initial speed <i>s</i><sub>0</sub> = <span
+id="slider-s0-text"></span></label><br>
+<input id="slider-sf" type="range" value=66 min=1 max=99 style="width:15em; height:2em; margin-right:1em"></input>
+<label for="slider-sf">Final speed <i>s<sub>T</sub></i> = <span
+id="slider-sf-text"></span></label><br>
+<input id="slider-tf" type="range" value=30 min=4 max=100 style="width:15em; height:2em; margin-right:1em"></input>
+<label for="slider-tf">Final time <i>T</i> = <span
+id="slider-tf-text"></span></label><br>
+<input id="slider-exp" type="range" value=75 min=1 max=100 style="width:15em; height:2em; margin-right:1em"></input>
+<label for="slider-exp">Exponent <i>p</i> = <span
+id="slider-exp-text"></span></label><br></p>
+<div class="sourceCode">
+<pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#define ORBITAL_MOUSE_SPEED_CURVE \</span>
+<span class="pp" id="speed-curve-code">      {24, 28, 36, 47, 59, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66}</span>
+<span class="co">//     |               |               |               |           |</span>
+<span class="co">// t = 0.000           1.024           2.048           3.072       3.840 s</span></code></pre>
+</div>
+<div style="width:80%; margin:auto">
+<canvas id="speed-canvas" style="width:100%; height:9em">
+</canvas>
+<p style="text-align: center">
+Time (s)
+</p>
+</div>
+<script>
+// Copyright 2023 Google LLC.
+// SPDX-License-Identifier: Apache-2.0
+var s0Slider = document.getElementById("slider-s0");
+var s0SliderText = document.getElementById("slider-s0-text");
+var sfSlider = document.getElementById("slider-sf");
+var sfSliderText = document.getElementById("slider-sf-text");
+var tfSlider = document.getElementById("slider-tf");
+var tfSliderText = document.getElementById("slider-tf-text");
+var expSlider = document.getElementById("slider-exp");
+var expSliderText = document.getElementById("slider-exp-text");
+var speedCurveCode = document.getElementById("speed-curve-code");
+var canvas = document.getElementById("speed-canvas");
+var speedCurve = new Float32Array(16);
+var context = canvas.getContext("2d");
+
+function drawCurve(context, yData, color) {
+  var canvas = context.canvas;
+  var measure = context.measureText("0.0");
+  var xMargin = measure.width / 2;
+  var yMargin = measure.fontBoundingBoxAscent + 9;
+  var xScale = (canvas.width - 2 * xMargin) / (yData.length - 1);
+  var yScale = (canvas.height - yMargin) / 101;
+  context.strokeStyle = color;
+  context.fillStyle = color;
+  context.lineWidth = 2.2;
+  context.beginPath();
+  context.moveTo(xMargin, yScale * (101 - yData[0]));
+  for (let n = 1; n < yData.length; n++) {
+    var x = xMargin + xScale * n;
+    var y = yScale * (101 - yData[n]);
+    context.lineTo(x, y);
+  }
+  context.stroke();
+
+  var radius = 2.5;
+  for (let n = 0; n < yData.length; n++) {
+    var x = xMargin + xScale * n;
+    var y = yScale * (101 - yData[n]);
+    context.beginPath();
+    context.ellipse(x, y, radius, radius, 0, 0, 2 * Math.PI);
+    context.fill();
+  }
+}
+
+function drawAxis(context) {
+  var canvas = context.canvas;
+  var measure = context.measureText("0.0");
+  var xMargin = measure.width / 2;
+  var yMargin = measure.fontBoundingBoxAscent + 9;
+  var axisY = canvas.height - yMargin;
+  var xScale = (canvas.width - 2 * xMargin) / 3.84;
+
+  context.lineWidth = 1;
+  context.strokeStyle = "#000";
+  context.fillStyle = "#000";
+  context.moveTo(xMargin + 0.5, axisY);
+  context.lineTo(canvas.width - xMargin + 1, axisY);
+
+  for (let n = 0; n <= 3; n++) {
+    var x = 0.5 + xMargin + xScale * n;
+    context.moveTo(x, axisY);
+    context.lineTo(x, axisY + 6);
+  }
+  context.stroke();
+
+  for (let n = 0; n <= 3; n++) {
+    var x = 0.5 + xMargin + xScale * n;
+    var label = n;
+    context.fillText(label, x, canvas.height - 1);
+  }
+}
+
+function drawPlot() {
+  const s0 = Number(s0Slider.value); 
+  const sf = Number(sfSlider.value); 
+  const tf = 0.0384 * Number(tfSlider.value);
+  const p = Number(expSlider.value) / 50;
+  var code = "";
+
+  for (let n = 0; n < 16; n++) {
+    var t = 0.256 * n;
+    var s = Math.round(
+        s0 + (sf - s0) * Math.pow(Math.min(t / tf, 1), p));
+    speedCurve[n] = s;
+    code += (n === 0 ? "" : ", ") + (s > 9 ? "" : " ") + s.toString();
+  }
+
+  s0SliderText.innerText = `${s0}`;
+  sfSliderText.innerText = `${sf}`;
+  tfSliderText.innerText = `${tf.toFixed(2)} s`;
+  expSliderText.innerText = `${p.toFixed(2)}`;
+  speedCurveCode.innerText = `      {${code}}`;
+
+  context.reset();
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.font = "85% serif";
+  context.textAlign = "center";
+  context.lineJoin = "bevel";
+
+  drawAxis(context);
+  drawCurve(context, speedCurve, "#4b7e96");
+}
+
+function resizePlot() {
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+  drawPlot();
+}
+
+s0Slider.addEventListener("input", drawPlot, false);
+sfSlider.addEventListener("input", drawPlot, false);
+tfSlider.addEventListener("input", drawPlot, false);
+expSlider.addEventListener("input", drawPlot, false);
+window.addEventListener("resize", resizePlot);
+resizePlot();
+</script>
+<h3 id="options">Options</h3>
+<p>Orbital Mouse can be further customized by tuning the following
+options in config.h.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_RADIUS        36</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_WHEEL_SPEED   0.2</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_DBL_DELAY_MS  50</span></span></code></pre></div>
+<p><code>ORBITAL_MOUSE_RADIUS</code> is the radius in pixels of the
+circle that the cursor rotates or “orbits” around when steering. Must be
+in [0, 63]. Default is <code>36</code>.</p>
+<p><code>ORBITAL_MOUSE_WHEEL_SPEED</code> is the mouse wheel speed in
+units per 16-ms interval, specified as a double value. Must be in [0,
+3.99]. Default is <code>0.2</code>.</p>
+<p><code>ORBITAL_MOUSE_DBL_DELAY_MS</code> is the delay in ms between
+clicks with <code>OM_DBLS</code> double clicking. If this is too low,
+the computer might debounce the double click. Default is
+<code>50</code>.</p>
+<h2 id="functions">Functions</h2>
+<ul>
+<li><p><code>set_orbital_mouse_speed_curve(speed_curve)</code> sets the
+speed curve at run time, where <code>speed_curve</code> points to a
+<code>uint8_t</code> array of 16 values. This enables dynamically
+switching between multiple speed curves. Calling this function with
+<code>NULL</code> resets to the speed curve defined by
+<code>ORBITAL_MOUSE_SPEED_CURVE</code>.</p></li>
+<li><p><code>get_orbital_mouse_angle()</code> gets the heading direction
+as a value in the range 0–63. Value 0 represents up, and values increase
+in counter-clockwise direction.</p></li>
+<li><p><code>set_orbital_mouse_angle(angle)</code> sets the heading
+direction. The function wraps the given <code>angle</code> to the 0–63
+range.</p></li>
+</ul>
+<h2 id="explanation">Explanation</h2>
+<p>If you are interested in the technical details, here are some notes
+on how Orbital Mouse is implemented.</p>
+<p>While Orbital Mouse controls are actively being used, it runs a task
+function once every 16 ms. This function updates the state, moving and
+turning according to which keys are currently held, then sends a mouse
+report to the host.</p>
+<p>Details:</p>
+<ul>
+<li><p>The mouse report is created by filling a
+<code>report_mouse_t</code> struct, then passing this struct to
+<code>host_mouse_send()</code>.</p></li>
+<li><p>Orbital Mouse needs 28 keycodes. While keycodes for userspace
+features are conventionally allocated in the user-defined keycode range,
+that range is limited (32 keycodes). It would be unreasonable to
+allocate Orbital Mouse’s keys there. Being a Mouse Keys replacement, we
+repurpose the Mouse Keys keycodes (<code>KC_MS_U</code>,
+<code>KC_BTN1</code>, etc.) for the analogous functions in Orbital
+Mouse. We also repurpose the block of keycodes <code>UC(0x41)</code> to
+<code>UC(0x49)</code>. These keycode represent Unicode input of ASCII
+characters, which seems unlikely to be missed.</p></li>
+<li><p>The Orbital Mouse implementation uses no floating point
+arithmetic at run time. Instead, <a
+href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic">fixed point
+arithmetic</a> is used to represent fractional values. The internal
+functions <code>scaled_sin()</code> and <code>scaled_cos()</code>
+evaluate sine and cosine for a desired phase and amplitude, returning
+the result as a <a
+href="https://en.wikipedia.org/wiki/Q_(number_format)">Q6.8
+value</a>.</p></li>
+</ul>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
