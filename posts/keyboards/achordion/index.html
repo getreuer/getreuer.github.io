@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2023-12-17)" />
+  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2024-01-25)" />
   <title>Achordion: Customizing the tap-hold decision</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -90,7 +90,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Achordion: Customizing the tap-hold decision</h1>
-<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2023-12-17)</h2>
+<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2024-01-25)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -199,9 +199,6 @@ handle events before Achordion. A mitigation is implemented so that
 combo events bypass Achordion, so combos and tap-hold keys should still
 work together.</p></li>
 </ul>
-<p>Additionally, <code>RETRO_TAP</code> and <code>RETRO_SHIFT</code>
-aren’t supported. It looks possible, but I haven’t yet implemented
-them.</p>
 <h2 id="add-achordion-to-your-keymap">Add Achordion to your keymap</h2>
 <p><strong>Step 1:</strong> In your <code>keymap.c</code>, call
 Achordion from your <code>process_record_user()</code> function:</p>
@@ -638,7 +635,8 @@ data-cites="jweickm">@jweickm</span>, <span class="citation"
 data-cites="bschwehn">@bschwehn</span>, <span class="citation"
 data-cites="jasonkena">@jasonkena</span>, <span class="citation"
 data-cites="sommerper">@sommerper</span>, <span class="citation"
-data-cites="TristanCacqueray">@TristanCacqueray</span> and Reddit user
+data-cites="TristanCacqueray">@TristanCacqueray</span>, <span
+class="citation" data-cites="akaralar">@akaralar</span> and Reddit user
 u/02ranger for contributions and feedback to improve Achordion.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
