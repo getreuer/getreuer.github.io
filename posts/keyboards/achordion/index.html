@@ -233,8 +233,8 @@ documentation</a>.</p>
 <p><strong>Troubleshooting:</strong> Achordion makes use of some fairly
 recent QMK APIs. If your keymap fails to build, a likely reason is that
 your QMK installation simply needs to be updated. Particularly, building
-with an outdated QMK version may fail with</p>
-<pre><code>error: implicit declaration of function ‘IS_QK_MOD_TAP’</code></pre>
+with an outdated QMK version should fail with</p>
+<pre><code>achordion: QMK version is too old to build. Please update QMK.</code></pre>
 <p>If you have the qmk_firmware git repo cloned locally, do a
 <code>git pull</code>. Or see <a
 href="https://docs.qmk.fm/#/newbs_git_using_your_master_branch?id=updating-your-master-branch">Updating
