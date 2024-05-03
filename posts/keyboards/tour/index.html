@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-10-09" />
+  <meta name="author" content="Pascal Getreuer, 2022-10-09 (updated 2024-05-02)" />
   <title>Tour of split ergo keyboards</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -25,45 +25,58 @@
 <div id="content">
 <div id="header">
 <h1 class="title">Tour of split ergo keyboards</h1>
-<h2 class="author">Pascal Getreuer, 2022-10-09</h2>
+<h2 class="author">Pascal Getreuer, 2022-10-09 (updated 2024-05-02)</h2>
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#ergonomic-hardware">Ergonomic hardware</a>
+<li><a href="#ergonomic-hardware" id="toc-ergonomic-hardware">Ergonomic
+hardware</a>
 <ul>
-<li><a href="#what-makes-these-keyboards-so-good">What makes these
-keyboards so good</a></li>
-<li><a href="#tips-to-get-a-good-keyboard">Tips to get a good
+<li><a href="#what-makes-these-keyboards-so-good"
+id="toc-what-makes-these-keyboards-so-good">What makes these keyboards
+so good</a></li>
+<li><a href="#tips-to-get-a-good-keyboard"
+id="toc-tips-to-get-a-good-keyboard">Tips to get a good
 keyboard</a></li>
-<li><a href="#where-to-buy-split-keyboards">Where to buy split
+<li><a href="#where-to-buy-split-keyboards"
+id="toc-where-to-buy-split-keyboards">Where to buy split
 keyboards</a></li>
 </ul></li>
-<li><a href="#firmware-features">Firmware features</a>
+<li><a href="#firmware-features" id="toc-firmware-features">Firmware
+features</a>
 <ul>
-<li><a href="#multiple-layers">Multiple layers</a></li>
-<li><a href="#home-row-mods">Home row mods</a></li>
-<li><a href="#do-more-with-each-key">Do more with each key</a></li>
-<li><a href="#macro-buttons">Macro buttons</a></li>
+<li><a href="#multiple-layers" id="toc-multiple-layers">Multiple
+layers</a></li>
+<li><a href="#home-row-mods" id="toc-home-row-mods">Home row
+mods</a></li>
+<li><a href="#do-more-with-each-key" id="toc-do-more-with-each-key">Do
+more with each key</a></li>
+<li><a href="#macro-buttons" id="toc-macro-buttons">Macro
+buttons</a></li>
 </ul></li>
-<li><a href="#closing-thoughts">Closing thoughts</a></li>
+<li><a href="#closing-thoughts" id="toc-closing-thoughts">Closing
+thoughts</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
 <p>Thinking of buying a custom keyboard? Or got one and looking to
 leverage its features? Here’s a tour.</p>
 <figure>
-<img src="../dactyl-ergodox.jpg"
-alt="My daily driver: Dactyl Ergodox" />
-<figcaption aria-hidden="true">My daily driver: Dactyl
-Ergodox</figcaption>
+<img src="../voyager.jpg" alt="My daily driver: ZSA Voyager" />
+<figcaption aria-hidden="true">My daily driver: ZSA Voyager</figcaption>
 </figure>
 <h2 id="ergonomic-hardware">Ergonomic hardware</h2>
 <p>For typing comfort, I highly recommend a keyboard that is
 <strong>split, columnar, and with QMK or other programmable
-firmware</strong>. An example is the ZSA Moonlander keyboard:</p>
+firmware</strong>. A couple examples are the ZSA Moonlander and Dactyl
+Ergodox:</p>
 <figure>
 <img src="../moonlander.jpg" alt="ZSA Moonlander" />
 <figcaption aria-hidden="true">ZSA Moonlander</figcaption>
+</figure>
+<figure>
+<img src="../dactyl-ergodox.jpg" alt="Dactyl Ergodox" />
+<figcaption aria-hidden="true">Dactyl Ergodox</figcaption>
 </figure>
 <p>Some other popular options are the Lily58, Sofle, and Corne split
 keyboards. There’s an extensive catalog of split keyboards at <a
@@ -126,10 +139,10 @@ boosting your comfort and productivity.</p>
 their own firmware features, and at least basic functionality is
 comparable. Or even with a regular keyboard, you can get some of these
 features in software with <a
+href="https://github.com/jtroo/kanata">Kanata</a> or <a
 href="https://github.com/kmonad/kmonad">KMonad</a>.</p>
-<p><em>(Ergodox EZ and Moonlander users)</em> If you use Oryx, then
-underneath it is QMK firmware, and most of these features are available
-in Oryx.</p>
+<p><em>(ZSA keyboard users)</em> If you use Oryx, then underneath it is
+QMK firmware, and most of these features are available in Oryx.</p>
 <h3 id="multiple-layers">Multiple layers</h3>
 <p>Generalizing how e.g. holding Shift changes the number row to type
 symbols, you can <a href="https://docs.qmk.fm/#/keymap">define multiple
@@ -157,8 +170,8 @@ the symbol layer.</p>
 <img src="hrm.png" alt="Home row mods in my keymap." />
 <figcaption aria-hidden="true">Home row mods in my keymap.</figcaption>
 </figure>
-<p>The <code>E</code> key for example types “e” when tapped and behaves
-as Shift when held.</p>
+<p>The <kbd>E</kbd> key for example types “e” when tapped and behaves as
+Shift when held.</p>
 <p>I was skeptical at first, but home row mods feel great now that I got
 used to them. As you might expect, there is a learning curve. See <a
 href="https://precondition.github.io/home-row-mods">A guide to home row
