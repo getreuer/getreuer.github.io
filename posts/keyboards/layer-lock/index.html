@@ -189,7 +189,7 @@ there.</p>
 likely reason is that your QMK installation needs to be updated. If you
 have the qmk_firmware git repo cloned locally, do a
 <code>git pull</code>. Or see <a
-href="https://docs.qmk.fm/#/newbs_git_using_your_master_branch?id=updating-your-master-branch">Updating
+href="https://docs.qmk.fm/newbs_git_using_your_master_branch#updating-your-master-branch">Updating
 your master branch</a> for more details.</p>
 <h2 id="example-use">Example use</h2>
 <p>Consider a keymap with the following base layer.</p>
@@ -279,7 +279,7 @@ keymap, define</p>
 layer</h3>
 <p>If you use tri layer, a tweak is needed to make the third layer
 lockable by Layer Lock. The <a
-href="https://docs.qmk.fm/#/ref_functions?id=update_tri_layer_statestate-x-y-z">update_tri_layer_state</a>
+href="https://docs.qmk.fm/ref_functions#update-tri-layer-state-state-x-y-z">update_tri_layer_state</a>
 function is usually called from keymap.c in the form</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> update_tri_layer_state<span class="op">(</span>state<span class="op">,</span> _LOWER<span class="op">,</span> _RAISE<span class="op">,</span> _ADJUST<span class="op">);</span></span>
@@ -294,12 +294,12 @@ unlocked:</p>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h2 id="compared-to-dflayer">Compared to <code>DF(layer)</code></h2>
 <p>Another way to set a layer to be always on is to set it as the
-default layer with <a href="https://docs.qmk.fm/#/feature_layers">the
+default layer with <a href="https://docs.qmk.fm/feature_layers">the
 <code>DF(layer)</code> keycode</a>, comparable to Layer Lock:</p>
 <ul>
 <li><p><code>DF(layer)</code> sets exactly one layer to be always on,
 changing the base layer to that layer. The <a
-href="https://docs.qmk.fm/#/feature_layers?id=intermediate-users">intended
+href="https://docs.qmk.fm/feature_layers#intermediate-users">intended
 use</a> is that “When you have multiple base layers you should always
 treat them as mutually exclusive.”</p></li>
 <li><p>Layer Lock on the other hand does not change the base layer. The

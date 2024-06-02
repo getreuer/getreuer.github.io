@@ -143,14 +143,14 @@ presses, and I’ve tested that it works predictably in combination with
 one-shot mods, mod-taps, and Space Cadet Shift. It does not work with
 Auto Shift. To get the analogous effect with Auto Shift, use Auto
 Shift’s <a
-href="https://docs.qmk.fm/#/feature_auto_shift?id=custom-shifted-values">custom
+href="https://docs.qmk.fm/features/auto_shift#custom-shifted-values">custom
 shifted values</a> configuration.</p>
 <p><strong>Step 1:</strong> In your <code>keymap.c</code>, define a
 table of “<code>custom_shift_key_t</code>” structs. Each row defines one
 key. The <code>keycode</code> is the keycode as it appears in your
 layout and determines what is typed normally. The
 <code>shifted_keycode</code> is what you want the key to type when
-shifted. (See the <a href="https://docs.qmk.fm/#/keycodes">QMK keycodes
+shifted. (See the <a href="https://docs.qmk.fm/keycodes">QMK keycodes
 documentation</a> for possible keycodes.)</p>
 <p>Here is an example. The first row in my table has a <kbd>.</kbd>
 (<code>KC_DOT</code>) key that types <code>?</code>
@@ -279,7 +279,7 @@ there. This is the meat of the implementation.</p>
 likely reason is that your QMK installation needs to be updated. If you
 have the qmk_firmware git repo cloned locally, do a
 <code>git pull</code>. Or see <a
-href="https://docs.qmk.fm/#/newbs_git_using_your_master_branch?id=updating-your-master-branch">Updating
+href="https://docs.qmk.fm/newbs_git_using_your_master_branch#updating-your-master-branch">Updating
 your master branch</a> for more details.</p>
 <h2 id="customization">Customization</h2>
 <p>By default, custom shift keys are applied whenever a shift mod is
@@ -291,7 +291,7 @@ custom shift keys with certain mods, define
 <code>CUSTOM_SHIFT_KEYS_NEGMODS</code> in your config.h using the
 <code>MOD_MASK_&lt;modifier&gt;</code> constants or
 <code>MOD_BIT(KC_&lt;modifier&gt;)</code> as <a
-href="https://docs.qmk.fm/#/feature_advanced_keycodes?id=checking-modifier-state">described
+href="https://docs.qmk.fm/feature_advanced_keycodes#checking-modifier-state">described
 here</a>. Examples:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Don&#39;t apply custom shift keys when a Ctrl key is held.</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CUSTOM_SHIFT_KEYS_NEGMODS MOD_MASK_CTRL</span></span>
@@ -303,7 +303,7 @@ config.h:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Don&#39;t apply custom shift keys when any non-shift mod is held.</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CUSTOM_SHIFT_KEYS_NEGMODS </span><span class="op">~</span><span class="pp">MOD_MASK_SHIFT</span></span></code></pre></div>
 <h2 id="compared-to-key-overrides">Compared to Key Overrides</h2>
-<p>QMK’s <a href="https://docs.qmk.fm/#/feature_key_overrides">Key
+<p>QMK’s <a href="https://docs.qmk.fm/features/key_overrides">Key
 Overrides</a> feature “overrides” the keys sent for specified
 modifier-key combinations. In particular, it can be used to implement
 custom shift keys. Add “<code>KEY_OVERRIDE_ENABLE = yes</code>” in

@@ -9,7 +9,7 @@
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -94,31 +94,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#overview">Overview</a></li>
-<li><a href="#add-it-to-your-keymap">Add it to your keymap</a>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#add-it-to-your-keymap" id="toc-add-it-to-your-keymap">Add
+it to your keymap</a>
 <ul>
-<li><a href="#repeat-using-a-combo">Repeat using a Combo</a></li>
+<li><a href="#repeat-using-a-combo" id="toc-repeat-using-a-combo">Repeat
+using a Combo</a></li>
 </ul></li>
-<li><a href="#alternative-implementations">Alternative
+<li><a href="#alternative-implementations"
+id="toc-alternative-implementations">Alternative
 implementations</a></li>
-<li><a href="#alternate-repeat-key">Alternate Repeat Key</a></li>
-<li><a href="#customization">Customization</a>
+<li><a href="#alternate-repeat-key"
+id="toc-alternate-repeat-key">Alternate Repeat Key</a></li>
+<li><a href="#customization" id="toc-customization">Customization</a>
 <ul>
-<li><a href="#defining-alternate-keys">Defining alternate keys</a></li>
-<li><a href="#ignoring-certain-keys">Ignoring certain keys</a></li>
-<li><a href="#handle-how-a-key-is-repeated">Handle how a key is
+<li><a href="#defining-alternate-keys"
+id="toc-defining-alternate-keys">Defining alternate keys</a></li>
+<li><a href="#ignoring-certain-keys"
+id="toc-ignoring-certain-keys">Ignoring certain keys</a></li>
+<li><a href="#handle-how-a-key-is-repeated"
+id="toc-handle-how-a-key-is-repeated">Handle how a key is
 repeated</a></li>
-<li><a href="#handle-how-a-key-is-alternate-repeated">Handle how a key
-is alternate repeated</a></li>
-<li><a href="#functions">Functions</a></li>
+<li><a href="#handle-how-a-key-is-alternate-repeated"
+id="toc-handle-how-a-key-is-alternate-repeated">Handle how a key is
+alternate repeated</a></li>
+<li><a href="#functions" id="toc-functions">Functions</a></li>
 </ul></li>
-<li><a href="#implementation-details">Implementation details</a>
+<li><a href="#implementation-details"
+id="toc-implementation-details">Implementation details</a>
 <ul>
-<li><a href="#tracking-the-last-key">Tracking the last key</a></li>
-<li><a href="#repeat-key">Repeat Key</a></li>
-<li><a href="#alternate-repeat-key-1">Alternate Repeat Key</a></li>
+<li><a href="#tracking-the-last-key"
+id="toc-tracking-the-last-key">Tracking the last key</a></li>
+<li><a href="#repeat-key" id="toc-repeat-key">Repeat Key</a></li>
+<li><a href="#alternate-repeat-key-1"
+id="toc-alternate-repeat-key-1">Alternate Repeat Key</a></li>
 </ul></li>
-<li><a href="#acknowledgements">Acknowledgements</a></li>
+<li><a href="#acknowledgements"
+id="toc-acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
@@ -130,11 +142,11 @@ is alternate repeated</a></li>
 </div>
 <p><strong>Repeat Key is now a core QMK feature!</strong> It was
 released on 2023-05-28. <a
-href="https://docs.qmk.fm/#/newbs_git_using_your_master_branch?id=updating-your-master-branch">Update
+href="https://docs.qmk.fm/newbs_git_using_your_master_branch#updating-your-master-branch">Update
 your QMK set up</a> and see <a
-href="https://docs.qmk.fm/#/feature_repeat_key">QMK Repeat Key</a>. Or
-if you want, you may continue to use the userspace implementation
-described in this page.</p>
+href="https://docs.qmk.fm/features/repeat_key">QMK Repeat Key</a>. Or if
+you want, you may continue to use the userspace implementation described
+in this page.</p>
 </div>
 <div style="margin:2.2em; margin-bottom:1em">
 <p><em>“Experience isn’t interesting until it begins to repeat itself.
@@ -173,8 +185,8 @@ keys, Auto Shift, Combos, and userspace macros.</p>
 <p>If you are new to QMK macros, see my <a
 href="../macros/index.html">macro buttons</a> post for an intro.</p>
 <p><strong>Step 1:</strong> Repeat Key requires that <a
-href="https://docs.qmk.fm/#/feature_combo">Combos</a> are enabled. If
-you aren’t using Combos already, set in rules.mk:</p>
+href="https://docs.qmk.fm/features/combo">Combos</a> are enabled. If you
+aren’t using Combos already, set in rules.mk:</p>
 <pre class="make"><code>COMBO_ENABLE = yes</code></pre>
 <p>It is not required that you use combos for anything in your keymap.
 But at a minimum, you need to define an empty <code>key_combos</code>
@@ -203,10 +215,10 @@ third argument:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/repeat_key.h&quot;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_repeat_key<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_repeat_key<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros ...</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>If your <code>process_record_user()</code> has other handlers or
 macros, Repeat Key’s handler <code>process_repeat_key()</code> should
@@ -234,7 +246,7 @@ pressing the Repeat Key. If the last press key was <kbd>Ctrl</kbd> +
 Shift + <code>Z</code>.</p>
 <h3 id="repeat-using-a-combo">Repeat using a Combo</h3>
 <p>Instead of dedicating a key for Repeat, you might want to trigger it
-<a href="https://docs.qmk.fm/#/feature_combo">with a Combo</a>. This can
+<a href="https://docs.qmk.fm/features/combo">with a Combo</a>. This can
 be done by adding <code>COMBO_ENABLE = yes</code> in rules.mk and
 defining a combo in keymap.c like</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Period + Backspace =&gt; Repeat.</span></span>
@@ -286,7 +298,7 @@ keymap.c:</p>
 Alternate Repeat as</p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>process_repeat_key_with_alt<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">,</span> ALTREP<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
 </ol>
 <p>The following alternate keys are defined by default. See
@@ -522,7 +534,7 @@ keymap.c. The default implementation simply defines that all
 non-modifier, non-layer switch keys are remembered:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> remember_last_key_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                            <span class="dt">uint8_t</span><span class="op">*</span> remembered_mods<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>This callback is called on every key press. Returning true indicates
 the key is remembered, and therefore eligible for repeating, while false
@@ -545,7 +557,7 @@ letters, so that “Aaron” does not become “AAron”:</p>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="handle-how-a-key-is-repeated">Handle how a key is repeated</h3>
 <p>By default, pressing <kbd>Repeat</kbd> will simply behave as if the
@@ -562,7 +574,7 @@ Negative counts are used similarly for alternate repeating. For instance
 supposing <code>MY_MACRO</code> is a custom keycode used in the
 layout:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_repeat_key<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_repeat_key<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MY_MACRO<span class="op">:</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>get_repeat_key_count<span class="op">()</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// MY_MACRO is being repeated!</span></span>
@@ -574,11 +586,11 @@ layout:</p>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;macro&quot;</span><span class="op">);</span></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="handle-how-a-key-is-alternate-repeated">Handle how a key is
 alternate repeated</h3>
@@ -601,7 +613,7 @@ repeating:</p>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_repeat_key_with_alt<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> REPEAT<span class="op">,</span> ALTREP<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> MY_MACRO<span class="op">:</span></span>
@@ -618,11 +630,11 @@ repeating:</p>
 <span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;macro&quot;</span><span class="op">);</span></span>
 <span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
 <span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="functions">Functions</h3>
 <table>

@@ -110,7 +110,7 @@ and Elite-C boards with the ATmega32U4 microcontroller. While they are
 enough to get running, AVR microcontrollers have a stingy amount of
 flash space, and you’ll need to be sparing in which firmware features to
 enable in order to fit in that space (see <a
-href="https://docs.qmk.fm/#/squeezing_avr">Squeezing the most out of
+href="https://docs.qmk.fm/squeezing_avr">Squeezing the most out of
 AVR</a>). If you have an option to use a better microcontroller, I’d
 recommend it.</p>
 <h3 id="where-to-buy-split-keyboards">Where to buy split keyboards</h3>
@@ -133,7 +133,7 @@ a couple weeks</a> for many people.</p></li>
 </ul>
 <h2 id="firmware-features">Firmware features</h2>
 <p>Here are some highlight features of what a keyboard with <a
-href="https://docs.qmk.fm/#/">QMK firmware</a> can do, potentially
+href="https://docs.qmk.fm/">QMK firmware</a> can do, potentially
 boosting your comfort and productivity.</p>
 <p>QMK is not strictly necessary. Other programmable keyboards have
 their own firmware features, and at least basic functionality is
@@ -145,7 +145,7 @@ href="https://github.com/kmonad/kmonad">KMonad</a>.</p>
 QMK firmware, and most of these features are available in Oryx.</p>
 <h3 id="multiple-layers">Multiple layers</h3>
 <p>Generalizing how e.g. holding Shift changes the number row to type
-symbols, you can <a href="https://docs.qmk.fm/#/keymap">define multiple
+symbols, you can <a href="https://docs.qmk.fm/keymap">define multiple
 layers</a> and use “layer switch keys” to access them. For instance, <a
 href="../symbol-layer/index.html">a symbol layer</a> is useful for
 programming. Never run out of keys.</p>
@@ -161,7 +161,7 @@ layout).</figcaption>
 <h3 id="home-row-mods">Home row mods</h3>
 <p>The idea of home row mods is to put the modifier keys—Ctrl, Shift,
 Alt, Gui (Win key)—directly on the home row as <a
-href="https://docs.qmk.fm/#/mod_tap">mod-tap keys</a>. This has the
+href="https://docs.qmk.fm/mod_tap">mod-tap keys</a>. This has the
 ergonomic advantage of reducing finger travel and awkward hand
 positions. <a href="https://github.com/getreuer/qmk-keymap">In my
 keymap</a>, I additionally put layer-tap keys on the home row to access
@@ -182,15 +182,15 @@ are hard to use</a> for further tips.</p>
 <p>There are several additional QMK features to get more out of each
 key:</p>
 <ul>
-<li><p><a href="https://docs.qmk.fm/#/feature_combo">Combos</a> – Hit
+<li><p><a href="https://docs.qmk.fm/features/combo">Combos</a> – Hit
 multiple keys at once to produce a different effect.</p></li>
-<li><p><a href="https://docs.qmk.fm/#/mod_tap">Mod-Tap</a> – Behave as a
+<li><p><a href="https://docs.qmk.fm/mod_tap">Mod-Tap</a> – Behave as a
 modifier when held, a different key when tapped.</p></li>
-<li><p><a href="https://docs.qmk.fm/#/feature_layers">Layer-Tap</a> –
+<li><p><a href="https://docs.qmk.fm/feature_layers">Layer-Tap</a> –
 Layer switch when held, a different key when tapped.</p></li>
-<li><p><a href="https://docs.qmk.fm/#/feature_tap_dance">Tap Dance</a> –
+<li><p><a href="https://docs.qmk.fm/features/tap_dance">Tap Dance</a> –
 Do something different when tapped vs. held vs. double-tapped…</p></li>
-<li><p><a href="https://docs.qmk.fm/#/feature_key_overrides">Key
+<li><p><a href="https://docs.qmk.fm/features/key_overrides">Key
 Overrides</a> – Override modifier-key combinations to do something
 else.</p></li>
 </ul>

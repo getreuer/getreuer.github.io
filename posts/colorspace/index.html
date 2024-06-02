@@ -9,7 +9,7 @@
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -157,7 +157,7 @@ command.</p>
 destination color spaces as <code>"dest&lt;-src"</code> or
 <code>"src-&gt;dest"</code>. Then call ApplyColorTransform to perform
 the transform:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>num S<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">173</span><span class="op">,</span> <span class="fl">0.8</span><span class="op">,</span> <span class="fl">0.5</span><span class="op">};</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>num S<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">173</span><span class="op">,</span> <span class="dv">0</span><span class="er">.8</span><span class="op">,</span> <span class="dv">0</span><span class="er">.5</span><span class="op">};</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>num D<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>colortransform Trans<span class="op">;</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       </span>
@@ -177,7 +177,7 @@ transform the color representation of an entire image, call
 <code>ApplyColorTransform</code> for each pixel.</p>
 <p>Specific transformation routines can also be called directly. The
 following converts an sRGB color to CIELAB and then back to sRGB:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>num R <span class="op">=</span> <span class="fl">0.85</span><span class="op">,</span> G <span class="op">=</span> <span class="fl">0.32</span><span class="op">,</span> B <span class="op">=</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>num R <span class="op">=</span> <span class="dv">0</span><span class="er">.85</span><span class="op">,</span> G <span class="op">=</span> <span class="dv">0</span><span class="er">.32</span><span class="op">,</span> B <span class="op">=</span> <span class="dv">0</span><span class="er">.5</span><span class="op">;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>num L<span class="op">,</span> a<span class="op">,</span> b<span class="op">;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Rgb2Lab<span class="op">(&amp;</span>L<span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">,</span> R<span class="op">,</span> G<span class="op">,</span> B<span class="op">);</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Lab2Rgb<span class="op">(&amp;</span>R<span class="op">,</span> <span class="op">&amp;</span>G<span class="op">,</span> <span class="op">&amp;</span>B<span class="op">,</span> L<span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>

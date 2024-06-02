@@ -9,7 +9,7 @@
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -95,40 +95,53 @@ examples</h1>
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#overview">Overview</a>
+<li><a href="#overview" id="toc-overview">Overview</a>
 <ul>
-<li><a href="#license">License</a></li>
+<li><a href="#license" id="toc-license">License</a></li>
 </ul></li>
-<li><a href="#simple-macros">Simple macros</a>
+<li><a href="#simple-macros" id="toc-simple-macros">Simple macros</a>
 <ul>
-<li><a href="#additional-macros">Additional macros</a></li>
-<li><a href="#send_string">SEND_STRING</a></li>
+<li><a href="#additional-macros" id="toc-additional-macros">Additional
+macros</a></li>
+<li><a href="#send_string" id="toc-send_string">SEND_STRING</a></li>
 </ul></li>
-<li><a href="#process_record_user-in-depth">process_record_user() in
+<li><a href="#process_record_user-in-depth"
+id="toc-process_record_user-in-depth">process_record_user() in
 depth</a></li>
-<li><a href="#macros-that-respond-to-mods">Macros that respond to
-mods</a>
+<li><a href="#macros-that-respond-to-mods"
+id="toc-macros-that-respond-to-mods">Macros that respond to mods</a>
 <ul>
-<li><a href="#arrow-macro-types---or">Arrow macro, types -&gt; or
+<li><a href="#arrow-macro-types---or"
+id="toc-arrow-macro-types---or">Arrow macro, types -&gt; or
 =&gt;</a></li>
-<li><a href="#braces-macro-types-or">Braces macro, types [], {}, or
+<li><a href="#braces-macro-types-or"
+id="toc-braces-macro-types-or">Braces macro, types [], {}, or
 &lt;&gt;</a></li>
-<li><a href="#custom-shift-keys">Custom shift keys</a></li>
+<li><a href="#custom-shift-keys" id="toc-custom-shift-keys">Custom shift
+keys</a></li>
 </ul></li>
-<li><a href="#macros-with-special-keys">Macros with special keys</a>
+<li><a href="#macros-with-special-keys"
+id="toc-macros-with-special-keys">Macros with special keys</a>
 <ul>
-<li><a href="#mouse-double-click">Mouse double click</a></li>
-<li><a href="#select-word-macro">Select word macro</a></li>
-<li><a href="#select-line-macro">Select line macro</a></li>
-<li><a href="#web-search-for-current-selection">Web search for current
+<li><a href="#mouse-double-click" id="toc-mouse-double-click">Mouse
+double click</a></li>
+<li><a href="#select-word-macro" id="toc-select-word-macro">Select word
+macro</a></li>
+<li><a href="#select-line-macro" id="toc-select-line-macro">Select line
+macro</a></li>
+<li><a href="#web-search-for-current-selection"
+id="toc-web-search-for-current-selection">Web search for current
 selection</a></li>
-<li><a href="#join-lines">Join lines</a></li>
+<li><a href="#join-lines" id="toc-join-lines">Join lines</a></li>
 </ul></li>
-<li><a href="#other-cool-ideas">Other cool ideas</a>
+<li><a href="#other-cool-ideas" id="toc-other-cool-ideas">Other cool
+ideas</a>
 <ul>
-<li><a href="#next-sentence-macro">Next sentence macro</a></li>
-<li><a href="#multi-codepoint-emoji">Multi-codepoint emoji</a></li>
-<li><a href="#more-macros">More macros</a></li>
+<li><a href="#next-sentence-macro" id="toc-next-sentence-macro">Next
+sentence macro</a></li>
+<li><a href="#multi-codepoint-emoji"
+id="toc-multi-codepoint-emoji">Multi-codepoint emoji</a></li>
+<li><a href="#more-macros" id="toc-more-macros">More macros</a></li>
 </ul></li>
 </ul>
 </div>
@@ -196,12 +209,12 @@ these buttons:</p>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;../&quot;</span><span class="op">);</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p>See also the <a href="https://docs.qmk.fm/#/feature_macros">QMK
-macros documentation</a>.</p>
+<p>See also the <a href="https://docs.qmk.fm/feature_macros">QMK macros
+documentation</a>.</p>
 <p>With the above implementation, pressing the <kbd>UPDIR</kbd> button
 on the keyboard has the effect of typing <code>../</code>, for “up
 directory” when in the terminal. This is my favorite macro! I can mash
@@ -226,21 +239,21 @@ manually.</p>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;../&quot;</span><span class="op">);</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> EQ3X<span class="op">:</span>  <span class="co">// Types triple equal ===</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;===&quot;</span><span class="op">);</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="send_string">SEND_STRING</h3>
 <p>Use <a
-href="https://docs.qmk.fm/#/feature_send_string">SEND_STRING</a> to type
+href="https://docs.qmk.fm/features/send_string">SEND_STRING</a> to type
 a sequence of keys when the macro button is pressed. You can use this to
 blast out programming syntax like <code>-&gt;</code> or <code>===</code>
 or patterns in the languages you use. For instance, typing the C++ scope
@@ -262,8 +275,8 @@ href="../faqs/index.html#send_string-doesnt-work-qmk">SEND_STRING
 doesn’t work</a> for troubleshooting tips.</p>
 <p>You can also use <code>tap_code(kc)</code> to tap an individual key,
 where <code>kc</code> is a <a
-href="https://docs.qmk.fm/#/keycodes_basic">basic keycode</a>. Or for
-even finer grained control, <code>register_code(kc)</code> and
+href="https://docs.qmk.fm/keycodes_basic">basic keycode</a>. Or for even
+finer grained control, <code>register_code(kc)</code> and
 <code>unregister_code(kc)</code> to respectively press down and release
 a key.</p>
 <section id="process_record_user-in-depth">
@@ -278,7 +291,7 @@ process record user in depth
 <code>process_record_user()</code> function is.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Macros...</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p><strong>The big picture:</strong> QMK’s main loop scans the key
 matrix to watch for changes. When a button is pressed or released, a
@@ -289,7 +302,7 @@ each feature a chance to react. Additionally, handlers may return
 <code>false</code> to block later handlers from running. The
 <code>process_record_user()</code> function is one such handler in the
 pipeline, enabling user code to customize what happens. See also the <a
-href="https://docs.qmk.fm/#/understanding_qmk">Understanding QMK</a>
+href="https://docs.qmk.fm/understanding_qmk">Understanding QMK</a>
 documentation page.</p>
 <p><strong>Function arguments:</strong> The <code>keycode</code> arg is
 the keycode as in your keymap that was pressed or released, like
@@ -301,19 +314,19 @@ press (key down), and false if it is a release (key up). In the example
 above, we only take action on the press event.</li>
 <li><code>record-&gt;event.time</code> is a 16-bit timestamp of when the
 event occurred, used for timing effects (see also <a
-href="https://docs.qmk.fm/#/ref_functions?id=software-timers">Software
+href="https://docs.qmk.fm/ref_functions#software-timers">Software
 Timers</a> and <a
-href="https://docs.qmk.fm/#/custom_quantum_functions?id=deferred-execution">Deferred
+href="https://docs.qmk.fm/custom_quantum_functions#deferred-execution">Deferred
 Execution</a>).</li>
 <li><code>record-&gt;event.key.row</code> and
 <code>record-&gt;event.key.col</code> are the matrix position of the
 key, counting from 0.</li>
 <li>If the event comes from a <a
-href="https://docs.qmk.fm/#/mod_tap">mod-tap</a> (<code>MT</code>) or
+href="https://docs.qmk.fm/mod_tap">mod-tap</a> (<code>MT</code>) or
 layer-tap (<code>LT</code>) key, then <code>record-&gt;tap.count</code>
 is zero if the key is considered held, otherwise it is considered tapped
 (see also <a
-href="https://docs.qmk.fm/#/mod_tap?id=intercepting-mod-taps">Intercepting
+href="https://docs.qmk.fm/mod_tap#intercepting-mod-taps">Intercepting
 Mod-Taps</a> and <a href="../achordion/index.html">Achordion</a>).</li>
 </ul>
 <p><strong>Return value:</strong> The return value from
@@ -329,14 +342,14 @@ so that QMK handles the event.</p>
 <li><code>get_mods()</code> returns a bitfield of which modifiers are
 currently active, and similarly <code>get_oneshot_mods()</code> for
 one-shot modifiers (see also <a
-href="https://docs.qmk.fm/#/feature_advanced_keycodes?id=checking-modifier-state">Checking
+href="https://docs.qmk.fm/feature_advanced_keycodes?id=checking-modifier-state">Checking
 Modifier State</a> and the next section, <a
 href="#macros-that-respond-to-mods">Macros that respond to
 mods</a>).</li>
 <li><code>IS_LAYER_ON(layer)</code> returns whether <code>layer</code>
 is currently on, and <code>get_highest_layer(layer_state)</code> returns
 the highest layer that is currently on (see also <a
-href="https://docs.qmk.fm/#/feature_layers?id=functions">Working with
+href="https://docs.qmk.fm/feature_layers?id=functions">Working with
 Layers</a>).</li>
 </ul>
 <h2 id="macros-that-respond-to-mods">Macros that respond to mods</h2>
@@ -363,7 +376,7 @@ itself types <code>-&gt;</code>.</p>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        SEND_STRING<span class="op">(</span><span class="st">&quot;-&gt;&quot;</span><span class="op">);</span></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The tricky part is that Shift or any other active mods will apply to
 the keys sent by <code>SEND_STRING</code>. Without treatment, the Shift
@@ -401,7 +414,7 @@ curly braces <code>{}</code>. Or with Ctrl, it does angle brackets
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>      tap_code<span class="op">(</span>KC_LEFT<span class="op">);</span>  <span class="co">// Move cursor between braces.</span></span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>      register_mods<span class="op">(</span>mods<span class="op">);</span>  <span class="co">// Restore mods.</span></span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="custom-shift-keys">Custom shift keys</h3>
 <p>An especially handy use of <code>get_mods()</code> is to change what
@@ -428,7 +441,7 @@ elsewhere.</p>
 </ul>
 <p>A few examples are described next.</p>
 <h3 id="mouse-double-click">Mouse double click</h3>
-<p>Enable <a href="https://docs.qmk.fm/#/feature_mouse_keys">Mouse
+<p>Enable <a href="https://docs.qmk.fm/features/mouse_keys">Mouse
 Keys</a> for this macro with <code>MOUSEKEY_ENABLE = yes</code> in
 rules.mk.</p>
 <p>This macro double clicks the left mouse button:</p>
@@ -436,7 +449,7 @@ rules.mk.</p>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_TAP<span class="op">(</span>X_BTN1<span class="op">)</span> SS_DELAY<span class="op">(</span><span class="dv">50</span><span class="op">)</span> SS_TAP<span class="op">(</span>X_BTN1<span class="op">));</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span></code></pre></div>
 <p>The OS might debounce and ignore a double click that is too fast. To
 prevent this, the <code>SS_DELAY(50)</code> defines a delay in
 milliseconds between the clicks.</p>
@@ -453,7 +466,7 @@ select to the beginning of the word:</p>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mac users, change LCTL to LALT:</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// SEND_STRING(SS_LALT(SS_TAP(X_RGHT) SS_LSFT(SS_TAP(X_LEFT))));</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span></code></pre></div>
 <p>See also my <a href="../select-word/index.html">Word Selection</a>
 post for an elaborated version of this macro.</p>
 <h3 id="select-line-macro">Select line macro</h3>
@@ -465,7 +478,7 @@ Shift+End:</p>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mac users, use:</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// SEND_STRING(SS_LCTL(&quot;a&quot; SS_LSFT(&quot;e&quot;)));</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span></code></pre></div>
 <h3 id="web-search-for-current-selection">Web search for current
 selection</h3>
 <p>Suppose you are in a web browser and have selected some text. This
@@ -476,7 +489,7 @@ tab.</p>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Mac users, change LCTL to LGUI.</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span>SS_LCTL<span class="op">(</span><span class="st">&quot;ct&quot;</span><span class="op">)</span> SS_DELAY<span class="op">(</span><span class="dv">100</span><span class="op">)</span> SS_LCTL<span class="op">(</span><span class="st">&quot;v&quot;</span><span class="op">)</span> SS_TAP<span class="op">(</span>X_ENTER<span class="op">));</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span></code></pre></div>
 <p>In detail, it copies the selection (Ctrl+C), opens a new tab
 (Ctrl+T), pastes the selection into the omnibar (Ctrl+V), and finally
 taps enter to do the search. Since the browser might need a moment to
@@ -503,7 +516,7 @@ space:</p>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Replace the selection with a single space.</span></span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        SS_TAP<span class="op">(</span>X_SPC<span class="op">));</span></span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span></code></pre></div>
 <p><strong>Note:</strong> I’ve noticed slight differences between text
 editors in how hotkeys work at the end of the line. This macro might
 produce incorrect results in some editors.</p>
@@ -515,7 +528,7 @@ keymap</a>, here is a “next sentence” macro. This is useful to flow
 between sentences. Having tried it, I admit it takes some practice to
 incorporate into your typing habits, but it packs a satisfying amount of
 action into a single button press. The macro types a period, space, then
-sets a <a href="https://docs.qmk.fm/#/one_shot_keys">one-shot mod</a> so
+sets a <a href="https://docs.qmk.fm/one_shot_keys">one-shot mod</a> so
 that the next key typed is shifted, to capitalize the first letter of
 the next sentence:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> NEXTSEN<span class="op">:</span>  <span class="co">// Next sentence macro.</span></span>
@@ -523,7 +536,7 @@ the next sentence:</p>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    SEND_STRING<span class="op">(</span><span class="st">&quot;. &quot;</span><span class="op">);</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    add_oneshot_mods<span class="op">(</span>MOD_BIT<span class="op">(</span>KC_LSFT<span class="op">));</span>  <span class="co">// Set one-shot mod for shift.</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span></code></pre></div>
 <p>See also the approach taken in <a
 href="https://github.com/precondition/dactyl-manuform-keymap">precondition’s
 keymap</a>: there, the next sentence is triggered by double tapping the
@@ -534,7 +547,7 @@ automatically.</p>
 <h3 id="multi-codepoint-emoji">Multi-codepoint emoji</h3>
 <p>Enable a Unicode input method for this macro, either Basic Unicode,
 Unicode Map, or UCIS; see <a
-href="https://docs.qmk.fm/#/feature_unicode">Unicode Support</a>. See
+href="https://docs.qmk.fm/features/unicode">Unicode Support</a>. See
 also <a href="../non-english/index.html">Typing non-English
 letters</a>.</p>
 <p><a href="https://docs.juliaebert.com/projects/keyboard">Julia Ebert’s
@@ -548,7 +561,7 @@ implement it as a macro. The following types a US flag emoji 🇺🇸
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// write the UTF-8 encoding of U+1F1FA, U+1F1F8:</span></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// send_unicode_string(&quot;\xf0\x9f\x87\xba\xf0\x9f\x87\xb8&quot;);</span></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span></code></pre></div>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span></code></pre></div>
 <h3 id="more-macros">More macros</h3>
 <p>See the following posts in this series:</p>
 <ul>

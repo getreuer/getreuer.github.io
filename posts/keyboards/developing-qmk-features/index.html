@@ -9,7 +9,7 @@
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -94,37 +94,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#overview">Overview</a>
+<li><a href="#overview" id="toc-overview">Overview</a>
 <ul>
-<li><a href="#license">License</a></li>
+<li><a href="#license" id="toc-license">License</a></li>
 </ul></li>
-<li><a href="#userspace-features">Userspace features</a>
+<li><a href="#userspace-features" id="toc-userspace-features">Userspace
+features</a>
 <ul>
-<li><a href="#feature-skeleton">Feature skeleton</a></li>
-<li><a href="#user-instructions">User instructions</a></li>
+<li><a href="#feature-skeleton" id="toc-feature-skeleton">Feature
+skeleton</a></li>
+<li><a href="#user-instructions" id="toc-user-instructions">User
+instructions</a></li>
 </ul></li>
-<li><a href="#qmk-core-features">QMK core features</a>
+<li><a href="#qmk-core-features" id="toc-qmk-core-features">QMK core
+features</a>
 <ul>
-<li><a href="#how-to-contribute-a-core-feature">How to contribute a core
+<li><a href="#how-to-contribute-a-core-feature"
+id="toc-how-to-contribute-a-core-feature">How to contribute a core
 feature</a></li>
-<li><a href="#past-feature-prs">Past feature PRs</a></li>
+<li><a href="#past-feature-prs" id="toc-past-feature-prs">Past feature
+PRs</a></li>
 </ul></li>
-<li><a href="#exposing-options">Exposing options</a>
+<li><a href="#exposing-options" id="toc-exposing-options">Exposing
+options</a>
 <ul>
-<li><a href="#preprocessor-constants">Preprocessor constants</a></li>
-<li><a href="#callbacks">Callbacks</a></li>
-<li><a href="#global-config-variable">Global config variable</a></li>
+<li><a href="#preprocessor-constants"
+id="toc-preprocessor-constants">Preprocessor constants</a></li>
+<li><a href="#callbacks" id="toc-callbacks">Callbacks</a></li>
+<li><a href="#global-config-variable"
+id="toc-global-config-variable">Global config variable</a></li>
 </ul></li>
-<li><a href="#diagnostics">Diagnostics</a>
+<li><a href="#diagnostics" id="toc-diagnostics">Diagnostics</a>
 <ul>
-<li><a href="#debug-console">Debug console</a></li>
-<li><a href="#alternative-typing-out-debug-messages">Alternative: typing
-out debug messages</a></li>
-<li><a
-href="#corresponding-physical-keys-to-matrix-positions">Corresponding
+<li><a href="#debug-console" id="toc-debug-console">Debug
+console</a></li>
+<li><a href="#alternative-typing-out-debug-messages"
+id="toc-alternative-typing-out-debug-messages">Alternative: typing out
+debug messages</a></li>
+<li><a href="#corresponding-physical-keys-to-matrix-positions"
+id="toc-corresponding-physical-keys-to-matrix-positions">Corresponding
 physical keys to matrix positions</a></li>
 </ul></li>
-<li><a href="#closing">Closing</a></li>
+<li><a href="#closing" id="toc-closing">Closing</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
@@ -219,9 +230,9 @@ call the handler and task function.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/cool.h&quot;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="op">(!</span>process_cool<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> false<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="op">(!</span>process_cool<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a> <span class="co">// Other macros ...</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a> <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a> <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
@@ -229,7 +240,7 @@ call the handler and task function.</p>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a> <span class="co">// Other tasks...</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p><strong>Step 2:</strong> In the user’s rules.mk, add</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC </span><span class="ch">+=</span><span class="st"> features/cool.c</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC</span> <span class="ch">+=</span><span class="st"> features/cool.c</span></span></code></pre></div>
 <p><strong>Step 3:</strong> In the directory containing keymap.c, create
 a “features” subdirectory and copy cool.h and cool.c there.</p>
 <h2 id="qmk-core-features">QMK core features</h2>
@@ -238,7 +249,7 @@ listed under the “Advanced keycodes” and “Software features” sections of
 <a href="https://docs.qmk.fm/">QMK’s documentation</a>. Implementation
 of core features follows similar patterns as those described in the
 previous section. For example, you can see how <a
-href="https://docs.qmk.fm/#/feature_repeat_key">Repeat Key</a> was added
+href="https://docs.qmk.fm/features/repeat_key">Repeat Key</a> was added
 as a core feature <a
 href="https://github.com/qmk/qmk_firmware/pull/19700/files">in this pull
 request</a>.</p>
@@ -264,12 +275,12 @@ href="https://github.com/qmk/qmk_firmware/tree/master/tests">tests/</a>).
 Check how the feature operates when used in combination with other
 features.</p></li>
 <li><p><strong>Pull request (PR)</strong>: Read <a
-href="https://docs.qmk.fm/#/contributing">Contributing to QMK</a> and <a
-href="https://docs.qmk.fm/#/pr_checklist">QMK’s PR checklist</a>. Submit
-a PR to merge into the <code>develop</code> branch. Be patient. Review
+href="https://docs.qmk.fm/contributing">Contributing to QMK</a> and <a
+href="https://docs.qmk.fm/pr_checklist">QMK’s PR checklist</a>. Submit a
+PR to merge into the <code>develop</code> branch. Be patient. Review
 often takes a few months.</p></li>
 <li><p><strong>Release</strong>: <a
-href="https://docs.qmk.fm/#/breaking_changes_history">Breaking
+href="https://docs.qmk.fm/breaking_changes_history">Breaking
 changes</a>, including any new core features, are made first on
 <code>develop</code>, then released four times a year when
 <code>develop</code> is merged into <code>master</code>.</p></li>
@@ -307,7 +318,7 @@ some common patterns to do that.</p>
 <h3 id="preprocessor-constants">Preprocessor constants</h3>
 <p>Let the user <code>#define</code> options in their config.h:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// In config.h</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define COOL_TIMEOUT_MS 5000</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define COOL_TIMEOUT_MS </span><span class="dv">5000</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">// In features/cool.c</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifdef COOL_TIMEOUT_MS</span></span>
@@ -316,20 +327,20 @@ some common patterns to do that.</p>
 <p>This fits well for boolean enabled/disabled options as well as
 timeouts and other numeric options. For a real example, see for instance
 Caps Word’s <a
-href="https://docs.qmk.fm/#/feature_caps_word?id=invert-on-shift">CAPS_WORD_INVERT_ON_SHIFT</a>
+href="https://docs.qmk.fm/features/caps_word#invert-on-shift">CAPS_WORD_INVERT_ON_SHIFT</a>
 (boolean) and <a
-href="https://docs.qmk.fm/#/feature_caps_word?id=idle-timeout">CAPS_WORD_IDLE_TIMEOUT</a>
+href="https://docs.qmk.fm/features/caps_word#idle-timeout">CAPS_WORD_IDLE_TIMEOUT</a>
 (numeric).</p>
 <p>Preprocessor options can also be used for lists of values:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// In config.h</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define COOL_SEQUENCE {3, 1, 4, 1, 5, 9}</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define COOL_SEQUENCE </span><span class="op">{</span><span class="dv">3</span><span class="op">,</span><span class="pp"> </span><span class="dv">1</span><span class="op">,</span><span class="pp"> </span><span class="dv">4</span><span class="op">,</span><span class="pp"> </span><span class="dv">1</span><span class="op">,</span><span class="pp"> </span><span class="dv">5</span><span class="op">,</span><span class="pp"> </span><span class="dv">9</span><span class="op">}</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">// In features/cool.c</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">uint8_t</span> sequence<span class="op">[]</span> <span class="op">=</span> COOL_SEQUENCE<span class="op">;</span></span></code></pre></div>
 <p>The Unicode feature’s <a
-href="https://docs.qmk.fm/#/feature_unicode?id=input-modes">UNICODE_SELECTED_MODES</a>
+href="https://docs.qmk.fm/features/unicode#input-modes">UNICODE_SELECTED_MODES</a>
 and Secure feature’s <a
-href="https://docs.qmk.fm/#/feature_secure?id=configuration">SECURE_UNLOCK_SEQUENCE</a>
+href="https://docs.qmk.fm/features/secure#configuration">SECURE_UNLOCK_SEQUENCE</a>
 work this way.</p>
 <h3 id="callbacks">Callbacks</h3>
 <p>Let the user define a callback for deeper customization:</p>
@@ -339,7 +350,7 @@ work this way.</p>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">// In features/cool.c</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>__attribute__<span class="op">((</span>weak<span class="op">))</span> <span class="dt">bool</span> cool_enabled_for_key<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// By default, enable for all keys.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// By default, enable for all keys.</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">// In keymap.c</span></span>
@@ -353,10 +364,10 @@ allows us to make a default definition of the callback that the user may
 optionally override by making their own redefinition in keymap.c.</p>
 <p>Callbacks are useful to customize per-key behavior, like Caps Word’s
 <a
-href="https://docs.qmk.fm/#/feature_caps_word?id=configure-which-keys-are-word-breaking">caps_word_press_user()</a>
+href="https://docs.qmk.fm/features/caps_word#configure-which-keys-are-word-breaking">caps_word_press_user()</a>
 to define which keycodes are word breaking. Callbacks can also enable
 the user to react to feature events, like Caps Word’s <a
-href="https://docs.qmk.fm/#/feature_caps_word?id=representing-caps-word-state">caps_word_set_user()</a>
+href="https://docs.qmk.fm/features/caps_word#representing-caps-word-state">caps_word_set_user()</a>
 to react to when Caps Word turns on or off.</p>
 <h3 id="global-config-variable">Global config variable</h3>
 <p>Have the user define configurations in a global variable:</p>
@@ -372,7 +383,7 @@ to react to when Caps Word turns on or off.</p>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>cool_keycode <span class="op">=</span> COOL_KEY<span class="op">,</span></span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>cool_layer <span class="op">=</span> COOL_LAYER<span class="op">,</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
-<p>For example the <a href="https://docs.qmk.fm/#/feature_combo">Combos
+<p>For example the <a href="https://docs.qmk.fm/features/combo">Combos
 feature</a> uses this pattern for its <code>combo_t key_combos[]</code>
 array.</p>
 <h2 id="diagnostics">Diagnostics</h2>
@@ -380,19 +391,19 @@ array.</p>
 of development. This section describes methods for outputting debug
 messages.</p>
 <h3 id="debug-console">Debug console</h3>
-<p>QMK has a <a href="https://docs.qmk.fm/#/faq_debug">Console
-feature</a> to output debug information, which can be extremely helpful.
-How to use it:</p>
+<p>QMK has a <a href="https://docs.qmk.fm/faq_debug">Console feature</a>
+to output debug information, which can be extremely helpful. How to use
+it:</p>
 <ol type="1">
 <li><p>Enable it by adding in rules.mk:</p>
 <div class="sourceCode" id="cb11"><pre
-class="sourceCode mk"><code class="sourceCode makefile"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">CONSOLE_ENABLE </span><span class="ch">=</span><span class="st"> yes</span></span></code></pre></div></li>
+class="sourceCode mk"><code class="sourceCode makefile"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">CONSOLE_ENABLE</span> <span class="ch">=</span><span class="st"> yes</span></span></code></pre></div></li>
 <li><p>Add a <code>DB_TOGG</code> key to your keymap to enable debug
 mode.</p></li>
 <li><p>To print your own console messages, add</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;print.h&quot;</span></span></code></pre></div>
 <p>at the top of keymap.c and print formatted messages with</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dprintf<span class="op">(</span><span class="st">&quot;%s string&quot;</span><span class="op">,</span> var<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dprintf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%s</span><span class="st"> string&quot;</span><span class="op">,</span> var<span class="op">);</span></span></code></pre></div>
 <p>Note that this API does not support all the format specifiers of
 standard <code>printf()</code>. For instance, uppercase hex
 <code>%04X</code> works, but lowercase <code>%04x</code> does
@@ -400,12 +411,12 @@ not.</p></li>
 <li><p>Software is needed on the host computer to listen for the console
 messages. Use either the <a
 href="https://github.com/qmk/qmk_toolbox">QMK Toolbox</a>, the <a
-href="https://docs.qmk.fm/#/cli_commands?id=qmk-console">qmk console</a>
+href="https://docs.qmk.fm/cli_commands#qmk-console">qmk console</a>
 command, or <a
-href="https://docs.qmk.fm/#/faq_debug?id=debugging-with-hid_listen">hid_listen</a>.
+href="https://docs.qmk.fm/faq_debug#debugging-with-hid-listen">hid_listen</a>.
 Getting the listening software to recognize the device is finicky and
 may require system configuration. See the <a
-href="https://docs.qmk.fm/#/faq_debug">Console documentation</a> for
+href="https://docs.qmk.fm/faq_debug">Console documentation</a> for
 troubleshooting suggestions.</p></li>
 <li><p>Press <code>DB_TOGG</code>. This should show a message
 “<code>DEBUG: enabled</code>” and begin displaying your
@@ -464,13 +475,13 @@ often named like “<code>K</code><em>rowcol</em>.” For example, the
 Auorora65 keyboard has the following <code>LAYOUT</code> macro (from <a
 href="https://github.com/qmk/qmk_firmware/blob/master/keyboards/aurora65/aurora65.h">keyboards/aurora65/aurora65.h</a>):</p>
 <div class="sourceCode" id="cb17"><pre
-class="sourceCode .c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LAYOUT_65_ansi_blocker( \</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="pp">K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, K0A, K0B, K0C, K0D, K0E,\</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="pp">K10, K11, K12, K13, K14, K15, K16, K17, K18, K19, K1A, K1B, K1C, K2C, K1E,\</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="pp">K20, K21, K22, K23, K24, K25, K26, K27, K28, K29, K2A, K2B,      K2D, K2E,\</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="pp">K30,      K32, K33, K34, K35, K36, K37, K38, K39, K3A, K3B, K3C, K3D, K3E,\</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="pp">K40, K41, K42,                K46,                K49, K4B, K4C, K4D, K4E \</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="pp">)</span></span></code></pre></div>
+class="sourceCode .c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LAYOUT_65_ansi_blocker</span><span class="op">(</span><span class="pp"> </span><span class="op">\</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="pp">K00</span><span class="op">,</span><span class="pp"> K01</span><span class="op">,</span><span class="pp"> K02</span><span class="op">,</span><span class="pp"> K03</span><span class="op">,</span><span class="pp"> K04</span><span class="op">,</span><span class="pp"> K05</span><span class="op">,</span><span class="pp"> K06</span><span class="op">,</span><span class="pp"> K07</span><span class="op">,</span><span class="pp"> K08</span><span class="op">,</span><span class="pp"> K09</span><span class="op">,</span><span class="pp"> K0A</span><span class="op">,</span><span class="pp"> K0B</span><span class="op">,</span><span class="pp"> K0C</span><span class="op">,</span><span class="pp"> K0D</span><span class="op">,</span><span class="pp"> K0E</span><span class="op">,\</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="pp">K10</span><span class="op">,</span><span class="pp"> K11</span><span class="op">,</span><span class="pp"> K12</span><span class="op">,</span><span class="pp"> K13</span><span class="op">,</span><span class="pp"> K14</span><span class="op">,</span><span class="pp"> K15</span><span class="op">,</span><span class="pp"> K16</span><span class="op">,</span><span class="pp"> K17</span><span class="op">,</span><span class="pp"> K18</span><span class="op">,</span><span class="pp"> K19</span><span class="op">,</span><span class="pp"> K1A</span><span class="op">,</span><span class="pp"> K1B</span><span class="op">,</span><span class="pp"> K1C</span><span class="op">,</span><span class="pp"> K2C</span><span class="op">,</span><span class="pp"> K1E</span><span class="op">,\</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="pp">K20</span><span class="op">,</span><span class="pp"> K21</span><span class="op">,</span><span class="pp"> K22</span><span class="op">,</span><span class="pp"> K23</span><span class="op">,</span><span class="pp"> K24</span><span class="op">,</span><span class="pp"> K25</span><span class="op">,</span><span class="pp"> K26</span><span class="op">,</span><span class="pp"> K27</span><span class="op">,</span><span class="pp"> K28</span><span class="op">,</span><span class="pp"> K29</span><span class="op">,</span><span class="pp"> K2A</span><span class="op">,</span><span class="pp"> K2B</span><span class="op">,</span><span class="pp">      K2D</span><span class="op">,</span><span class="pp"> K2E</span><span class="op">,\</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="pp">K30</span><span class="op">,</span><span class="pp">      K32</span><span class="op">,</span><span class="pp"> K33</span><span class="op">,</span><span class="pp"> K34</span><span class="op">,</span><span class="pp"> K35</span><span class="op">,</span><span class="pp"> K36</span><span class="op">,</span><span class="pp"> K37</span><span class="op">,</span><span class="pp"> K38</span><span class="op">,</span><span class="pp"> K39</span><span class="op">,</span><span class="pp"> K3A</span><span class="op">,</span><span class="pp"> K3B</span><span class="op">,</span><span class="pp"> K3C</span><span class="op">,</span><span class="pp"> K3D</span><span class="op">,</span><span class="pp"> K3E</span><span class="op">,\</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="pp">K40</span><span class="op">,</span><span class="pp"> K41</span><span class="op">,</span><span class="pp"> K42</span><span class="op">,</span><span class="pp">                K46</span><span class="op">,</span><span class="pp">                K49</span><span class="op">,</span><span class="pp"> K4B</span><span class="op">,</span><span class="pp"> K4C</span><span class="op">,</span><span class="pp"> K4D</span><span class="op">,</span><span class="pp"> K4E </span><span class="op">\</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span></code></pre></div>
 <p>Below is a graphical representation. Note the unused matrix positions
 and irregularities around wide keys:</p>
 <p><img src="aurora65-matrix.svg" /></p>
@@ -481,17 +492,17 @@ Charybdis:</p>
 <p><img src="charybdis-matrix.svg" /></p>
 <p>One way to work out the matrix correspondence is to print matrix
 positions to the debug console (see also <a
-href="https://docs.qmk.fm/#/faq_debug?id=which-matrix-position-is-this-keypress">Which
+href="https://docs.qmk.fm/faq_debug#which-matrix-position-is-this-keypress">Which
 matrix position is this keypress?</a>). Enable Console as described
 above and add in <code>process_record_user()</code>:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t <span class="op">*</span>record<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// On every key press, print the event&#39;s keycode and matrix position.</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    dprintf<span class="op">(</span><span class="st">&quot;kc=0x%04X, row=%2u, col=%2u</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    dprintf<span class="op">(</span><span class="st">&quot;kc=0x</span><span class="sc">%04X</span><span class="st">, row=</span><span class="sc">%2u</span><span class="st">, col=</span><span class="sc">%2u\n</span><span class="st">&quot;</span><span class="op">,</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        keycode<span class="op">,</span> record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>row<span class="op">,</span> record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>col<span class="op">);</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Alternatively, here is another way that works without Console. In
 keymap.c, add a custom keycode <code>INSPECT</code>, use it somewhere in
@@ -518,7 +529,7 @@ your layout, and add a handler for it in
 <span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The <code>INSPECT</code> key types out the keycode and position of
 the previous key. Tapping for instance the <kbd>W</kbd> key and then

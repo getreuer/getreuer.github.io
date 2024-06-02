@@ -9,7 +9,7 @@
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -94,11 +94,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#overview">Overview</a></li>
-<li><a href="#us-international-layout">US-International layout</a></li>
-<li><a href="#using-non-us-layouts">Using non-US layouts</a></li>
-<li><a href="#unicode-input">Unicode input</a></li>
-<li><a href="#appendix-unicode-codepoints">Appendix: Unicode
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#us-international-layout"
+id="toc-us-international-layout">US-International layout</a></li>
+<li><a href="#using-non-us-layouts" id="toc-using-non-us-layouts">Using
+non-US layouts</a></li>
+<li><a href="#unicode-input" id="toc-unicode-input">Unicode
+input</a></li>
+<li><a href="#appendix-unicode-codepoints"
+id="toc-appendix-unicode-codepoints">Appendix: Unicode
 codepoints</a></li>
 </ul>
 </div>
@@ -118,7 +122,7 @@ href="https://en.wikipedia.org/wiki/QWERTY#US-International">US-International
 layout</a>. You want to use US-International if possible, since with
 this layout you’ll still be able to refer to keys in QMK using the usual
 <a
-href="https://docs.qmk.fm/#/faq_keymap?id=what-are-the-default-keycodes">KC-prefixed
+href="https://docs.qmk.fm/faq_keymap#what-are-the-default-keycodes">KC-prefixed
 keycodes</a>. Beware that this is not the case for most other layouts,
 see <a href="#using-non-us-layouts">Using non-US layouts</a> below.</p>
 <p>At the top of your keymap.c, include the headers:</p>
@@ -211,12 +215,12 @@ non-English symbols. Use these <code>DE_</code> keycodes in your keymap
 instead of the <code>KC_</code> keycodes. The second header modifies
 <code>SEND_STRING</code> such that ASCII strings type correctly under
 the German layout. For further explanation, see <a
-href="https://docs.qmk.fm/#/feature_unicode?id=additional-language-support">Additional
+href="https://docs.qmk.fm/features/unicode?id=additional-language-support">Additional
 language support</a> and <a
-href="https://docs.qmk.fm/#/reference_keymap_extras?id=sendstring-support">Sendstring
+href="https://docs.qmk.fm/reference_keymap_extras#sendstring-support">Sendstring
 support</a>.</p>
 <p>See <a
-href="https://docs.qmk.fm/#/reference_keymap_extras?id=header-files">Language-specific
+href="https://docs.qmk.fm/reference_keymap_extras#header-files">Language-specific
 Keycodes</a> for the full list of such headers. See the headers
 themselves to find keycodes for the additional symbols a particular
 layout can type. For instance keymap_ukrainian.h defines
@@ -271,7 +275,7 @@ by the computer as typing <code>z</code>. Indeed, the German keycode
 <code>DE_Z</code> is an alias of <code>KC_Y</code>.</p>
 <h2 id="unicode-input">Unicode input</h2>
 <p>An entirely different approach to typing non-English characters is
-through QMK’s <a href="https://docs.qmk.fm/#/feature_unicode">Unicode
+through QMK’s <a href="https://docs.qmk.fm/features/unicode">Unicode
 input feature</a>. This can type letters from any language, math
 symbols, arrows, emojis, and other Unicode symbols.</p>
 <p>To give fair warning, the implementation is a hack. Each major OS has
@@ -281,10 +285,10 @@ can be typed as “Ctrl+Shift+U, 5, 9, 7, D, space.” QMK literally sends
 such a key sequence to type each Unicode character. Consequently:</p>
 <ul>
 <li><p>You need to configure which <a
-href="https://docs.qmk.fm/#/feature_unicode?id=input-modes">Unicode
-input method</a> QMK should use, since the exact key sequence needed
-depends on the OS. This is fussy if you regularly use your keyboard with
-more than one OS. Additionally on Windows, you need to either install <a
+href="https://docs.qmk.fm/features/unicode#input-modes">Unicode input
+mode</a> QMK should use, since the exact key sequence needed depends on
+the OS. This is fussy if you regularly use your keyboard with more than
+one OS. Additionally on Windows, you need to either install <a
 href="https://github.com/samhocevar/wincompose">WinCompose</a> or make a
 registry edit to enable Unicode input.</p></li>
 <li><p>There is often a visible flicker of digits on the screen as a
@@ -295,9 +299,9 @@ Unicode input does not automatically capitalize the symbol. To make a
 shift-able symbol key, you need to tell QMK explicitly which Unicode
 codepoint to send when shifted.</p>
 <p>That said, it does work. Here is how to set it up. One further
-complication is that QMK has not one but three Unicode implementations.
-I’ll describe <a
-href="https://docs.qmk.fm/#/feature_unicode?id=unicode-map">Unicode
+complication is that QMK has not one but three Unicode “input
+subsystems.” I’ll describe <a
+href="https://docs.qmk.fm/features/unicode#input-subsystems">Unicode
 Map</a>, since it has a convenient method for defining shift-able
 symbols.</p>
 <p><strong>Step 1.</strong> In rules.mk, add</p>
@@ -310,10 +314,10 @@ For Linux, use <code>UNICODE_MODE_LINUX</code>. For Windows, use
 href="https://github.com/samhocevar/wincompose">WinCompose</a>. It is
 also possible to list multiple methods here, useful if you use your
 keyboard with more than one OS. See the <a
-href="https://docs.qmk.fm/#/feature_unicode?id=input-modes">Unicode
-input method</a> documentation for further details.</p>
+href="https://docs.qmk.fm/features/unicode#input-modes">Unicode input
+modes</a> documentation for further details.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Set Unicode input method for Linux.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define UNICODE_SELECTED_MODES UNICODE_MODE_LINUX</span></span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define UNICODE_SELECTED_MODES </span>UNICODE_MODE_LINUX</span></code></pre></div>
 <p><strong>Step 3.</strong> In keymap.c, define the
 <code>unicode_map</code> array, which lists the Unicode codepoint for
 each symbol you want to use. For shift-able symbols, define both the
@@ -347,13 +351,13 @@ them here with <code>0x</code> prefix to make C hex constants.</p>
 unshifted and shifted symbols associated with the key. For ¿, let’s
 simply ignore shifting and use the <code>UM(i)</code> macro:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ß and ẞ keycode.</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_SS UP(U_SS_LOWER, U_SS_UPPER)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_SS </span>UP<span class="op">(</span>U_SS_LOWER<span class="op">,</span><span class="pp"> </span>U_SS_UPPER<span class="op">)</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">// ñ and Ñ keycode.</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_NTIL UP(U_NTIL_LOWER, U_NTIL_UPPER)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_NTIL </span>UP<span class="op">(</span>U_NTIL_LOWER<span class="op">,</span><span class="pp"> </span>U_NTIL_UPPER<span class="op">)</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">// ç and Ç keycode.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_CCED UP(U_CCED_LOWER, U_CCED_UPPER)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_CCED </span>UP<span class="op">(</span>U_CCED_LOWER<span class="op">,</span><span class="pp"> </span>U_CCED_UPPER<span class="op">)</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">// ¿ keycode.</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_IQUE UM(U_IQUE_SYM)</span></span></code></pre></div>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_IQUE </span>UM<span class="op">(</span>U_IQUE_SYM<span class="op">)</span></span></code></pre></div>
 <p><strong>Step 5.</strong> Finally, use the keycodes <code>U_SS</code>,
 <code>U_NTIL</code>, <code>U_CCED</code>, <code>U_IQUE</code> in your
 keymap.</p>

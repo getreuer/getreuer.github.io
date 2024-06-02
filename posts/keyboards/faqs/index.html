@@ -9,7 +9,7 @@
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -94,34 +94,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#meta-how-to-ask-for-help">Meta: How to ask for
-help</a></li>
-<li><a href="#keyboard-shopping-tips">Keyboard shopping tips</a></li>
-<li><a href="#how-long-to-get-used-to-a-split-columnar-keyboard">How
-long to get used to a split columnar keyboard?</a></li>
-<li><a href="#should-i-use-a-wrist-rest">Should I use a wrist
-rest?</a></li>
-<li><a href="#should-i-learn-how-to-touch-type">Should I learn how to
-touch type?</a></li>
-<li><a href="#i-type-xxx-wpm-is-that-fast">I type XXX wpm – Is that
+<li><a href="#meta-how-to-ask-for-help"
+id="toc-meta-how-to-ask-for-help">Meta: How to ask for help</a></li>
+<li><a href="#keyboard-shopping-tips"
+id="toc-keyboard-shopping-tips">Keyboard shopping tips</a></li>
+<li><a href="#how-long-to-get-used-to-a-split-columnar-keyboard"
+id="toc-how-long-to-get-used-to-a-split-columnar-keyboard">How long to
+get used to a split columnar keyboard?</a></li>
+<li><a href="#should-i-use-a-wrist-rest"
+id="toc-should-i-use-a-wrist-rest">Should I use a wrist rest?</a></li>
+<li><a href="#should-i-learn-how-to-touch-type"
+id="toc-should-i-learn-how-to-touch-type">Should I learn how to touch
+type?</a></li>
+<li><a href="#i-type-xxx-wpm-is-that-fast"
+id="toc-i-type-xxx-wpm-is-that-fast">I type XXX wpm – Is that
 fast?</a></li>
-<li><a href="#pressing-a-key-sometimes-types-it-twice">Pressing a key
+<li><a href="#pressing-a-key-sometimes-types-it-twice"
+id="toc-pressing-a-key-sometimes-types-it-twice">Pressing a key
 sometimes types it twice</a></li>
-<li><a href="#how-much-lag-do-custom-keyboards-have">How much lag do
-custom keyboards have?</a></li>
-<li><a href="#home-row-mods-are-hard-to-use">Home row mods are hard to
+<li><a href="#how-much-lag-do-custom-keyboards-have"
+id="toc-how-much-lag-do-custom-keyboards-have">How much lag do custom
+keyboards have?</a></li>
+<li><a href="#home-row-mods-are-hard-to-use"
+id="toc-home-row-mods-are-hard-to-use">Home row mods are hard to
 use</a></li>
-<li><a href="#firmware-is-too-large">Firmware is too large!</a></li>
-<li><a href="#mt-doesnt-work-with-this-keycode-qmk">MT doesn’t work with
-this keycode (QMK)</a></li>
-<li><a href="#how-to-type-non-english-letters-qmk">How to type
-non-English letters (QMK)</a></li>
-<li><a href="#some-keys-are-swapped-qmk">Some keys are swapped
+<li><a href="#firmware-is-too-large"
+id="toc-firmware-is-too-large">Firmware is too large!</a></li>
+<li><a href="#mt-doesnt-work-with-this-keycode-qmk"
+id="toc-mt-doesnt-work-with-this-keycode-qmk">MT doesn’t work with this
+keycode (QMK)</a></li>
+<li><a href="#how-to-type-non-english-letters-qmk"
+id="toc-how-to-type-non-english-letters-qmk">How to type non-English
+letters (QMK)</a></li>
+<li><a href="#some-keys-are-swapped-qmk"
+id="toc-some-keys-are-swapped-qmk">Some keys are swapped (QMK)</a></li>
+<li><a href="#send_string-doesnt-work-qmk"
+id="toc-send_string-doesnt-work-qmk">SEND_STRING doesn’t work
 (QMK)</a></li>
-<li><a href="#send_string-doesnt-work-qmk">SEND_STRING doesn’t work
+<li><a href="#what-is-this-weird-c-syntax-qmk"
+id="toc-what-is-this-weird-c-syntax-qmk">What is this weird C syntax
 (QMK)</a></li>
-<li><a href="#what-is-this-weird-c-syntax-qmk">What is this weird C
-syntax (QMK)</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
@@ -130,7 +142,7 @@ href="https://www.reddit.com/r/olkb/">r/olkb</a>, so I’ve collected some
 thoughts here. Each section includes a section link 🔗 for easy
 sharing.</p>
 <p>If you don’t find what you are looking for here, try also the <a
-href="https://docs.qmk.fm/#/faq_keymap">Keymap FAQ</a> in the QMK
+href="https://docs.qmk.fm/faq_keymap">Keymap FAQ</a> in the QMK
 documentation and <a href="../links/index.html">Links about
 keyboards</a>.</p>
 <h2 id="meta-how-to-ask-for-help">Meta: How to ask for help</h2>
@@ -377,12 +389,12 @@ filtering algorithms in software to “debounce” the button. (See the
 Related reading below for several algorithms.)</p>
 <ul>
 <li><p>For QMK firmware: see the <a
-href="https://docs.qmk.fm/#/feature_debounce_type">QMK debounce
+href="https://docs.qmk.fm/feature_debounce_type">QMK debounce
 documentation</a>. By default, QMK applies debouncing with a debounce
 time of 5 ms. Try increasing the debounce time to, say, 10 ms by adding
 in config.h:</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define DEBOUNCE 10</span></span></code></pre></div></li>
+class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define DEBOUNCE </span><span class="dv">10</span></span></code></pre></div></li>
 <li><p>For Oryx: in the Oryx configurator, click the gear ⚙️ in the
 upper right corner to open advanced settings, then click
 Debounce.</p></li>
@@ -450,7 +462,7 @@ changes. As a key is pressed, the electrical contacts typically make and
 breaking contact several times. By default, QMK debounces the signal by
 waiting for a debounce time of 5 ms, while some keyboards are configured
 for a longer debounce time. Setting an <a
-href="https://docs.qmk.fm/#/feature_debounce_type?id=types-of-debounce-algorithms">“eager”
+href="https://docs.qmk.fm/feature_debounce_type?id=types-of-debounce-algorithms">“eager”
 debouncing strategy</a> avoids this latency. You can also try reducing
 the debounce time, though beware that <a
 href="#pressing-a-key-sometimes-types-it-twice">keys might bounce</a> if
@@ -499,7 +511,7 @@ Corsair</a></p></li>
 <li><p><a
 href="https://www.rtings.com/keyboard/tests/latency">rtings.com – Our
 Keyboard Typing Experience Tests</a></p></li>
-<li><p><a href="https://docs.qmk.fm/#/how_keyboards_work">How Keys Are
+<li><p><a href="https://docs.qmk.fm/how_keyboards_work">How Keys Are
 Registered, and Interpreted by Computers</a></p></li>
 <li><p><a
 href="https://pcmonitors.info/articles/factors-affecting-pc-monitor-responsiveness">Factors
@@ -528,7 +540,7 @@ variations to mitigate these problems.</p>
 <ul>
 <li><p>For QMK firmware, I suggest starting with these settings in
 config.h:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM 200</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM </span><span class="dv">200</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PERMISSIVE_HOLD</span></span></code></pre></div>
 <p>See also my <a href="../achordion/index.html">Achordion library</a>,
 which prevents mods from firing on same-hand combinations of
@@ -548,12 +560,12 @@ Now I use home row mods with confidence.</p>
 <li><p><strong>Repeat a mod-tap key:</strong> A little known feature! If
 you quickly tap and then hold the key, its tap action is repeated. In
 QMK, this is enabled by default and disabled by setting <a
-href="https://docs.qmk.fm/#/tap_hold?id=quick-tap-term">QUICK_TAP_TERM</a>
-to zero. In ZMK, it is enabled with <a
+href="https://docs.qmk.fm/tap_hold#quick-tap-term">QUICK_TAP_TERM</a> to
+zero. In ZMK, it is enabled with <a
 href="https://zmk.dev/docs/behaviors/hold-tap/#quick-tap-ms">quick-tap-ms</a>.</p>
 <p>Or instead of tap-holding, use a repeat key (<a
-href="https://docs.qmk.fm/#/feature_repeat_key">Repeat key in QMK</a>,
-<a href="https://zmk.dev/docs/behaviors/key-repeat">Repeat key in
+href="https://docs.qmk.fm/features/repeat_key">Repeat key in QMK</a>, <a
+href="https://zmk.dev/docs/behaviors/key-repeat">Repeat key in
 ZMK</a>).</p></li>
 <li><p><strong>ALL_CAPS typing:</strong> Typing in all-caps is awkward
 with home row Shifts. Use a Caps Word implementation to get around this:
@@ -601,11 +613,11 @@ Extend layer</a>.</p></li>
 href="https://stevelosh.com/blog/2012/10/a-modern-space-cadet/#s17-shift-parentheses">Space
 Cadet Shift</a> makes the Shift mods dual-role keys, typing
 <code>(</code> and <code>)</code> when tapped quickly. <a
-href="https://docs.qmk.fm/#/feature_space_cadet">QMK’s Space Cadet
+href="https://docs.qmk.fm/features/space_cadet">QMK’s Space Cadet
 feature</a> elaborates this idea to the Ctrl and Alt keys.</p></li>
-<li><p>With <a href="https://docs.qmk.fm/#/feature_auto_shift">QMK’s
-Auto Shift</a>, long-pressing a key types the shifted version of the
-key. For ZMK, see the Autoshift example in the <a
+<li><p>With <a href="https://docs.qmk.fm/features/auto_shift">QMK’s Auto
+Shift</a>, long-pressing a key types the shifted version of the key. For
+ZMK, see the Autoshift example in the <a
 href="https://zmk.dev/docs/behaviors/hold-tap#example-use-cases">Hold-Tap
 use-cases</a> for similar behavior.</p></li>
 </ul>
@@ -623,42 +635,42 @@ are <a href="https://qmk.fm/proton-c/">Proton C</a> (STM32F303xC) with
 Blackpill</a> (STM32F411) with 512KB flash, and <a
 href="https://nicekeyboards.com/docs/nice-nano/">Nice Nano</a>
 (nRF52840) with 1MB flash. See also <a
-href="https://docs.qmk.fm/#/compatible_microcontrollers?id=compatible-microcontrollers">QMK
+href="https://docs.qmk.fm/compatible_microcontrollers?id=compatible-microcontrollers">QMK
 Compatible Microcontrollers</a> and <a
 href="https://zmk.dev/docs/hardware/">ZMK Supported Hardware</a>.</p>
 <p>Otherwise, you need to reduce the firmware size. The main
 contributors to firmware size are enabled features. By “feature,” I mean
 a behavior that can be independently enabled, like <a
-href="https://docs.qmk.fm/#/feature_mouse_keys">Mouse Keys</a> and <a
-href="https://docs.qmk.fm/#/feature_space_cadet">Space Cadet Shift</a>
-in QMK. Each enabled feature adds around 1000–4000 bytes, depending on
-what it is. So a good way to reduce firmware size is to cull unused and
+href="https://docs.qmk.fm/features/mouse_keys">Mouse Keys</a> and <a
+href="https://docs.qmk.fm/features/space_cadet">Space Cadet Shift</a> in
+QMK. Each enabled feature adds around 1000–4000 bytes, depending on what
+it is. So a good way to reduce firmware size is to cull unused and
 non-essential features.</p>
 <p><strong>Specific to QMK:</strong> Make sure to enable LTO (link-time
 optimization) in rules.mk:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">LTO_ENABLE</span> = yes</span></code></pre></div>
 <p>Firmware will take longer to build, but the result will be smaller.
 See <a
-href="https://docs.qmk.fm/#/squeezing_avr?id=squeezing-the-most-out-of-avr">Squeezing
+href="https://docs.qmk.fm/squeezing_avr?id=squeezing-the-most-out-of-avr">Squeezing
 the most out of AVR</a> (applicable also with non-AVR MCUs) for further
 tips.</p>
 <h2 id="mt-doesnt-work-with-this-keycode-qmk">MT doesn’t work with this
 keycode (QMK)</h2>
 <p><a href="#mt-doesnt-work-with-this-keycode-qmk">🔗 Link</a></p>
-<p>With <a href="https://docs.qmk.fm/#/mod_tap">mod-tap keys</a>
+<p>With <a href="https://docs.qmk.fm/mod_tap">mod-tap keys</a>
 <code>MT(mod, kc)</code> and <a
-href="https://docs.qmk.fm/#/feature_layers">layer-tap keys</a>
+href="https://docs.qmk.fm/feature_layers">layer-tap keys</a>
 <code>LT(layer, kc)</code>, a limitation is that the tapping keycode
 <code>kc</code> <em>must</em> be a <a
-href="https://docs.qmk.fm/#/keycodes_basic">basic keycode</a>, a keycode
+href="https://docs.qmk.fm/keycodes_basic">basic keycode</a>, a keycode
 in the 0–255 range. All keycodes in QMK are 16 bits, so in order to pack
 identifiers, the mod or layer, and <code>kc</code> in that space, the
 <code>kc</code> portion is limited to 8 bits. As described <a
-href="https://docs.qmk.fm/#/mod_tap?id=caveats">in the Caveats
+href="https://docs.qmk.fm/mod_tap#caveats">in the Caveats
 section</a>:</p>
 <blockquote>
 <p>Currently, the <code>kc</code> argument of <code>MT()</code> is
-limited to the <a href="https://docs.qmk.fm/#/keycodes_basic">Basic
+limited to the <a href="https://docs.qmk.fm/keycodes_basic">Basic
 Keycode set</a>, meaning you can’t use keycodes like
 <code>LCTL()</code>, <code>KC_TILD</code>, or anything greater than
 <code>0xFF</code>. This is because QMK uses 16-bit keycodes, of which 3
@@ -673,19 +685,19 @@ attempting “<code>LT(layer, KC_QUES)</code>” or
 workaround.</p>
 <h5 id="mt-with-a-non-basic-tapping-key">MT with a non-basic tapping
 key</h5>
-<p>First, pick a <a href="https://docs.qmk.fm/#/keycodes_basic">basic
+<p>First, pick a <a href="https://docs.qmk.fm/keycodes_basic">basic
 keycode</a> like <code>KC_0</code> as a placeholder for the tapping
 keycode <code>kc</code>. This keycode will never be sent, so any
 arbitrary basic keycode will do. Then <a
-href="https://docs.qmk.fm/#/mod_tap?id=changing-tap-function">change the
-tap function</a> to behave as desired.</p>
+href="https://docs.qmk.fm/mod_tap#changing-tap-function">change the tap
+function</a> to behave as desired.</p>
 <p>In keymap.c:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Copyright 2023 Google LLC.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="an">SPDX-License-Identifier:</span><span class="co"> Apache-2.0</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Define named constants for our customized tap-hold keys.</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define NAV_QUES     LT(NAV, KC_0)</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SFT_MYMACRO  LSFT_T(KC_1)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define NAV_QUES     </span>LT<span class="op">(</span><span class="pp">NAV</span><span class="op">,</span><span class="pp"> KC_0</span><span class="op">)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SFT_MYMACRO  </span>LSFT_T<span class="op">(</span><span class="pp">KC_1</span><span class="op">)</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">// Use `NAV_QUES` and `SFT_MYMACRO` in your layout...</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
@@ -696,7 +708,7 @@ tap function</a> to behave as desired.</p>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span>  <span class="co">// On press.</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>          tap_code16<span class="op">(</span>KC_QUES<span class="op">);</span></span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a> </span>
@@ -706,19 +718,18 @@ tap function</a> to behave as desired.</p>
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>          SEND_STRING<span class="op">(</span><span class="st">&quot;keyboards!&quot;</span><span class="op">);</span></span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
 <span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
 <span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
 <span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h5 id="one-shot-mod-tap-osm-mt">One-shot mod-tap OSM + MT</h5>
 <p>Attempting a one-shot mod-tap as keycode
 “<code>MT(OSM(mod), kc)</code>” is unsupported, but can be done through
-<a
-href="https://docs.qmk.fm/#/mod_tap?id=changing-hold-function">changing
+<a href="https://docs.qmk.fm/mod_tap#changing-hold-function">changing
 the hold function</a>. Here is an example in which the <code>D</code>
 and <code>K</code> keys are one-shot Shift mods when held.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Copyright 2022-2023 Google LLC.</span></span>
@@ -731,9 +742,9 @@ and <code>K</code> keys are one-shot Shift mods when held.</p>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">const</span> <span class="dt">uint8_t</span> mods <span class="op">=</span> QK_MOD_TAP_GET_MODS<span class="op">(</span>keycode<span class="op">);</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      add_oneshot_mods<span class="op">(((</span>mods <span class="op">&amp;</span> <span class="bn">0x10</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">?</span> mods <span class="op">:</span> <span class="op">(</span>mods <span class="op">&lt;&lt;</span> <span class="dv">4</span><span class="op">));</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> false<span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
@@ -742,7 +753,7 @@ and <code>K</code> keys are one-shot Shift mods when held.</p>
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RSFT_T<span class="op">(</span>KC_K<span class="op">):</span></span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> oneshot_mod_tap<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">);</span></span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>See also <a
 href="https://github.com/rafaelromao/keyboards">rafaelromao’s
@@ -752,8 +763,8 @@ keymap</a>, which implements one-shot mod-tap keys.</p>
 layers with a mod held. There is no predefined keycode that performs as
 <code>LM</code> on hold and some other key on tap, but such behavior is
 possible, again, through <a
-href="https://docs.qmk.fm/#/mod_tap?id=changing-hold-function">changing
-the hold function</a>.</p>
+href="https://docs.qmk.fm/mod_tap#changing-hold-function">changing the
+hold function</a>.</p>
 <p>In this example, <code>SFT_NUM_DEL</code> is a key where the hold
 function is to switch to the <code>NUM</code> layer with left Shift
 applied, and the tap function is <code>KC_DEL</code>.</p>
@@ -761,7 +772,7 @@ applied, and the tap function is <code>KC_DEL</code>.</p>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="an">SPDX-License-Identifier:</span><span class="co"> Apache-2.0</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Define named constant for our customized tap-hold key.</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SFT_NUM_DEL  LT(NUM, KC_DEL)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SFT_NUM_DEL  </span>LT<span class="op">(</span><span class="pp">NUM</span><span class="op">,</span><span class="pp"> KC_DEL</span><span class="op">)</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">// Use `SFT_NUM_DEL` in your layout...</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
@@ -778,11 +789,11 @@ applied, and the tap function is <code>KC_DEL</code>.</p>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Continue default handling, which switches to NUM on hold and</span></span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>      <span class="co">// performs KC_DEL when tapped.</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> true<span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
 <span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h2 id="how-to-type-non-english-letters-qmk">How to type non-English
 letters (QMK)</h2>
@@ -794,8 +805,8 @@ href="../non-english/index.html">Typing non-English letters</a>.</p>
 <h2 id="some-keys-are-swapped-qmk">Some keys are swapped (QMK)</h2>
 <p><a href="#some-keys-are-swapped-qmk">🔗 Link</a></p>
 <p><strong>Magic keys:</strong> <a
-href="https://docs.qmk.fm/#/keycodes_magic">Magic keys</a> and a related
-<a href="https://docs.qmk.fm/#/feature_command">Command feature</a> are
+href="https://docs.qmk.fm/keycodes_magic">Magic keys</a> and a related
+<a href="https://docs.qmk.fm/features/command">Command feature</a> are
 capable of dynamically disabling GUI keys, swapping Ctrl ↔︎ Caps Lock,
 Alt ↔︎ GUI, and a few other similar such things. A common source of
 confusion is when these settings are changed unintentionally.
@@ -810,12 +821,12 @@ keyboard.</p></li>
 this key will clear the EEPROM.</p></li>
 </ul>
 <p>See also <a
-href="https://docs.qmk.fm/#/faq_keymap?id=some-of-my-keys-are-swapped-or-not-working">Some
+href="https://docs.qmk.fm/faq_keymap#some-of-my-keys-are-swapped-or-not-working">Some
 Of My Keys Are Swapped Or Not Working</a>.</p>
 <p><strong>Non-US QWERTY host layout.</strong> The usual
 “<code>KC_</code>”-prefixed keycodes assume the host computer is
 configured to US QWERTY keyboard layout, see <a
-href="https://docs.qmk.fm/#/faq_keymap?id=what-are-the-default-keycodes">What
+href="https://docs.qmk.fm/faq_keymap#what-are-the-default-keycodes">What
 Are the Default Keycodes</a>. Configuring the computer to a different
 layout can result in swapped keys or some shifted keys producing
 unexpected results. See <a
@@ -831,7 +842,7 @@ backslash <code>\</code> has special meaning, for instance
 <code>\n</code> for new line. If you want a string with the literal
 <code>\</code> character, it must be escaped as <code>\\</code>. Say, a
 Windows directory path</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\f</span><span class="st">avorite\directory&quot;</span><span class="op">);</span>    <span class="co">// DON&#39;T DO THIS!</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\f</span><span class="st">avorite</span><span class="er">\d</span><span class="st">irectory&quot;</span><span class="op">);</span>    <span class="co">// DON&#39;T DO THIS!</span></span></code></pre></div>
 <p>should instead be written as</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;my</span><span class="sc">\\</span><span class="st">favorite</span><span class="sc">\\</span><span class="st">directory&quot;</span><span class="op">);</span>  <span class="co">// OK</span></span></code></pre></div>
 <p>Similarly, <code>"</code> characters have special meaning, since they
@@ -861,7 +872,8 @@ class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10
 <p><a href="#what-is-this-weird-c-syntax-qmk">🔗 Link</a></p>
 <p>QMK code is embedded code written in C11, the 2011 standard of the C
 programming language, with nonstandard GNU extensions. You may run into
-some unfamiliar syntax even if you are otherwise versed in C/C++:</p>
+some unfamiliar syntax even if you are otherwise well-versed in
+C/C++:</p>
 <ul>
 <li><p><a
 href="https://www.e-tinkers.com/2020/05/do-you-know-arduino-progmem-demystified/">PROGMEM</a>
@@ -903,13 +915,13 @@ constants</a> like</p>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <p>This pattern of array designators with <code>enum</code> constants
 also appears in using certain features like <a
-href="https://docs.qmk.fm/#/feature_tap_dance?id=simple-example">Tap
+href="https://docs.qmk.fm/features/tap_dance?id=simple-example">Tap
 Dance</a>.</p></li>
 <li><p><a
 href="https://en.cppreference.com/w/cpp/language/aggregate_initialization">Designated
 initializers</a> is a C99 feature that allows structs to be created with
 a readable syntax like (example is from the <a
-href="https://docs.qmk.fm/#/feature_key_overrides?id=modifiers-as-layer-keys">Key
+href="https://docs.qmk.fm/features/key_overrides?id=modifiers-as-layer-keys">Key
 Overrides documentation</a>):</p>
 <div class="sourceCode" id="cb15"><pre
 class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> key_override_t fn_override <span class="op">=</span> <span class="op">{</span></span>
@@ -942,7 +954,7 @@ key implementation</a>):</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// quantum/action_tapping.c</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>__attribute__<span class="op">((</span>weak<span class="op">))</span> <span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                                                  keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The user can override it by making a “strong” redefinition of the
 function:</p>
@@ -951,9 +963,9 @@ class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_A<span class="op">):</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> true<span class="op">;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> false<span class="op">;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
 <li><p><a
 href="https://en.cppreference.com/w/c/preprocessor/impl">#pragma

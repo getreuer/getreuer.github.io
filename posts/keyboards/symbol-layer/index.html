@@ -9,7 +9,7 @@
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -94,28 +94,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#overview">Overview</a></li>
-<li><a href="#design-principles">Design principles</a>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#design-principles" id="toc-design-principles">Design
+principles</a>
 <ul>
-<li><a href="#automatic-optimization">Automatic optimization?</a></li>
+<li><a href="#automatic-optimization"
+id="toc-automatic-optimization">Automatic optimization?</a></li>
 </ul></li>
-<li><a href="#some-existing-designs">Some existing designs</a>
+<li><a href="#some-existing-designs" id="toc-some-existing-designs">Some
+existing designs</a>
 <ul>
-<li><a href="#a-reasonable-default">A reasonable default</a></li>
-<li><a href="#extend2">Extend2</a></li>
-<li><a href="#seniply">Seniply</a></li>
-<li><a href="#sunakus-symbol-layer">Sunaku’s symbol layer</a></li>
-<li><a href="#layer-optimized-for-elixir-code">Layer optimized for
-Elixir code</a></li>
-<li><a href="#beakl-15">BEAKL 15</a></li>
-<li><a href="#multi-layer-designs">Multi-layer designs</a></li>
+<li><a href="#a-reasonable-default" id="toc-a-reasonable-default">A
+reasonable default</a></li>
+<li><a href="#extend2" id="toc-extend2">Extend2</a></li>
+<li><a href="#seniply" id="toc-seniply">Seniply</a></li>
+<li><a href="#sunakus-symbol-layer"
+id="toc-sunakus-symbol-layer">Sunaku’s symbol layer</a></li>
+<li><a href="#layer-optimized-for-elixir-code"
+id="toc-layer-optimized-for-elixir-code">Layer optimized for Elixir
+code</a></li>
+<li><a href="#beakl-15" id="toc-beakl-15">BEAKL 15</a></li>
+<li><a href="#multi-layer-designs"
+id="toc-multi-layer-designs">Multi-layer designs</a></li>
 </ul></li>
-<li><a href="#my-symbol-layer">My symbol layer</a></li>
-<li><a href="#learning-your-symbol-layer">Learning your symbol
+<li><a href="#my-symbol-layer" id="toc-my-symbol-layer">My symbol
 layer</a></li>
-<li><a href="#symbol-character-frequencies">Symbol character
+<li><a href="#learning-your-symbol-layer"
+id="toc-learning-your-symbol-layer">Learning your symbol layer</a></li>
+<li><a href="#symbol-character-frequencies"
+id="toc-symbol-character-frequencies">Symbol character
 frequencies</a></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
@@ -146,7 +155,7 @@ corners.</p></li>
 <li><p>avoid the pinkies for keys that are often double tapped
 (<code>==</code>, <code>++</code>, <code>//</code>, …). Or you might
 like a repeat key to circumvent double tapping (<a
-href="https://docs.qmk.fm/#/feature_repeat_key">QMK repeat key</a>, <a
+href="https://docs.qmk.fm/features/repeat_key">QMK repeat key</a>, <a
 href="https://zmk.dev/docs/behaviors/key-repeat">ZMK repeat
 key</a>).</p></li>
 <li><p>make common bigrams (<code>!=</code>, <code>&lt;=</code>,
