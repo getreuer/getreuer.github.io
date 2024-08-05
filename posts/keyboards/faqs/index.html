@@ -167,12 +167,14 @@ Gist</a>.</p></li>
 <p>Good luck!</p>
 <h2 id="keyboard-shopping-tips">Keyboard shopping tips</h2>
 <p><a href="#keyboard-shopping-tips">🔗 Link</a></p>
-<p>For typing comfort, I highly recommend a keyboard that is
-<strong>split, columnar, and with QMK or other programmable
-firmware</strong>. <a href="../tour/index.html">Here is a tour</a> of
-what makes these keyboards so good. An example is the ZSA Moonlander
-keyboard. Some other popular examples are the Lily58, Sofle, and Corne
-split keyboards.</p>
+<p>For typing comfort, I highly recommend a keyboard that is <strong><a
+href="../glossary/index.html#split-keyboard">split</a>, <a
+href="../glossary/index.html#row-staggered-ortholinear-column-staggered">columnar</a>,
+and with QMK or other programmable <a
+href="../glossary/index.html#firmware">firmware</a></strong>. <a
+href="../tour/index.html">Here is a tour</a> of what makes these
+keyboards so good. An example is the ZSA Moonlander keyboard. Some other
+popular examples are the Lily58, Sofle, and Corne split keyboards.</p>
 <figure>
 <img src="../moonlander.jpg" alt="ZSA Moonlander" />
 <figcaption aria-hidden="true">ZSA Moonlander</figcaption>
@@ -200,10 +202,13 @@ couple weeks</a> for many people.</p></li>
 get used to a split columnar keyboard?</h2>
 <p><a href="#how-long-to-get-used-to-a-split-columnar-keyboard">🔗
 Link</a></p>
-<p><strong>It took me a couple weeks of use to adapt to typing on a
-split columnar keyboard.</strong> Others have reported similar
-experience. My first such keyboard was a Dactyl Ergodox, which in
-addition to being split and columnar is also concave.</p>
+<p><strong>It took me a couple weeks of use to adapt to typing on a <a
+href="../glossary/index.html#split-keyboard">split</a> <a
+href="../glossary/index.html#row-staggered-ortholinear-column-staggered">columnar</a>
+keyboard.</strong> Others have reported similar experience. My first
+such keyboard was a Dactyl Ergodox, which in addition to being split and
+columnar has <a href="../glossary/index.html#key-wells">concave key
+wells</a>.</p>
 <figure>
 <img src="../dactyl-ergodox.jpg" alt="Dactyl Ergodox" />
 <figcaption aria-hidden="true">Dactyl Ergodox</figcaption>
@@ -365,11 +370,12 @@ href="https://en.wikipedia.org/wiki/Typing#Alphanumeric_entry">Wikipedia
 sometimes types it twice</h2>
 <p><a href="#pressing-a-key-sometimes-types-it-twice">🔗 Link</a></p>
 <p>When you press a key once, does it sometimes type twice (or more)? A
-common cause is contact bounce (or chatter) in the key switch.
-Electrical contacts are usually springy material. When the switch is
-pressed, the contacts bounce, making and breaking contact for some
-milliseconds before settling to a steady contact. So rather than a clean
-0 to 1 transition, the raw digital reading bounces between 0 and 1.</p>
+common cause is contact bounce (or chatter) in the <a
+href="../glossary/index.html#key-switch">key switch</a>. Electrical
+contacts are usually springy material. When the switch is pressed, the
+contacts bounce, making and breaking contact for some milliseconds
+before settling to a steady contact. So rather than a clean 0 to 1
+transition, the raw digital reading bounces between 0 and 1.</p>
 <p><img src="bounce.svg" /></p>
 <p>A similar bouncing problem occurs in the other direction when the key
 is released. The settling time depends on the kind of switch and may be
@@ -444,24 +450,30 @@ focus on keyboards running QMK firmware, but this is probably
 representative in general since other keyboard firmwares work similarly
 under the same constraints.</p>
 <p><em>Input lag</em> of a keyboard is the time between actuating a key
-to the computer receiving the key report. <strong>Input lag with QMK is
-typically 2–14 ms, so fast that it is visually imperceptible, less than
-one frame of 60 fps video (16.7 ms).</strong> QMK keeps up even with the
-most demanding games. Lag due to keyboard firmware is probably
-negligible compared to other sources of lag (more on this below).</p>
+to the computer receiving the <a
+href="../glossary/index.html#keyboard-report">keyboard report</a>.
+<strong>Input lag with QMK is typically 2–14 ms, so fast that it is
+visually imperceptible, less than one frame of 60 fps video
+(16.7 ms).</strong> QMK keeps up even with the most demanding games. Lag
+due to keyboard firmware is probably negligible compared to other
+sources of lag (more on this below).</p>
 <p>The following processes are the main sources of lag. See <a
 href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/#results">Michael
 Stapelberg’s investigation</a> for deeper discussion:</p>
 <ol type="1">
-<li><p><strong>Matrix scanning</strong> continually checks the keyboard
-matrix circuit for changes in key state. The time between successive
-scans in on the order of 0.2–2 ms. A faster keyboard microcontroller can
-improve this.</p></li>
-<li><p><strong>Debouncing</strong> is applied to clean up the matrix
-changes. As a key is pressed, the electrical contacts typically make and
-breaking contact several times. By default, QMK debounces the signal by
-waiting for a debounce time of 5 ms, while some keyboards are configured
-for a longer debounce time. Setting an <a
+<li><p><strong>Matrix scanning</strong> continually checks the
+keyboard’s <a href="../glossary/index.html#matrix-circuit">matrix
+circuit</a> for changes in key state. The time between successive scans
+in on the order of 0.2–2 ms. A faster keyboard <a
+href="../glossary/index.html#microcontroller-unit-mcu">microcontroller</a>
+can improve this.</p></li>
+<li><p><a
+href="../glossary/index.html#debouncing"><strong>Debouncing</strong></a>
+is applied to clean up the matrix changes. As a key is pressed, the
+electrical contacts typically make and breaking contact several times.
+By default, QMK debounces the signal by waiting for a debounce time of
+5 ms, while some keyboards are configured for a longer debounce time.
+Setting an <a
 href="https://docs.qmk.fm/feature_debounce_type?id=types-of-debounce-algorithms">“eager”
 debouncing strategy</a> avoids this latency. You can also try reducing
 the debounce time, though beware that <a
@@ -490,7 +502,7 @@ minimal lag, use a wired connection.</p></li>
 <li><p><a href="https://deskthority.net/wiki/Travel#Pretravel">Switch
 pretravel</a> and actuation force make a difference, that is, how far
 down and with how much force the key must be pressed to register.
-Pretravel of 2 mm and actuation force of around 50 cN is typical. There
+Pretravel of 2 mm and actuation force of around 50 gf is typical. There
 are switches that reduce these parameters, like Kailh Speed Silver and
 Cherry MX Speed Silver.</p></li>
 <li><p><a href="https://en.wikipedia.org/wiki/Display_lag">Display
@@ -624,7 +636,10 @@ use-cases</a> for similar behavior.</p></li>
 <h2 id="firmware-is-too-large">Firmware is too large!</h2>
 <p><a href="#firmware-is-too-large">🔗 Link</a></p>
 <p>A build error like “<code>firmware is too large! X bytes over</code>”
-means the compiled firmware is too large to fit in the microcontroller’s
+means the compiled <a
+href="../glossary/index.html#firmware">firmware</a> is too large to fit
+in the <a
+href="../glossary/index.html#microcontroller-unit-mcu">microcontroller’s</a>
 programmable flash memory. This is easily a problem on microcontrollers
 with less than 32KB flash space.</p>
 <p>This suggestion may come too late, but when building a keyboard, it’s
@@ -810,10 +825,11 @@ href="https://docs.qmk.fm/keycodes_magic">Magic keys</a> and a related
 capable of dynamically disabling GUI keys, swapping Ctrl ↔︎ Caps Lock,
 Alt ↔︎ GUI, and a few other similar such things. A common source of
 confusion is when these settings are changed unintentionally.
-Furthermore, magic settings are saved to EEPROM, so they stubbornly
-survive even when the keyboard is flashed with new firmware. The way to
-fix this is to clear the EEPROM, which resets any magic settings. Two
-ways to do that:</p>
+Furthermore, magic settings are <a
+href="../glossary/index.html#eeprom">saved to EEPROM</a>, so they
+stubbornly survive even when the keyboard is flashed with new firmware.
+The way to fix this is to clear the EEPROM, which resets any magic
+settings. Two ways to do that:</p>
 <ul>
 <li><p>Hold down the Space and Backspace keys while plugging in the
 keyboard.</p></li>

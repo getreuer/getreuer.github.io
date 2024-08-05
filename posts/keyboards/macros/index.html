@@ -293,13 +293,14 @@ process record user in depth
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Macros...</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><strong>The big picture:</strong> QMK’s main loop scans the key
-matrix to watch for changes. When a button is pressed or released, a
-“keyrecord” representing the event is generated. The keyrecord enters a
-pipeline of handlers. A handler function runs for each QMK feature
-(Mod-Tap, Combos, Auto Shift, Tap Dance, …), one after another, so that
-each feature a chance to react. Additionally, handlers may return
-<code>false</code> to block later handlers from running. The
+<p><strong>The big picture:</strong> QMK’s main loop scans the <a
+href="../glossary/index.html#matrix-circuit">key matrix</a> to watch for
+changes. When a button is pressed or released, a “keyrecord”
+representing the event is generated. The keyrecord enters a pipeline of
+handlers. A handler function runs for each QMK feature (Mod-Tap, Combos,
+Auto Shift, Tap Dance, …), one after another, so that each feature a
+chance to react. Additionally, handlers may return <code>false</code> to
+block later handlers from running. The
 <code>process_record_user()</code> function is one such handler in the
 pipeline, enabling user code to customize what happens. See also the <a
 href="https://docs.qmk.fm/understanding_qmk">Understanding QMK</a>
@@ -355,7 +356,8 @@ Layers</a>).</li>
 <h2 id="macros-that-respond-to-mods">Macros that respond to mods</h2>
 <h3 id="arrow-macro-types---or">Arrow macro, types -&gt; or =&gt;</h3>
 <p>For extra functionality on one key, you can perform a different
-action when the macro button is pressed with a mod. For instance, the
+action when the macro button is pressed with a <a
+href="../glossary/index.html#modifiers">modifier</a>. For instance, the
 following implements an <kbd>ARROW</kbd> button so that <kbd>Shift</kbd>
 + <kbd>ARROW</kbd> types <code>=&gt;</code> and <kbd>ARROW</kbd> by
 itself types <code>-&gt;</code>.</p>
