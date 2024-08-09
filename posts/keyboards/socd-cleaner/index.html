@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2024-08-02" />
+  <meta name="author" content="Pascal Getreuer, 2024-08-02 (updated 2024-08-08)" />
   <title>QMK: SOCD Cleaner</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -90,7 +90,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: SOCD Cleaner</h1>
-<h2 class="author">Pascal Getreuer, 2024-08-02</h2>
+<h2 class="author">Pascal Getreuer, 2024-08-02 (updated 2024-08-08)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -101,7 +101,22 @@ id="toc-motivation-and-status-in-qmk-core">Motivation and status in QMK
 core</a></li>
 </ul></li>
 <li><a href="#add-it-to-your-keymap" id="toc-add-it-to-your-keymap">Add
-it to your keymap</a></li>
+it to your keymap</a>
+<ul>
+<li><a href="#prerequisites"
+id="toc-prerequisites">Prerequisites</a></li>
+<li><a href="#step-1-rules.mk" id="toc-step-1-rules.mk">Step 1:
+rules.mk</a></li>
+<li><a href="#step-2-library-source-files"
+id="toc-step-2-library-source-files">Step 2: library source
+files</a></li>
+<li><a href="#step-3-keymap.c-changes"
+id="toc-step-3-keymap.c-changes">Step 3: keymap.c changes</a></li>
+<li><a href="#optional-step-4-toggling-socd-cleaner"
+id="toc-optional-step-4-toggling-socd-cleaner">(Optional) Step 4:
+toggling SOCD Cleaner</a></li>
+<li><a href="#testing" id="toc-testing">Testing</a></li>
+</ul></li>
 <li><a href="#socd-key-pairs" id="toc-socd-key-pairs">SOCD key
 pairs</a></li>
 <li><a href="#resolution-strategies"
@@ -160,89 +175,135 @@ filtering now. It also serves as a test bed for exploring what range of
 SOCD options fit best for in real use. I’ve tried to keep the code short
 and simple to make it hopefully approachable for others to hack on.</p>
 <h2 id="add-it-to-your-keymap">Add it to your keymap</h2>
-<p><strong>Step 1:</strong> In your <code>rules.mk</code> file, add</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>You need a <a href="https://browse.qmk.fm/#/">QMK-supported
+keyboard</a>.</li>
+<li>For source edits described below, you must use a text editor that
+can edit and save plain text files (there are many such editors, but
+I’ll suggest <a href="https://kate-editor.org/">Kate editor</a>).</li>
+<li>If you haven’t yet, <a
+href="https://docs.qmk.fm/newbs_getting_started">install QMK on your
+machine</a>.</li>
+</ul>
+<p>I’m also supposing that you have <a
+href="https://docs.qmk.fm/newbs_building_firmware">created a keymap</a>
+under directory location</p>
+<p><code>qmk_firmware/keyboards/</code><em>keyboard-name</em><code>/keymaps/</code><em>keymap-name</em></p>
+<p>I’ll refer to this location as the “keymap folder.”</p>
+<h3 id="step-1-rules.mk">Step 1: rules.mk</h3>
+<p>In your keymap folder, create a plain text file called
+<code>rules.mk</code> containing the following line. If such a file
+already exists, add this as a new line at the bottom of the file.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC</span> <span class="ch">+=</span><span class="st"> features/socd_cleaner.c</span></span></code></pre></div>
-<p><strong>Step 2:</strong> In the directory containing your
-<code>keymap.c</code>, create a <code>features</code> subdirectory and
-copy <a
-href="https://github.com/getreuer/qmk-keymap/blob/main/features/socd_cleaner.h">socd_cleaner.h</a>
+<p>This line tells the build system that it must also compile the SOCD
+Cleaner library when compiling your keymap.</p>
+<h3 id="step-2-library-source-files">Step 2: library source files</h3>
+<p>In your keymap folder, create a <code>features</code> subdirectory
+and copy <a
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/socd_cleaner.h">socd_cleaner.h</a>
 and <a
-href="https://github.com/getreuer/qmk-keymap/blob/main/features/socd_cleaner.c">socd_cleaner.c</a>
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/socd_cleaner.c">socd_cleaner.c</a>
 there.</p>
-<p><strong>Step 3:</strong> In your <code>keymap.c</code>, add the
-following. If you already have a <code>process_record_user()</code>
-function, add the <code>process_socd_cleaner()</code> lines at the top
-of the function:</p>
+<p>The directory structure should be like</p>
+<p><img src="dir.svg" /></p>
+<h3 id="step-3-keymap.c-changes">Step 3: keymap.c changes</h3>
+<p>Your keymap folder should contain a file called
+<code>keymap.c</code>. Edit this file to make the following changes.</p>
+<p>At the top of <code>keymap.c</code>, add:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/socd_cleaner.h&quot;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_v <span class="op">=</span> <span class="op">{{</span>KC_W<span class="op">,</span> KC_S<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">};</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_h <span class="op">=</span> <span class="op">{{</span>KC_A<span class="op">,</span> KC_D<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">};</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_h<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros...</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><strong>(Optional) Step 4:</strong> By default, SOCD Cleaner is
-enabled globally. Here are two suggestions to control when SOCD Cleaner
-is enabled. These are mutually exclusive, choose one or the other, not
-both:</p>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_h <span class="op">=</span> <span class="op">{{</span>KC_A<span class="op">,</span> KC_D<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">};</span></span></code></pre></div>
+<p>The <code>#include</code> line pulls in the definitions for the SOCD
+Cleaner for use in your keymap. The following
+<code>socd_cleaner_t</code> lines prepare to perform SOCD filtering on
+the WASD keys (referred to by keycodes <code>KC_W</code>,
+<code>KC_A</code>, <code>KC_S</code>, <code>KC_D</code>) with last input
+priority resolution (<code>SOCD_CLEANER_LAST</code>). (If you want to do
+something else, this is where to change that.)</p>
+<p>Look through the file to see whether it contains a
+“<code>process_record_user</code>” function definition. If not, add the
+following to the bottom of the file:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_h<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>On the other hand, if the file does already have a
+“<code>process_record_user</code>” function defined, then add to that
+existing definition. Insert these two <code>process_socd_cleaner</code>
+lines at the top of the function, just after the opening <code>{</code>
+brace, and keep any existing code in the function after that point:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_h<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Existing code after this line...</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="optional-step-4-toggling-socd-cleaner">(Optional) Step 4:
+toggling SOCD Cleaner</h3>
+<p>By default, SOCD Cleaner is enabled globally. Here are two
+suggestions to control when SOCD Cleaner is enabled. These are mutually
+exclusive, choose one or the other, not both:</p>
 <ul>
 <li><p><strong>Enable on a layer:</strong> Add the following in keymap.c
 to limit SOCD Cleaner to when a specific layer is active, say a
 <code>GAME</code> layer:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  socd_cleaner_enabled <span class="op">=</span> IS_LAYER_ON_STATE<span class="op">(</span>state<span class="op">,</span> GAME<span class="op">);</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> state<span class="op">;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  socd_cleaner_enabled <span class="op">=</span> IS_LAYER_ON_STATE<span class="op">(</span>state<span class="op">,</span> GAME<span class="op">);</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> state<span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
 <li><p><strong>On/off/toggle keys:</strong> Here is how to add macro
 keys to enable, disable, or toggle SOCD Cleaner. If you are new to QMK
 macros, see my <a href="../macros/index.html">macro buttons</a> post for
 an intro.</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Define keycodes for SOCD Cleaner on/off/toggle.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> custom_keycodes <span class="op">{</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  SOCDON <span class="op">=</span> SAFE_RANGE<span class="op">,</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  SOCDOFF<span class="op">,</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  SOCDTOG<span class="op">,</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other custom keycodes...</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Use SOCDON, SOCDOFF, SOCDTOG in your layout...</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_v <span class="op">=</span> <span class="op">{{</span>KC_W<span class="op">,</span> KC_S<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">};</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_h <span class="op">=</span> <span class="op">{{</span>KC_A<span class="op">,</span> KC_D<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">};</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_h<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> SOCDON<span class="op">:</span>  <span class="co">// Turn SOCD Cleaner on.</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        socd_cleaner_enabled <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> SOCDOFF<span class="op">:</span>  <span class="co">// Turn SOCD Cleaner off.</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        socd_cleaner_enabled <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> SOCDTOG<span class="op">:</span>  <span class="co">// Toggle SOCD Cleaner.</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        socd_cleaner_enabled <span class="op">=</span> <span class="op">!</span>socd_cleaner_enabled<span class="op">;</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Define keycodes for SOCD Cleaner on/off/toggle.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> custom_keycodes <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  SOCDON <span class="op">=</span> SAFE_RANGE<span class="op">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  SOCDOFF<span class="op">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  SOCDTOG<span class="op">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other custom keycodes...</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Use SOCDON, SOCDOFF, SOCDTOG in your layout...</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_v <span class="op">=</span> <span class="op">{{</span>KC_W<span class="op">,</span> KC_S<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">};</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_h <span class="op">=</span> <span class="op">{{</span>KC_A<span class="op">,</span> KC_D<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">};</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_h<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> SOCDON<span class="op">:</span>  <span class="co">// Turn SOCD Cleaner on.</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        socd_cleaner_enabled <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> SOCDOFF<span class="op">:</span>  <span class="co">// Turn SOCD Cleaner off.</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        socd_cleaner_enabled <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> SOCDTOG<span class="op">:</span>  <span class="co">// Toggle SOCD Cleaner.</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        socd_cleaner_enabled <span class="op">=</span> <span class="op">!</span>socd_cleaner_enabled<span class="op">;</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
 </ul>
-<p><strong>Testing:</strong> Build and flash the firmware to the
-keyboard. To test the effect, use the <a
+<h3 id="testing">Testing</h3>
+<p><a href="https://docs.qmk.fm/newbs_flashing">Flash the firmware</a>
+to the keyboard. To test the effect, use the <a
 href="https://config.qmk.fm/#/test">QMK Configurator key tester</a> to
 see what key events your keyboard is sending. Repeatedly tapping the
 <kbd>D</kbd> key while <kbd>A</kbd> is held should send
@@ -253,7 +314,7 @@ href="https://docs.qmk.fm/keycodes_basic">basic keycodes</a> and a SOCD
 resolution strategy (more explanation below). For example, the following
 line defines <kbd>W</kbd> and <kbd>S</kbd> as opposing keys with
 <code>SOCD_CLEANER_LAST</code> resolution:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_v <span class="op">=</span> <span class="op">{{</span>KC_W<span class="op">,</span> KC_S<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_v <span class="op">=</span> <span class="op">{{</span>KC_W<span class="op">,</span> KC_S<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">};</span></span></code></pre></div>
 <div class="callout" style="border-left-color: #8ad359">
 <div class="callout-header" style="background-color: #e5f3d8">
 <p>
@@ -269,11 +330,11 @@ instances for each key pair.</p>
 <p>In <code>process_record_user()</code>, call the handler
 <code>process_socd_cleaner()</code> and pass a pointer to the
 <code>socd_cleaner_t</code> as the third argument:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span></code></pre></div>
 <p>For multiple key pairs, call <code>process_socd_cleaner()</code> with
 each instance:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_h<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_h<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span></code></pre></div>
 <h2 id="resolution-strategies">Resolution strategies</h2>
 <p>Controls vary across games, and there are different SOCD resolution
 strategies that may be preferred depending on circumstances. The
@@ -292,8 +353,8 @@ keys are pressed, they cancel and neither is sent.</p>
 <li><p><code>SOCD_CLEANER_0_WINS</code>: Key 0 always wins, the first
 key listed in defining the <code>socd_cleaner_t</code>. For example, the
 <kbd>W</kbd> key always wins in</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_v <span class="op">=</span> <span class="op">{{</span>KC_W<span class="op">,</span> KC_S<span class="op">},</span> SOCD_CLEANER_0_WINS<span class="op">};</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>socd_cleaner_t socd_v <span class="op">=</span> <span class="op">{{</span>KC_W<span class="op">,</span> KC_S<span class="op">},</span> SOCD_CLEANER_0_WINS<span class="op">};</span></span></code></pre></div></li>
 <li><p><code>SOCD_CLEANER_1_WINS</code>: Key 1 always wins, the second
 key listed.</p></li>
 <li><p><code>SOCD_CLEANER_OFF</code>: SOCD filtering is disabled for
@@ -306,29 +367,29 @@ recommended.</p>
 changed at run time by assigning to its <code>.resolution</code> field.
 Supposing <code>GAME1</code> and <code>GAME2</code> are custom keycodes,
 here is how to switch to a different strategy between games:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_h<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> GAME1<span class="op">:</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        socd_v<span class="op">.</span>resolution <span class="op">=</span> SOCD_CLEANER_LAST<span class="op">;</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        socd_h<span class="op">.</span>resolution <span class="op">=</span> SOCD_CLEANER_LAST<span class="op">;</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> GAME2<span class="op">:</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        socd_v<span class="op">.</span>resolution <span class="op">=</span> SOCD_CLEANER_0_WINS<span class="op">;</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        socd_h<span class="op">.</span>resolution <span class="op">=</span> SOCD_CLEANER_NEUTRAL<span class="op">;</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_v<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_socd_cleaner<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> <span class="op">&amp;</span>socd_h<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> GAME1<span class="op">:</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        socd_v<span class="op">.</span>resolution <span class="op">=</span> SOCD_CLEANER_LAST<span class="op">;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        socd_h<span class="op">.</span>resolution <span class="op">=</span> SOCD_CLEANER_LAST<span class="op">;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> GAME2<span class="op">:</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        socd_v<span class="op">.</span>resolution <span class="op">=</span> SOCD_CLEANER_0_WINS<span class="op">;</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        socd_h<span class="op">.</span>resolution <span class="op">=</span> SOCD_CLEANER_NEUTRAL<span class="op">;</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h2 id="explanation">Explanation</h2>
 <p>If you are interested in the technical details, here is an outline of
 how SOCD Cleaner processes a key event.</p>
