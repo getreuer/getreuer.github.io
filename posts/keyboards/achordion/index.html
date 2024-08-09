@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2024-06-06)" />
+  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2024-08-09)" />
   <title>Achordion: Customizing the tap-hold decision</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -90,7 +90,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Achordion: Customizing the tap-hold decision</h1>
-<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2024-06-06)</h2>
+<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2024-08-09)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -424,10 +424,16 @@ default callback makes Shift and Ctrl mods eager:</p>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>This makes Achordion much nicer to use with a mouse!</p>
-<p><strong>Note:</strong> Even with eager mods, the initial hold event
-from QMK is still delayed by the tapping term. You can reduce
-<code>TAPPING_TERM</code>, or use <code>TAPPING_TERM_PER_KEY</code> for
-a specific key, to reduce delay further.</p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li><p>Even with eager mods, the initial hold event from QMK is still
+delayed by the tapping term. You can reduce <code>TAPPING_TERM</code>,
+or use <code>TAPPING_TERM_PER_KEY</code> for a specific key, to reduce
+delay further.</p></li>
+<li><p>On an eager mod <code>MT</code> key, hold events are not plumbed
+to subsequent handlers, even once settled. Tap events are
+plumbed.</p></li>
+</ul>
 <h3 id="typing-streaks">Typing streaks</h3>
 <p>The <code>ACHORDION_STREAK</code> option disables hold behaviors when
 in a typing streak. In a sequence of typing keys <kbd>A</kbd>,
@@ -681,9 +687,10 @@ data-cites="TristanCacqueray">@TristanCacqueray</span>, <span
 class="citation" data-cites="akaralar">@akaralar</span>, <span
 class="citation" data-cites="gazpachoking">@gazpachoking</span>, <span
 class="citation" data-cites="Sigvah">@Sigvah</span>, <span
-class="citation" data-cites="SavageMessiah">@SavageMessiah</span> and
-Reddit user u/02ranger for contributions and feedback to improve
-Achordion.</p>
+class="citation" data-cites="SavageMessiah">@SavageMessiah</span>, <span
+class="citation" data-cites="JanValiska">@JanValiska</span>, <span
+class="citation" data-cites="Ceffa93">@Ceffa93</span> and Reddit user
+u/02ranger for contributions and feedback to improve Achordion.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
