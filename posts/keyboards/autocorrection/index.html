@@ -204,13 +204,13 @@ keymap</h2>
 copy the following files there:</p>
 <ul>
 <li><a
-href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection.c">autocorrection.c</a>:
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/autocorrection.c">autocorrection.c</a>:
 the autocorrection engine.</li>
 <li><a
-href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection.h">autocorrection.h</a>:
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/autocorrection.h">autocorrection.h</a>:
 corresponding header file.</li>
 <li><a
-href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_data.h">autocorrection_data.h</a>:
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/autocorrection_data.h">autocorrection_data.h</a>:
 file encoding the typos to be corrected. This is a practical example,
 but it can be changed; see below for details.</li>
 </ul>
@@ -374,9 +374,9 @@ fitler        -&gt; filter
 ouput         -&gt; output
 widht         -&gt; width</code></pre>
 <p>For a practical 71-entry example, see <a
-href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict.txt">autocorrection_dict.txt</a>.
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/autocorrection_dict.txt">autocorrection_dict.txt</a>.
 And for a yet larger 400-entry example, see <a
-href="https://github.com/getreuer/qmk-keymap/blob/main/features/autocorrection_dict_extra.txt">autocorrection_dict_extra.txt</a>.</p>
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/autocorrection_dict_extra.txt">autocorrection_dict_extra.txt</a>.</p>
 <p>The syntax is <code>typo -&gt; correction</code>. Typos and
 corrections are case insensitive, and any whitespace before or after the
 typo and correction is ignored. The typo must be only the characters
@@ -384,7 +384,7 @@ typo and correction is ignored. The typo must be only the characters
 <code>:</code> representing a word break. The correction may have just
 about any printable ASCII characters.</p></li>
 <li><p>Use the <a
-href="https://github.com/getreuer/qmk-keymap/blob/main/features/make_autocorrection_data.py">make_autocorrection_data.py</a>
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/make_autocorrection_data.py">make_autocorrection_data.py</a>
 Python script to process the dictionary. Put
 <code>autocorrection_dict.txt</code> in the same directory as the Python
 script and run</p>
