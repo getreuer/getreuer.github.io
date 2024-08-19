@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2024-08-04" />
+  <meta name="author" content="Pascal Getreuer, 2024-08-04 (updated 2024-08-18)" />
   <title>Glossary of keyboard terms</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -25,7 +25,7 @@
 <div id="content">
 <div id="header">
 <h1 class="title">Glossary of keyboard terms</h1>
-<h2 class="author">Pascal Getreuer, 2024-08-04</h2>
+<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2024-08-18)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -66,6 +66,7 @@ stagger</a></li>
 id="toc-printed-circuit-board-pcb">Printed circuit board (PCB)</a></li>
 <li><a href="#pronation-supination"
 id="toc-pronation-supination">Pronation / supination</a></li>
+<li><a href="#roll" id="toc-roll">Roll</a></li>
 <li><a href="#row-staggered-ortholinear-column-staggered"
 id="toc-row-staggered-ortholinear-column-staggered">Row staggered /
 ortholinear / column staggered</a></li>
@@ -126,8 +127,8 @@ alternative alpha layout.</figcaption>
 efficiency, with keys arranged such that awkward motions are avoided.
 This is usually evaluated in terms of metrics that quantify the
 frequencies of specific undesired finger motions, such as <a
-href="#same-finger-bigram-sfb">same-finger bigrams</a>, measured over a
-given text corpus.</p>
+href="#same-finger-bigram-sfb">same-finger bigrams</a> and <a
+href="#roll">rolls</a>, measured over a given text corpus.</p>
 <ul>
 <li><a
 href="https://www.reddit.com/r/KeyboardLayouts/comments/fedsnb/introduction_to_rkeyboardlayouts_and_why_this_sub/">r/KeyboardLayouts
@@ -600,6 +601,34 @@ Supination.</figcaption>
 pronation increases pressure on the tissues and reduces blood
 circulation. This can lead to fatigue and injury. Many ergonomic
 keyboards are <a href="#tenting">tented</a> to reduce pronation.</p>
+<h3 id="roll">Roll</h3>
+<p>A <strong>roll</strong> is a sequence of two or more keystrokes made
+by one hand, where the fingers move sequentially across the keyboard,
+like drumming your fingers.</p>
+<figure>
+<video autoplay loop muted playsinline>
+<source src="finger-drumming.mp4" type="video/mp4">
+</video>
+</figure>
+<p>According to the direction, a roll is either an <strong>inward
+roll</strong>, moving pinky → ring → middle → index, or an
+<strong>outward roll</strong>, moving in the opposite direction. On
+QWERTY, <code>ER</code>, <code>LY</code>, and <code>AWE</code> are
+examples of inward rolls, and <code>EA</code> and <code>IO</code> are
+outward rolls.</p>
+<figure>
+<img src="roll.gif" alt="ER is an inward roll on QWERTY." />
+<figcaption aria-hidden="true"><code>ER</code> is an inward roll on
+QWERTY.</figcaption>
+</figure>
+<p>Inward rolls are generally considered desirable. Modern <a
+href="#alpha-layout">alpha layouts</a> are often designed to maximize
+rolls. A <strong>rolly layout</strong> is a layout where rolls are
+frequent.</p>
+<p>Subjective preferences vary on whether outward rolls are also
+favored. Accordingly, layouts sometimes maximize the <strong>in-roll
+ratio</strong>, the frequency of inward rolls divided by the frequency
+of outward rolls.</p>
 <h3 id="row-staggered-ortholinear-column-staggered">Row staggered /
 ortholinear / column staggered</h3>
 <p>Standard keyboards have <strong>row staggered</strong> keys, with a
@@ -636,6 +665,13 @@ as <code>SW</code> or <code>UN</code> on QWERTY with standard technique.
 SFBs are generally considered undesirable. Modern <a
 href="#alpha-layout">alpha layouts</a> are designed to minimize
 them.</p>
+<figure>
+<img src="sfb.gif"
+alt="SW is an SFB since S and W are pressed by the same finger." />
+<figcaption aria-hidden="true"><code>SW</code> is an SFB since
+<kbd>S</kbd> and <kbd>W</kbd> are pressed by the same
+finger.</figcaption>
+</figure>
 <h3 id="simultaneous-opposing-cardinal-directions-socd">Simultaneous
 opposing cardinal directions (SOCD)</h3>
 <p><strong>Simultaneous Opposing Cardinal Directions</strong> or
