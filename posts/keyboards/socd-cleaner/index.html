@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2024-08-02 (updated 2024-08-08)" />
+  <meta name="author" content="Pascal Getreuer, 2024-08-02 (updated 2024-08-19)" />
   <title>QMK: SOCD Cleaner</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -90,7 +90,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: SOCD Cleaner</h1>
-<h2 class="author">Pascal Getreuer, 2024-08-02 (updated 2024-08-08)</h2>
+<h2 class="author">Pascal Getreuer, 2024-08-02 (updated 2024-08-19)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -112,9 +112,9 @@ id="toc-step-2-library-source-files">Step 2: library source
 files</a></li>
 <li><a href="#step-3-keymap.c-changes"
 id="toc-step-3-keymap.c-changes">Step 3: keymap.c changes</a></li>
-<li><a href="#optional-step-4-toggling-socd-cleaner"
-id="toc-optional-step-4-toggling-socd-cleaner">(Optional) Step 4:
-toggling SOCD Cleaner</a></li>
+<li><a href="#step-4-toggling-socd-cleaner"
+id="toc-step-4-toggling-socd-cleaner">Step 4: toggling SOCD
+Cleaner</a></li>
 <li><a href="#testing" id="toc-testing">Testing</a></li>
 </ul></li>
 <li><a href="#socd-key-pairs" id="toc-socd-key-pairs">SOCD key
@@ -131,6 +131,17 @@ id="toc-acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
+<div class="callout" style="border-left-color: #e49f34">
+<div class="callout-header" style="background-color: #fdebd5">
+<p>
+⚠  Caution
+</p>
+</div>
+<p><strong>Check game rules before using.</strong> Notably, <a
+href="https://store.steampowered.com/news/app/730/view/6500469346429600836">Counter-Strike
+does not allow SOCD filtering</a>. It is your responsibility to disable
+SOCD Cleaner where it is prohibited.</p>
+</div>
 <div style="margin:2.2em; margin-bottom:1em">
 <p><em>“Remember, a kite rises against, not with, the wind.” — <a
 href="https://en.wikipedia.org/wiki/Hamilton_Wright_Mabie">Hamilton
@@ -243,8 +254,7 @@ brace, and keep any existing code in the function after that point:</p>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<h3 id="optional-step-4-toggling-socd-cleaner">(Optional) Step 4:
-toggling SOCD Cleaner</h3>
+<h3 id="step-4-toggling-socd-cleaner">Step 4: toggling SOCD Cleaner</h3>
 <p>By default, SOCD Cleaner is enabled globally. Here are two
 suggestions to control when SOCD Cleaner is enabled. These are mutually
 exclusive, choose one or the other, not both:</p>
@@ -301,6 +311,12 @@ class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1
 <span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div></li>
 </ul>
+<p><strong>Beware that some games do not allow SOCD filtering</strong>,
+<a
+href="https://store.steampowered.com/news/app/730/view/6500469346429600836">including
+Counter-Strike</a>. Check game rules before using. Implement one of the
+suggestions above or a similar means so that you can disable SOCD
+Cleaner where it is prohibited.</p>
 <h3 id="testing">Testing</h3>
 <p><a href="https://docs.qmk.fm/newbs_flashing">Flash the firmware</a>
 to the keyboard. To test the effect, use the <a
