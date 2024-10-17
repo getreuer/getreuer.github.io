@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-12-17)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2024-10-16)" />
   <title>QMK macros 1: intro and assortment of practical examples</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../../site.js" ></script>
 </head>
 <body>
@@ -91,7 +92,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">QMK macros 1: intro and assortment of practical
 examples</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-12-17)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2024-10-16)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -174,7 +175,7 @@ users’ keymaps.</p>
 <p>Code snippets in this post are shared under Apache 2 license.</p>
 <div style="font-size:85%">
 <blockquote>
-<p>Copyright 2021-2023 Google LLC</p>
+<p>Copyright 2021-2024 Google LLC</p>
 <p>Licensed under the Apache License, Version 2.0 (the “License”); you
 may not use this file except in compliance with the License. You may
 obtain a copy of the License at</p>
@@ -313,14 +314,15 @@ contains additional information about the event:</p>
 <li><code>record-&gt;event.pressed</code> is true if the event is a
 press (key down), and false if it is a release (key up). In the example
 above, we only take action on the press event.</li>
-<li><code>record-&gt;event.time</code> is a 16-bit timestamp of when the
-event occurred, used for timing effects (see also <a
+<li><code>record-&gt;event.time</code> is a 16-bit timestamp in units of
+milliseconds of when the event occurred (see also <a
 href="https://docs.qmk.fm/ref_functions#software-timers">Software
 Timers</a> and <a
 href="https://docs.qmk.fm/custom_quantum_functions#deferred-execution">Deferred
 Execution</a>).</li>
 <li><code>record-&gt;event.key.row</code> and
-<code>record-&gt;event.key.col</code> are the matrix position of the
+<code>record-&gt;event.key.col</code> are the <a
+href="../glossary/index.html#matrix-circuit">matrix position</a> of the
 key, counting from 0.</li>
 <li>If the event comes from a <a
 href="https://docs.qmk.fm/mod_tap">mod-tap</a> (<code>MT</code>) or
@@ -347,11 +349,17 @@ href="https://docs.qmk.fm/feature_advanced_keycodes?id=checking-modifier-state">
 Modifier State</a> and the next section, <a
 href="#macros-that-respond-to-mods">Macros that respond to
 mods</a>).</li>
+<li>Get the layer associated with the key event:<br />
+<code>uint8_t layer = read_source_layers_cache(record-&gt;event.key);</code></li>
 <li><code>IS_LAYER_ON(layer)</code> returns whether <code>layer</code>
 is currently on, and <code>get_highest_layer(layer_state)</code> returns
 the highest layer that is currently on (see also <a
 href="https://docs.qmk.fm/feature_layers?id=functions">Working with
 Layers</a>).</li>
+<li><code>get_repeat_key_count()</code> indicates whether the key is
+being invoked through Repeat Key or Alternate Repeat Key (see also <a
+href="https://docs.qmk.fm/features/repeat_key#functions">Repeat Key
+functions</a>).</li>
 </ul>
 <h2 id="macros-that-respond-to-mods">Macros that respond to mods</h2>
 <h3 id="arrow-macro-types---or">Arrow macro, types -&gt; or =&gt;</h3>
