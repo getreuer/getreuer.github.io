@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2024-10-08)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2024-11-12)" />
   <title>A guide to alt keyboard layouts (why, how, which one?)</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -27,26 +27,24 @@
 <div id="header">
 <h1 class="title">A guide to alt keyboard layouts (why, how, which
 one?)</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2024-10-08)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2024-11-12)</h2>
 </div>
 <div id="TOC">
 <ul>
 <li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#which-alt-keyboard-layout-should-i-learn"
+id="toc-which-alt-keyboard-layout-should-i-learn">Which alt keyboard
+layout should I learn?</a></li>
 <li><a href="#why-do-people-want-to-use-alt-layouts"
 id="toc-why-do-people-want-to-use-alt-layouts">Why do people want to use
 alt layouts?</a></li>
 <li><a href="#should-i-use-an-alt-layout"
 id="toc-should-i-use-an-alt-layout">Should I use an alt layout?</a></li>
-<li><a href="#which-alt-keyboard-layout-should-i-learn"
-id="toc-which-alt-keyboard-layout-should-i-learn">Which alt keyboard
-layout should I learn?</a></li>
 <li><a href="#outside-the-box" id="toc-outside-the-box">Outside the
 box</a></li>
 <li><a href="#how-long-does-it-take-to-learn-an-alt-layout"
 id="toc-how-long-does-it-take-to-learn-an-alt-layout">How long does it
 take to learn an alt layout?</a></li>
-<li><a href="#what-about-keycap-legends"
-id="toc-what-about-keycap-legends">What about keycap legends?</a></li>
 <li><a href="#how-to-learn-an-alt-layout"
 id="toc-how-to-learn-an-alt-layout">How to learn an alt layout?</a>
 <ul>
@@ -56,6 +54,13 @@ id="toc-obligatory-warnings">Obligatory warnings</a></li>
 id="toc-a-suggested-training-approach">A suggested training
 approach</a></li>
 </ul></li>
+<li><a href="#what-about-vim" id="toc-what-about-vim">What about
+Vim?</a></li>
+<li><a href="#what-about-keycap-legends"
+id="toc-what-about-keycap-legends">What about keycap legends?</a></li>
+<li><a href="#is-it-really-that-hard-to-arrange-30-keys"
+id="toc-is-it-really-that-hard-to-arrange-30-keys">Is it really that
+hard to arrange 30 keys?</a></li>
 <li><a href="#further-reading" id="toc-further-reading">Further
 reading</a></li>
 </ul>
@@ -65,67 +70,11 @@ reading</a></li>
 <p>This post is about switching from QWERTY to an alternative keyboard
 layout. Why and how do people switch? Which alt layout is best—Dvorak,
 Colemak, …?</p>
-<h2 id="why-do-people-want-to-use-alt-layouts">Why do people want to use
-alt layouts?</h2>
-<p><strong>The main motivation for alt layouts is better typing
-comfort.</strong> Alternatives to QWERTY dramatically reduce awkward
-typing motions such as <a
-href="../glossary/index.html#same-finger-bigram-sfb">same-finger bigrams
-(SFBs)</a>, reduce how much your fingers need to move (finger travel) to
-accomplish the same typing, and balance the typing workload over the
-fingers more evenly.</p>
-<p>QWERTY was designed by Christopher Sholes in the early 1870s for the
-Sholes and Glidden mechanical typewriter. It’s often said QWERTY was
-designed to avoid the typebars from jamming, though <a
-href="https://www.smithsonianmag.com/arts-culture/fact-of-fiction-the-legend-of-the-qwerty-keyboard-49863249/">it’s
-debatable whether that’s historically accurate</a>.</p>
-<figure>
-<img src="remington.jpg"
-alt="1930s Remington portable typewriter with QWERTY layout. Photo by Mariochs, distributed under a CC BY-SA 4.0 International license." />
-<figcaption aria-hidden="true">1930s Remington portable typewriter with
-QWERTY layout. Photo by Mariochs, distributed under a <a
-href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">CC BY-SA
-4.0 International</a> license.</figcaption>
-</figure>
-<p>What is obvious though is that QWERTY has a lot of SFBs, like
-<code>ed</code>, <code>un</code>, <code>rt</code>, <code>ol</code>, much
-more than any popular alt layout. Think about typing “<code>loft</code>”
-or “<code>unjust</code>.” Those same-finger movements are slow and
-awkward to type.</p>
-<p>To be fair, QWERTY was basically the first successful layout, a
-pioneering solution to a tough problem. It shouldn’t be surprising that
-its metrics are far from optimal. At the time it was created, the
-activity of typing itself was new.</p>
-<h2 id="should-i-use-an-alt-layout">Should I use an alt layout?</h2>
-<p>It’s your choice. You don’t <em>have</em> to learn an alt layout.</p>
-<p>Switching to an alt layout takes a lot of effort (<a
-href="#how-long-does-it-take-to-learn-an-alt-layout">at least a couple
-months of daily practice</a>), and the benefits are not huge. I don’t
-mean to be discouraging, just raising some counterpoints:</p>
-<ul>
-<li><p>If your hope is that changing layout will increase your typing
-speed, let me point out that speed is a matter of typing practice, not
-layout. There are plenty of extremely fast speed typists who use QWERTY.
-And the fastest typists (exceeding 300 wpm) don’t use regular keyboards
-at all, instead they use stenotype. See also <a
-href="../faqs/index.html#i-type-xxx-wpm-is-that-fast">I type XXX wpm –
-Is that fast?</a></p></li>
-<li><p>If your motivation is typing comfort, consider first correcting
-your posture, switching to a split columnar keyboard (<a
-href="../tour/index.html">these keyboards are awesome!</a>), try <a
-href="https://dreymar.colemak.org/layers-extend.html">DreymaR’s Extend
-Layer</a>, or switch to a modal editor like Vim—all of these things are
-more impactful and easier to do than learning a new layout.</p></li>
-</ul>
-<p>So why do it? For me, switching to an alt layout is a long-term
-investment in my health and comfort. I will type a lot in my life (I
-work as a software engineer), so spending several months learning a new
-layout is a fair price.</p>
 <h2 id="which-alt-keyboard-layout-should-i-learn">Which alt keyboard
 layout should I learn?</h2>
 <p><strong>There is no consensus on what is the “best” layout. No layout
 is perfect.</strong> Layout design is a balancing act of many competing
-objectives.</p>
+objectives, and the right balance is subjective.</p>
 <p><strong>I highly recommend reading the <a
 href="https://bit.ly/layout-doc-v2">Keyboard layouts doc</a>.</strong>
 This is a valuable resource for anyone interested in alt keyboard
@@ -134,12 +83,12 @@ keyboard layouts, suggestions on how to choose a layout, and practical
 tips on how to learn a new layout. You might also find useful the older
 <a href="https://bit.ly/keyboard-layouts-doc">version 1 of the
 doc</a>.</p>
-<p>Here are metrics for a sampling of some better known layouts ordered
-by year of their release (lower is better for <a
-href="../glossary/index.html#same-finger-bigram-sfb">SFBs</a>, LSBs,
-redirects, and off-home pinky use; higher is better for <a
-href="../glossary/index.html#roll">rolls</a>). Metrics for English were
-computed by <a
+<p>Here are metrics for a sampling of some better known layouts. Lower
+is better for <a
+href="../glossary/index.html#same-finger-bigram-sfb">same-finger bigrams
+(SFBs)</a>, LSBs, redirects, and off-home pinky use; higher is better
+for <a href="../glossary/index.html#roll">rolls</a>. Metrics for English
+were computed by <a
 href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
 layout playground</a>.</p>
 <div class="eqscroll">
@@ -681,6 +630,62 @@ Romak</a>, <a
 href="https://github.com/empressabyss/nordrassil">Nordrassil</a>, and <a
 href="https://github.com/MightyAcas/vylet">Vylet</a> are a few other
 layouts designed with an integrated magic key.</p>
+<h2 id="why-do-people-want-to-use-alt-layouts">Why do people want to use
+alt layouts?</h2>
+<p><strong>The main motivation for alt layouts is better typing
+comfort.</strong> Alternatives to QWERTY dramatically reduce awkward
+typing motions such as <a
+href="../glossary/index.html#same-finger-bigram-sfb">same-finger bigrams
+(SFBs)</a>, reduce how much your fingers need to move (finger travel) to
+accomplish the same typing, and balance the typing workload over the
+fingers more evenly.</p>
+<p>QWERTY was designed by Christopher Sholes in the early 1870s for the
+Sholes and Glidden mechanical typewriter. It’s often said QWERTY was
+designed to avoid the typebars from jamming, though <a
+href="https://www.smithsonianmag.com/arts-culture/fact-of-fiction-the-legend-of-the-qwerty-keyboard-49863249/">it’s
+debatable whether that’s historically accurate</a>.</p>
+<figure>
+<img src="remington.jpg"
+alt="1930s Remington portable typewriter with QWERTY layout. Photo by Mariochs, distributed under a CC BY-SA 4.0 International license." />
+<figcaption aria-hidden="true">1930s Remington portable typewriter with
+QWERTY layout. Photo by Mariochs, distributed under a <a
+href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">CC BY-SA
+4.0 International</a> license.</figcaption>
+</figure>
+<p>What is obvious though is that QWERTY has a lot of SFBs, like
+<code>ed</code>, <code>un</code>, <code>rt</code>, <code>ol</code>, much
+more than any popular alt layout. Think about typing “<code>loft</code>”
+or “<code>unjust</code>.” Those same-finger movements are slow and
+awkward to type.</p>
+<p>To be fair, QWERTY was basically the first successful layout, a
+pioneering solution to a tough problem. It shouldn’t be surprising that
+its metrics are far from optimal. At the time it was created, the
+activity of typing itself was new.</p>
+<h2 id="should-i-use-an-alt-layout">Should I use an alt layout?</h2>
+<p>It’s your choice. You don’t <em>have</em> to learn an alt layout.</p>
+<p>Switching to an alt layout takes a lot of effort (<a
+href="#how-long-does-it-take-to-learn-an-alt-layout">at least a couple
+months of daily practice</a>), and the benefits are not huge. I don’t
+mean to be discouraging, just raising some counterpoints:</p>
+<ul>
+<li><p>If your hope is that changing layout will increase your typing
+speed, let me point out that speed is a matter of typing practice, not
+layout. There are plenty of extremely fast speed typists who use QWERTY.
+And the fastest typists (exceeding 300 wpm) don’t use regular keyboards
+at all, instead they use stenotype. See also <a
+href="../faqs/index.html#i-type-xxx-wpm-is-that-fast">I type XXX wpm –
+Is that fast?</a></p></li>
+<li><p>If your motivation is typing comfort, consider first correcting
+your posture, switching to a split columnar keyboard (<a
+href="../tour/index.html">these keyboards are awesome!</a>), try <a
+href="https://dreymar.colemak.org/layers-extend.html">DreymaR’s Extend
+Layer</a>, or switch to a modal editor like Vim—all of these things are
+more impactful and easier to do than learning a new layout.</p></li>
+</ul>
+<p>So why do it? For me, switching to an alt layout is a long-term
+investment in my health and comfort. I will type a lot in my life (I
+work as a software engineer), so spending several months learning a new
+layout is a fair price.</p>
 <h2 id="outside-the-box">Outside the box</h2>
 <p>Most layouts are designed so that it could work with two-handed
 typing on a standard keyboard. But some layouts go outside the box.
@@ -691,10 +696,13 @@ just “layouts” but distinct input systems.</p>
 use <a href="../glossary/index.html#thumb-clusters">a thumb key</a> (or
 sometimes multiple thumb keys) to type letters. The first such layout
 was the <a href="https://en.wikipedia.org/wiki/Maltron#Layouts">Maltron
-layout</a> (1977), placing <kbd>E</kbd> on the left thumb. A more recent
-example is the <a
+layout</a> (1977), placing <kbd>E</kbd> on the left thumb. Some more
+recent examples are the <a
 href="https://xsznix.wordpress.com/2016/05/16/introducing-the-rsthd-layout/">RSTHD
-layout</a>.</p>
+layout</a>, <a
+href="https://github.com/empressabyss/nordrassil">Nordrassil</a>, and <a
+href="https://www.reddit.com/r/KeyboardLayouts/comments/1g66ivi/hands_down_promethium_snth_meets_hd_silverengram/">Hands
+Down Promethium</a>.</p>
 <figure>
 <img src="rsthd-layout.svg" alt="xsznix’s RSTHD layout." />
 <figcaption aria-hidden="true">xsznix’s RSTHD layout.</figcaption>
@@ -705,8 +713,8 @@ href="https://precondition.github.io/pressing-e-with-the-thumb">Pressing
 E with the thumb</a>. The advantages are gaining a free home row key and
 removing conflicts with bigrams involving <code>E</code>. A downside is
 that such layouts are not usable (without creativity) on conventional
-keyboards. Another potential concern is the extra load on the thumbs.
-See also <a href=".../thumb-ergo/index.html">PSA: Thumbs can get overuse
+keyboards. Another potential concern is the extra load on the thumbs—<a
+href=".../thumb-ergo/index.html">PSA: Thumbs can get overuse
 injuries</a>.</p>
 <p><strong>One-handed layouts:</strong> <a
 href="https://inkeys.wiki/en/keymaps/ardux">Ardux</a> is a one-handed
@@ -731,15 +739,6 @@ seriously).</p>
 <p>It’s worth it for the comfort, but be patient and approach it as a
 long project. Developing muscle memory takes time and consistent
 practice.</p>
-<h2 id="what-about-keycap-legends">What about keycap legends?</h2>
-<p>You would think that to avoid confusion, changing to an alternative
-layout means you also need to rearrange or relabel your keycaps to agree
-with the layout. Fortunately, this turns out to be a non-issue in
-practice. Surely, you plan to touch type on the new layout? <a
-href="../faqs/index.html#should-i-learn-how-to-touch-type">You
-should!</a> With proper touch typing, you will never look at the keys,
-and keycap legends don’t matter.</p>
-<p>If you really must have it, look into “relegendable keycaps.”</p>
 <h2 id="how-to-learn-an-alt-layout">How to learn an alt layout?</h2>
 <p><strong>It doesn’t have to be cold turkey.</strong> The first couple
 weeks are the hardest since your typing will be frustratingly slow. Some
@@ -844,6 +843,174 @@ considered its own exercise, after which you may pause and rest before
 beginning the next paragraph, and all progress is saved. Entertrained is
 my latest favorite typing practice site. It’s more fun than typing
 random words.</p></li>
+</ul>
+<h2 id="what-about-vim">What about Vim?</h2>
+<p><strong>If you use an editor with Vim key bindings, pay attention to
+the positions of j, k, w, and b.</strong> Alt layouts optimized for
+English tend to put <kbd>j</kbd> and <kbd>k</kbd> somewhere awkward,
+like a corner pinky key, being rare English letters (ranks 24 and 22 in
+Norvig’s data). This is sensible for general typing, but problematic for
+Vim, where <kbd>j</kbd> and <kbd>k</kbd> are used for vertical
+navigation. Depending on how you navigate, <kbd>w</kbd> and <kbd>b</kbd>
+may be similarly troubled, with their frequencies in English being
+relatively low (ranks 18 and 20).</p>
+<p>To make the point, here is a real keylog snippet of me editing C code
+in Vim. About half of my keystrokes are commands, not written text:</p>
+<pre><code>{ } ko2 c2 ko V(yes_token); yes_token = INV n; jdd wjj&gt;&gt; wkkwkcwYES_START
+jjjjddkkpjyykkpjo}  k&lt;&lt; wjk} return false; case YES_STOP kjddkkkkp&lt;&lt;..o
+jjjJJuww &amp;&amp; j&lt;&lt;jdd wjkkA: k&lt;&lt;jdj&lt;&lt;kyyjpwwwwwwwwxjdj&lt;&lt;j&lt;&lt;jddjcwreturn
+false  wjjjdjkkkdjkko Alternatively, you can do this without the
+Deferred Execution API as follows.kkkVkyjpkddostatic uint32_t next_yes;
+kk = 0; ko kwwbistruct { } yes = {0, false}; kko  uint32_t next_time; kjbbc</code></pre>
+<p>In principle, a Vim user should make less <code>jk</code>-spam
+through better use of other navigation than I do, like find and til
+<code>f t</code>, paragraph motions <code>{ }</code>, relative line
+jumps, window-relative home / middle / last motions <code>H M L</code>,
+and so on (<a href="https://vimhelp.org/motion.txt.html">:h
+motions.txt</a>).</p>
+<p>It is possible to edit your <code>.vimrc</code> key bindings to
+navigate using other keys. I wouldn’t recommend this, though. Vim has so
+many commands that changing one key binding is likely to overwrite
+another, so there is potentially a domino effect of displaced bindings.
+Another limitation is there are many other programs besides Vim that use
+Vim key bindings (e.g. <code>less</code>, <code>cmus</code>, GMail), but
+not all are easy or possible to configure.</p>
+<p>How, then, can one use an alt layout with Vim?</p>
+<ul>
+<li><p><strong>There are Vim-friendly alt layouts that play well with
+default Vim bindings:</strong> If you don’t mind inner column positions,
+<a href="https://colemakmods.github.io/mod-dh/">Colemak</a> (with or
+without DH mod) and <a
+href="https://github.com/GalileoBlues/Gallium">Gallium</a> are decent.
+<a href="https://engram.dev/">Engram</a> has <code>jk</code> in
+comfortable positions. <a href="#magic-sturdy">My Magic Sturdy
+flavor</a> modifies Sturdy for comfortable <code>jk</code>
+positions.</p>
+<p>It’s also often doable to mod a given layout to swap <kbd>j</kbd>
+into a better position. Since <code>j</code> is a rare letter, swapping
+it with punctuation or another rare letter (such as one of
+<code>zqxv</code>) tends to have mild impact on the layout metrics. <a
+href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
+Layout Playground</a> and <a
+href="https://cyanophage.github.io/playground.html?layout=qwfpbjluy%3B-arstgmneio%27zxcdvkh%2C.%2F%5C%5E&amp;mode=ergo&amp;lan=english">Cyanophage’s
+Layout Playground</a> are useful to explore mods like this.</p></li>
+<li><p><strong>Using a navigation layer of arrow keys is another
+solution, then it does not matter where <code>hjkl</code> are in the
+base layout.</strong> Arrow keys are placed in a comfortable position on
+a secondary layer, then a layer switch of some kind is used to activate
+it. For instance, a navigation layer could be implemented on a
+programmable keyboard or with a software keyboard remapper like <a
+href="https://github.com/jtroo/kanata">Kanata</a>. It appears quite a
+few folks find this to be a satisfying solution.</p>
+<figure>
+<img src="navigation-layer.svg"
+alt="A simple example navigation layer. Right index rests on ←." />
+<figcaption aria-hidden="true">A simple example navigation layer. Right
+index rests on <kbd>←</kbd>.</figcaption>
+</figure>
+<p>This isn’t the right solution for me, though. Navigation while
+editing is frequent and interspersed with other normal mode actions.
+Engaging a layer each time is more finger work friction than I accept.
+It is also mentally taxing that not only is Vim modal, the keyboard
+itself is also switching in and out of a “mode” for navigation
+vs. regular typing. There’s a beauty I’d prefer to preserve in how Vim
+normal mode navigation can be done by pressing individual keys at a
+time.</p></li>
+<li><p><strong>If you add a Repeat key, it is less important where
+<kbd>j</kbd> is positioned</strong> (<a
+href="https://docs.qmk.fm/features/repeat_key">Repeat key in QMK</a>, <a
+href="https://zmk.dev/docs/behaviors/key-repeat">Repeat key in ZMK</a>,
+<a
+href="https://github.com/jtroo/kanata/blob/main/docs/config.adoc#repeat-key">Repeat
+key in Kanata</a>). Then, repeated tapping <kbd>j</kbd> <kbd>j</kbd>
+<kbd>j</kbd> can be done instead as <kbd>j</kbd> <kbd>repeat</kbd>
+<kbd>repeat</kbd>. If using QMK, you can also add an <a
+href="https://docs.qmk.fm/features/repeat_key#alternate-repeating">Alternate
+Repeat key</a> for navigating in the reverse direction as well.</p></li>
+</ul>
+<h2 id="what-about-keycap-legends">What about keycap legends?</h2>
+<p>You would think that to avoid confusion, changing to an alternative
+layout means you also need to rearrange or relabel your keycaps to agree
+with the layout. Fortunately, this turns out to be a non-issue in
+practice. Surely, you plan to touch type on the new layout? <a
+href="../faqs/index.html#should-i-learn-how-to-touch-type">You
+should!</a> With proper touch typing, you will never look at the keys,
+and keycap legends don’t matter.</p>
+<p>If you really must have it, look into “relegendable keycaps.”</p>
+<h2 id="is-it-really-that-hard-to-arrange-30-keys">Is it really that
+hard to arrange 30 keys?</h2>
+<p>You might wonder why there are so many layouts and why this is not a
+solved problem.</p>
+<p>A good layout does not result from optimizing one metric in
+isolation. The first obvious idea of putting the most frequent letters
+in the best positions minimizes only a positional cost and has low
+quality results. A good layout comes through ensuring that multiple
+metrics are simultaneously reasonable—typically including at least a
+positional cost, SFBs, scissors, redirects, and rolls.</p>
+<p>Layouts are often created using a layout optimizer such as <a
+href="https://github.com/O-X-E-Y/oxeylyzer">oxeylyzer</a> or <a
+href="https://github.com/semilin/genkey">genkey</a>, software that
+searches for a layout by optimizing an objective function of such
+metrics.</p>
+<p>Alternatively or in combination with optimizers, layouts are designed
+manually, like fitting pieces of a puzzle, applying strategic patterns
+of key arrangements for favorable metrics. See the <a
+href="https://bit.ly/layout-doc-v2">Keyboard layouts doc</a> for
+detailed discussion of such patterns. <a
+href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
+Layout Playground</a> and <a
+href="https://cyanophage.github.io/playground.html?layout=qwfpbjluy%3B-arstgmneio%27zxcdvkh%2C.%2F%5C%5E&amp;mode=ergo&amp;lan=english">Cyanophage’s
+Layout Playground</a> are useful tools for layout design. These are web
+apps where you can interactively drag the keys around, and metrics are
+recomputed on the fly to show the effect.</p>
+<p>Designing a good layout is challenging:</p>
+<ul>
+<li><p><strong>The best balance of multiple metrics is
+subjective.</strong> Improving one metric will usually regress on
+another metric. Finding desirable well-rounded balance is unobvious and
+subjective. For instance, some users may be inclined to accept tradeoffs
+for reduced pinky usage or index finger usage, especially where RSI is a
+factor.</p></li>
+<li><p><strong>The usual metrics are not great.</strong> SFBs, scissors,
+redirects, rolls ultimately attempt in a very simplistic way to
+anticipate how comfortable/fast/ergonomic the layout is. To faithfully
+model these qualities, we arguably need something much more
+sophisticated, perhaps a detailed biomechanical model of the
+hand.</p></li>
+<li><p><strong>Optimization is hard and slow</strong> (specific to
+optimizers). The search space is discrete, so not amenable to
+gradient-based techniques. It is large enough that brute-forcing is
+infeasible: 30 factorial = 2.65 × 10<sup>32</sup> possible
+rearrangements of 30 keys. Though as said by Ian Douglas, no good layout
+will have <kbd>T</kbd> and <kbd>H</kbd> on the same column, or other
+such egregious SFBs, and this observation may be used to constrain the
+search.</p>
+<p>Optimizers I’ve looked at use a simple <a
+href="https://en.wikipedia.org/wiki/Simulated_annealing">simulated
+annealing algorithm</a> or a <a
+href="https://en.wikipedia.org/wiki/Genetic_algorithm">genetic
+algorithm</a>. These methods have no guarantee of finding an optimal
+solution, it is possible to get stuck in local optima. Suggested by
+Cyanophage, an approach to avoid local optima is to make multiple runs
+of greedy depth first search.</p>
+<p>By any on these methods, optimization is slow. Running for order of
+hours is expected, I think. Optimizers are preferably implemented
+efficiently for good performance, e.g. leveraging multithreading and in
+a language like C++ or Rust. These requirements make optimizers
+nontrivial to develop.</p></li>
+<li><p><strong>The size and quality of the text corpus is a
+factor.</strong> A larger text corpus (the text on which metrics are
+evaluated) is generally better for good statistics, but increases
+computation cost. Also, corpora used in practice usually don’t include
+hotkey, Vim normal mode keybindings, etc. Since they don’t relate
+directly to written characters, it is harder to collect data on
+that.</p></li>
+<li><p><strong>Most significantly, it is labor intensive to manually
+assess a layout in real world use.</strong> Once a layout is designed,
+the true test is how it feels when really using it. But learning a new
+layout is <a href="#how-long-does-it-take-to-learn-an-alt-layout">a
+nontrivial effort</a>. For me, it takes at least a few weeks of practice
+with a new layout to get feel for it in a qualitative sense.</p></li>
 </ul>
 <h2 id="further-reading">Further reading</h2>
 <ul>

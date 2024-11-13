@@ -52,8 +52,9 @@ html, body {
   margin: auto;
   padding: 0.75ex 1px 0 1px;
   height: 5ex;
+  backdrop-filter:saturate(150%) blur(4px);-webkit-backdrop-filter:saturate(150%) blur(4px);
   color: #666;
-  background: #444;
+  background: #202020a8;
   border-style: solid;
   border-color: #444;
   border-width: 0 1px 1px 1px;
