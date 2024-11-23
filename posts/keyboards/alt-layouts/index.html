@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2024-11-12)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2024-11-23)" />
   <title>A guide to alt keyboard layouts (why, how, which one?)</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -27,7 +27,7 @@
 <div id="header">
 <h1 class="title">A guide to alt keyboard layouts (why, how, which
 one?)</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2024-11-12)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2024-11-23)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -896,26 +896,25 @@ href="https://cyanophage.github.io/playground.html?layout=qwfpbjluy%3B-arstgmnei
 Layout Playground</a> are useful to explore mods like this.</p></li>
 <li><p><strong>Using a navigation layer of arrow keys is another
 solution, then it does not matter where <code>hjkl</code> are in the
-base layout.</strong> Arrow keys are placed in a comfortable position on
+base layout.</strong> Arrow keys are placed in comfortable positions on
 a secondary layer, then a layer switch of some kind is used to activate
-it. For instance, a navigation layer could be implemented on a
-programmable keyboard or with a software keyboard remapper like <a
-href="https://github.com/jtroo/kanata">Kanata</a>. It appears quite a
-few folks find this to be a satisfying solution.</p>
+it. A navigation layer can be implemented on a programmable keyboard or
+with a software keyboard remapper like <a
+href="https://github.com/jtroo/kanata">Kanata</a>. Such a layer is
+useful outside of Vim as well.</p>
 <figure>
 <img src="navigation-layer.svg"
-alt="A simple example navigation layer. Right index rests on ←." />
-<figcaption aria-hidden="true">A simple example navigation layer. Right
-index rests on <kbd>←</kbd>.</figcaption>
+alt="Example navigation layer, based on DreymaR’s Extend layer. Index fingers rest on Ctrl and ←." />
+<figcaption aria-hidden="true">Example navigation layer, based on <a
+href="https://dreymar.colemak.org/layers-extend.html">DreymaR’s Extend
+layer</a>. Index fingers rest on <kbd>Ctrl</kbd> and
+<kbd>←</kbd>.</figcaption>
 </figure>
-<p>This isn’t the right solution for me, though. Navigation while
-editing is frequent and interspersed with other normal mode actions.
-Engaging a layer each time is more finger work friction than I accept.
-It is also mentally taxing that not only is Vim modal, the keyboard
-itself is also switching in and out of a “mode” for navigation
-vs. regular typing. There’s a beauty I’d prefer to preserve in how Vim
-normal mode navigation can be done by pressing individual keys at a
-time.</p></li>
+<p>This isn’t the right solution for me. Navigation while editing is so
+frequent and interspersed with other normal mode actions that engaging a
+layer each time is more finger work than I accept. Nevertheless, it
+appears quite a few folks find this to be a satisfying
+solution.</p></li>
 <li><p><strong>If you add a Repeat key, it is less important where
 <kbd>j</kbd> is positioned</strong> (<a
 href="https://docs.qmk.fm/features/repeat_key">Repeat key in QMK</a>, <a
@@ -993,7 +992,7 @@ algorithm</a>. These methods have no guarantee of finding an optimal
 solution, it is possible to get stuck in local optima. Suggested by
 Cyanophage, an approach to avoid local optima is to make multiple runs
 of greedy depth first search.</p>
-<p>By any on these methods, optimization is slow. Running for order of
+<p>By any on these methods, optimization is slow. Run time of multiple
 hours is expected, I think. Optimizers are preferably implemented
 efficiently for good performance, e.g. leveraging multithreading and in
 a language like C++ or Rust. These requirements make optimizers
