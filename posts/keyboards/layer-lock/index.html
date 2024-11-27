@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-02-01 (updated 2024-04-10)" />
+  <meta name="author" content="Pascal Getreuer, 2022-02-01 (updated 2024-11-27)" />
   <title>QMK: Layer Lock key</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../../site.js" ></script>
 </head>
 <body>
@@ -90,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Layer Lock key</h1>
-<h2 class="author">Pascal Getreuer, 2022-02-01 (updated 2024-04-10)</h2>
+<h2 class="author">Pascal Getreuer, 2022-02-01 (updated 2024-11-27)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -121,6 +122,18 @@ id="toc-acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
+<div class="callout">
+<div class="callout-header">
+<p>
+🚀  Launched
+</p>
+</div>
+<p><strong>Layer Lock is now a core QMK feature!</strong> It was
+released on 2024-11-27. <a
+href="https://docs.qmk.fm/newbs_git_using_your_master_branch#updating-your-master-branch">Update
+your QMK set up</a> and see <a
+href="https://docs.qmk.fm/features/layer_lock">QMK Layer Lock</a>.</p>
+</div>
 <div class="callout">
 <div class="callout-header">
 <p>
@@ -380,14 +393,17 @@ that other features may nevertheless turn the layer off. To account for
 this, we compare <code>locked_layers</code> vs. the layer state on each
 key event and set layers with broken locks to be unlocked.</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
-<p>Big thanks to <span class="citation"
+<p>Thank you to <span class="citation"
 data-cites="mwpardue">@mwpardue</span>, <span class="citation"
 data-cites="drashna">@drashna</span>, <span class="citation"
 data-cites="ujl123">@ujl123</span>, <span class="citation"
 data-cites="sporkus">@sporkus</span>, <span class="citation"
 data-cites="EdenEast">@EdenEast</span>, <span class="citation"
 data-cites="Dimagog">@Dimagog</span> on GitHub and u/DB_Cooper75 on
-Reddit for contributions and feedback to improve this feature.</p>
+Reddit for contributions and feedback to improve this feature. And
+special thanks to <span class="citation"
+data-cites="drashna">@drashna</span> for getting Layer Lock added to QMK
+core.</p>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
