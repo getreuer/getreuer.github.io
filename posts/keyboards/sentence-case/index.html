@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-11-30 (updated 2024-01-27)" />
+  <meta name="author" content="Pascal Getreuer, 2022-11-30 (updated 2024-11-28)" />
   <title>Sentence Case: automatically capitalize sentences</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../../site.js" ></script>
 </head>
 <body>
@@ -90,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Sentence Case: automatically capitalize sentences</h1>
-<h2 class="author">Pascal Getreuer, 2022-11-30 (updated 2024-01-27)</h2>
+<h2 class="author">Pascal Getreuer, 2022-11-30 (updated 2024-11-28)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -366,6 +367,10 @@ set, or set to 0) is that Sentence Case never times out.</p>
 <td>Gets whether currently enabled.</td>
 </tr>
 <tr class="odd">
+<td><code>is_sentence_case_primed()</code></td>
+<td>Gets whether in primed state.</td>
+</tr>
+<tr class="even">
 <td><code>sentence_case_clear()</code></td>
 <td>Clears Sentence Case to initial state.</td>
 </tr>
