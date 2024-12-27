@@ -1,0 +1,1160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer, 2024-12-26" />
+  <title>PaletteFx: Add more colors to your keyboard</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script type="text/javascript" src="../../../site.js" ></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">PaletteFx: Add more colors to your keyboard</h1>
+<h2 class="author">Pascal Getreuer, 2024-12-26</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a>
+<ul>
+<li><a href="#license" id="toc-license">License</a></li>
+</ul></li>
+<li><a href="#gallery" id="toc-gallery">Gallery</a></li>
+<li><a href="#add-palettefx-to-your-keymap"
+id="toc-add-palettefx-to-your-keymap">Add PaletteFx to your keymap</a>
+<ul>
+<li><a href="#optional-enable-a-subset-of-effects-or-palettes"
+id="toc-optional-enable-a-subset-of-effects-or-palettes">Optional:
+Enable a subset of effects or palettes</a></li>
+</ul></li>
+<li><a href="#using-palettefx" id="toc-using-palettefx">Using
+PaletteFx</a>
+<ul>
+<li><a href="#set-a-favorite-at-startup"
+id="toc-set-a-favorite-at-startup">Set a favorite at startup</a></li>
+<li><a href="#random-palette-button"
+id="toc-random-palette-button">Random palette button</a></li>
+</ul></li>
+<li><a href="#make-your-own-palettes"
+id="toc-make-your-own-palettes">Make your own palettes</a></li>
+<li><a href="#make-your-own-palette-based-effects"
+id="toc-make-your-own-palette-based-effects">Make your own palette-based
+effects</a>
+<ul>
+<li><a href="#fixed-point-math" id="toc-fixed-point-math">Fixed-point
+math</a></li>
+<li><a href="#resources" id="toc-resources">Resources</a></li>
+</ul></li>
+<li><a href="#implementation-details"
+id="toc-implementation-details">Implementation details</a></li>
+<li><a href="#credits" id="toc-credits">Credits</a></li>
+</ul>
+</div>
+<style>
+.preview-menu {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0;
+  padding: 0;
+  border-collapse: separate;
+  font-size: 90%;
+  background-color: #000;
+  color: #ccc;
+  border: none;
+  user-select: none;
+}
+
+.preview-menu td {
+  padding: 0.2em 0.5em 0.2em 0.5em;
+  border: none;
+  cursor: pointer;
+  transition: background 0.4s;
+}
+
+.preview-menu td:active {
+  background-color: #555;
+}
+
+.preview-menu td img {
+  margin-right: 0.5em;
+}
+
+.palette-menu td {
+  width: 17em;
+  text-align: left;
+}
+
+.palette-menu td img {
+  border: 1px solid #444;
+}
+</style>
+<p><a href="../index.html">← More about keyboards</a></p>
+<div style="color: #ccc; background-color: #000; margin:auto; padding: 1em; text-align:center">
+<video autoplay loop muted playsinline style="width:100%">
+<source src="afterburn-vortex.mp4" type="video/mp4">
+</video>
+<p style="margin-top: 1em">
+Vortex effect rendered with Afterburn palette, running on a Voyager.
+</p>
+</div>
+<h2 id="overview">Overview</h2>
+<p>While most of QMK’s built-in RGB matrix effects are based on a single
+color hue, sampling from a palette of colors allows for more
+personality. This post describes PaletteFx, a suite of animated custom
+effects for <a
+href="https://docs.qmk.fm/features/rgb_matrix#rgb-matrix-effects">QMK’s
+RGB Matrix</a> in which colors are sampled from a palette, aka color
+gradient or color map.</p>
+<figure>
+<img src="palette-synthwave.png" width="65.5%" style="margin: 0 1.5% 5pt 0"><br><img src="value-axis.svg"
+width="70%">
+<figcaption aria-hidden="true">
+Mapping values in 0–255 to colors with the Synthwave palette.
+</figcaption>
+</figure>
+<p>PaletteFx includes 16 palettes and 6 effects, with the possibility to
+define additional palettes and effects.</p>
+<h3 id="license">License</h3>
+<p>PaletteFx and code samples in this post are shared under Apache 2
+license.</p>
+<div style="font-size:85%">
+<blockquote>
+<p>Copyright 2024 Google LLC</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”); you
+may not use this file except in compliance with the License. You may
+obtain a copy of the License at</p>
+<p><a href="https://www.apache.org/licenses/LICENSE-2.0"
+class="uri">https://www.apache.org/licenses/LICENSE-2.0</a></p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+</blockquote>
+</div>
+<h2 id="gallery">Gallery</h2>
+<p>Click to preview the effects and palettes.</p>
+<div style="background-color:#000; padding:1em; text-align: center">
+<table class="preview-menu">
+<tr>
+<td onmousedown="setEffect(&#39;gradient&#39;)">
+<img src="effect-gradient.svg"><br>Gradient
+</td>
+<td onmousedown="setEffect(&#39;flow&#39;)">
+<img src="effect-flow.svg"><br>Flow
+</td>
+<td onmousedown="setEffect(&#39;ripple&#39;)">
+<img src="effect-ripple.svg"><br>Ripple
+</td>
+</tr>
+</table>
+<table class="preview-menu">
+<tr>
+<td onmousedown="setEffect(&#39;sparkle&#39;)">
+<img src="effect-sparkle.svg"><br>Sparkle
+</td>
+<td onmousedown="setEffect(&#39;vortex&#39;)">
+<img src="effect-vortex.svg"><br>Vortex
+</td>
+<td onmousedown="setEffect(&#39;reactive&#39;)">
+<img src="effect-reactive.svg"><br>Reactive
+</td>
+</tr>
+</table>
+</table>
+<canvas id="anim" width="411px" height="150px" style="margin: 0.75em 0; padding: 0.5em; border:1px solid #444; width:calc(100% - 1em)">
+</canvas>
+<table class="preview-menu palette-menu">
+<tr>
+<td onmousedown="setPalette(&#39;afterburn&#39;)">
+<img src="./palette-afterburn.png">Afterburn
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;amber&#39;)">
+<img src="./palette-amber.png">Amber
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;badwolf&#39;)">
+<img src="./palette-badwolf.png">Bad Wolf
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;carnival&#39;)">
+<img src="./palette-carnival.png">Carnival
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;classic&#39;)">
+<img src="./palette-classic.png">Classic
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;dracula&#39;)">
+<img src="./palette-dracula.png">Dracula
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;groovy&#39;)">
+<img src="./palette-groovy.png">Groovy
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;notpink&#39;)">
+<img src="./palette-notpink.png">Not Pink
+</td>
+</tr>
+</table>
+<table class="preview-menu palette-menu">
+<tr>
+<td onmousedown="setPalette(&#39;phosphor&#39;)">
+<img src="./palette-phosphor.png">Phosphor
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;polarized&#39;)">
+<img src="./palette-polarized.png">Polarized
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;rosegold&#39;)">
+<img src="./palette-rosegold.png">Rose Gold
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;sport&#39;)">
+<img src="./palette-sport.png">Sport
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;synthwave&#39;)">
+<img src="./palette-synthwave.png">Synthwave
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;thermal&#39;)">
+<img src="./palette-thermal.png">Thermal
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;viridis&#39;)">
+<img src="./palette-viridis.png">Viridis
+</td>
+</tr>
+<tr>
+<td onmousedown="setPalette(&#39;watermelon&#39;)">
+<img src="./palette-watermelon.png">Watermelon
+</td>
+</tr>
+</table>
+</div>
+<script>
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+const _SIN8 = new Uint8Array([128, 131, 134, 137, 140, 143, 146, 149, 152,
+  155, 158, 161, 164, 167, 170, 173, 177, 179, 182, 184, 187, 189, 192, 194,
+  197, 200, 202, 205, 207, 210, 212, 215, 218, 219, 221, 223, 224, 226, 228,
+  229, 231, 233, 234, 236, 238, 239, 241, 243, 245, 245, 246, 246, 247, 248,
+  248, 249, 250, 250, 251, 251, 252, 253, 253, 254, 255, 254, 253, 253, 252,
+  251, 251, 250, 250, 249, 248, 248, 247, 246, 246, 245, 245, 243, 241, 239,
+  238, 236, 234, 233, 231, 229, 228, 226, 224, 223, 221, 219, 218, 215, 212,
+  210, 207, 205, 202, 200, 197, 194, 192, 189, 187, 184, 182, 179, 177, 173,
+  170, 167, 164, 161, 158, 155, 152, 149, 146, 143, 140, 137, 134, 131, 128,
+  125, 122, 119, 116, 113, 110, 107, 104, 101, 98, 95, 92, 89, 86, 83, 79, 77,
+  74, 72, 69, 67, 64, 62, 59, 56, 54, 51, 49, 46, 44, 41, 38, 37, 35, 33, 32,
+  30, 28, 27, 25, 23, 22, 20, 18, 17, 15, 13, 11, 11, 10, 10, 9, 8, 8, 7, 6, 6,
+  5, 5, 4, 3, 3, 2, 1, 2, 3, 3, 4, 5, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 11, 13,
+  15, 17, 18, 20, 22, 23, 25, 27, 28, 30, 32, 33, 35, 37, 38, 41, 44, 46, 49,
+  51, 54, 56, 59, 62, 64, 67, 69, 72, 74, 77, 79, 83, 86, 89, 92, 95, 98, 101,
+  104, 107, 110, 113, 116, 119, 122, 125]);
+const MATRIX_COLS = 14;
+const MATRIX_ROWS = 5;
+const MATRIX_CENTER_X = (MATRIX_COLS - 1) * 8;
+const MATRIX_CENTER_Y = (MATRIX_ROWS - 1) * 8;
+const PALETTES = {
+  "afterburn": "i1+GX4NvgG9/a31nfGN9cA9xEZMSphPJFesX/hr/Hv8=",
+  "amber": "BasPrRa+F74ZzxvfHe8d/xz7HvQg8iDyGvcY/hX9EPw=",
+  "badwolf": "DgL1//X/9f8OAg4CDgIOAg4CDgIYgRzwGIEOAg4CDgI=",
+  "carnival": "hF95W2xqWnlGizmfMr8szyfvIP8b/xb/Ev8I7fzs8d8=",
+  "classic": "ll+XfqB4sIbBhdiF6pb3twPJCtwP/xL/F/8Y/Bn4GvU=",
+  "dracula": "pXmniaq6rdqx6rf6vvrI+dj55voC+R3pLP81/j/uVe4=",
+  "groovy": "GrgXZRVVFVUVVRFmBfwE/wT/B/wXuBq4HLgy7jbvNu8=",
+  "notpink": "CZ8Dvfy8+Lz3y/Xr9Pr1+fz2EPQo8iDzBvX4+Pf7+f0=",
+  "phosphor": "dCZxOnFPbk9tX2lvX25VflSPVJ9Tv1DORe0u/Cr5KPY=",
+  "polarized": "i0+LXYtsinyJjImribmEun7rfPZ89nz7gsqJuYnJidg=",
+  "rosegold": "9s/63v3tAf0G/Qz9EvwW+hT8Ef0M/Qf9//z4/PH+6/8=",
+  "sport": "nDabRptGmkabVpxlnnSfg56RgqAxwSrjJ/Ul9yT6JP8=",
+  "synthwave": "qn20ncSe0Z/cr+PP6e/1/AP6DfsV/Bz9K/8q/0T0hP8=",
+  "thermal": "BxAIEAwgDTAPMRBBFFJfYH51cJU2uCfeIf8Z/g3+Bf4=",
+  "viridis": "zG3Ce7eJqZebmZGaiZuCnHudda1su13JR9o43S7vJ/8=",
+  "watermelon": "Q283ny/PMOgw9C3yJ/IR9Qj7Af8C/gL+AP797/7v/98="
+};
+let COLORS = [];
+let effect = "flow";
+let hits = [];
+let curTimestamp = null;
+
+function rand(max) { return Math.floor(Math.random() * max); }
+function sin8(x) { return _SIN8[x & 255]; }
+function cos8(x) { return _SIN8[(x + 64) & 255]; }
+function scale8(x, scale) { return (x * (1 + scale)) >> 8; }
+function lerp(a, b, frac) {
+  return (a < b) ? (a + scale8(b - a, frac)) : (a - scale8(a - b, frac));
+}
+function atan2(dy, dx) {
+  if (dy == 0) {
+    return (dx >= 0) ? 0 : 128;
+  }
+  const dyAbs = Math.abs(dy);
+  const a = (dx >= 0)
+      ? 32 - (32 * (dx - dyAbs) / (dx + dyAbs))
+      : 96 - (32 * (dx + dyAbs) / (dyAbs - dx));
+  return (dy < 0) ? -a : a;
+}
+
+function easeInOut(i) {
+  if (i < 64) {
+    i >>= 1;
+  } else if (i > 255 - 64) {
+    i = 255 - ((255 - i) >> 1);
+  } else {
+    i -= 64;
+    i += i >> 1;
+    i += 32;
+  }
+  return i;
+}
+
+function setPalette(paletteName) {
+  const palette = loadPalette(PALETTES[paletteName]);
+  COLORS = [];
+  for (let x = 0; x < 256; x++) {
+    COLORS.push(hsvToRgb(...lookupPalette(palette, x)));
+  }
+}
+
+function setEffect(name) {
+  effect = name;
+}
+
+function loadPalette(s) {
+  const binary = atob(s);
+  if (binary.length != 32) {
+    throw new Error("Palette data has incorrect length.");
+  }
+  const palette = new Uint16Array(16);
+  for (let i = 0; i < palette.length; i++) {
+    palette[i] = binary.charCodeAt(2 * i)
+      + (binary.charCodeAt(2 * i + 1) << 8);
+  }
+  return palette;
+}
+
+function unpackHsv16(hsv16) {
+  return [
+    hsv16 & 0xff,
+    ((hsv16 >> 8) & 0xf) * 17,
+    (hsv16 >> 12) * 17
+  ];
+}
+
+function lookupPalette(palette, x) {
+  x = Math.min(Math.max(Math.floor(x) - 8, 0), 239);
+  const i = x >> 4;
+  const frac = (x << 4) & 0xff;
+  const hsv0 = unpackHsv16(palette[i]);
+  const hsv1 = unpackHsv16(palette[i + 1]);
+  const hueWrap = Math.abs(hsv0[0] - hsv1[0]) & 128;
+  return [
+    lerp(hsv0[0] ^ hueWrap, hsv1[0] ^ hueWrap, frac) ^ hueWrap,
+    lerp(hsv0[1], hsv1[1], frac),
+    lerp(hsv0[2], hsv1[2], frac)
+  ];
+}
+
+function hsvToRgb(h, s, v) {
+  const i = Math.floor(h * 6 / 255);
+  const remainder = (h * 2 - i * 85) * 3;
+  const p = (v * (255 - s)) >> 8;
+  const q = (v * (255 - ((s * remainder) >> 8))) >> 8;
+  const t = (v * (255 - ((s * (255 - remainder)) >> 8))) >> 8;
+  const c = [p, p, t, v, v, q];
+  const rgb = (c[(i + 4) % 6] << 16) + (c[(i + 2) % 6] << 8) + c[i % 6];
+  return '#' + ((1 << 24) + rgb).toString(16).slice(1);
+}
+
+function drawGradient(ctx) {
+  const yMax = 2 * MATRIX_CENTER_Y;
+  const slope = Math.round(64 * 255 / yMax);
+
+  for (let i = 0; i < MATRIX_ROWS; i++) {
+    for (let j = 0; j < MATRIX_COLS; j++) {
+      const x = 16 * j;
+      const y = 16 * i;
+      const value = 255 - ((y * slope) >> 6);
+
+      ctx.fillStyle = COLORS[value];
+      ctx.fillRect(5 + j * 29, 5 + i * 29, 24, 24);
+    }
+  }
+}
+
+function drawFlow(ctx) {
+  const time = (curTimestamp >> 4) & 65535;
+  const rotc = cos8(time >> 2) - 128;
+  const rots = sin8(time >> 2) - 128;
+  const omega = 32 + (sin8(time) >> 2);
+
+  for (let i = 0; i < MATRIX_ROWS; i++) {
+    for (let j = 0; j < MATRIX_COLS; j++) {
+      const x = 16 * j;
+      const y = 16 * i;
+      // Rotate (x, y) by the 2x2 rotation matrix described by rot_c, rot_s.
+      const x1 = ((rotc * x - rots * y) / 128);
+      const y1 = ((rots * x + rotc * y) / 128);
+      let value = (scale8(sin8(x1 - 2 * time), omega) + y1 + (time >> 2)) & 255;
+      value = 2 * ((value <= 127) ? value : (255 - value));
+
+      ctx.fillStyle = COLORS[value];
+      ctx.fillRect(5 + j * 29, 5 + i * 29, 24, 24);
+    }
+  }
+}
+
+function drawVortex(ctx) {
+  const time = (curTimestamp >> 3) & 255;
+
+  for (let i = 0; i < MATRIX_ROWS; i++) {
+    for (let j = 0; j < MATRIX_COLS; j++) {
+      const x = 16 * j - MATRIX_CENTER_X;
+      const y = 16 * i - MATRIX_CENTER_Y;
+      const dist = Math.round(Math.sqrt(x * x + y * y));
+      const value = sin8(atan2(y, x) + time - (dist >> 1));
+
+      ctx.fillStyle = COLORS[value];
+      ctx.fillRect(5 + j * 29, 5 + i * 29, 24, 24);
+    }
+  }
+}
+
+function drawSparkle(ctx) {
+  const time = (curTimestamp >> 4) & 255;
+  const amplitude = 128 + (sin8(time) >> 1);
+  let randState = 1;
+
+  for (let i = 0; i < MATRIX_ROWS; i++) {
+    for (let j = 0; j < MATRIX_COLS; j++) {
+      randState = (randState * 36563) & 65535;
+      const phase = randState >> 8;
+      const value = scale8(sin8(2 * time + phase), amplitude);
+
+      ctx.fillStyle = COLORS[value];
+      ctx.fillRect(5 + j * 29, 5 + i * 29, 24, 24);
+    }
+  }
+}
+
+function updateHits() {
+  if (hits.length === 0 || (hits.length < 5 && rand(50) === 0)) {
+    hits.push([curTimestamp, 16 * rand(MATRIX_COLS), 16 * rand(MATRIX_ROWS)]);
+  }
+
+  let k = 0;
+  while (k < hits.length) {
+    if ((curTimestamp - hits[k][0]) >> 3 > 255) {
+      hits.splice(k, 1);
+    } else {
+      k++;
+    }
+  }
+}
+
+let drops = [];
+
+function drawRipple(ctx) {
+  const time = curTimestamp & 65535;
+
+  let k = 0;
+  let tshift = 4;
+  while (k < drops.length) {
+    if ((curTimestamp - drops[k][0]) >> tshift > 255) {
+      drops.splice(k, 1);
+    } else {
+      k++;
+    }
+  }
+
+  if (rand(40) === 0 && drops.length < 3) {
+    drops.push([curTimestamp, rand(2 * MATRIX_CENTER_X), rand(2 * MATRIX_CENTER_Y)]);
+  }
+
+  let amplitude = [];
+  let scale = [];
+  let phase = [];
+  for (let k = 0; k < drops.length; ++k) {
+    const t = (curTimestamp - drops[k][0]) >> tshift;
+    amplitude.push(
+        (t <= 31) ? 3 + 6 * t
+        : ((t <= 55) ? 192 : Math.pow(((255 - t) * 123) >> 7, 2) >> 8));
+    scale.push(Math.floor(255 / (1 + (t >> 1))));
+    phase.push((curTimestamp - drops[k][0]) >> 2);
+  }
+
+  for (let i = 0; i < MATRIX_ROWS; i++) {
+    for (let j = 0; j < MATRIX_COLS; j++) {
+      let value = 128;
+      for (let k = 0; k < drops.length; k++) {
+        if (amplitude[k] === 0) { continue; }
+        const dx = Math.round((16 * j - drops[k][1]) / 2);
+        const dy = Math.round((16 * i - drops[k][2]) / 2);
+        const r = Math.round(Math.sqrt(dx * dx + dy * dy));
+
+        const rScaled = r * scale[k];
+        if (rScaled < 255) {
+          const bump = scale8(easeInOut(255 - rScaled), amplitude[k]);
+          const wave = cos8(8 * r - phase[k]) - 128;
+          value += Math.round(wave * bump / 128);
+        }
+      }
+
+      value = Math.max(Math.min(value, 255), 0);
+      ctx.fillStyle = COLORS[value];
+      ctx.fillRect(5 + j * 29, 5 + i * 29, 24, 24);
+    }
+  }
+
+  ctx.globalAlpha = 1.0;
+}
+
+function drawReactive(ctx) {
+  let hitScale = [];
+  for (let k = 0; k < hits.length; ++k) {
+    const t = (curTimestamp - hits[k][0]) >> 3;
+    hitScale.push(
+        (t <= 31) ? 4 + 8 * t
+        : ((t <= 55) ? 255 : 0.0064125 * (255 - t) * (255 - t)));
+  }
+
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+
+  for (let i = 0; i < MATRIX_ROWS; i++) {
+    for (let j = 0; j < MATRIX_COLS; j++) {
+      let value = 0;
+
+      for (let k = 0; k < hits.length; k++) {
+        const dx = (16 * j - hits[k][1]) / 2;
+        const dy = (16 * i - hits[k][2]) / 2;
+        const distSqr = dx * dx + dy * dy;
+        if (distSqr < 21 * 21) {  // Accumulate a radial blob for each hit.
+          const dist = Math.round(Math.sqrt(distSqr));
+          value += scale8(255 - 12 * dist, hitScale[k]);
+          if (value >= 255) { break; }
+        }
+      }
+
+      value = Math.min(value, 255);
+      ctx.globalAlpha = Math.min(1.0, (64 + 6 * value) / 255);
+      ctx.fillStyle = COLORS[value];
+      ctx.fillRect(5 + j * 29, 5 + i * 29, 24, 24);
+    }
+  }
+
+  ctx.globalAlpha = 1.0;
+}
+
+function draw(ctx) {
+  switch (effect) {
+    case "gradient":
+      drawGradient(ctx);
+      break;
+    case "flow":
+      drawFlow(ctx);
+      break;
+    case "ripple":
+      drawRipple(ctx);
+      break;
+    case "sparkle":
+      drawSparkle(ctx);
+      break;
+    case "vortex":
+      drawVortex(ctx);
+      break;
+    case "reactive":
+      drawReactive(ctx);
+      break;
+  }
+}
+
+window.onload = () => {
+  setPalette("afterburn");
+  const canvas = document.getElementById("anim");
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  function anim(timestamp) {
+    requestAnimationFrame(anim);
+    curTimestamp = Math.floor(timestamp);
+    if (effect === "reactive") {
+      updateHits();
+    }
+    draw(ctx);
+  }
+
+  anim(document.timeline.currentTime);
+};
+</script>
+<p>Note: The “Reactive” effect responds to your key presses in real use.
+Here, random presses are simulated for sake of demonstration.</p>
+<h2 id="add-palettefx-to-your-keymap">Add PaletteFx to your keymap</h2>
+<p><strong>Prerequisites:</strong> You need a keyboard with an RGB LED
+matrix and <a
+href="https://docs.qmk.fm/features/rgb_matrix#rgb-matrix-effects">QMK’s
+RGB Matrix feature</a> enabled.</p>
+<p><strong>Step 1:</strong> In the same folder as your keymap, create a
+<code>features</code> subdirectory and copy <a
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/palettefx.inc">palettefx.inc</a>
+there.</p>
+<p><strong>Step 2:</strong> In your keymap folder, create a file
+<code>rgb_matrix_user.inc</code> with the following content, or if it
+already exists, add this as the first line:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/palettefx.inc&quot;</span></span></code></pre></div>
+<p><strong>Step 3:</strong> Add to your <code>rules.mk</code> file:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">RGB_MATRIX_CUSTOM_USER</span> <span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
+<p><strong>Step 4:</strong> Add to your <code>config.h</code> file:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PALETTEFX_ENABLE_ALL_EFFECTS</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PALETTEFX_ENABLE_ALL_PALETTES</span></span></code></pre></div>
+<h3 id="optional-enable-a-subset-of-effects-or-palettes">Optional:
+Enable a subset of effects or palettes</h3>
+<p>The above enables all effects and palettes. Alternatively, you may
+enable effects and/or palettes in config.h individually with
+“<code>#define PALETTEFX_</code><em>&lt;name&gt;</em><code>_ENABLE</code>.”
+This way you can select just your favorites and conserve firmware space.
+Example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_ENABLE_ALL_EFFECTS</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_ENABLE_ALL_PALETTES</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Enable just the Gradient and Ripple effects.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PALETTEFX_GRADIENT_ENABLE</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_FLOW_ENABLE</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PALETTEFX_RIPPLE_ENABLE</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_SPARKLE_ENABLE</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_VORTEX_ENABLE</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_REACTIVE_ENABLE</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Enable just the Afterburn, Not Pink, and Phosphor palettes.</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PALETTEFX_AFTERBURN_ENABLE</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_AMBER_ENABLE</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_BADWOLF_ENABLE</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_CARNIVAL_ENABLE</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_CLASSIC_ENABLE</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_DRACULA_ENABLE</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_GROOVY_ENABLE</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PALETTEFX_NOTPINK_ENABLE</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PALETTEFX_PHOSPHOR_ENABLE</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_POLARIZED_ENABLE</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_ROSEGOLD_ENABLE</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_SPORT_ENABLE</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_SYNTHWAVE_ENABLE</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_THERMAL_ENABLE</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_VIRIDIS_ENABLE</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_WATERMELON_ENABLE</span></span></code></pre></div>
+<div class="callout" style="border-left-color: #8ad359">
+<div class="callout-header" style="background-color: #e5f3d8">
+<p>
+📝  Note
+</p>
+</div>
+<p><strong>At least one effect and one palette must be
+enabled.</strong></p>
+</div>
+<h2 id="using-palettefx">Using PaletteFx</h2>
+<p><strong>Selecting effects:</strong> PaletteFx effects are appended to
+the list of existing RGB Matrix effects. Use the usual
+<code>RM_NEXT</code> / <code>RM_PREV</code> keycodes to switch to the
+PaletteFx effects.</p>
+<p><strong>Selecting palettes:</strong> PaletteFx effects repurpose the
+RGB Matrix hue setting to select which palette to use. Use the hue
+keycodes <code>RM_HUEU</code> / <code>RM_HUED</code> to cycle through
+them. The <code>i</code>th palette corresponds to hue =
+<code>RGB_MATRIX_HUE_STEP * i</code>.</p>
+<p>Keycodes summary:</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Keycodes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>RM_NEXT</code> / <code>RM_PREV</code></td>
+<td>Cycle through effects.</td>
+</tr>
+<tr class="even">
+<td><code>RM_HUEU</code> / <code>RM_HUED</code></td>
+<td>Cycle through palettes.</td>
+</tr>
+<tr class="odd">
+<td><code>RM_SATU</code> / <code>RM_SATD</code></td>
+<td>Increase / decrease saturation (color vibrancy).</td>
+</tr>
+<tr class="even">
+<td><code>RM_VALU</code> / <code>RM_VALD</code></td>
+<td>Increase / decrease value (brightness).</td>
+</tr>
+<tr class="odd">
+<td><code>RM_SPDU</code> / <code>RM_SPDD</code></td>
+<td>Increase / decrease animation speed.</td>
+</tr>
+</tbody>
+</table>
+<p>Optionally, it is also possible to configure effect settings
+programmatically. The following two subsections show two examples. If
+doing so, I suggest to copy <a
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/palettefx.h">palettefx.h</a>
+to your <code>features</code> folder, which defines handy constants to
+refer to palettes by name.</p>
+<h3 id="set-a-favorite-at-startup">Set a favorite at startup</h3>
+<p>If you’d like to set a favorite effect and palette at startup, use
+the <a href="https://docs.qmk.fm/features/rgb_matrix#api">RGB Matrix
+functions</a> in <code>keyboard_post_init_user()</code>. Here is an
+example. This supposes you copied the <a
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/palettefx.h">palettefx.h</a>
+header for the definition of <code>PALETTEFX_CARNIVAL</code>. In
+keymap.c, add:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/palettefx.h&quot;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> keyboard_post_init_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Set the effect.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  rgb_matrix_mode_noeeprom<span class="op">(</span>RGB_MATRIX_CUSTOM_PALETTEFX_FLOW<span class="op">);</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Set the palette and maximize saturation and brightness.</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">uint8_t</span> palette_index <span class="op">=</span> PALETTEFX_CARNIVAL<span class="op">;</span>  <span class="co">// Set Carnival palette.</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  rgb_matrix_sethsv_noeeprom<span class="op">(</span>RGB_MATRIX_HUE_STEP <span class="op">*</span> palette_index<span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">);</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Set speed to default.</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  rgb_matrix_set_speed_noeeprom<span class="op">(</span><span class="dv">128</span><span class="op">);</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Make sure RGB Matrix is on.</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  rgb_matrix_enable_noeeprom<span class="op">();</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="random-palette-button">Random palette button</h3>
+<p>A “random palette” <a href="../macros/index.html">macro button</a>
+can be implemented by setting the hue pseudorandomly. Here is a possible
+implementation:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> custom_keycodes <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  RANDPAL <span class="op">=</span> SAFE_RANGE<span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other custom keycodes...</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Use RANDPAL somewhere in your layout...</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RANDPAL<span class="op">:</span>  <span class="co">// Picks a random palette.</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Pick a pseudorandom hue in 0-255, seeded by the current time.</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">uint8_t</span> h <span class="op">=</span> <span class="op">(</span>UINT16_C<span class="op">(</span><span class="dv">17099</span><span class="op">)</span> <span class="op">*</span> timer_read<span class="op">())</span> <span class="op">&gt;&gt;</span> <span class="dv">8</span><span class="op">;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        rgb_matrix_sethsv_noeeprom<span class="op">(</span>h<span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">);</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="make-your-own-palettes">Make your own palettes</h2>
+<p>Create file <code>palettefx_user.inc</code> in your keymap folder to
+define additional palettes. An example
+<code>palettefx_user.inc</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">{</span>  <span class="co">// Inferno palette.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span><span class="dv">170</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span>   <span class="dv">0</span><span class="op">),</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span><span class="dv">172</span><span class="op">,</span> <span class="dv">170</span><span class="op">,</span>  <span class="dv">51</span><span class="op">),</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span><span class="dv">186</span><span class="op">,</span> <span class="dv">221</span><span class="op">,</span>  <span class="dv">85</span><span class="op">),</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span><span class="dv">196</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">119</span><span class="op">),</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span><span class="dv">205</span><span class="op">,</span> <span class="dv">238</span><span class="op">,</span> <span class="dv">119</span><span class="op">),</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span><span class="dv">217</span><span class="op">,</span> <span class="dv">221</span><span class="op">,</span> <span class="dv">136</span><span class="op">),</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span><span class="dv">229</span><span class="op">,</span> <span class="dv">204</span><span class="op">,</span> <span class="dv">170</span><span class="op">),</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span><span class="dv">239</span><span class="op">,</span> <span class="dv">204</span><span class="op">,</span> <span class="dv">187</span><span class="op">),</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span><span class="dv">250</span><span class="op">,</span> <span class="dv">187</span><span class="op">,</span> <span class="dv">221</span><span class="op">),</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span>  <span class="dv">6</span><span class="op">,</span> <span class="dv">204</span><span class="op">,</span> <span class="dv">255</span><span class="op">),</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span> <span class="dv">16</span><span class="op">,</span> <span class="dv">238</span><span class="op">,</span> <span class="dv">255</span><span class="op">),</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span> <span class="dv">22</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">),</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span> <span class="dv">27</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">),</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span> <span class="dv">33</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">),</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span> <span class="dv">39</span><span class="op">,</span> <span class="dv">170</span><span class="op">,</span> <span class="dv">255</span><span class="op">),</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  HSV16<span class="op">(</span> <span class="dv">44</span><span class="op">,</span> <span class="dv">102</span><span class="op">,</span> <span class="dv">255</span><span class="op">),</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="op">},</span></span></code></pre></div>
+<p>The general syntax is:</p>
+<table>
+<tr>
+<td>
+<code>{</code>
+</td>
+<td>
+Opening curly brace, defining a C array.
+</td>
+</tr>
+<tr>
+<td>
+<code>HSV16(</code><em>h</em><code>,</code><em>s</em><code>,</code><em>v</em><code>),</code><br>
+<em>(16 times)</em>
+</td>
+<td>
+16 palette colors. The colors are in <a
+href="https://en.wikipedia.org/wiki/HSL_and_HSV">hue-saturation-value
+(HSV)</a> representation with <em>h</em>, <em>s</em>, <em>v</em>
+component values in the range 0–255.<br>
+<input id="color-picker" type="color" value="#c3ff00">
+<input id="color-code" type="text" spellcheck="false" style="font-family:monospace"
+value="HSV16( 52, 255, 255)">
+</td>
+</tr>
+<tr>
+<td>
+<code>},</code>
+</td>
+<td>
+Closing curly brace followed by a comma.
+</td>
+</tr>
+</table>
+<script>
+const colorPicker = document.getElementById("color-picker");
+const colorCode = document.getElementById("color-code");
+
+function rgbToHsv(r, g, b) {
+  const v = Math.max(r, g, b);
+  const minc = Math.min(r, g, b);
+  const range = v - minc;
+
+  if (minc === v) {
+    return [0, 0, v];
+  }
+
+  const s = range / v;
+  const rc = (v - r) / range;
+  const gc = (v - g) / range;
+  const bc = (v - b) / range;
+
+  let h = 0;
+  if (r === v) {
+    h = bc - gc;
+  } else if (g === v) {
+    h = 2 + rc - bc;
+  } else {
+    h = 4 + gc - rc; 
+  }
+
+  h = (h / 6 + 1) % 1;
+  return [h, s, v];
+}
+
+function parseHsv16(code) {
+  if (code.length < 7 || code.slice(0, 6) !== "HSV16(") {
+    throw new Error("Expected `HSV16(...)`.");
+  }
+
+  end = 6;
+  while (end < code.length && code.charAt(end) !== ")") {
+    end++;
+  }
+
+  const args = code.slice(6, end).split(",");
+  if (args.length !== 3) {
+    throw new Error(`Invalid color: "${code.slice(start, end + 1)}"`);
+  }
+
+  return args.map(str => {
+    const value = parseInt(str, 10);
+    if (!(0 <= value && value <= 255)) {
+      throw new Error(`Components must be in 0-255, got: "${str.trim()}"`);
+    }
+    return value;
+  });
+}
+
+colorPicker.oninput = (e) => {
+  const color = e.target.value;
+  const r = parseInt(color.slice(1, 3), 16);
+  const g = parseInt(color.slice(3, 5), 16);
+  const b = parseInt(color.slice(5), 16);
+  let [h, s, v] = rgbToHsv(r / 255, g / 255, b / 255);
+  h = Math.round(255 * h);
+  s = 17 * Math.round(15 * s);
+  v = 17 * Math.round(15 * v);
+  h = `  ${h}`.slice(-3);
+  s = `  ${s}`.slice(-3);
+  v = `  ${v}`.slice(-3);
+  colorCode.value = `HSV16(${h}, ${s}, ${v})`;
+};
+
+colorCode.oninput = (e) => {
+  let [h, s, v] = parseHsv16(e.target.value);
+  s = Math.round(s / 17) * 17;
+  v = Math.round(v / 17) * 17;
+  colorPicker.value = hsvToRgb(h, s, v);
+};
+</script>
+<p>The above structure may be repeated to add multiple palettes.</p>
+<p>A few notes:</p>
+<ul>
+<li><p><strong>Prefer bright, saturated colors.</strong> Colors produced
+by RGB matrix LEDs come across more weakly than they do from a computer
+screen.</p></li>
+<li><p><strong>Prefer smooth changes in hue.</strong> Palette colors are
+interpolated in HSV space. Interpolation may introduce unintended colors
+if hue changes abruptly.</p></li>
+<li><p><strong>Small steps in <em>s</em> and <em>v</em> won’t be
+represented.</strong> For storage efficiency, a palette color is packed
+into 16 bits, with <em>s</em> and <em>v</em> quantized to 4 bits
+each.</p></li>
+</ul>
+<h2 id="make-your-own-palette-based-effects">Make your own palette-based
+effects</h2>
+<p>You can write your own palette-based RGB matrix effects. In
+<code>rgb_matrix_user.inc</code>, define your effects below the
+<code>#include</code> line for <code>palettefx.inc</code>. Example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/palettefx.inc&quot;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>RGB_MATRIX_EFFECT<span class="op">(</span>MY_COOL_EFFECT<span class="op">)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="dt">static</span> <span class="dt">bool</span> MY_COOL_EFFECT<span class="op">(</span>effect_params_t<span class="op">*</span> params<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  RGB_MATRIX_USE_LIMITS<span class="op">(</span>led_min<span class="op">,</span> led_max<span class="op">);</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get pointer to the selected palette data.</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">uint16_t</span><span class="op">*</span> palette <span class="op">=</span> palettefx_get_palette_data<span class="op">();</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Compute scaled time that wraps smoothly on 16-bit range overflow.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">uint16_t</span> time <span class="op">=</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        palettefx_scaled_time<span class="op">(</span>g_rgb_timer<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> rgb_matrix_config<span class="op">.</span>speed <span class="op">/</span> <span class="dv">4</span><span class="op">);</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">uint8_t</span> i <span class="op">=</span> led_min<span class="op">;</span> i <span class="op">&lt;</span> led_max<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    RGB_MATRIX_TEST_LED_FLAGS<span class="op">();</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint8_t</span> x <span class="op">=</span> g_led_config<span class="op">.</span>point<span class="op">[</span>i<span class="op">].</span>x<span class="op">;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint8_t</span> value <span class="op">=</span> sin8<span class="op">(</span>x <span class="op">+</span> time<span class="op">);</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Interpolate the palette at `value`, where `0 &lt;= value &lt;= 255`.</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    hsv_t hsv <span class="op">=</span> palettefx_interp_color<span class="op">(</span>palette<span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    rgb_t rgb <span class="op">=</span> rgb_matrix_hsv_to_rgb<span class="op">(</span>hsv<span class="op">);</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    rgb_matrix_set_color<span class="op">(</span>i<span class="op">,</span> rgb<span class="op">.</span>r<span class="op">,</span> rgb<span class="op">.</span>g<span class="op">,</span> rgb<span class="op">.</span>b<span class="op">);</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> rgb_matrix_check_finished_leds<span class="op">(</span>led_max<span class="op">);</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// RGB_MATRIX_CUSTOM_EFFECT_IMPLS</span></span></code></pre></div>
+<h3 id="fixed-point-math">Fixed-point math</h3>
+<p>A brief aside regarding effect math: for efficiency, QMK implements
+effect math purely in <a
+href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic">fixed-point
+arithmetic</a>, as do PaletteFx’s effects. This is significant
+especially on AVR microcontrollers, as they lack native floating-point
+instructions. It is costly (both in time and firmware space) to emulate
+float math in software.</p>
+<p>The <a
+href="https://github.com/qmk/qmk_firmware/blob/master/lib/lib8tion">lib8tion
+library</a> is handy for fixed-point arithmetic, and it’s source code is
+already included in QMK. A nice building block is
+<code>scale8(x, y)</code>, which efficiently computes
+“<code>(x * y) / 256</code>” of two <code>uint8_t</code> values. There
+are also functions like <code>sin8(x)</code> for fast crude
+trigonometry, accurate within a couple percent. As the lib8tion source
+says, “don’t use these approximations for calculating the trajectory of
+a rocket to Mars, but they’re great for art projects and LED
+displays.”</p>
+<h3 id="resources">Resources</h3>
+<ul>
+<li><a
+href="https://docs.qmk.fm/features/rgb_matrix#custom-rgb-matrix-effects">Custom
+RGB Matrix Effects documentation</a></li>
+<li><a
+href="https://github.com/qmk/qmk_firmware/tree/master/quantum/rgb_matrix/animations">quantum/rgb_matrix/animations</a>
+– code for QMK’s built-in effects</li>
+<li><a
+href="https://github.com/qmk/qmk_firmware/tree/master/lib/lib8tion">lib8tion
+library</a> – fast 8-bit and 16-bit math</li>
+</ul>
+<h2 id="implementation-details">Implementation details</h2>
+<p>Here are some notes on how PaletteFx is implemented. See also the
+code itself in <a
+href="https://github.com/getreuer/qmk-keymap/blob/main/features/palettefx.inc">palettefx.inc</a>.</p>
+<p>Palettes are efficiently stored, each taking only 32 bytes of flash
+memory. A palette is a lookup table in <code>PROGMEM</code> of 16
+colors. Each color is packed in a <code>uint16_t</code>, the bottom 8
+bits being hue, middle 4 bits for saturation, and the top 4 bits for
+value. To unpack a color, bit shift and mask the fields, then multiply
+the 4-bit components by 17 to rescale them to 0–255 range:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">(</span>hsv_t<span class="op">){</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>h <span class="op">=</span> <span class="op">(</span><span class="dt">uint8_t</span><span class="op">)</span>hsv16<span class="op">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>s <span class="op">=</span> <span class="op">((</span><span class="dt">uint8_t</span><span class="op">)(</span>hsv16 <span class="op">&gt;&gt;</span> <span class="dv">8</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x0f</span><span class="op">)</span> <span class="op">*</span> <span class="dv">17</span><span class="op">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>v <span class="op">=</span> <span class="op">((</span><span class="dt">uint8_t</span><span class="op">)(</span>hsv16 <span class="op">&gt;&gt;</span> <span class="dv">12</span><span class="op">)</span> <span class="op">&amp;</span> <span class="bn">0x0f</span><span class="op">)</span> <span class="op">*</span> <span class="dv">17</span><span class="op">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>The palette is piecewise-linearly interpolated in HSV space. To
+interpolate the color at <code>x</code>, <code>x</code> in 0–255, we do
+the following:</p>
+<ol type="1">
+<li><p>Subtract 8 from <code>x</code>, then clamp it to the range
+0–239.</p></li>
+<li><p>Compute a table index <code>i = x / 16</code> in 0–14 (integer
+division rounding down) and a fractional part
+<code>frac = (x % 16) * 16</code>.</p></li>
+<li><p>Read the <code>i</code>th and <code>(i+1)</code>th palette
+colors.</p></li>
+<li><p>In each HSV component, linearly interpolate or “lerp” between the
+two palette colors with <code>frac</code> as the blend weight. This is
+efficiently done with lib8tion’s <code>lerp8by8(a, b, frac)</code>
+function.</p>
+<p>In the lerp step, an adjustment is needed for hue. Since hue wraps
+circularly mod 256, blending should take the “short way around” the
+circle. For instance, the midpoint between hue 240 and hue 10 should be
+hue 253 [= (240 + 266) / 2], not hue 125. Let <code>a.h</code> and
+<code>b.h</code> be the two hue values, then:</p>
+<ul>
+<li>If <code>|a.h - b.h|</code> &lt; 128, no adjustment is needed.</li>
+<li>Otherwise if <code>|a.h - b.h|</code> ≥ 128, rotate both hue values
+by 128 <code>a.h' = (a.h + 128) % 256</code> and
+<code>b.h' = (b.h + 128) % 256</code>, lerp the rotated values, then
+rotate the result by 128.</li>
+</ul>
+<p>This can be concisely written in 8-bit ops as:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> hue_wrap <span class="op">=</span> <span class="dv">128</span> <span class="op">&amp;</span> <span class="op">(</span>a<span class="op">.</span>h <span class="op">&gt;=</span> b<span class="op">.</span>h <span class="op">?</span> <span class="op">(</span>a<span class="op">.</span>h <span class="op">-</span> b<span class="op">.</span>h<span class="op">)</span> <span class="op">:</span> <span class="op">(</span>b<span class="op">.</span>h <span class="op">-</span> a<span class="op">.</span>h<span class="op">));</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> h <span class="op">=</span> lerp8by8<span class="op">(</span>a<span class="op">.</span>h <span class="op">^</span> hue_wrap<span class="op">,</span> b<span class="op">.</span>h <span class="op">^</span> hue_wrap<span class="op">,</span> frac<span class="op">)</span> <span class="op">^</span> hue_wrap<span class="op">;</span></span></code></pre></div></li>
+<li><p>Scale the interpolated color’s saturation and value by RGB
+Matrix’s configured saturation and value settings.</p></li>
+<li><p>Finally, use <code>rgb_matrix_hsv_to_rgb()</code> to convert the
+HSV color to RGB.</p></li>
+</ol>
+<h2 id="credits">Credits</h2>
+<p>PaletteFx’s palettes are inspired by these excellent works.</p>
+<ul>
+<li><p>The <a
+href="https://github.com/sjl/badwolf/tree/61d75affa51d40213d671edc9c8ff83992d7fd6f">Bad
+Wolf theme</a> is by Steve Losh, distributed under <a
+href="https://opensource.org/license/mit">MIT/X11 license</a>.</p></li>
+<li><p>The <a
+href="https://github.com/dracula/dracula-theme/tree/ac4dc82dab2a3c35e5cac0cd80c97fbf4c2ca986">Dracula
+theme</a> is by Zeno Rocha, distributed under <a
+href="https://opensource.org/license/mit">MIT license</a>.</p></li>
+<li><p>The <a
+href="https://github.com/morhetz/gruvbox/tree/f1ecde848f0cdba877acb0c740320568252cc482">Gruvbox
+theme</a> is by Pavel Pertsev, distributed under <a
+href="https://opensource.org/license/mit">MIT/X11 license</a>.</p></li>
+<li><p>The <a
+href="https://github.com/altercation/solarized/tree/62f656a02f93c5190a8753159e34b385588d5ff3">Solarized
+theme</a> is by Ethan Schoonover, distributed under <a
+href="https://opensource.org/license/mit">MIT license</a>.</p></li>
+<li><p>The <a
+href="https://github.com/BIDS/colormap/blob/bc549477db0c12b54a5928087552ad2cf274980f/colormaps.py">Viridis
+colormap</a> is by Stéfan van der Walt and Nathaniel Smith, distributed
+under <a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0
+license</a>.</p></li>
+</ul>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
