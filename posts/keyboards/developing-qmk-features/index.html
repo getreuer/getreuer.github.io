@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2023-12-17" />
+  <meta name="author" content="Pascal Getreuer, 2023-12-17 (updated 2024-12-30)" />
   <title>Developing QMK features</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../../site.js" ></script>
 </head>
 <body>
@@ -90,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Developing QMK features</h1>
-<h2 class="author">Pascal Getreuer, 2023-12-17</h2>
+<h2 class="author">Pascal Getreuer, 2023-12-17 (updated 2024-12-30)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -131,6 +132,8 @@ console</a></li>
 <li><a href="#alternative-typing-out-debug-messages"
 id="toc-alternative-typing-out-debug-messages">Alternative: typing out
 debug messages</a></li>
+<li><a href="#logging-keycodes" id="toc-logging-keycodes">Logging
+keycodes</a></li>
 <li><a href="#corresponding-physical-keys-to-matrix-positions"
 id="toc-corresponding-physical-keys-to-matrix-positions">Corresponding
 physical keys to matrix positions</a></li>
@@ -458,6 +461,21 @@ strings:</p>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>send_string<span class="op">(</span>get_u8_str<span class="op">(</span>rgb_matrix_get_sat<span class="op">(),</span> <span class="ch">&#39; &#39;</span><span class="op">));</span></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>SEND_STRING<span class="op">(</span><span class="st">&quot;, &quot;</span><span class="op">);</span></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>send_string<span class="op">(</span>get_u8_str<span class="op">(</span>rgb_matrix_get_val<span class="op">(),</span> <span class="ch">&#39; &#39;</span><span class="op">));</span></span></code></pre></div>
+<h3 id="logging-keycodes">Logging keycodes</h3>
+<p>A simple way to log keycodes is numerically as hex values:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dprintf<span class="op">(</span><span class="st">&quot;kc=0x</span><span class="sc">%04X\n</span><span class="st">&quot;</span><span class="op">,</span> keycode<span class="op">);</span></span></code></pre></div>
+<p>From there, you may look up a numerical code in <a
+href="https://github.com/qmk/qmk_firmware/blob/master/quantum/keycodes.h">quantum/keycodes.h</a>
+to determine its meaning. However, this process is manual and tiresome,
+especially for compound keycodes like tap-hold keys.</p>
+<p>Use my <a href="../keycode-string/index.html">keycode_string
+function</a> for prettier keycode logging:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>dprintf<span class="op">(</span><span class="st">&quot;kc=</span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> keycode_string<span class="op">(</span>keycode<span class="op">));</span></span></code></pre></div>
+<p>This logs the keycode as a human-readable string like
+“<code>LT(2,KC_D)</code>” rather than a hex code like
+“<code>0x4207</code>.” See the <a
+href="../keycode-string/index.html">keycode_string documentation</a> for
+further details.</p>
 <h3 id="corresponding-physical-keys-to-matrix-positions">Corresponding
 physical keys to matrix positions</h3>
 <p>We look at corresponding physical keys to <a
@@ -475,14 +493,14 @@ obvious. One way to uncover it is by looking up the definition of the
 often named like “<code>K</code><em>rowcol</em>.” For example, the
 Auorora65 keyboard has the following <code>LAYOUT</code> macro (from <a
 href="https://github.com/qmk/qmk_firmware/blob/master/keyboards/aurora65/aurora65.h">keyboards/aurora65/aurora65.h</a>):</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode .c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LAYOUT_65_ansi_blocker</span><span class="op">(</span><span class="pp"> </span><span class="op">\</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="pp">K00</span><span class="op">,</span><span class="pp"> K01</span><span class="op">,</span><span class="pp"> K02</span><span class="op">,</span><span class="pp"> K03</span><span class="op">,</span><span class="pp"> K04</span><span class="op">,</span><span class="pp"> K05</span><span class="op">,</span><span class="pp"> K06</span><span class="op">,</span><span class="pp"> K07</span><span class="op">,</span><span class="pp"> K08</span><span class="op">,</span><span class="pp"> K09</span><span class="op">,</span><span class="pp"> K0A</span><span class="op">,</span><span class="pp"> K0B</span><span class="op">,</span><span class="pp"> K0C</span><span class="op">,</span><span class="pp"> K0D</span><span class="op">,</span><span class="pp"> K0E</span><span class="op">,\</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="pp">K10</span><span class="op">,</span><span class="pp"> K11</span><span class="op">,</span><span class="pp"> K12</span><span class="op">,</span><span class="pp"> K13</span><span class="op">,</span><span class="pp"> K14</span><span class="op">,</span><span class="pp"> K15</span><span class="op">,</span><span class="pp"> K16</span><span class="op">,</span><span class="pp"> K17</span><span class="op">,</span><span class="pp"> K18</span><span class="op">,</span><span class="pp"> K19</span><span class="op">,</span><span class="pp"> K1A</span><span class="op">,</span><span class="pp"> K1B</span><span class="op">,</span><span class="pp"> K1C</span><span class="op">,</span><span class="pp"> K2C</span><span class="op">,</span><span class="pp"> K1E</span><span class="op">,\</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="pp">K20</span><span class="op">,</span><span class="pp"> K21</span><span class="op">,</span><span class="pp"> K22</span><span class="op">,</span><span class="pp"> K23</span><span class="op">,</span><span class="pp"> K24</span><span class="op">,</span><span class="pp"> K25</span><span class="op">,</span><span class="pp"> K26</span><span class="op">,</span><span class="pp"> K27</span><span class="op">,</span><span class="pp"> K28</span><span class="op">,</span><span class="pp"> K29</span><span class="op">,</span><span class="pp"> K2A</span><span class="op">,</span><span class="pp"> K2B</span><span class="op">,</span><span class="pp">      K2D</span><span class="op">,</span><span class="pp"> K2E</span><span class="op">,\</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="pp">K30</span><span class="op">,</span><span class="pp">      K32</span><span class="op">,</span><span class="pp"> K33</span><span class="op">,</span><span class="pp"> K34</span><span class="op">,</span><span class="pp"> K35</span><span class="op">,</span><span class="pp"> K36</span><span class="op">,</span><span class="pp"> K37</span><span class="op">,</span><span class="pp"> K38</span><span class="op">,</span><span class="pp"> K39</span><span class="op">,</span><span class="pp"> K3A</span><span class="op">,</span><span class="pp"> K3B</span><span class="op">,</span><span class="pp"> K3C</span><span class="op">,</span><span class="pp"> K3D</span><span class="op">,</span><span class="pp"> K3E</span><span class="op">,\</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="pp">K40</span><span class="op">,</span><span class="pp"> K41</span><span class="op">,</span><span class="pp"> K42</span><span class="op">,</span><span class="pp">                K46</span><span class="op">,</span><span class="pp">                K49</span><span class="op">,</span><span class="pp"> K4B</span><span class="op">,</span><span class="pp"> K4C</span><span class="op">,</span><span class="pp"> K4D</span><span class="op">,</span><span class="pp"> K4E </span><span class="op">\</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode .c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LAYOUT_65_ansi_blocker</span><span class="op">(</span><span class="pp"> </span><span class="op">\</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="pp">K00</span><span class="op">,</span><span class="pp"> K01</span><span class="op">,</span><span class="pp"> K02</span><span class="op">,</span><span class="pp"> K03</span><span class="op">,</span><span class="pp"> K04</span><span class="op">,</span><span class="pp"> K05</span><span class="op">,</span><span class="pp"> K06</span><span class="op">,</span><span class="pp"> K07</span><span class="op">,</span><span class="pp"> K08</span><span class="op">,</span><span class="pp"> K09</span><span class="op">,</span><span class="pp"> K0A</span><span class="op">,</span><span class="pp"> K0B</span><span class="op">,</span><span class="pp"> K0C</span><span class="op">,</span><span class="pp"> K0D</span><span class="op">,</span><span class="pp"> K0E</span><span class="op">,\</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="pp">K10</span><span class="op">,</span><span class="pp"> K11</span><span class="op">,</span><span class="pp"> K12</span><span class="op">,</span><span class="pp"> K13</span><span class="op">,</span><span class="pp"> K14</span><span class="op">,</span><span class="pp"> K15</span><span class="op">,</span><span class="pp"> K16</span><span class="op">,</span><span class="pp"> K17</span><span class="op">,</span><span class="pp"> K18</span><span class="op">,</span><span class="pp"> K19</span><span class="op">,</span><span class="pp"> K1A</span><span class="op">,</span><span class="pp"> K1B</span><span class="op">,</span><span class="pp"> K1C</span><span class="op">,</span><span class="pp"> K2C</span><span class="op">,</span><span class="pp"> K1E</span><span class="op">,\</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="pp">K20</span><span class="op">,</span><span class="pp"> K21</span><span class="op">,</span><span class="pp"> K22</span><span class="op">,</span><span class="pp"> K23</span><span class="op">,</span><span class="pp"> K24</span><span class="op">,</span><span class="pp"> K25</span><span class="op">,</span><span class="pp"> K26</span><span class="op">,</span><span class="pp"> K27</span><span class="op">,</span><span class="pp"> K28</span><span class="op">,</span><span class="pp"> K29</span><span class="op">,</span><span class="pp"> K2A</span><span class="op">,</span><span class="pp"> K2B</span><span class="op">,</span><span class="pp">      K2D</span><span class="op">,</span><span class="pp"> K2E</span><span class="op">,\</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="pp">K30</span><span class="op">,</span><span class="pp">      K32</span><span class="op">,</span><span class="pp"> K33</span><span class="op">,</span><span class="pp"> K34</span><span class="op">,</span><span class="pp"> K35</span><span class="op">,</span><span class="pp"> K36</span><span class="op">,</span><span class="pp"> K37</span><span class="op">,</span><span class="pp"> K38</span><span class="op">,</span><span class="pp"> K39</span><span class="op">,</span><span class="pp"> K3A</span><span class="op">,</span><span class="pp"> K3B</span><span class="op">,</span><span class="pp"> K3C</span><span class="op">,</span><span class="pp"> K3D</span><span class="op">,</span><span class="pp"> K3E</span><span class="op">,\</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="pp">K40</span><span class="op">,</span><span class="pp"> K41</span><span class="op">,</span><span class="pp"> K42</span><span class="op">,</span><span class="pp">                K46</span><span class="op">,</span><span class="pp">                K49</span><span class="op">,</span><span class="pp"> K4B</span><span class="op">,</span><span class="pp"> K4C</span><span class="op">,</span><span class="pp"> K4D</span><span class="op">,</span><span class="pp"> K4E </span><span class="op">\</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span></code></pre></div>
 <p>Below is a graphical representation. Note the unused matrix positions
 and irregularities around wide keys:</p>
 <p><img src="aurora65-matrix.svg" /></p>
@@ -496,42 +514,42 @@ positions to the debug console (see also <a
 href="https://docs.qmk.fm/faq_debug#which-matrix-position-is-this-keypress">Which
 matrix position is this keypress?</a>). Enable Console as described
 above and add in <code>process_record_user()</code>:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t <span class="op">*</span>record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// On every key press, print the event&#39;s keycode and matrix position.</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    dprintf<span class="op">(</span><span class="st">&quot;kc=0x</span><span class="sc">%04X</span><span class="st">, row=</span><span class="sc">%2u</span><span class="st">, col=</span><span class="sc">%2u\n</span><span class="st">&quot;</span><span class="op">,</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        keycode<span class="op">,</span> record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>row<span class="op">,</span> record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>col<span class="op">);</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t <span class="op">*</span>record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// On every key press, print the event&#39;s keycode and matrix position.</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    dprintf<span class="op">(</span><span class="st">&quot;kc=0x</span><span class="sc">%04X</span><span class="st">, row=</span><span class="sc">%2u</span><span class="st">, col=</span><span class="sc">%2u\n</span><span class="st">&quot;</span><span class="op">,</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        keycode<span class="op">,</span> record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>row<span class="op">,</span> record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">.</span>col<span class="op">);</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Alternatively, here is another way that works without Console. In
 keymap.c, add a custom keycode <code>INSPECT</code>, use it somewhere in
 your layout, and add a handler for it in
 <code>process_record_user()</code> as follows:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> custom_keycodes <span class="op">{</span> INSPECT <span class="op">=</span> SAFE_RANGE<span class="op">,</span> <span class="co">/* ... */</span> <span class="op">};</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Use INSPECT in your layout...</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> <span class="dt">uint16_t</span> prev_keycode <span class="op">=</span> KC_NO<span class="op">;</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> keypos_t prev_pos <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">};</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>keycode <span class="op">==</span> INSPECT<span class="op">)</span> <span class="op">{</span> </span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>      SEND_STRING<span class="op">(</span><span class="st">&quot;kc=0x&quot;</span><span class="op">);</span>  <span class="co">// Print info about the previous key.</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>      send_word<span class="op">(</span>prev_keycode<span class="op">);</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>      SEND_STRING<span class="op">(</span><span class="st">&quot;, row=&quot;</span><span class="op">);</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>      send_string<span class="op">(</span>get_u8_str<span class="op">(</span>prev_pos<span class="op">.</span>row<span class="op">,</span> <span class="ch">&#39; &#39;</span><span class="op">));</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>      SEND_STRING<span class="op">(</span><span class="st">&quot;, col=&quot;</span><span class="op">);</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>      send_string<span class="op">(</span>get_u8_str<span class="op">(</span>prev_pos<span class="op">.</span>col<span class="op">,</span> <span class="ch">&#39; &#39;</span><span class="op">));</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    prev_keycode <span class="op">=</span> keycode<span class="op">;</span></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    prev_pos <span class="op">=</span> record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">;</span></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> custom_keycodes <span class="op">{</span> INSPECT <span class="op">=</span> SAFE_RANGE<span class="op">,</span> <span class="co">/* ... */</span> <span class="op">};</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Use INSPECT in your layout...</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> <span class="dt">uint16_t</span> prev_keycode <span class="op">=</span> KC_NO<span class="op">;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> keypos_t prev_pos <span class="op">=</span> <span class="op">{</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">};</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>keycode <span class="op">==</span> INSPECT<span class="op">)</span> <span class="op">{</span> </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>      SEND_STRING<span class="op">(</span><span class="st">&quot;kc=0x&quot;</span><span class="op">);</span>  <span class="co">// Print info about the previous key.</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>      send_word<span class="op">(</span>prev_keycode<span class="op">);</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>      SEND_STRING<span class="op">(</span><span class="st">&quot;, row=&quot;</span><span class="op">);</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>      send_string<span class="op">(</span>get_u8_str<span class="op">(</span>prev_pos<span class="op">.</span>row<span class="op">,</span> <span class="ch">&#39; &#39;</span><span class="op">));</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>      SEND_STRING<span class="op">(</span><span class="st">&quot;, col=&quot;</span><span class="op">);</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>      send_string<span class="op">(</span>get_u8_str<span class="op">(</span>prev_pos<span class="op">.</span>col<span class="op">,</span> <span class="ch">&#39; &#39;</span><span class="op">));</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    prev_keycode <span class="op">=</span> keycode<span class="op">;</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    prev_pos <span class="op">=</span> record<span class="op">-&gt;</span>event<span class="op">.</span>key<span class="op">;</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The <code>INSPECT</code> key types out the keycode and position of
 the previous key. Tapping for instance the <kbd>W</kbd> key and then
 <code>INSPECT</code> prints out</p>
