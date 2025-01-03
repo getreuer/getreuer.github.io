@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../site.js" ></script>
   <script
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
@@ -157,7 +158,8 @@ command.</p>
 destination color spaces as <code>"dest&lt;-src"</code> or
 <code>"src-&gt;dest"</code>. Then call ApplyColorTransform to perform
 the transform:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>num S<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">173</span><span class="op">,</span> <span class="dv">0</span><span class="er">.8</span><span class="op">,</span> <span class="dv">0</span><span class="er">.5</span><span class="op">};</span></span>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>num S<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">173</span><span class="op">,</span> <span class="fl">0.8</span><span class="op">,</span> <span class="fl">0.5</span><span class="op">};</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>num D<span class="op">[</span><span class="dv">3</span><span class="op">];</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>colortransform Trans<span class="op">;</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       </span>
@@ -177,12 +179,14 @@ transform the color representation of an entire image, call
 <code>ApplyColorTransform</code> for each pixel.</p>
 <p>Specific transformation routines can also be called directly. The
 following converts an sRGB color to CIELAB and then back to sRGB:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>num R <span class="op">=</span> <span class="dv">0</span><span class="er">.85</span><span class="op">,</span> G <span class="op">=</span> <span class="dv">0</span><span class="er">.32</span><span class="op">,</span> B <span class="op">=</span> <span class="dv">0</span><span class="er">.5</span><span class="op">;</span></span>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>num R <span class="op">=</span> <span class="fl">0.85</span><span class="op">,</span> G <span class="op">=</span> <span class="fl">0.32</span><span class="op">,</span> B <span class="op">=</span> <span class="fl">0.5</span><span class="op">;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>num L<span class="op">,</span> a<span class="op">,</span> b<span class="op">;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Rgb2Lab<span class="op">(&amp;</span>L<span class="op">,</span> <span class="op">&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">,</span> R<span class="op">,</span> G<span class="op">,</span> B<span class="op">);</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Lab2Rgb<span class="op">(&amp;</span>R<span class="op">,</span> <span class="op">&amp;</span>G<span class="op">,</span> <span class="op">&amp;</span>B<span class="op">,</span> L<span class="op">,</span> a<span class="op">,</span> b<span class="op">);</span></span></code></pre></div>
 <p>Generally, the calling syntax is</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Src2Dest<span class="op">(&amp;</span>D0<span class="op">,</span> <span class="op">&amp;</span>D1<span class="op">,</span> <span class="op">&amp;</span>D2<span class="op">,</span> S0<span class="op">,</span> S1<span class="op">,</span> S2<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Src2Dest<span class="op">(&amp;</span>D0<span class="op">,</span> <span class="op">&amp;</span>D1<span class="op">,</span> <span class="op">&amp;</span>D2<span class="op">,</span> S0<span class="op">,</span> S1<span class="op">,</span> S2<span class="op">);</span></span></code></pre></div>
 <p>where <code>(S0,S1,S2)</code> are coordinates in the source space and
 <code>(D0,D1,D2)</code> are the transformed coordinates in the
 destination space. For any transformation routine, its inverse has the
@@ -197,7 +201,8 @@ illuminant. The white point can be changed by modifying the
 <code>WHITEPOINT_Z</code> definitions at the beginning of
 <code>colorspace.h</code>.</p>
 <p>List of transformation routines:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Rgb2Yuv<span class="op">(</span>num <span class="op">*</span>Y<span class="op">,</span> num <span class="op">*</span>U<span class="op">,</span> num <span class="op">*</span>V<span class="op">,</span></span>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Rgb2Yuv<span class="op">(</span>num <span class="op">*</span>Y<span class="op">,</span> num <span class="op">*</span>U<span class="op">,</span> num <span class="op">*</span>V<span class="op">,</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        num R<span class="op">,</span> num G<span class="op">,</span> num B<span class="op">)</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Rgb2Ycbcr<span class="op">(</span>num <span class="op">*</span>Y<span class="op">,</span> num <span class="op">*</span>Cb<span class="op">,</span> num <span class="op">*</span>Cr<span class="op">,</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>          num R<span class="op">,</span> num G<span class="op">,</span> num B<span class="op">)</span></span>
