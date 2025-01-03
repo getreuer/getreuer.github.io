@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2023-12-31" />
+  <meta name="author" content="Pascal Getreuer, 2023-12-31 (updated 2025-01-02)" />
   <title>Orbital Mouse</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../../site.js" ></script>
   <script
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
@@ -93,7 +94,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Orbital Mouse</h1>
-<h2 class="author">Pascal Getreuer, 2023-12-31</h2>
+<h2 class="author">Pascal Getreuer, 2023-12-31 (updated 2025-01-02)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -105,10 +106,11 @@ id="toc-add-orbital-mouse-to-your-keymap">Add Orbital Mouse to your
 keymap</a></li>
 <li><a href="#keycodes" id="toc-keycodes">Keycodes</a>
 <ul>
-<li><a href="#selected-mouse-button"
-id="toc-selected-mouse-button">Selected mouse button</a></li>
+<li><a href="#slow-mode" id="toc-slow-mode">Slow mode</a></li>
 <li><a href="#mouse-wheel-controls" id="toc-mouse-wheel-controls">Mouse
 wheel controls</a></li>
+<li><a href="#selected-mouse-button"
+id="toc-selected-mouse-button">Selected mouse button</a></li>
 </ul></li>
 <li><a href="#configuration" id="toc-configuration">Configuration</a>
 <ul>
@@ -126,10 +128,10 @@ Keys feature</a> that controls the mouse using keyboard keys. You can
 then avoid switching hands between keyboard and mouse, in theory a
 substantial ergonomic advantage. In reality, this interface is pretty
 awkward.</p>
-<p>This post describes an experiment: Orbital Mouse. I find it is easier
-to control than QMK’s Mouse Keys, or at least it is more fun. To be
-clear, it still pales in comparison to real mouse or trackball
-hardware.</p>
+<p>This post describes Orbital Mouse, an alternative keyboard-based
+mouse scheme. I find it is easier to control than QMK’s Mouse Keys and
+good enough to be useful. To be clear, it still pales in comparison to
+real mouse or trackball hardware.</p>
 <h2 id="what-is-orbital-mouse">What is Orbital Mouse</h2>
 <p>Orbital Mouse is a userspace library that replaces QMK Mouse Keys.
 The pointer moves according to a heading direction. Two keys move
@@ -163,9 +165,9 @@ keymap</h2>
 layout in keymap.c. A description of the keycodes is <a
 href="#keycodes">in the next section</a>. A suggested right-handed
 layout is:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>OM_DBLS<span class="op">,</span> OM_BTNS<span class="op">,</span> OM_U   <span class="op">,</span> OM_BTN2<span class="op">,</span> OM_SEL1<span class="op">,</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>OM_HLDS<span class="op">,</span> OM_L   <span class="op">,</span> OM_D   <span class="op">,</span> OM_R   <span class="op">,</span> OM_SEL2<span class="op">,</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>OM_RELS<span class="op">,</span> OM_W_D <span class="op">,</span> OM_W_U <span class="op">,</span> OM_BTN3<span class="op">,</span> OM_SEL3<span class="op">,</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>OM_W_U <span class="op">,</span> OM_BTNS<span class="op">,</span> OM_U   <span class="op">,</span> OM_DBLS<span class="op">,</span> _______<span class="op">,</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>OM_W_D <span class="op">,</span> OM_L   <span class="op">,</span> OM_D   <span class="op">,</span> OM_R   <span class="op">,</span> OM_SLOW<span class="op">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>OM_RELS<span class="op">,</span> OM_HLDS<span class="op">,</span> OM_SEL1<span class="op">,</span> OM_SEL2<span class="op">,</span> OM_SEL3<span class="op">,</span></span></code></pre></div>
 <figure>
 <img src="layout.png" alt="A suggested right-handed layout." />
 <figcaption aria-hidden="true">A suggested right-handed
@@ -228,24 +230,8 @@ there.</p>
 <td>Steer right (clockwise).</td>
 </tr>
 <tr class="odd">
-<td><code>OM_BTNS</code></td>
-<td>Press the selected mouse button.</td>
-</tr>
-<tr class="even">
-<td><code>OM_HLDS</code></td>
-<td>Hold the selected mouse button.</td>
-</tr>
-<tr class="odd">
-<td><code>OM_RELS</code></td>
-<td>Release the selected mouse button.</td>
-</tr>
-<tr class="even">
-<td><code>OM_DBLS</code></td>
-<td>Double click the selected mouse button.</td>
-</tr>
-<tr class="odd">
-<td><code>OM_SEL</code><em>n</em></td>
-<td>Select mouse button <em>n</em>, for <em>n</em> = 1, …, 8.</td>
+<td><code>OM_SLOW</code></td>
+<td>Slow mode. Movement is slower while held.</td>
 </tr>
 <tr class="even">
 <td><code>OM_BTN</code><em>n</em></td>
@@ -272,22 +258,60 @@ there.</p>
 <p>Of course, you don’t have to use all of them in your layout, just use
 what is useful. There are many ways these keys could be arranged in a
 layout. I leave it to you to explore.</p>
-<h3 id="selected-mouse-button">Selected mouse button</h3>
-<p>Keycode <code>OM_BTNS</code> and its companions <code>OM_HLDS</code>,
-<code>OM_RELS</code>, <code>OM_DBLS</code> make use of the “selected”
-mouse button. Initially, mouse button 1 is selected. Keycodes
-<code>OM_SEL1</code> … <code>OM_SEL8</code> set the selected mouse
-button.</p>
-<p><code>OM_HLDS</code> and <code>OM_RELS</code> are useful when a mouse
-button must be held for an extended duration, like click and drag
-inputs. Tapping <code>OM_HLDS</code> holds down the selected mouse
-button. The button is held until <code>OM_RELS</code> is tapped to
-release it.</p>
+<h3 id="slow-mode">Slow mode</h3>
+<p>Keycode <code>OM_SLOW</code> momentarily activates slow mode, aka
+“sniping.” This key is useful for fine adjustments. While held,
+forward/backward movement and turning are slower.</p>
 <h3 id="mouse-wheel-controls">Mouse wheel controls</h3>
 <p>Keycodes <code>OM_W_U</code>, <code>OM_W_D</code>,
 <code>OM_W_L</code>, <code>OM_W_R</code> scroll the mouse wheel. Unlike
 cursor movement, mouse wheel navigation follows usual Cartesian
 up/down/left/right controls.</p>
+<h3 id="selected-mouse-button">Selected mouse button</h3>
+<p>While keycodes <code>OM_BTN1</code> … <code>OM_BTN8</code> may be
+used to click mouse buttons 1 through 8, the following keycodes may be
+preferred for more detailed control.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Keycode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>OM_SEL</code><em>n</em></td>
+<td>Select mouse button <em>n</em>, for <em>n</em> = 1, …, 8.</td>
+</tr>
+<tr class="even">
+<td><code>OM_BTNS</code></td>
+<td>Press the selected mouse button.</td>
+</tr>
+<tr class="odd">
+<td><code>OM_DBLS</code></td>
+<td>Double click the selected mouse button.</td>
+</tr>
+<tr class="even">
+<td><code>OM_HLDS</code></td>
+<td>Hold the selected mouse button.</td>
+</tr>
+<tr class="odd">
+<td><code>OM_RELS</code></td>
+<td>Release the selected mouse button.</td>
+</tr>
+</tbody>
+</table>
+<p>These keycodes work in terms of setting and using a “selected” mouse
+button. Initially, mouse button 1 is selected. Keycodes
+<code>OM_SEL1</code> … <code>OM_SEL8</code> set the selected mouse
+button. Keycode <code>OM_BTNS</code> and its companions
+<code>OM_HLDS</code>, <code>OM_RELS</code>, <code>OM_DBLS</code> make
+use of the selected mouse button.</p>
+<p><code>OM_HLDS</code> and <code>OM_RELS</code> are useful when a mouse
+button must be held for an extended duration, like click and drag
+inputs. Tapping <code>OM_HLDS</code> holds down the selected mouse
+button. The button is held until <code>OM_RELS</code> is tapped to
+release it.</p>
 <h2 id="configuration">Configuration</h2>
 <h3 id="speed-curve">Speed curve</h3>
 <p>Mouse keys must facilitate both large motions across the screen as
@@ -466,12 +490,23 @@ resizePlot();
 <h3 id="options">Options</h3>
 <p>Orbital Mouse can be further customized by tuning the following
 options in config.h.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_RADIUS        </span><span class="dv">36</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_WHEEL_SPEED   </span><span class="dv">0</span><span class="er">.2</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_DBL_DELAY_MS  </span><span class="dv">50</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_RADIUS            </span><span class="dv">36</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_SLOW_MOVE_FACTOR  </span><span class="fl">0.333</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_SLOW_TURN_FACTOR  </span><span class="fl">0.5</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_WHEEL_SPEED       </span><span class="fl">0.2</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_DBL_DELAY_MS      </span><span class="dv">50</span></span></code></pre></div>
 <p><code>ORBITAL_MOUSE_RADIUS</code> is the radius in pixels of the
 circle that the cursor rotates or “orbits” around when steering. Must be
 in [0, 63]. Default is <code>36</code>.</p>
+<p><code>ORBITAL_MOUSE_SLOW_MOVE_FACTOR</code> is the multiplicative
+factor applied to forward/backward movement speed when holding the
+<code>OM_SLOW</code> key. This factor stacks on top of
+<code>ORBITAL_MOUSE_SPEED_CURVE</code>. Must be in [0, 1]. Default is
+<code>0.333</code>.</p>
+<p><code>ORBITAL_MOUSE_SLOW_TURN_FACTOR</code> is the multiplicative
+factor applied to turning speed when holding the <code>OM_SLOW</code>
+key. Must be in [0, 1]. Default is <code>0.5</code>.</p>
 <p><code>ORBITAL_MOUSE_WHEEL_SPEED</code> is the mouse wheel speed in
 units per 16-ms interval, specified as a double value. Must be in [0,
 3.99]. Default is <code>0.2</code>.</p>
@@ -506,15 +541,15 @@ report to the host.</p>
 <li><p>The mouse report is created by filling a
 <code>report_mouse_t</code> struct, then passing this struct to
 <code>host_mouse_send()</code>.</p></li>
-<li><p>Orbital Mouse needs 28 keycodes. While keycodes for userspace
+<li><p>Orbital Mouse needs 29 keycodes. While keycodes for userspace
 features are conventionally allocated in the user-defined keycode range,
-that range is limited (32 keycodes). It would be unreasonable to
-allocate Orbital Mouse’s keys there. Being a Mouse Keys replacement, we
-repurpose the Mouse Keys keycodes (<code>KC_MS_U</code>,
-<code>KC_BTN1</code>, etc.) for the analogous functions in Orbital
-Mouse. We also repurpose the block of keycodes <code>UC(0x41)</code> to
-<code>UC(0x49)</code>. These keycode represent Unicode input of ASCII
-characters, which seems unlikely to be missed.</p></li>
+that range is limited. It would be unreasonable to allocate Orbital
+Mouse’s keys there. Being a Mouse Keys replacement, we repurpose the
+Mouse Keys keycodes (<code>KC_MS_U</code>, <code>KC_BTN1</code>, etc.)
+for the analogous functions in Orbital Mouse. We also repurpose the
+block of keycodes <code>UC(0x41)</code> to <code>UC(0x4a)</code>. These
+keycode represent Unicode input of ASCII characters, which seems
+unlikely to be missed.</p></li>
 <li><p>The Orbital Mouse implementation uses no floating point
 arithmetic at run time. Instead, <a
 href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic">fixed point
