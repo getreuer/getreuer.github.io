@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2024-12-30" />
+  <meta name="author" content="Pascal Getreuer, 2024-12-30 (updated 2025-01-04)" />
   <title>keycode_string(): format keycodes as human-readable strings</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -92,7 +92,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">keycode_string(): format keycodes as human-readable
 strings</h1>
-<h2 class="author">Pascal Getreuer, 2024-12-30</h2>
+<h2 class="author">Pascal Getreuer, 2024-12-30 (updated 2025-01-04)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -215,7 +215,7 @@ course log other information depending on what your are debugging.</p>
 <h2 id="how-to-use-keycode_string">How to use keycode_string()</h2>
 <p>Given a <code>uint16_t</code> keycode, convert it to a string like
 this:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span><span class="op">*</span> key_name <span class="op">=</span> keycode_string<span class="op">(</span>keycode<span class="op">);</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">char</span><span class="op">*</span> key_name <span class="op">=</span> keycode_string<span class="op">(</span>keycode<span class="op">);</span></span></code></pre></div>
 <p>The stringified keycode can then be written to console output with
 something like</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dprintf<span class="op">(</span><span class="st">&quot;keycode=</span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> key_name<span class="op">);</span></span></code></pre></div>
@@ -249,7 +249,7 @@ debugging.</p>
 <code>keycode_string()</code> as</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Log `keycode`, but only if debugging is enabled.</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef NO_DEBUG</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span><span class="op">*</span> key_name <span class="op">=</span> keycode_string<span class="op">(</span>keycode<span class="op">);</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">char</span><span class="op">*</span> key_name <span class="op">=</span> keycode_string<span class="op">(</span>keycode<span class="op">);</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>dprintf<span class="op">(</span><span class="st">&quot;press=</span><span class="sc">%u</span><span class="st"> </span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">,</span> key_name<span class="op">);</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif  </span><span class="co">// NO_DEBUG</span></span></code></pre></div>
 <p>This makes it quick to disable <code>keycode_string()</code> in the
@@ -277,7 +277,8 @@ digits <code>KC_0</code>–<code>KC_9</code>, function keys
 <code>KC_LSFT</code>.</li>
 <li>Modified basic keycodes, like <code>S(KC_1)</code> (Shift + 1 =
 !).</li>
-<li><code>MO</code>, <code>TO</code>, <code>TG</code>, <code>OSL</code>,
+<li><code>MO</code>, <code>TO</code>, <code>TG</code>, <code>TT</code>,
+<code>DF</code>, <code>PDF</code>, <code>OSL</code>,
 <code>LM(layer,mod)</code>, <code>LT(layer,kc)</code> <a
 href="https://docs.qmk.fm/feature_layers">layer switches</a>.</li>
 <li><a href="https://docs.qmk.fm/one_shot_keys">One-shot mod</a>
@@ -310,22 +311,17 @@ supply names for additional keycodes or override how any keycode is
 formatted. For example, supposing keymap.c defines <code>MYMACRO1</code>
 and <code>MYMACRO2</code> as custom keycodes:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> keycode_string_name_t custom_keycode_names<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// keycode, name.</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>MYMACRO1<span class="op">,</span> <span class="st">&quot;MYMACRO1&quot;</span><span class="op">},</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>MYMACRO2<span class="op">,</span> <span class="st">&quot;MYMACRO2&quot;</span><span class="op">},</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>KC_EXLM<span class="op">,</span> <span class="st">&quot;KC_EXLM&quot;</span><span class="op">},</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span><span class="dv">0</span><span class="op">,</span> NULL<span class="op">},</span>  <span class="co">// End of table sentinel.</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  KEYCODE_STRING_NAME<span class="op">(</span>MYMACRO1<span class="op">),</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  KEYCODE_STRING_NAME<span class="op">(</span>MYMACRO2<span class="op">),</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  KEYCODE_STRING_NAME<span class="op">(</span>KC_EXLM<span class="op">),</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  KEYCODE_STRING_NAMES_END <span class="co">// End of table sentinel.</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <p>The above defines names for <code>MYMACRO1</code> and
 <code>MYMACRO2</code> and overrides <code>KC_EXLM</code> to format it as
 <code>"KC_EXLM"</code> instead of the default
 <code>"S(KC_1)"</code>.</p>
-<p>Notes:</p>
-<ul>
-<li><strong>The table <em>must</em> end with the sentinel entry
-<code>{0, NULL}</code>.</strong></li>
-<li>Names exceeding 16 characters will be truncated.</li>
-</ul>
+<p>Note: The table <em>must</em> end with the sentinel entry
+<code>KEYCODE_STRING_NAMES_END</code>.</p>
 <h2 id="parsing-qmk-keycodes">Parsing QMK keycodes</h2>
 <p>Every key in a QMK keymap has a <em>keycode</em> to represent what it
 does, stored as 16-bit (<code>uint16_t</code>) values. Much of QMK’s
