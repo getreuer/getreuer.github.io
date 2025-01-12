@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2023-12-17" />
+  <meta name="author" content="Pascal Getreuer, 2023-12-17 (updated 2025-01-11)" />
   <title>QMK macros 3: advanced effects</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../../site.js" ></script>
   <script
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"
@@ -93,7 +94,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK macros 3: advanced effects</h1>
-<h2 class="author">Pascal Getreuer, 2023-12-17</h2>
+<h2 class="author">Pascal Getreuer, 2023-12-17 (updated 2025-01-11)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -390,7 +391,7 @@ Execution</a> for macros in this section by adding in rules.mk:</p>
 instead using <a
 href="https://docs.qmk.fm/ref_functions#software-timers">software
 timers</a> and the <a
-href="https://docs.qmk.fm/custom_quantum_functions#matrix-scanning-code">matrix_scan_user
+href="https://docs.qmk.fm/custom_quantum_functions#keyboard-housekeeping">housekeeping_task_user
 function</a>. See <a
 href="../triggers/index.html#when-idle-for-x-milliseconds">this
 example</a> for comparison of these two approaches for implementing

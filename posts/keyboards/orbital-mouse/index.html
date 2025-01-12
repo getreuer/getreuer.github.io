@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2023-12-31 (updated 2025-01-02)" />
+  <meta name="author" content="Pascal Getreuer, 2023-12-31 (updated 2025-01-11)" />
   <title>Orbital Mouse</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -94,7 +94,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Orbital Mouse</h1>
-<h2 class="author">Pascal Getreuer, 2023-12-31 (updated 2025-01-02)</h2>
+<h2 class="author">Pascal Getreuer, 2023-12-31 (updated 2025-01-11)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -178,7 +178,7 @@ near the top of keymap.c:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/orbital_mouse.h&quot;</span><span class="pp">`</span></span></code></pre></div>
 <p><strong>Step 3:</strong> Still in keymap.c, handle Orbital Mouse by
 defining (or adding to) <code>process_record_user()</code> and
-<code>matrix_scan_user()</code> as</p>
+<code>housekeeping_task_user()</code> as</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_orbital_mouse<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -186,7 +186,7 @@ defining (or adding to) <code>process_record_user()</code> and
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> housekeeping_task_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  orbital_mouse_task<span class="op">();</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks ...</span></span>

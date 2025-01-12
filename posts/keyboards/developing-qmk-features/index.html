@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2023-12-17 (updated 2024-12-30)" />
+  <meta name="author" content="Pascal Getreuer, 2023-12-17 (updated 2025-01-11)" />
   <title>Developing QMK features</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Developing QMK features</h1>
-<h2 class="author">Pascal Getreuer, 2023-12-17 (updated 2024-12-30)</h2>
+<h2 class="author">Pascal Getreuer, 2023-12-17 (updated 2025-01-11)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -156,7 +156,7 @@ feature implementations here.</p>
 <p>Code snippets in this post are shared under Apache 2 license.</p>
 <div style="font-size:85%">
 <blockquote>
-<p>Copyright 2023 Google LLC</p>
+<p>Copyright 2023-2025 Google LLC</p>
 <p>Licensed under the Apache License, Version 2.0 (the “License”); you
 may not use this file except in compliance with the License. You may
 obtain a copy of the License at</p>
@@ -179,6 +179,7 @@ the same interface as <code>process_record_user()</code>:</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_cool<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">);</span></span></code></pre></div></li>
 <li><p>If the feature involves running some code in
+<code>housekeeping_task_user()</code> or
 <code>matrix_scan_user()</code>, put that code in a “task” function:</p>
 <div class="sourceCode" id="cb2"><pre
 class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> cool_task<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span></code></pre></div></li>
@@ -206,7 +207,7 @@ to adapt as you see fit.</p>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">// true if default handling should continue; false if it should be skipped.</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_cool<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">);</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">// Task function for Cool feature. Call this from matrix_scan_user().</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">// Task function for Cool feature. Call this from housekeeping_task_user().</span></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> cool_task<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span></code></pre></div>
 <p><strong>features/cool.c</strong></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;cool.h&quot;</span></span>
@@ -238,7 +239,7 @@ call the handler and task function.</p>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a> <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> housekeeping_task_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a> cool_task<span class="op">();</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a> <span class="co">// Other tasks...</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>

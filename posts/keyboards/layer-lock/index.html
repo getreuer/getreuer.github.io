@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-02-01 (updated 2024-11-27)" />
+  <meta name="author" content="Pascal Getreuer, 2022-02-01 (updated 2025-01-11)" />
   <title>QMK: Layer Lock key</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Layer Lock key</h1>
-<h2 class="author">Pascal Getreuer, 2022-02-01 (updated 2024-11-27)</h2>
+<h2 class="author">Pascal Getreuer, 2022-02-01 (updated 2025-01-11)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -243,8 +243,8 @@ get interrupted and step away from your desk while a layer is locked. In
 your config.h, define <code>LAYER_LOCK_IDLE_TIMEOUT</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LAYER_LOCK_IDLE_TIMEOUT </span><span class="dv">60000</span><span class="pp">  </span><span class="co">// Turn off after 60 seconds.</span></span></code></pre></div>
 <p>where the time is in units of milliseconds. Then in your keymap.c,
-define (or add to) <code>matrix_scan_user()</code> as</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+define (or add to) <code>housekeeping_task_user()</code> as</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> housekeeping_task_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  layer_lock_task<span class="op">();</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks...</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>

@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2024-08-09)" />
+  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2025-01-11)" />
   <title>Achordion: Customizing the tap-hold decision</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../../site.js" ></script>
 </head>
 <body>
@@ -90,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Achordion: Customizing the tap-hold decision</h1>
-<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2024-08-09)</h2>
+<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2025-01-11)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -225,8 +226,8 @@ Achordion from your <code>process_record_user()</code> function:</p>
 <p>If your <code>process_record_user()</code> has other handlers or
 macros, Achordion should preferably be called before anything else.</p>
 <p><strong>Step 2:</strong> In your <code>keymap.c</code>, define (or
-add to) <code>matrix_scan_user()</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+add to) <code>housekeeping_task_user()</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> housekeeping_task_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  achordion_task<span class="op">();</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p><strong>Step 3:</strong> In your rules.mk, add</p>

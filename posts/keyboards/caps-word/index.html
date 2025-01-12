@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-03-11)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2025-01-11)" />
   <title>QMK: Caps Word</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Caps Word</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-03-11)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2025-01-11)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -261,8 +261,8 @@ active. In your config.h, define <code>CAPS_WORD_IDLE_TIMEOUT</code>
 with a time in milliseconds:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CAPS_WORD_IDLE_TIMEOUT </span><span class="dv">5000</span><span class="pp">  </span><span class="co">// Turn off Caps Word after 5 seconds.</span></span></code></pre></div>
 <p>and in your keymap.c, define (or add to)
-<code>matrix_scan_user()</code> as</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> matrix_scan_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<code>housekeeping_task_user()</code> as</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> housekeeping_task_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  caps_word_task<span class="op">();</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks...</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
