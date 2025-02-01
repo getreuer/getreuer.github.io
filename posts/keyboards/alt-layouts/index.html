@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-01-18)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-02-01)" />
   <title>A guide to alt keyboard layouts (why, how, which one?)</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -27,7 +27,7 @@
 <div id="header">
 <h1 class="title">A guide to alt keyboard layouts (why, how, which
 one?)</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-01-18)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-02-01)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -54,6 +54,9 @@ id="toc-obligatory-warnings">Obligatory warnings</a></li>
 id="toc-a-suggested-training-approach">A suggested training
 approach</a></li>
 </ul></li>
+<li><a href="#what-about-languages-other-than-english"
+id="toc-what-about-languages-other-than-english">What about languages
+other than English?</a></li>
 <li><a href="#what-about-vim" id="toc-what-about-vim">What about
 Vim?</a></li>
 <li><a href="#what-about-keycap-legends"
@@ -65,6 +68,10 @@ hard to arrange 30 keys?</a></li>
 reading</a></li>
 </ul>
 </div>
+<style>
+.metrics { font-size: 87%; }
+.metrics tr:hover { background-color: #ddd; }
+</style>
 <p><a href="../index.html">← More about keyboards</a></p>
 <h2 id="overview">Overview</h2>
 <p>This post is about switching from QWERTY to an alternative keyboard
@@ -84,13 +91,13 @@ layout, and practical tips on how to learn a new layout.</p>
 <p>Here are metrics for a sampling of some better known layouts. Lower
 is better for <a
 href="../glossary/index.html#same-finger-bigram-sfb">same-finger bigrams
-(SFBs)</a>, LSBs, redirects, and off-home pinky use; higher is better
-for <a href="../glossary/index.html#roll">rolls</a>. Metrics for English
-were computed by <a
-href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
-layout playground</a>.</p>
+(SFBs)</a>, LSBs, scissors, redirects, and off-home pinky use; higher is
+better for <a href="../glossary/index.html#roll">rolls</a>. Metrics were
+computed for English with <a
+href="https://cyanophage.github.io/index.html">Cyanophage’s layout
+playground</a>.</p>
 <div class="eqscroll">
-<table>
+<table class="metrics">
 <tr>
 <th>
 Layout
@@ -102,13 +109,16 @@ SFBs
 LSBs
 </th>
 <th>
+Scissor
+</th>
+<th>
 Rolls
 </th>
 <th>
-Redirects
+Redir
 </th>
 <th>
-Pinky off
+Pinky off
 </th>
 </tr>
 <tr>
@@ -117,19 +127,22 @@ Pinky off
 (1873)</a>
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-6.615%
+4.39%
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-6.882%
+4.55%
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-37.243%
+1.46%
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-13.187%
+40.76%
 </td>
-<td style="text-align:right; background-color:#c3cadb">
-2.36%
+<td style="text-align:right; background-color:#f99c9c">
+11.92%
+</td>
+<td style="text-align:right; background-color:#c0ccdf">
+3.16%
 </td>
 </tr>
 <tr>
@@ -138,19 +151,22 @@ Pinky off
 (1936)</a>
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-2.779%
+1.87%
 </td>
 <td style="text-align:right; background-color:#bfccdf">
-1.255%
+0.80%
 </td>
-<td style="text-align:right; background-color:#f0a7aa">
-38.924%
+<td style="text-align:right; background-color:#9cddf9">
+0.08%
 </td>
-<td style="text-align:right; background-color:#a4daf5">
-3.458%
+<td style="text-align:right; background-color:#f99c9c">
+39.20%
 </td>
-<td style="text-align:right; background-color:#f5a2a4">
-4.80%
+<td style="text-align:right; background-color:#a9d7f0">
+2.57%
+</td>
+<td style="text-align:right; background-color:#e6b0b7">
+6.28%
 </td>
 </tr>
 <tr>
@@ -158,40 +174,46 @@ Pinky off
 <a href="http://www.pvv.org/~hakonhal/main.cgi/keyboard"target="_blank">Arensito
 (2001)</a>
 </td>
-<td style="text-align:right; background-color:#d4bfcb">
-1.545%
+<td style="text-align:right; background-color:#f99c9c">
+1.04%
 </td>
-<td style="text-align:right; background-color:#d2c1cd">
-1.945%
+<td style="text-align:right; background-color:#d6bec9">
+1.28%
+</td>
+<td style="text-align:right; background-color:#c5c9da">
+0.45%
 </td>
 <td style="text-align:right; background-color:#9cddf9">
-49.514%
+54.29%
 </td>
-<td style="text-align:right; background-color:#f99c9c">
-12.385%
+<td style="text-align:right; background-color:#e3b3ba">
+7.62%
 </td>
-<td style="text-align:right; background-color:#a6d9f3">
-1.21%
+<td style="text-align:right; background-color:#a9d7f0">
+1.88%
 </td>
 </tr>
 <tr>
 <td>
 <a href="https://colemak.com/"target="_blank">Colemak (2006)</a>
 </td>
-<td style="text-align:right; background-color:#cac6d5">
-1.387%
+<td style="text-align:right; background-color:#e2b4bb">
+0.91%
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-3.495%
+2.26%
 </td>
-<td style="text-align:right; background-color:#b8d0e5">
-46.113%
+<td style="text-align:right; background-color:#b2d3ea">
+0.26%
+</td>
+<td style="text-align:right; background-color:#b9d0e4">
+49.20%
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-10.579%
+9.22%
 </td>
 <td style="text-align:right; background-color:#9cddf9">
-0.38%
+1.45%
 </td>
 </tr>
 <tr>
@@ -199,19 +221,22 @@ Pinky off
 <a href="https://workmanlayout.org/"target="_blank">Workman (2010)</a>
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-3.000%
+1.97%
 </td>
-<td style="text-align:right; background-color:#cbc5d4">
-1.727%
+<td style="text-align:right; background-color:#cdc4d2">
+1.11%
 </td>
-<td style="text-align:right; background-color:#c9c6d6">
-43.636%
+<td style="text-align:right; background-color:#c6c8d8">
+0.47%
 </td>
-<td style="text-align:right; background-color:#f99c9c">
-10.414%
+<td style="text-align:right; background-color:#c7c7d7">
+47.40%
 </td>
-<td style="text-align:right; background-color:#9cddf9">
-0.38%
+<td style="text-align:right; background-color:#f89e9e">
+9.13%
+</td>
+<td style="text-align:right; background-color:#c2cadc">
+3.42%
 </td>
 </tr>
 <tr>
@@ -219,20 +244,23 @@ Pinky off
 <a href="https://mathematicalmulticore.wordpress.com/the-keyboard-layout-project/"target="_blank">MTGAP
 (2010)</a>
 </td>
-<td style="text-align:right; background-color:#c5c9da">
-1.299%
+<td style="text-align:right; background-color:#e4b2b9">
+0.92%
 </td>
-<td style="text-align:right; background-color:#a5d9f4">
-0.711%
+<td style="text-align:right; background-color:#a6d9f3">
+0.46%
 </td>
-<td style="text-align:right; background-color:#c9c6d6">
-43.718%
+<td style="text-align:right; background-color:#9fdcf8">
+0.15%
 </td>
-<td style="text-align:right; background-color:#becde0">
-4.915%
+<td style="text-align:right; background-color:#cfc3d0">
+46.33%
 </td>
-<td style="text-align:right; background-color:#e2b4bb">
-4.04%
+<td style="text-align:right; background-color:#a8d8f1">
+2.54%
+</td>
+<td style="text-align:right; background-color:#ebacb0">
+6.61%
 </td>
 </tr>
 <tr>
@@ -240,20 +268,23 @@ Pinky off
 <a href="https://colemakmods.github.io/mod-dh/"target="_blank">Colemak-DH
 (2014)</a>
 </td>
-<td style="text-align:right; background-color:#cac6d5">
-1.387%
+<td style="text-align:right; background-color:#e2b4bb">
+0.91%
 </td>
-<td style="text-align:right; background-color:#d3c0cc">
-1.975%
+<td style="text-align:right; background-color:#d5bfca">
+1.27%
 </td>
-<td style="text-align:right; background-color:#b8d0e5">
-46.113%
+<td style="text-align:right; background-color:#9fdcf8">
+0.15%
+</td>
+<td style="text-align:right; background-color:#b9d0e4">
+49.20%
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-10.579%
+9.22%
 </td>
 <td style="text-align:right; background-color:#9cddf9">
-0.38%
+1.45%
 </td>
 </tr>
 <tr>
@@ -262,101 +293,116 @@ Pinky off
 (2016)</a>
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-2.988%
+1.97%
 </td>
-<td style="text-align:right; background-color:#bbcee2">
-1.151%
+<td style="text-align:right; background-color:#9dddf9">
+0.40%
 </td>
-<td style="text-align:right; background-color:#f99c9c">
-37.956%
-</td>
-<td style="text-align:right; background-color:#b2d3ea">
-4.140%
+<td style="text-align:right; background-color:#cec3d1">
+0.56%
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-6.02%
+40.10%
+</td>
+<td style="text-align:right; background-color:#b8d0e5">
+3.41%
+</td>
+<td style="text-align:right; background-color:#f99c9c">
+8.38%
 </td>
 </tr>
 <tr>
 <td>
-<a href="https://sites.google.com/alanreiser.com/handsdown#h.s6920vg5spfm"target="_blank">Hands
-Down (2020)</a>
+<a href="https://cyanophage.github.io/playground.html?layout=qyouzwdnck-hiea%2Cgtrsp%3Bj%27%2F.xvmlfb%5C%5E&mode=ergo&lan=english"target="_blank">BEAKL19bis
+(2020)</a>
 </td>
-<td style="text-align:right; background-color:#b5d1e8">
-1.082%
+<td style="text-align:right; background-color:#eaadb1">
+0.95%
 </td>
-<td style="text-align:right; background-color:#f99c9c">
-3.487%
+<td style="text-align:right; background-color:#e3b3ba">
+1.52%
 </td>
-<td style="text-align:right; background-color:#c6c8d9">
-44.137%
+<td style="text-align:right; background-color:#c1cbde">
+0.39%
 </td>
-<td style="text-align:right; background-color:#b2d3ea">
-4.165%
+<td style="text-align:right; background-color:#e6b0b7">
+43.74%
 </td>
-<td style="text-align:right; background-color:#b1d4eb">
-1.50%
+<td style="text-align:right; background-color:#9cddf9">
+2.03%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+1.40%
 </td>
 </tr>
 <tr>
 <td>
-BEAKL 19 (2020)
+<a href="https://sites.google.com/alanreiser.com/handsdown"target="_blank">Handsdown
+Neu (2021)</a>
 </td>
-<td style="text-align:right; background-color:#eaadb2">
-1.831%
+<td style="text-align:right; background-color:#cac6d5">
+0.76%
 </td>
-<td style="text-align:right; background-color:#f3a4a6">
-2.843%
+<td style="text-align:right; background-color:#d4bfcb">
+1.26%
 </td>
-<td style="text-align:right; background-color:#d3c0cc">
-42.239%
+<td style="text-align:right; background-color:#c3cadb">
+0.42%
 </td>
-<td style="text-align:right; background-color:#a1dbf7">
-3.378%
+<td style="text-align:right; background-color:#e3b3ba">
+44.04%
 </td>
-<td style="text-align:right; background-color:#c2cadc">
-2.29%
+<td style="text-align:right; background-color:#9cddf9">
+2.04%
+</td>
+<td style="text-align:right; background-color:#b7d1e6">
+2.53%
 </td>
 </tr>
 <tr>
 <td>
 <a href="https://engram.dev/"target="_blank">Engram (2021)</a>
 </td>
-<td style="text-align:right; background-color:#d1c1ce">
-1.504%
+<td style="text-align:right; background-color:#f79fa0">
+1.01%
 </td>
-<td style="text-align:right; background-color:#9edcf8">
-0.625%
+<td style="text-align:right; background-color:#9fdcf8">
+0.41%
 </td>
-<td style="text-align:right; background-color:#d3c0cc">
-42.180%
+<td style="text-align:right; background-color:#becde0">
+0.36%
 </td>
-<td style="text-align:right; background-color:#b8d0e5">
-4.515%
+<td style="text-align:right; background-color:#e0b5bd">
+44.31%
+</td>
+<td style="text-align:right; background-color:#b3d2e9">
+3.08%
 </td>
 <td style="text-align:right; background-color:#f99c9c">
-6.67%
+8.83%
 </td>
 </tr>
 <tr>
 <td>
-<a href="https://semilin.github.io/"target="_blank">Semimak-JQ
-(2021)</a>
+<a href="https://semilin.github.io/"target="_blank">Semimak (2021)</a>
 </td>
-<td style="text-align:right; background-color:#9cddf9">
-0.872%
+<td style="text-align:right; background-color:#abd6ef">
+0.59%
 </td>
-<td style="text-align:right; background-color:#e1b4bc">
-2.410%
+<td style="text-align:right; background-color:#ebacb0">
+1.65%
 </td>
-<td style="text-align:right; background-color:#d0c2cf">
-42.705%
+<td style="text-align:right; background-color:#c1cbde">
+0.39%
 </td>
-<td style="text-align:right; background-color:#cec3d1">
-6.616%
+<td style="text-align:right; background-color:#dcb8c2">
+44.70%
 </td>
-<td style="text-align:right; background-color:#e9aeb3">
-4.33%
+<td style="text-align:right; background-color:#d6bec9">
+6.44%
+</td>
+<td style="text-align:right; background-color:#e7b0b6">
+6.31%
 </td>
 </tr>
 <tr>
@@ -364,20 +410,23 @@ BEAKL 19 (2020)
 <a href="https://github.com/Apsu/APT#aptv3-layout"target="_blank">APTv3
 (2021)</a>
 </td>
-<td style="text-align:right; background-color:#bfccdf">
-1.199%
+<td style="text-align:right; background-color:#d1c1ce">
+0.81%
 </td>
 <td style="text-align:right; background-color:#9cddf9">
-0.498%
+0.33%
 </td>
-<td style="text-align:right; background-color:#afd5ec">
-46.864%
+<td style="text-align:right; background-color:#9cddf9">
+0.11%
 </td>
-<td style="text-align:right; background-color:#cac6d5">
-6.224%
+<td style="text-align:right; background-color:#b5d1e8">
+49.55%
+</td>
+<td style="text-align:right; background-color:#cdc4d2">
+5.57%
 </td>
 <td style="text-align:right; background-color:#e4b2b9">
-4.16%
+6.18%
 </td>
 </tr>
 <tr>
@@ -385,20 +434,23 @@ BEAKL 19 (2020)
 <a href="https://www.reddit.com/r/KeyboardLayouts/comments/tpwyjc/sertain_nerts_nerps_low_redirect_low_sfb_low/"target="_blank">Nerps
 (2022)</a>
 </td>
-<td style="text-align:right; background-color:#c3cadb">
-1.280%
+<td style="text-align:right; background-color:#d7bcc7">
+0.85%
 </td>
-<td style="text-align:right; background-color:#d2c0cd">
-1.955%
+<td style="text-align:right; background-color:#d3c0cc">
+1.24%
 </td>
-<td style="text-align:right; background-color:#c2cadc">
-44.709%
+<td style="text-align:right; background-color:#f99c9c">
+1.11%
 </td>
-<td style="text-align:right; background-color:#9cddf9">
-2.942%
+<td style="text-align:right; background-color:#cfc2d0">
+46.30%
 </td>
-<td style="text-align:right; background-color:#b1d4eb">
-1.52%
+<td style="text-align:right; background-color:#a8d8f1">
+2.49%
+</td>
+<td style="text-align:right; background-color:#bbcee2">
+2.81%
 </td>
 </tr>
 <tr>
@@ -406,20 +458,23 @@ BEAKL 19 (2020)
 <a href="https://github.com/Apsu/Canary"target="_blank">Canary
 (2022)</a>
 </td>
-<td style="text-align:right; background-color:#a7d8f2">
-0.962%
+<td style="text-align:right; background-color:#bccee2">
+0.66%
 </td>
-<td style="text-align:right; background-color:#ebacb0">
-2.675%
+<td style="text-align:right; background-color:#f3a4a6">
+1.75%
 </td>
-<td style="text-align:right; background-color:#9cddf9">
-48.537%
+<td style="text-align:right; background-color:#c3cadb">
+0.42%
 </td>
-<td style="text-align:right; background-color:#d3c0cc">
-7.152%
+<td style="text-align:right; background-color:#a9d7f0">
+50.36%
 </td>
-<td style="text-align:right; background-color:#d6bdc8">
-3.50%
+<td style="text-align:right; background-color:#dbb9c3">
+6.95%
+</td>
+<td style="text-align:right; background-color:#d8bcc6">
+5.30%
 </td>
 </tr>
 <tr>
@@ -427,41 +482,71 @@ BEAKL 19 (2020)
 <a href="https://o-x-e-y.github.io/layouts/sturdy/index.html"target="_blank">Sturdy
 (2022)</a>
 </td>
-<td style="text-align:right; background-color:#a3daf6">
-0.935%
+<td style="text-align:right; background-color:#b3d2e9">
+0.62%
 </td>
-<td style="text-align:right; background-color:#e1b4bc">
-2.413%
-</td>
-<td style="text-align:right; background-color:#9cddf9">
-48.082%
-</td>
-<td style="text-align:right; background-color:#c2cadc">
-5.399%
+<td style="text-align:right; background-color:#e7b0b6">
+1.58%
 </td>
 <td style="text-align:right; background-color:#c3cadb">
-2.36%
+0.42%
+</td>
+<td style="text-align:right; background-color:#add5ee">
+50.10%
+</td>
+<td style="text-align:right; background-color:#c8c7d7">
+5.01%
+</td>
+<td style="text-align:right; background-color:#ccc5d3">
+4.30%
 </td>
 </tr>
 <tr>
 <td>
 <a href="https://github.com/GalileoBlues/Gallium"target="_blank">Gallium
-(2023)</a>
+v1 (2023)</a>
 </td>
-<td style="text-align:right; background-color:#a6d9f3">
-0.956%
+<td style="text-align:right; background-color:#b8d0e5">
+0.64%
 </td>
-<td style="text-align:right; background-color:#c5c9da">
-1.456%
+<td style="text-align:right; background-color:#c6c8d9">
+0.96%
+</td>
+<td style="text-align:right; background-color:#f6a1a2">
+0.95%
+</td>
+<td style="text-align:right; background-color:#d1c1ce">
+46.06%
+</td>
+<td style="text-align:right; background-color:#abd6ef">
+2.68%
+</td>
+<td style="text-align:right; background-color:#d9bbc5">
+5.39%
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/GalileoBlues/Gallium"target="_blank">Gallium
+v2 (2023)</a>
+</td>
+<td style="text-align:right; background-color:#b8d0e5">
+0.64%
+</td>
+<td style="text-align:right; background-color:#c2cadd">
+0.85%
 </td>
 <td style="text-align:right; background-color:#c3cadb">
-44.566%
+0.42%
 </td>
-<td style="text-align:right; background-color:#9cddf9">
-3.157%
+<td style="text-align:right; background-color:#d1c1ce">
+46.07%
+</td>
+<td style="text-align:right; background-color:#abd6ef">
+2.65%
 </td>
 <td style="text-align:right; background-color:#dbbac4">
-3.73%
+5.50%
 </td>
 </tr>
 <tr>
@@ -469,20 +554,23 @@ BEAKL 19 (2020)
 <a href="https://github.com/rdavison/graphite-layout"target="_blank">Graphite
 (2023)</a>
 </td>
-<td style="text-align:right; background-color:#b1d4eb">
-1.043%
+<td style="text-align:right; background-color:#bfccdf">
+0.68%
 </td>
-<td style="text-align:right; background-color:#c2cadd">
-1.358%
+<td style="text-align:right; background-color:#c2cadc">
+0.87%
 </td>
-<td style="text-align:right; background-color:#c9c6d6">
-43.702%
+<td style="text-align:right; background-color:#c2cadc">
+0.41%
 </td>
-<td style="text-align:right; background-color:#9cddf9">
-2.959%
+<td style="text-align:right; background-color:#d1c1ce">
+46.01%
 </td>
-<td style="text-align:right; background-color:#cdc4d2">
-2.97%
+<td style="text-align:right; background-color:#aad7f0">
+2.59%
+</td>
+<td style="text-align:right; background-color:#cec3d1">
+4.51%
 </td>
 </tr>
 <tr>
@@ -490,20 +578,23 @@ BEAKL 19 (2020)
 <a href="https://github.com/GalileoBlues/Recurva"target="_blank">Recurva
 (2023)</a>
 </td>
-<td style="text-align:right; background-color:#9cddf9">
-0.829%
+<td style="text-align:right; background-color:#a1dbf7">
+0.56%
 </td>
-<td style="text-align:right; background-color:#cfc3d0">
-1.844%
+<td style="text-align:right; background-color:#d1c1ce">
+1.19%
 </td>
-<td style="text-align:right; background-color:#9cddf9">
-48.176%
+<td style="text-align:right; background-color:#c5c9da">
+0.44%
+</td>
+<td style="text-align:right; background-color:#acd6ef">
+50.19%
 </td>
 <td style="text-align:right; background-color:#c3cadb">
-5.549%
+4.43%
 </td>
-<td style="text-align:right; background-color:#f99c9c">
-5.17%
+<td style="text-align:right; background-color:#f4a3a5">
+7.08%
 </td>
 </tr>
 <tr>
@@ -512,25 +603,32 @@ BEAKL 19 (2020)
 (2024)</a>
 </td>
 <td style="text-align:right; background-color:#9cddf9">
-0.801%
+0.53%
+</td>
+<td style="text-align:right; background-color:#c8c7d7">
+0.99%
 </td>
 <td style="text-align:right; background-color:#c6c8d9">
-1.516%
+0.46%
 </td>
-<td style="text-align:right; background-color:#bccee2">
-45.680%
+<td style="text-align:right; background-color:#cac6d5">
+47.00%
 </td>
-<td style="text-align:right; background-color:#b8d0e5">
-4.519%
+<td style="text-align:right; background-color:#c1cbde">
+4.22%
 </td>
-<td style="text-align:right; background-color:#c3cadb">
-2.36%
+<td style="text-align:right; background-color:#ccc5d3">
+4.30%
 </td>
 </tr>
 </table>
 </div>
 <p>See also <a href="./stats.html">this page</a> for an expanded version
 of this table.</p>
+<p>This table is periodically updated. Since 2025-02-01, metrics are now
+computed with <a
+href="https://cyanophage.github.io/index.html">Cyanophage’s layout
+playground</a>, which supports scissors and outer columns.</p>
 <p><a href="https://colemakmods.github.io/mod-dh/">Colemak-DH</a> is
 quite popular in the custom keyboard community. It is a solid,
 well-tested option. If you don’t know what to pick, go with
@@ -581,7 +679,8 @@ in programming syntax.</p></li>
 something more experimental, I use Ikcelaks’ <a
 href="https://github.com/Ikcelaks/keyboard_layouts/blob/main/magic_sturdy/magic_sturdy.md">Magic
 Sturdy</a>, a variation of Sturdy. The “magic” is a key whose function
-depends on the last pressed key, implemented using the <a
+depends on the last pressed key (aka an “adaptive” key), implemented
+using the <a
 href="https://docs.qmk.fm/features/repeat_key#alternate-repeating">Alternate
 Repeat Key</a>. This key is used to remove the top SFBs and type common
 n-grams. It’s a magical typing experience!</p>
@@ -692,10 +791,11 @@ just “layouts” but distinct input systems.</p>
 <p><strong>Layouts with thumb keys</strong>: Some layouts designed for
 <a href="../glossary/index.html#split-keyboard">split ergo keyboards</a>
 use <a href="../glossary/index.html#thumb-clusters">a thumb key</a> (or
-sometimes multiple thumb keys) to type letters. The first such layout
-was the <a href="https://en.wikipedia.org/wiki/Maltron#Layouts">Maltron
-layout</a> (1977), placing <kbd>E</kbd> on the left thumb. Some more
-recent examples are the <a
+sometimes multiple thumb keys) to type <code>E</code> or other letters.
+The first such layout was the <a
+href="https://en.wikipedia.org/wiki/Maltron#Layouts">Maltron layout</a>
+(1977), placing <kbd>E</kbd> on the left thumb. Some more recent
+examples are the <a
 href="https://xsznix.wordpress.com/2016/05/16/introducing-the-rsthd-layout/">RSTHD
 layout</a>, <a
 href="https://github.com/empressabyss/nordrassil">Nordrassil</a>, and <a
@@ -705,6 +805,178 @@ Down Promethium</a>.</p>
 <img src="rsthd-layout.svg" alt="xsznix’s RSTHD layout." />
 <figcaption aria-hidden="true">xsznix’s RSTHD layout.</figcaption>
 </figure>
+<p>Metrics for a few such layouts:</p>
+<div class="eqscroll">
+<table class="metrics">
+<tr>
+<th>
+Layout
+</th>
+<th>
+SFBs
+</th>
+<th>
+LSBs
+</th>
+<th>
+Scissor
+</th>
+<th>
+Rolls
+</th>
+<th>
+Redir
+</th>
+<th>
+Pinky off
+</th>
+</tr>
+<tr>
+<td>
+<a href="https://en.wikipedia.org/wiki/Maltron#Layouts"target="_blank">Maltron
+(1977)</a>
+</td>
+<td style="text-align:right; background-color:#bccee2">
+0.66%
+</td>
+<td style="text-align:right; background-color:#bacfe3">
+0.70%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.11%
+</td>
+<td style="text-align:right; background-color:#bacfe3">
+49.06%
+</td>
+<td style="text-align:right; background-color:#d6bec9">
+6.49%
+</td>
+<td style="text-align:right; background-color:#f99c9c">
+10.07%
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://xsznix.wordpress.com/2016/05/16/introducing-the-rsthd-layout/"target="_blank">RSTHD
+(2016)</a>
+</td>
+<td style="text-align:right; background-color:#c2cadc">
+0.70%
+</td>
+<td style="text-align:right; background-color:#c0ccdf">
+0.81%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.09%
+</td>
+<td style="text-align:right; background-color:#b7d1e6">
+49.36%
+</td>
+<td style="text-align:right; background-color:#d1c1ce">
+5.95%
+</td>
+<td style="text-align:right; background-color:#c8c6d6">
+3.96%
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://sites.google.com/alanreiser.com/handsdown/home/hands-down-neu"target="_blank">Vibranium
+(2023)</a>
+</td>
+<td style="text-align:right; background-color:#a4d9f4">
+0.57%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.36%
+</td>
+<td style="text-align:right; background-color:#c5c9da">
+0.44%
+</td>
+<td style="text-align:right; background-color:#cec3d1">
+46.42%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+1.60%
+</td>
+<td style="text-align:right; background-color:#d1c1ce">
+4.77%
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://www.reddit.com/r/KeyboardLayouts/comments/1g66ivi/hands_down_promethium_snth_meets_hd_silverengram/"target="_blank">Promethium
+(2024)</a>
+</td>
+<td style="text-align:right; background-color:#a8d8f1">
+0.58%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.24%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.11%
+</td>
+<td style="text-align:right; background-color:#d7bcc7">
+45.22%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+2.03%
+</td>
+<td style="text-align:right; background-color:#f99c9c">
+7.88%
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://www.reddit.com/r/KeyboardLayouts/comments/1g895nx/comment/lsyw81b/"target="_blank">Caster
+(2024)</a>
+</td>
+<td style="text-align:right; background-color:#b6d1e7">
+0.63%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.05%
+</td>
+<td style="text-align:right; background-color:#ccc5d3">
+0.54%
+</td>
+<td style="text-align:right; background-color:#bdcde1">
+48.78%
+</td>
+<td style="text-align:right; background-color:#b3d2e9">
+3.12%
+</td>
+<td style="text-align:right; background-color:#d3c0cc">
+4.89%
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/empressabyss/nordrassil"target="_blank">Nordrassil
+(2024)</a>
+</td>
+<td style="text-align:right; background-color:#cdc4d2">
+0.78%
+</td>
+<td style="text-align:right; background-color:#c1cbde">
+0.82%
+</td>
+<td style="text-align:right; background-color:#bbcee2">
+0.33%
+</td>
+<td style="text-align:right; background-color:#f99c9c">
+40.04%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+1.29%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.87%
+</td>
+</tr>
+</table>
+</div>
 <p>Many other thumb key layouts are catalogued and discussed in
 Precondition’s post <a
 href="https://precondition.github.io/pressing-e-with-the-thumb">Pressing
@@ -842,6 +1114,39 @@ beginning the next paragraph, and all progress is saved. Entertrained is
 my latest favorite typing practice site. It’s more fun than typing
 random words.</p></li>
 </ul>
+<h2 id="what-about-languages-other-than-english">What about languages
+other than English?</h2>
+<p>Most alt layout development is optimized for typing in the English
+language. Unfortunately, English-optimized layouts may be poor designs
+for other languages.</p>
+<ul>
+<li><p>Non-English keyboards may include additional letters compared to
+English, such as an <kbd>Ñ</kbd> key on Spanish keyboards and keys for
+umlauted and accented letters on the German QWERTZ layout. These letters
+are missing in layouts designed for English.</p></li>
+<li><p>Even when considering English letters only, letter frequencies <a
+href="https://en.wikipedia.org/wiki/Letter_frequency#Relative_frequencies_of_letters_in_other_languages">differ
+across languages</a>, enormously in some cases. In French for instance,
+letter <code>q</code> is 10x more frequent and letter <code>w</code> is
+50x less frequent than in English. N-gram statistics are different too,
+of course, disrupting SFBs, rolls, and other layout metrics.</p></li>
+</ul>
+<p>To salvage this situation, <a
+href="https://cyanophage.github.io/playground.html?layout=qwertyuiop%C3%BCasdfghjkl%C3%B6%27zxcvbnm%2C.%C3%A4%C3%9F%5E&amp;mode=ergo&amp;lan=german">Cyanophage’s
+Layout Playground</a> or <a
+href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
+Layout Playground</a> are useful tools. Both of these playground web
+apps have a dropdown menu to select the language, making it possible to
+include language-specific keys and to compute metrics according to that
+language’s letter statistics. You can use them to evaluate
+English-optimized layouts to look for which better fit your language.
+You can also edit a layout to fix its shortcomings.</p>
+<p>If you aim to create a layout for typing in two (or more?) languages,
+keep in mind that it is impossible to make it perfect for both. Even
+layouts optimized for just one language are <a
+href="#is-it-really-that-hard-to-arrange-30-keys">imperfect</a>.
+Instead, address the worst spots and look for a solution that has
+decently tolerable metrics at the same time for both languages.</p>
 <h2 id="what-about-vim">What about Vim?</h2>
 <p><strong>If you use an editor with Vim key bindings, pay attention to
 the positions of j, k, w, and b.</strong> Alt layouts optimized for
