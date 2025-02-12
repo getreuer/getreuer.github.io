@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2024-12-30)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-02-11)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2024-12-30)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-02-11)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -533,17 +533,18 @@ Affecting PC Monitor Responsiveness</a></p></li>
 <h2 id="home-row-mods-are-hard-to-use">Home row mods are hard to
 use</h2>
 <p><a href="#home-row-mods-are-hard-to-use">🔗 Link</a></p>
-<p>It’s not just you. Home row mods are tricky for most people.
-<strong>Configuration is critical, and on top of that it takes time to
-get used to it.</strong></p>
+<p>It’s not just you. <a
+href="../glossary/index.html#home-row-mods-hrms">Home row mods</a> are
+tricky for most people. <strong>Configuration is critical, and on top of
+that it takes time to get used to it.</strong></p>
 <p>Home row mods are nontrivial to use reliably because of accidental
 mod triggers during fast typing. You might think of normal typing as
-pressing and releasing one key at a time like “<code>T</code> down,
-<code>T</code> up, <code>H</code> down, <code>H</code> up.” But fast
-typing is often sloppier than this like “<code>T</code> down,
-<code>H</code> down, <code>T</code> up, <code>H</code> up,” especially
-in <a href="../glossary/index.html#roll">“rolled”</a> sequences of
-adjacent keys like <code>io</code> or <code>ast</code> in QWERTY.
+pressing and releasing one key at a time like “<kbd>T</kbd> ↓,
+<kbd>T</kbd> ↑, <kbd>H</kbd> ↓, <kbd>H</kbd> ↑.” But fast typing is
+often <a href="../glossary/index.html#roll">“rolled”</a>, pressing the
+next key before the current one is released, like “<kbd>T</kbd> ↓,
+<kbd>H</kbd> ↓, <kbd>T</kbd> ↑, <kbd>H</kbd> ↑.” This happens especially
+over adjacent keys like <code>io</code> or <code>ast</code> in QWERTY.
 There’s also the complementary problem of failing to trigger a mod when
 it was intended.</p>
 <p>If you haven’t already, read <a
@@ -682,9 +683,15 @@ href="https://docs.qmk.fm/feature_layers">layer-tap keys</a>
 <code>LT(layer, kc)</code>, a limitation is that the tapping keycode
 <code>kc</code> <em>must</em> be a <a
 href="https://docs.qmk.fm/keycodes_basic">basic keycode</a>, a keycode
-in the 0–255 range. All keycodes in QMK are 16 bits, so in order to pack
-identifiers, the mod or layer, and <code>kc</code> in that space, the
-<code>kc</code> portion is limited to 8 bits. As described <a
+in the 0–255 range.</p>
+<figure>
+<img src="mod-tap-keycode.svg" alt="Encoding of a mod-tap keycode." />
+<figcaption aria-hidden="true">Encoding of a mod-tap
+keycode.</figcaption>
+</figure>
+<p>All keycodes in QMK are 16 bits, so in order to pack identifiers, the
+mod or layer, and <code>kc</code> in that space, the <code>kc</code>
+portion is limited to 8 bits. As described <a
 href="https://docs.qmk.fm/mod_tap#caveats">in the Caveats
 section</a>:</p>
 <blockquote>
@@ -701,7 +708,13 @@ for the keycode.</p>
 <kbd>/</kbd>) and user-defined keycodes are not basic keycodes, so
 attempting “<code>LT(layer, KC_QUES)</code>” or
 “<code>LSFT_T(MYMACRO)</code>” is unsupported. Fortunately, there is a
-workaround.</p>
+workaround through <a
+href="https://docs.qmk.fm/mod_tap#changing-tap-function">changing the
+tap function</a>, <a
+href="https://docs.qmk.fm/mod_tap#changing-hold-function">changing the
+hold function</a>, or both. You might also be interested in keys with
+different <a href="../triggers/index.html#tap-vs.-long-press">tap
+vs. long press functions</a>.</p>
 <h5 id="mt-with-a-non-basic-tapping-key">MT with a non-basic tapping
 key</h5>
 <p>First, pick a <a href="https://docs.qmk.fm/keycodes_basic">basic
