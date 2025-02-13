@@ -545,11 +545,11 @@ report to the host.</p>
 features are conventionally allocated in the user-defined keycode range,
 that range is limited. It would be unreasonable to allocate Orbital
 Mouse’s keys there. Being a Mouse Keys replacement, we repurpose the
-Mouse Keys keycodes (<code>KC_MS_U</code>, <code>KC_BTN1</code>, etc.)
-for the analogous functions in Orbital Mouse. We also repurpose the
-block of keycodes <code>UC(0x41)</code> to <code>UC(0x4a)</code>. These
-keycode represent Unicode input of ASCII characters, which seems
-unlikely to be missed.</p></li>
+Mouse Keys keycodes (<code>MS_U</code>, <code>MS_BTN1</code>, etc.) for
+the analogous functions in Orbital Mouse. We also repurpose the block of
+keycodes <code>UC(0x41)</code> to <code>UC(0x4a)</code>. These keycode
+represent Unicode input of ASCII characters, which seems unlikely to be
+missed.</p></li>
 <li><p>The Orbital Mouse implementation uses no floating point
 arithmetic at run time. Instead, <a
 href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic">fixed point
