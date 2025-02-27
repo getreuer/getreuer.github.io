@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-02-11)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-02-27)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-02-11)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-02-27)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -555,11 +555,10 @@ variations to mitigate these problems.</p>
 <ul>
 <li><p>For QMK firmware, I suggest starting with these settings in
 config.h:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM </span><span class="dv">200</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PERMISSIVE_HOLD</span></span></code></pre></div>
-<p>See also my <a href="../achordion/index.html">Achordion library</a>,
-which prevents mods from firing on same-hand combinations of
-keys.</p></li>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM </span><span class="dv">250</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CHORDAL_HOLD</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PERMISSIVE_HOLD</span></span></code></pre></div></li>
 <li><p>For ZMK firmware, see the <a
 href="https://zmk.dev/docs/behaviors/hold-tap#home-row-mods">suggested
 configurations</a> for home row mods.</p></li>
