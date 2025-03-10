@@ -20,7 +20,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -170,6 +170,17 @@ limitations under the License.</p>
 </blockquote>
 </div>
 <h2 id="userspace-features">Userspace features</h2>
+<div class="callout" style="border-left-color: #8ad359">
+<div class="callout-header" style="background-color: #e5f3d8">
+<p>
+📝  Note
+</p>
+</div>
+<p><strong>Update:</strong> The experience of adding third-party QMK
+features is greatly improved with the new <a
+href="../qmk-community-modules/index.html">Community Modules</a>
+framework.</p>
+</div>
 <p>There are no strict rules about how a userspace library should be
 structured, so long as it compiles. It does help to follow a few
 conventions:</p>

@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer, 2025-03-09" />
+  <title>QMK Community Modules</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script type="text/javascript" src="../../../site.js" ></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">QMK Community Modules</h1>
+<h2 class="author">Pascal Getreuer, 2025-03-09</h2>
+</div>
+<p><img src="banner.jpg" /></p>
+<p><a href="../index.html">← More about keyboards</a></p>
+<p>QMK’s 2025 Q1 release added support for <a
+href="https://docs.qmk.fm/features/community_modules">Community
+Modules</a>. Modules reduce the friction to add third-party features to
+QMK, in many cases, all the way down to requiring the user to perform no
+code changes at all. This dramatically improves the accessibility of
+reusing custom features.</p>
+<p>Until now, the process of adding third-party features to a QMK keymap
+was a tedious one. The user must go through a number of hoops, typically
+making a build rule edit and multiple changes to <code>keymap.c</code>.
+This made it nontrivial to add a feature to a keymap. All this is better
+with modules.</p>
+<p>Kudos to <span class="citation" data-cites="tzarc">@tzarc</span> and
+the QMK team for creating the Community Modules framework.</p>
+<h2 id="how-to-use-modules">How to use modules</h2>
+<p>First, <a
+href="https://docs.qmk.fm/newbs_git_using_your_master_branch#updating-your-master-branch">update
+your QMK set up</a> to ensure you have the Community Modules update. You
+will have a <code>modules</code> folder in <code>qmk_firmware</code> if
+you have it.</p>
+<p><strong>Step 1. Download the modules.</strong> Run these shell
+commands to download <a
+href="https://github.com/getreuer/qmk-modules"><img src="../../../github.svg"
+style="width:1.25em"> my modules</a>, replacing
+<code>/path/to/qmk_firmware</code> with the path of your
+“<code>qmk_firmware</code>” folder. Or if using <a
+href="https://docs.qmk.fm/newbs_external_userspace">External
+Userspace</a>, replace it with the path to your external userspace.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /path/to/qmk_firmware</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> modules</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> submodule add https://github.com/getreuer/qmk-modules.git modules/getreuer</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> submodule update <span class="at">--init</span> <span class="at">--recursive</span></span></code></pre></div>
+<p>Modules from other authors can be install similarly <a
+href="https://docs.qmk.fm/features/community_modules#adding-a-community-module-to-your-build">as
+described here</a>.</p>
+<p>Or if you don’t want to use git, <a
+href="https://github.com/getreuer/qmk-modules/archive/refs/heads/main.zip">download
+the modules as a .zip</a> into the <code>modules</code> folder. Unzip
+it, then rename the resulting <code>qmk-modules-main</code> folder to
+<code>getreuer</code>.</p>
+<p>In any case, the installed directory structure is like this:</p>
+<pre><code>&lt;QMK_FIRMWARE or QMK_USERSPACE&gt;
+└── modules
+    └── getreuer
+        ├── achordion
+        ├── custom_shift_keys
+        ├── keycode_string
+        └── ...</code></pre>
+<p><strong>Step 2. Add modules to keymap.json.</strong> Add one or more
+modules to your keymap by writing a file <code>keymap.json</code> in
+your keymap folder with the content</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/sentence_case&quot;</span><span class="ot">,</span> <span class="st">&quot;getreuer/orbital_mouse&quot;</span><span class="ot">]</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>Follow the modules’ documentation for any further specific set
+up.</p>
+<p><strong>Step 3. Update the firmware.</strong> Compile and flash the
+firmware as usual. If there are build errors, try running
+“<code>qmk clean</code>” and compiling again for a clean build.</p>
+<h2 id="other-module-repos">Other module repos</h2>
+<p>Have a look at these module repos:</p>
+<ul>
+<li><a href="https://github.com/tzarc/qmk_modules"><img src="../../../github.svg"
+style="width:1.25em"> tzarc/qmk_modules</a></li>
+<li><a href="https://github.com/drashna/qmk_modules"><img src="../../../github.svg"
+style="width:1.25em"> drashna/qmk_modules</a></li>
+</ul>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
