@@ -120,6 +120,53 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <p><strong>Step 2:</strong> Use keycode <code>TUBRO</code> somewhere in
 your layout.</p>
+<h3 id="non-module-installation-historical">Non-module installation
+(historical)</h3>
+<div class="callout" style="border-left-color: #e49f34">
+<div class="callout-header" style="background-color: #fdebd5">
+<p>
+⚠  Important
+</p>
+</div>
+<p>There are two implementations of this feature: the community module
+described above (recommended) and the earlier non-module implementation
+described in this section. Pick one. <strong>Do not install
+both</strong>, or they will conflict and fail to build.</p>
+</div>
+<p>Follow these instructions to install the non-module implementation of
+Mouse Turbo Click. If you are new to QMK macros, it may help to read my
+<a href="../macros/index.html">macro buttons</a> post for an intro.</p>
+<p><strong>Step 1:</strong> In the directory containing your
+<code>keymap.c</code>, create a <code>features</code> subdirectory and
+copy <a
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/mouse_turbo_click.h">mouse_turbo_click.h</a>
+and <a
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/mouse_turbo_click.c">mouse_turbo_click.c</a>
+there.</p>
+<p><strong>Step 2:</strong> In your <code>rules.mk</code> file, add</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC</span> <span class="ch">+=</span><span class="st"> features/mouse_turbo_click.c</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">MOUSEKEY_ENABLE</span> <span class="ch">=</span><span class="st"> yes</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">DEFERRED_EXEC_ENABLE</span> <span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
+<p><strong>Step 3:</strong> In your <code>keymap.c</code>, add a custom
+keycode <code>TURBO</code> for activating Turbo Click and use the new
+keycode somewhere in your layout.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> custom_keycodes <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  TURBO <span class="op">=</span> SAFE_RANGE<span class="op">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other custom keys...</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p><strong>Step 4:</strong> Handle Turbo Click from your
+<code>process_record_user()</code> function by calling
+<code>process_mouse_turbo_click()</code>, passing your custom keycode as
+the third argument:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/mouse_turbo_click.h&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_mouse_turbo_click<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> TURBO<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros ...</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h2 id="customization">Customization</h2>
 <h3 id="click-period">Click period</h3>
 <p>The clicking speed is controlled by
@@ -127,8 +174,8 @@ your layout.</p>
 milliseconds by default for 1000 / 80 = 12.5 clicks per second. To
 change the click rate, define <code>MOUSE_TURBO_CLICK_PERIOD</code> in
 config.h like</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Click every 200 ms for 5 clicks per second.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MOUSE_TURBO_CLICK_PERIOD </span><span class="dv">200</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Click every 200 ms for 5 clicks per second.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MOUSE_TURBO_CLICK_PERIOD </span><span class="dv">200</span></span></code></pre></div>
 <p>A smaller period implies faster clicking. Beyond some point, it is
 conceivable that QMK or the application running on the computer is
 overwhelmed with handling the rapid mouse clicks. I suggest setting the
@@ -138,8 +185,8 @@ period no smaller than 10 ms or hundred clicks per second.</p>
 <code>MS_BTN1</code>. To click a different button, define
 <code>MOUSE_TURBO_CLICK_KEY</code> in config.h. For instance, you could
 spam the Space key instead with</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Repeatedly click the Space key.</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MOUSE_TURBO_CLICK_KEY KC_SPC</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Repeatedly click the Space key.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MOUSE_TURBO_CLICK_KEY KC_SPC</span></span></code></pre></div>
 <p><code>MOUSE_TURBO_CLICK_KEY</code> may be set to any <a
 href="https://docs.qmk.fm/keycodes_basic">basic keycode</a> or 16-bit
 keycode that works with <code>register_code16()</code>, which includes

@@ -103,7 +103,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 is Orbital Mouse</a></li>
 <li><a href="#add-orbital-mouse-to-your-keymap"
 id="toc-add-orbital-mouse-to-your-keymap">Add Orbital Mouse to your
-keymap</a></li>
+keymap</a>
+<ul>
+<li><a href="#non-module-installation-historical"
+id="toc-non-module-installation-historical">Non-module installation
+(historical)</a></li>
+</ul></li>
 <li><a href="#keycodes" id="toc-keycodes">Keycodes</a>
 <ul>
 <li><a href="#slow-mode" id="toc-slow-mode">Slow mode</a></li>
@@ -185,6 +190,53 @@ layout is:</p>
 <figcaption aria-hidden="true">A suggested right-handed
 layout.</figcaption>
 </figure>
+<h3 id="non-module-installation-historical">Non-module installation
+(historical)</h3>
+<div class="callout" style="border-left-color: #e49f34">
+<div class="callout-header" style="background-color: #fdebd5">
+<p>
+⚠  Important
+</p>
+</div>
+<p>There are two implementations of this feature: the community module
+described above (recommended) and the earlier non-module implementation
+described in this section. Pick one. <strong>Do not install
+both</strong>, or they will conflict and fail to build.</p>
+</div>
+<p><strong>Step 1:</strong> In the directory containing
+<code>keymap.c</code>, create a <code>features</code> subdirectory and
+copy <a
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/orbital_mouse.h">orbital_mouse.h</a>
+and <a
+href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/orbital_mouse.c">orbital_mouse.c</a>
+there.</p>
+<p><strong>Step 2:</strong> In your <code>rules.mk</code> file, add</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC</span> <span class="ch">+=</span><span class="st"> features/orbital_mouse.c</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">MOUSE_ENABLE</span> <span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
+<p>Optionally, if Mouse Keys is enabled, you may disable it with
+“<code>MOUSEKEYS_ENABLE = no</code>” to save some firmware space.</p>
+<p><strong>Step 3:</strong> Include the orbital_mouse header by adding
+near the top of <code>keymap.c</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/orbital_mouse.h&quot;</span><span class="pp">`</span></span></code></pre></div>
+<p><strong>Step 3:</strong> Still in <code>keymap.c</code>, handle
+Orbital Mouse by defining (or adding to)
+<code>process_record_user()</code> and
+<code>housekeeping_task_user()</code> as</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_orbital_mouse<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros ...</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> housekeeping_task_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  orbital_mouse_task<span class="op">();</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks ...</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Step 4:</strong> Use the Orbital Mouse keycodes in your
+layout in <code>keymap.c</code>.</p>
 <h2 id="keycodes">Keycodes</h2>
 <p>Orbital Mouse is controlled with the following keycodes.</p>
 <table>
@@ -310,10 +362,10 @@ values in the range 0–255, larger values meaning faster movement.</p>
 <p>The default curve is a bilevel scheme, beginning at a lower speed of
 24, for fine-scale motions, then transitions after a second to a higher
 speed of 66, for large-scale motions:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_SPEED_CURVE </span><span class="op">\</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">      </span><span class="op">{</span><span class="dv">24</span><span class="op">,</span><span class="pp"> </span><span class="dv">24</span><span class="op">,</span><span class="pp"> </span><span class="dv">24</span><span class="op">,</span><span class="pp"> </span><span class="dv">32</span><span class="op">,</span><span class="pp"> </span><span class="dv">58</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">}</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">//     |               |               |               |           |</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">// t = 0.000           1.024           2.048           3.072       3.840 s</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_SPEED_CURVE </span><span class="op">\</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">      </span><span class="op">{</span><span class="dv">24</span><span class="op">,</span><span class="pp"> </span><span class="dv">24</span><span class="op">,</span><span class="pp"> </span><span class="dv">24</span><span class="op">,</span><span class="pp"> </span><span class="dv">32</span><span class="op">,</span><span class="pp"> </span><span class="dv">58</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">}</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">//     |               |               |               |           |</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">// t = 0.000           1.024           2.048           3.072       3.840 s</span></span></code></pre></div>
 <figure>
 <img src="default-curve.svg" alt="The default speed curve." />
 <figcaption aria-hidden="true">The default speed curve.</figcaption>
@@ -472,12 +524,12 @@ resizePlot();
 <h3 id="options">Options</h3>
 <p>Orbital Mouse can be further customized by tuning the following
 options in config.h.</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_RADIUS            </span><span class="dv">36</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_SLOW_MOVE_FACTOR  </span><span class="fl">0.333</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_SLOW_TURN_FACTOR  </span><span class="fl">0.5</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_WHEEL_SPEED       </span><span class="fl">0.2</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_DBL_DELAY_MS      </span><span class="dv">50</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_RADIUS            </span><span class="dv">36</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_SLOW_MOVE_FACTOR  </span><span class="fl">0.333</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_SLOW_TURN_FACTOR  </span><span class="fl">0.5</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_WHEEL_SPEED       </span><span class="fl">0.2</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define ORBITAL_MOUSE_DBL_DELAY_MS      </span><span class="dv">50</span></span></code></pre></div>
 <p><code>ORBITAL_MOUSE_RADIUS</code> is the radius in pixels of the
 circle that the cursor rotates or “orbits” around when steering. Must be
 in [0, 63]. Default is <code>36</code>.</p>

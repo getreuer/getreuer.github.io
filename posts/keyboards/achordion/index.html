@@ -299,8 +299,17 @@ described in the <a href="https://docs.qmk.fm/mod_tap">Mod-Tap
 documentation</a>.</p>
 <h3 id="non-module-installation-historical">Non-module installation
 (historical)</h3>
-<p>Alternatively, instead of modules, follow these instructions to
-install Achordion:</p>
+<div class="callout" style="border-left-color: #e49f34">
+<div class="callout-header" style="background-color: #fdebd5">
+<p>
+⚠  Important
+</p>
+</div>
+<p>There are two implementations of this feature: the community module
+described above (recommended) and the earlier non-module implementation
+described in this section. Pick one. <strong>Do not install
+both</strong>, or they will conflict and fail to build.</p>
+</div>
 <p><strong>Step 1:</strong> In your <code>keymap.c</code>, call
 Achordion from your <code>process_record_user()</code> function:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/achordion.h&quot;</span></span>
