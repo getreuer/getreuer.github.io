@@ -188,8 +188,7 @@ form.
 </tt>
 </blockquote>
 <h2 id="add-it-to-your-keymap">Add it to your keymap</h2>
-<p><strong>Step 1:</strong> Install my <a
-href="https://github.com/getreuer/qmk-modules/tree/main?tab=readme-ov-file#how-to-install">community
+<p>Install my <a href="../qmk-community-modules/index.html">community
 modules</a>. Then enable module <a
 href="https://github.com/getreuer/qmk-modules/tree/main/sentence_case">getreuer/sentence_case</a>
 in your <code>keymap.json</code> file. Or if <code>keymap.json</code>
@@ -198,6 +197,14 @@ does not exist, create it with the following content:</p>
 class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/sentence_case&quot;</span><span class="ot">]</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><em>Note:</em> If you happen to also use <a
+href="../custom-shift-keys/index.html">custom shift keys</a>, be sure to
+order <code>"getreuer/sentence_case"</code> before
+<code>"getreuer/custom_shift_keys"</code>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/sentence_case&quot;</span><span class="ot">,</span> <span class="st">&quot;getreuer/custom_shift_keys&quot;</span><span class="ot">]</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <p>One-shot keys must be enabled to use Sentence Case. One-shot keys are
 enabled by default, but can be disabled by
 “<code>#define NO_ACTION_ONESHOT</code>” in <code>config.h</code>. If
@@ -223,18 +230,18 @@ and <a
 href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/sentence_case.c">sentence_case.c</a>
 there.</p>
 <p><strong>Step 2:</strong> In your <code>rules.mk</code> file, add</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC</span> <span class="ch">+=</span><span class="st"> features/sentence_case.c</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC</span> <span class="ch">+=</span><span class="st"> features/sentence_case.c</span></span></code></pre></div>
 <p><strong>Step 3:</strong> In keymap.c, define or add to your
 <code>process_record_user()</code> function to call
 <code>process_sentence_case()</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/sentence_case.h&quot;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_sentence_case<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros ...</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/sentence_case.h&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_sentence_case<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros ...</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p><em>Note:</em> If you happen to also use <a
 href="../custom-shift-keys/index.html">custom shift keys</a>, be sure to
 call <code>process_sentence_case()</code> before
@@ -347,10 +354,10 @@ are allowed in any position.</p>
 indicated with an LED or otherwise that Sentence Case is “primed.” A
 primed state means that a sentence ending was detected, and if the next
 key typed is a letter, it will be capitalized. In your keymap.c, add</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sentence_case_primed<span class="op">(</span><span class="dt">bool</span> primed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Change B0 to the pin for the LED to use.</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  writePin<span class="op">(</span>B0<span class="op">,</span> primed<span class="op">);</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sentence_case_primed<span class="op">(</span><span class="dt">bool</span> primed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Change B0 to the pin for the LED to use.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  writePin<span class="op">(</span>B0<span class="op">,</span> primed<span class="op">);</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Knowing when Sentence Case is primed is useful feedback to use the
 feature effectively.</p>
 <h3 id="idle-timeout">Idle timeout</h3>
@@ -359,7 +366,7 @@ for 5 seconds. This is useful to mitigate unintended shifting when
 switching between typing and using the mouse. To configure this, define
 <code>SENTENCE_CASE_TIMEOUT</code> in <code>config.h</code> with a time
 in milliseconds:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SENTENCE_CASE_TIMEOUT </span><span class="dv">2000</span><span class="pp">  </span><span class="co">// Reset state after 2 seconds.</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SENTENCE_CASE_TIMEOUT </span><span class="dv">2000</span><span class="pp">  </span><span class="co">// Reset state after 2 seconds.</span></span></code></pre></div>
 <p>If <code>SENTENCE_CASE_TIMEOUT</code> is set to 0, Sentence Case
 never times out.</p>
 <h3 id="functions">Functions</h3>
@@ -414,18 +421,18 @@ keycodes). Returning true means it is a real sentence ending and
 automatic capitalization applies; returning false means it is not.</p>
 <p>The default implementation checks for the abbreviations
 “<code>vs.</code>” and “<code>etc.</code>”:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> sentence_case_check_ending<span class="op">(</span><span class="dt">const</span> <span class="dt">uint16_t</span><span class="op">*</span> buffer<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Don&#39;t consider the abbreviations &quot;vs.&quot; and &quot;etc.&quot; to end the sentence.</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_V<span class="op">,</span> KC_S<span class="op">,</span> KC_DOT<span class="op">)</span> <span class="op">||</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_E<span class="op">,</span> KC_T<span class="op">,</span> KC_C<span class="op">,</span> KC_DOT<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Not a real sentence ending.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// Real sentence ending; capitalize next letter.</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> sentence_case_check_ending<span class="op">(</span><span class="dt">const</span> <span class="dt">uint16_t</span><span class="op">*</span> buffer<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Don&#39;t consider the abbreviations &quot;vs.&quot; and &quot;etc.&quot; to end the sentence.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_V<span class="op">,</span> KC_S<span class="op">,</span> KC_DOT<span class="op">)</span> <span class="op">||</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_E<span class="op">,</span> KC_T<span class="op">,</span> KC_C<span class="op">,</span> KC_DOT<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Not a real sentence ending.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// Real sentence ending; capitalize next letter.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Here, <code>SENTENCE_CASE_JUST_TYPED()</code> is a helper macro that
 checks whether the key buffer ends in a given keycode pattern. The
 expression</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_V<span class="op">,</span> KC_S<span class="op">,</span> KC_DOT<span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_V<span class="op">,</span> KC_S<span class="op">,</span> KC_DOT<span class="op">)</span></span></code></pre></div>
 <p>returns true if “space, <code>v</code>, <code>s</code>,
 <code>.</code>” were the last four keys typed.</p>
 <p><strong>Notes:</strong></p>
@@ -437,14 +444,14 @@ check.</li>
 </ul>
 <p>Add other abbreviations by adding them in the condition. For example
 to check also for “<code>misc.</code>”:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_V<span class="op">,</span> KC_S<span class="op">,</span> KC_DOT<span class="op">)</span> <span class="op">||</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_E<span class="op">,</span> KC_T<span class="op">,</span> KC_C<span class="op">,</span> KC_DOT<span class="op">)</span> <span class="op">||</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_M<span class="op">,</span> KC_I<span class="op">,</span> KC_S<span class="op">,</span> KC_C<span class="op">,</span> KC_DOT<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Not a real sentence ending.</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_V<span class="op">,</span> KC_S<span class="op">,</span> KC_DOT<span class="op">)</span> <span class="op">||</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_E<span class="op">,</span> KC_T<span class="op">,</span> KC_C<span class="op">,</span> KC_DOT<span class="op">)</span> <span class="op">||</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    SENTENCE_CASE_JUST_TYPED<span class="op">(</span>KC_SPC<span class="op">,</span> KC_M<span class="op">,</span> KC_I<span class="op">,</span> KC_S<span class="op">,</span> KC_C<span class="op">,</span> KC_DOT<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Not a real sentence ending.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The buffer size <code>SENTENCE_CASE_BUFFER_SIZE</code> can be changed
 by defining it in config.h:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SENTENCE_CASE_BUFFER_SIZE </span><span class="dv">10</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SENTENCE_CASE_BUFFER_SIZE </span><span class="dv">10</span></span></code></pre></div>
 <p>Setting <code>SENTENCE_CASE_BUFFER_SIZE</code> to <code>0</code>
 disables the sentence ending check.</p>
 <h3 id="letters-and-punctuations">Letters and punctuations</h3>
@@ -526,43 +533,43 @@ performs an action that backspace doesn’t undo), then the callback
 should call <code>sentence_case_clear()</code> to clear the state and
 then return <code>'\0'</code>.</p>
 <p>The default <code>sentence_case_press_user()</code> is:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> sentence_case_press_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                              keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">uint8_t</span> mods<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">((</span>mods <span class="op">&amp;</span> <span class="op">~(</span>MOD_MASK_SHIFT <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RALT<span class="op">)))</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">const</span> <span class="dt">bool</span> shifted <span class="op">=</span> mods <span class="op">&amp;</span> MOD_MASK_SHIFT<span class="op">;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;a&#39;</span><span class="op">;</span>  <span class="co">// Letter key.</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_DOT<span class="op">:</span>  <span class="co">// . is punctuation, Shift . is a symbol (&gt;)</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">!</span>shifted <span class="op">?</span> <span class="ch">&#39;.&#39;</span> <span class="op">:</span> <span class="ch">&#39;#&#39;</span><span class="op">;</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_1<span class="op">:</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_SLSH<span class="op">:</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> shifted <span class="op">?</span> <span class="ch">&#39;.&#39;</span> <span class="op">:</span> <span class="ch">&#39;#&#39;</span><span class="op">;</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_EXLM<span class="op">:</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_QUES<span class="op">:</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;.&#39;</span><span class="op">;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_2 <span class="op">...</span> KC_0<span class="op">:</span>  <span class="co">// 2 3 4 5 6 7 8 9 0</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_AT <span class="op">...</span> KC_RPRN<span class="op">:</span>  <span class="co">// @ # $ % ^ &amp; * ( )</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_MINS <span class="op">...</span> KC_SCLN<span class="op">:</span>  <span class="co">// - = [ ] backslash ;</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_UNDS <span class="op">...</span> KC_COLN<span class="op">:</span>  <span class="co">// _ + { } | :</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_GRV<span class="op">:</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_COMM<span class="op">:</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;#&#39;</span><span class="op">;</span>  <span class="co">// Symbol key.</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_SPC<span class="op">:</span></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39; &#39;</span><span class="op">;</span>  <span class="co">// Space key.</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_QUOT<span class="op">:</span></span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;</span><span class="sc">\&#39;</span><span class="ch">&#39;</span><span class="op">;</span>  <span class="co">// Quote key.</span></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Otherwise clear Sentence Case to initial state.</span></span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  sentence_case_clear<span class="op">();</span></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span><span class="op">;</span></span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> sentence_case_press_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                              keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                              <span class="dt">uint8_t</span> mods<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">((</span>mods <span class="op">&amp;</span> <span class="op">~(</span>MOD_MASK_SHIFT <span class="op">|</span> MOD_BIT<span class="op">(</span>KC_RALT<span class="op">)))</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">const</span> <span class="dt">bool</span> shifted <span class="op">=</span> mods <span class="op">&amp;</span> MOD_MASK_SHIFT<span class="op">;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;a&#39;</span><span class="op">;</span>  <span class="co">// Letter key.</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_DOT<span class="op">:</span>  <span class="co">// . is punctuation, Shift . is a symbol (&gt;)</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">!</span>shifted <span class="op">?</span> <span class="ch">&#39;.&#39;</span> <span class="op">:</span> <span class="ch">&#39;#&#39;</span><span class="op">;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_1<span class="op">:</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_SLSH<span class="op">:</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> shifted <span class="op">?</span> <span class="ch">&#39;.&#39;</span> <span class="op">:</span> <span class="ch">&#39;#&#39;</span><span class="op">;</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_EXLM<span class="op">:</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_QUES<span class="op">:</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;.&#39;</span><span class="op">;</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_2 <span class="op">...</span> KC_0<span class="op">:</span>  <span class="co">// 2 3 4 5 6 7 8 9 0</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_AT <span class="op">...</span> KC_RPRN<span class="op">:</span>  <span class="co">// @ # $ % ^ &amp; * ( )</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_MINS <span class="op">...</span> KC_SCLN<span class="op">:</span>  <span class="co">// - = [ ] backslash ;</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_UNDS <span class="op">...</span> KC_COLN<span class="op">:</span>  <span class="co">// _ + { } | :</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_GRV<span class="op">:</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_COMM<span class="op">:</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;#&#39;</span><span class="op">;</span>  <span class="co">// Symbol key.</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_SPC<span class="op">:</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39; &#39;</span><span class="op">;</span>  <span class="co">// Space key.</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>      <span class="cf">case</span> KC_QUOT<span class="op">:</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ch">&#39;</span><span class="sc">\&#39;</span><span class="ch">&#39;</span><span class="op">;</span>  <span class="co">// Quote key.</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Otherwise clear Sentence Case to initial state.</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>  sentence_case_clear<span class="op">();</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span><span class="op">;</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>To customize, copy the above function into your keymap and add/remove
 keycodes to the above cases.</p>
 <h2 id="explanation">Explanation</h2>
