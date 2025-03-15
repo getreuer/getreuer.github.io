@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer, 2025-03-15" />
+  <title>Tap Flow: disable HRMs during fast typing</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script type="text/javascript" src="../../../site.js" ></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">Tap Flow: disable HRMs during fast typing</h1>
+<h2 class="author">Pascal Getreuer, 2025-03-15</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a>
+<ul>
+<li><a href="#limitations" id="toc-limitations">Limitations</a></li>
+</ul></li>
+<li><a href="#add-tap-flow-to-your-keyboard"
+id="toc-add-tap-flow-to-your-keyboard">Add Tap Flow to your
+keyboard</a></li>
+<li><a href="#customization" id="toc-customization">Customization</a>
+<ul>
+<li><a href="#tap_flow_term"
+id="toc-tap_flow_term">TAP_FLOW_TERM</a></li>
+<li><a href="#get_tap_flow"
+id="toc-get_tap_flow">get_tap_flow()</a></li>
+</ul></li>
+<li><a href="#debugging" id="toc-debugging">Debugging</a></li>
+<li><a href="#explanation" id="toc-explanation">Explanation</a></li>
+<li><a href="#acknowledgements"
+id="toc-acknowledgements">Acknowledgements</a></li>
+</ul>
+</div>
+<p><a href="../index.html">← More about keyboards</a></p>
+<p><em>Tap Flow is for your keyboard, not your plumbing.</em></p>
+<h2 id="overview">Overview</h2>
+<p>This post describes a community module implementation of
+<strong>global quick tap</strong>, aka <strong>require prior
+idle,</strong> for tap-hold keys in QMK. It is particularly useful for
+<a href="../glossary/index.html#home-row-mods-hrms">home row mods</a>
+(HRMs) to avoid accidental mod triggers in fast typing.</p>
+<p>Tap Flow modifies mod-tap <code>MT</code> and layer-tap
+<code>LT</code> keys such that when pressed within a short timeout of
+the preceding key, the tapping behavior is triggered. This basically
+disables HRMs during fast typing.</p>
+<figure>
+<img src="typing-events.svg"
+alt="A fast typing sequence of taps has short duration between successive key events" />
+<figcaption aria-hidden="true">A fast typing sequence of taps has short
+duration between successive key events</figcaption>
+</figure>
+<p>The assumption is that only the tap function of tap-hold keys is
+desired for regular typing (though perhaps with an exception for Shift
+or AltGr, explained below), whereas the hold functions (an
+<code>MT</code>’s mod or <code>LT</code>’s layer) are used in isolation.
+Said another way, Tap Flow puts hold functions behind a speed bump. To
+invoke a hold function, you must pause at least briefly before pressing
+the tap-hold key.</p>
+<figure>
+<img src="hold-event.svg"
+alt="A longer duration “speed bump” is required preceding the use of a hold function." />
+<figcaption aria-hidden="true">A longer duration “speed bump” is
+required preceding the use of a hold function.</figcaption>
+</figure>
+<p>The implementation is based on <span class="citation"
+data-cites="filterpaper">@filterpaper</span>’s elegant <a
+href="https://github.com/filterpaper/qmk_userspace?tab=readme-ov-file#contextual-mod-taps">Contextual
+Mod-Taps</a> that inspired this module.</p>
+<h3 id="limitations">Limitations</h3>
+<p>Tap Flow runs before QMK’s core combos and tap-hold logic, which
+creates some limitations:</p>
+<ul>
+<li><p>Tap Flow does not act on tap-hold keys used in or resulting from
+a combo.</p></li>
+<li><p>Tap Flow does not act while a layer-tap <code>LT</code> key is
+unsettled.</p></li>
+<li><p><a
+href="https://docs.qmk.fm/mod_tap#changing-tap-function">Changing the
+tap function</a> of a tap-hold key in <code>process_record_user()</code>
+does not work with Tap Flow. (Changing the hold function, however, does
+work.)</p></li>
+</ul>
+<h2 id="add-tap-flow-to-your-keyboard">Add Tap Flow to your
+keyboard</h2>
+<p>Install my <a href="../qmk-community-modules/index.html">community
+modules</a>. Then enable module <a
+href="https://github.com/getreuer/qmk-modules/tree/main/tap_flow">getreuer/tap_flow</a>
+in your <code>keymap.json</code> file. Or if <code>keymap.json</code>
+does not exist, create it with the following content:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/tap_flow&quot;</span><span class="ot">]</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>The Combos feature or Repeat Key (or both) need to be enabled in your
+<code>rules.mk</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">COMBOS_ENABLE</span> <span class="ch">=</span><span class="st"> yes</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">REPEAT_KEY_ENABLE</span> <span class="ch">=</span><span class="st"> yes</span></span></code></pre></div>
+<p>Either of these features enables the <code>.keycode</code> field in
+<code>keyrecord_t</code>, which the implementation relies on.</p>
+<p>Once installed, Tap Flow’s default behavior is:</p>
+<ul>
+<li><p>Filtering is done only when a tap-hold press is within
+<code>TAP_FLOW_TERM</code> of the previous key event, which defaults to
+150 ms.</p></li>
+<li><p>Filtering is done only when both the tap-hold key and the
+previous key are among <kbd>Space</kbd>, letters
+<kbd>A</kbd>–<kbd>Z</kbd>, and punctuations <kbd>,</kbd> <kbd>.</kbd>
+<kbd>;</kbd> <kbd>/</kbd>.</p></li>
+</ul>
+<h2 id="customization">Customization</h2>
+<h3 id="tap_flow_term">TAP_FLOW_TERM</h3>
+<p><code>TAP_FLOW_TERM</code> is the filtering time in units of
+milliseconds. It defaults to 150 if not specified. To set something
+else, define it in your <code>config.h</code> file like:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAP_FLOW_TERM  </span><span class="dv">120</span></span></code></pre></div>
+<p>A larger value implies a greater tendency to settle tap-hold keys as
+tapped. I suggest that a useful value is between 75 and 200. For tuning,
+you can use these three keys to change Tap Flow’s term on the fly
+(similar to QMK’s <a
+href="https://docs.qmk.fm/tap_hold#dynamic-tapping-term">dynamic tapping
+term feature</a>):</p>
+<table>
+<thead>
+<tr class="header">
+<th>Keycode</th>
+<th>Alias</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>TAP_FLOW_PRINT</code></td>
+<td><code>TFLOW_P</code></td>
+<td>Type the current value.</td>
+</tr>
+<tr class="even">
+<td><code>TAP_FLOW_UP</code></td>
+<td><code>TFLOW_U</code></td>
+<td>Increase by 5 ms.</td>
+</tr>
+<tr class="odd">
+<td><code>TAP_FLOW_DOWN</code></td>
+<td><code>TFLOW_D</code></td>
+<td>Decrease by 5 ms.</td>
+</tr>
+</tbody>
+</table>
+<p>Tuning:</p>
+<ul>
+<li>If there are frequent accidental mod or layer triggers, increase the
+Tap Flow term with <code>TFLOW_U</code>.</li>
+<li>Conversely if extra taps are produced when the hold action was
+intended, decrease the value with <code>TFLOW_D</code>.</li>
+</ul>
+<p>Once a good setting is found, press <code>TFLOW_P</code> to print the
+current value. Then set <code>TAP_FLOW_TERM</code> in
+<code>config.h</code> to that value:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAP_FLOW_TERM  </span><span class="op">&lt;</span><span class="pp">value from TFLOW_P</span><span class="op">&gt;</span></span></code></pre></div>
+<h3 id="get_tap_flow">get_tap_flow()</h3>
+<p>Optionally, filtering can be customized by defining the
+<code>get_tap_flow()</code> callback in your <code>keymap.c</code>. This
+way exceptions may be made for Shift and AltGr (or whatever you wish) to
+use a shorter time or to disable filtering for those keys entirely.</p>
+<p>An example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_tap_flow<span class="op">(</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">,</span> <span class="dt">uint16_t</span> prev_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>prev_keycode <span class="op">==</span> KC_BSPC<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>  <span class="co">// Disable filter when immediately following backspace.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_D<span class="op">):</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RSFT_T<span class="op">(</span>KC_K<span class="op">):</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>  <span class="co">// Disable filter for these keys.</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LCTL_T<span class="op">(</span>KC_F<span class="op">):</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RCTL_T<span class="op">(</span>KC_H<span class="op">):</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> g_tap_flow_term <span class="op">-</span> <span class="dv">25</span><span class="op">;</span>  <span class="co">// Shorter timeout for index fingers.</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> g_tap_flow_term<span class="op">;</span>  <span class="co">// Longer timeout otherwise.</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Notes:</p>
+<ul>
+<li><p>Returning a time of zero has the effect of disabling filtering
+for those keys.</p></li>
+<li><p>Use “<code>g_tap_flow_term</code>” to refer to Tap Flow’s dynamic
+term. Its value is controllable on the fly with the <code>TFLOW_</code>
+keycodes described above.</p></li>
+<li><p>Note that full keycodes are expected,
+e.g. <code>LSFT_T(KC_D)</code> not just <code>KC_D</code>.</p></li>
+</ul>
+<h2 id="debugging">Debugging</h2>
+<p>For in-depth troubleshooting, debug logging may be enabled through
+these steps:</p>
+<ol type="1">
+<li>Enable the debug console <a
+href="../developing-qmk-features/index.html#debug-console">as described
+here</a>.</li>
+<li>Define <code>TAP_FLOW_DEBUG</code> in <code>config.h</code>.</li>
+</ol>
+<p>Tap Flow then produces console messages like the following:</p>
+<pre><code>tap_flow: 0805d within term (135 &lt; 150) converted to tap.
+tap_flow: 0805u tap release.
+tap_flow: 0802d unchanged (combo key).</code></pre>
+<p>The “<code>0805d</code>” syntax is a compact representation of key
+events. For instance <code>0805d</code> is read as a press event
+(<code>d</code> for “down”) on matrix position row 8, column 5.</p>
+<h2 id="explanation">Explanation</h2>
+<p>Tap Flow hooks into <code>pre_process_record</code>, which runs
+before QMK’s core tap-hold logic:</p>
+<ol type="1">
+<li><p>Within this hook, Tap Flow tracks the keycode of the previously
+pressed key. It also tracks whether any <code>LT</code> keys may be
+currently unsettled.</p></li>
+<li><p>When a mod-tap <code>MT</code> or layer-tap <code>LT</code> key
+is pressed, the time elapsed since the previous input is compared
+against the value returned from <code>get_tap_flow()</code>.</p>
+<ul>
+<li><p>If the time is less and supposing no <code>LT</code> keys are
+currently unsettled, the event is rewritten as the tapping keycode. This
+is done by setting the <code>.keycode</code> field. Additionally, the
+tap press event is recorded in an <code>is_tapped</code> array so that
+the release event can be handled correspondingly.</p></li>
+<li><p>Otherwise, the event continues unchanged. The time when the key
+will settle according to its tapping term is tracked.</p></li>
+</ul></li>
+</ol>
+<p>The reason that unsettled tap-hold keys are considered is because
+when an <code>LT</code> settles as held, the layer state will change and
+buffered events following the <code>LT</code> will be reconsidered as
+keys on that layer. That may change the buffered keys from tap-hold keys
+to non-tap-hold keys, or vice versa, or other such complications. Of
+course, we don’t know in advance how the <code>LT</code> will
+settle.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Huge thanks to <span class="citation"
+data-cites="filterpaper">@filterpaper</span> for <a
+href="https://github.com/filterpaper/qmk_userspace?tab=readme-ov-file#contextual-mod-taps">Contextual
+Mod-Taps</a>, which inspired this work.</p>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
