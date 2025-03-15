@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-02-27)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-03-15)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -20,7 +20,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-02-27)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-03-15)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -571,6 +571,10 @@ settings. But after a couple months of persistence, my typing adapted.
 Now I use home row mods with confidence.</p>
 <p><strong>Other tips:</strong></p>
 <ul>
+<li><p><strong>Tap Flow</strong>: Use my <a
+href="../tap-flow/index.html">Tap Flow</a> QMK module to disable HRMs
+during fast typing. Or in ZMK, use <a
+href="https://zmk.dev/docs/config/behaviors#devicetree-2">require-prior-idle-ms</a>.</p></li>
 <li><p><strong>Repeat a mod-tap key:</strong> A little known feature! If
 you quickly tap and then hold the key, its tap action is repeated. In
 QMK, this is enabled by default and disabled by setting <a
