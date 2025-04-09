@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2025-03-15" />
+  <meta name="author" content="Pascal Getreuer, 2025-03-15 (updated 2025-04-08)" />
   <title>Tap Flow: disable HRMs during fast typing</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Tap Flow: disable HRMs during fast typing</h1>
-<h2 class="author">Pascal Getreuer, 2025-03-15</h2>
+<h2 class="author">Pascal Getreuer, 2025-03-15 (updated 2025-04-08)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -106,8 +106,10 @@ keyboard</a></li>
 <ul>
 <li><a href="#tap_flow_term"
 id="toc-tap_flow_term">TAP_FLOW_TERM</a></li>
-<li><a href="#get_tap_flow"
-id="toc-get_tap_flow">get_tap_flow()</a></li>
+<li><a href="#is_tap_flow_key"
+id="toc-is_tap_flow_key">is_tap_flow_key()</a></li>
+<li><a href="#get_tap_flow_term"
+id="toc-get_tap_flow_term">get_tap_flow_term()</a></li>
 </ul></li>
 <li><a href="#debugging" id="toc-debugging">Debugging</a></li>
 <li><a href="#explanation" id="toc-explanation">Explanation</a></li>
@@ -243,31 +245,70 @@ intended, decrease the value with <code>TFLOW_D</code>.</li>
 current value. Then set <code>TAP_FLOW_TERM</code> in
 <code>config.h</code> to that value:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAP_FLOW_TERM  </span><span class="op">&lt;</span><span class="pp">value from TFLOW_P</span><span class="op">&gt;</span></span></code></pre></div>
-<h3 id="get_tap_flow">get_tap_flow()</h3>
-<p>Optionally, filtering can be customized by defining the
-<code>get_tap_flow()</code> callback in your <code>keymap.c</code>. This
-way exceptions may be made for Shift and AltGr (or whatever you wish) to
-use a shorter time or to disable filtering for those keys entirely.</p>
-<p>An example:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_tap_flow<span class="op">(</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">,</span> <span class="dt">uint16_t</span> prev_keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>prev_keycode <span class="op">==</span> KC_BSPC<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>  <span class="co">// Disable filter when immediately following backspace.</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_D<span class="op">):</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RSFT_T<span class="op">(</span>KC_K<span class="op">):</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>  <span class="co">// Disable filter for these keys.</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LCTL_T<span class="op">(</span>KC_F<span class="op">):</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RCTL_T<span class="op">(</span>KC_H<span class="op">):</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> g_tap_flow_term <span class="op">-</span> <span class="dv">25</span><span class="op">;</span>  <span class="co">// Shorter timeout for index fingers.</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> g_tap_flow_term<span class="op">;</span>  <span class="co">// Longer timeout otherwise.</span></span>
+<h3 id="is_tap_flow_key">is_tap_flow_key()</h3>
+<p>Optionally, <code>is_tap_flow_key()</code> may be defined to
+customize the set of keys where Tap Flow is enabled. This callback is
+called for both the tap-hold key <em>and</em> the key press immediately
+preceding it, and if the callback returns true for both keycodes, Tap
+Flow is enabled.</p>
+<p>The default implementation of this callback corresponds to</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> is_tap_flow_key<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QK_MOD_TAP <span class="op">...</span> QK_MOD_TAP_MAX<span class="op">:</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      keycode <span class="op">=</span> QK_MOD_TAP_GET_TAP_KEYCODE<span class="op">(</span>keycode<span class="op">);</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> QK_LAYER_TAP <span class="op">...</span> QK_LAYER_TAP_MAX<span class="op">:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      keycode <span class="op">=</span> QK_LAYER_TAP_GET_TAP_KEYCODE<span class="op">(</span>keycode<span class="op">);</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_SPC<span class="op">:</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_DOT<span class="op">:</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_COMM<span class="op">:</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_SCLN<span class="op">:</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> KC_SLSH<span class="op">:</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Copy the above to your <code>keymap.c</code> and edit to customize.
+For instance, removing the “<code>case KC_SPC</code>” line in the
+snippet above disables Tap Flow for the Space key.</p>
+<h3 id="get_tap_flow_term">get_tap_flow_term()</h3>
+<p>Optionally, filtering can be customized by defining the
+<code>get_tap_flow_term()</code> callback in your <code>keymap.c</code>.
+This way exceptions may be made for Shift and AltGr (or whatever you
+wish) to use a shorter time or to disable filtering for those keys
+entirely.</p>
+<p>The default implementation of this callback is</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_tap_flow_term<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                           <span class="dt">uint16_t</span> prev_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>is_tap_flow_key<span class="op">(</span>keycode<span class="op">)</span> <span class="op">&amp;&amp;</span> is_tap_flow_key<span class="op">(</span>prev_keycode<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> g_tap_flow_term<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>An example customization:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_tap_flow_term<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">,</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                           <span class="dt">uint16_t</span> prev_keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>prev_keycode <span class="op">==</span> KC_BSPC<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>  <span class="co">// Disable filter when immediately following backspace.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_D<span class="op">):</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RSFT_T<span class="op">(</span>KC_K<span class="op">):</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>  <span class="co">// Disable filter for these keys.</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LCTL_T<span class="op">(</span>KC_F<span class="op">):</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> RCTL_T<span class="op">(</span>KC_H<span class="op">):</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> g_tap_flow_term <span class="op">-</span> <span class="dv">25</span><span class="op">;</span>  <span class="co">// Shorter timeout for index fingers.</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> g_tap_flow_term<span class="op">;</span>  <span class="co">// Longer timeout otherwise.</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Notes:</p>
 <ul>
 <li><p>Returning a time of zero has the effect of disabling filtering
@@ -275,8 +316,11 @@ for those keys.</p></li>
 <li><p>Use “<code>g_tap_flow_term</code>” to refer to Tap Flow’s dynamic
 term. Its value is controllable on the fly with the <code>TFLOW_</code>
 keycodes described above.</p></li>
-<li><p>Note that full keycodes are expected,
-e.g. <code>LSFT_T(KC_D)</code> not just <code>KC_D</code>.</p></li>
+<li><p>Full keycodes are expected, e.g. <code>LSFT_T(KC_D)</code> not
+just <code>KC_D</code>.</p></li>
+<li><p>If both <code>is_tap_flow_key()</code> and
+<code>get_tap_flow_term()</code> are defined, then
+<code>get_tap_flow_term()</code> takes precedence.</p></li>
 </ul>
 <h2 id="debugging">Debugging</h2>
 <p>For in-depth troubleshooting, debug logging may be enabled through
@@ -303,7 +347,7 @@ pressed key. It also tracks whether any <code>LT</code> keys may be
 currently unsettled.</p></li>
 <li><p>When a mod-tap <code>MT</code> or layer-tap <code>LT</code> key
 is pressed, the time elapsed since the previous input is compared
-against the value returned from <code>get_tap_flow()</code>.</p>
+against the value returned from <code>get_tap_flow_term()</code>.</p>
 <ul>
 <li><p>If the time is less and supposing no <code>LT</code> keys are
 currently unsettled, the event is rewritten as the tapping keycode. This
@@ -322,7 +366,10 @@ to non-tap-hold keys, or vice versa, or other such complications. Of
 course, we don’t know in advance how the <code>LT</code> will
 settle.</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
-<p>Huge thanks to <span class="citation"
+<p>Thank you to <span class="citation"
+data-cites="JJGadgets">@JJGadgets</span> and <span class="citation"
+data-cites="mwpardue">@mwpardue</span> for feedback to improve Tap Flow.
+Huge thanks to <span class="citation"
 data-cites="filterpaper">@filterpaper</span> for <a
 href="https://github.com/filterpaper/qmk_userspace?tab=readme-ov-file#contextual-mod-taps">Contextual
 Mod-Taps</a>, which inspired this work.</p>
