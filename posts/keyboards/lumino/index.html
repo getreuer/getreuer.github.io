@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer, 2025-04-16" />
+  <title>Lumino: opinionated RGB Matrix light control</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script type="text/javascript" src="../../../site.js" ></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">Lumino: opinionated RGB Matrix light control</h1>
+<h2 class="author">Pascal Getreuer, 2025-04-16</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#add-lumino-to-your-keyboard"
+id="toc-add-lumino-to-your-keyboard">Add Lumino to your
+keyboard</a></li>
+<li><a href="#customization" id="toc-customization">Customization</a>
+<ul>
+<li><a href="#brightness-levels" id="toc-brightness-levels">Brightness
+levels</a></li>
+<li><a href="#time-related" id="toc-time-related">Time related</a></li>
+<li><a href="#boot-color" id="toc-boot-color">Boot color</a></li>
+<li><a href="#functions" id="toc-functions">Functions</a></li>
+</ul></li>
+<li><a href="#implementation-notes"
+id="toc-implementation-notes">Implementation notes</a></li>
+</ul>
+</div>
+<p><a href="../index.html">← More about keyboards</a></p>
+<h2 id="overview">Overview</h2>
+<p><a href="https://docs.qmk.fm/features/rgb_matrix">QMK’s RGB Matrix
+Lighting</a> is flexible, with finely tunable brightness using the
+<code>RM_VALU</code> and <code>RM_VALD</code> keys … But it’s too much!
+These tuning knobs are unwieldy. Functionally, I want some backlighting
+to help find the keys at a dim or strong level depending on my
+environment. Aesthetically, I want lighting that looks good without
+being distracting.</p>
+<p><strong>Lumino</strong> implements a minimal, opinionated control
+scheme for RGB matrix lighting:</p>
+<ul>
+<li><p>Pressing the <kbd>LUMINO</kbd> key cycles the lighting brightness
+between 3 states: off, 40%, and 100%. The set brightness is saved
+persistently to EEPROM.</p>
+<p><img src="./lumino.svg" /></p></li>
+<li><p>Lighting turns off when idle. The normal timeout is 2 minutes of
+inactivity. However, if the keyboard had few key strokes since it last
+awoke, it turns off after 5 seconds.</p></li>
+<li><p>Brightness changes are smoothly animated to minimize
+distraction.</p></li>
+<li><p>When <code>QK_BOOT</code> is pressed, lighting is set to red
+color.</p></li>
+</ul>
+<p>This scheme is born from my personal use, but perhaps this appeals to
+you too. Brightness levels and other above details are configurable.</p>
+<h2 id="add-lumino-to-your-keyboard">Add Lumino to your keyboard</h2>
+<p>Install my <a href="../qmk-community-modules/index.html">community
+modules</a>. Then enable module <a
+href="https://github.com/getreuer/qmk-modules/tree/main/lumino">getreuer/lumino</a>
+in your <code>keymap.json</code> file. Or if <code>keymap.json</code>
+does not exist, create it with the following content:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/lumino&quot;</span><span class="ot">]</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>Then use the “<code>LUMINO</code>” keycode somewhere in your
+layout.</p>
+<p>Optionally, Lumino may be used in combination with <a
+href="../palettefx/index.html">PaletteFx</a> for custom palette-based
+lighting effects:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/lumino&quot;</span><span class="ot">,</span> <span class="st">&quot;getreuer/palettefx&quot;</span><span class="ot">]</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="customization">Customization</h2>
+<h3 id="brightness-levels">Brightness levels</h3>
+<p>Lumino cycles the brightness level between off,
+<code>LUMINO_LOW_BRIGHTNESS</code>, and
+<code>LUMINO_HIGH_BRIGHTNESS</code>. The latter two are values between
+<code>0.0</code> (off) and <code>1.0</code> (max).</p>
+<ul>
+<li><p><code>LUMINO_HIGH_BRIGHTNESS</code> is the brighter level.
+(<em>Default</em>: <code>1.0</code>.)</p></li>
+<li><p><code>LUMINO_LOW_BRIGHTNESS</code> is the dimmer level.
+(<em>Default</em>: 40% of <code>LUMINO_HIGH_BRIGHTNESS</code>.)</p></li>
+</ul>
+<p>To customize, define them in your <code>config.h</code>. Example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_HIGH_BRIGHTNESS  </span><span class="fl">0.8</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_LOW_BRIGHTNESS   </span><span class="fl">0.1</span></span></code></pre></div>
+<p>It is expected that <code>LUMINO_LOW_BRIGHTNESS</code> is less than
+<code>LUMINO_HIGH_BRIGHTNESS</code> for 3-state cycling. If not, the
+<kbd>LUMINO</kbd> key toggles between off and
+<code>LUMINO_LOW_BRIGHTNESS</code>.</p>
+<p>By default, the brightness level set with the <kbd>LUMINO</kbd> key
+is saved persistently to EEPROM. To tell Lumino to never write to
+EEPROM, define <code>LUMINO_NO_EEPROM</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_NO_EEPROM</span></span></code></pre></div>
+<h3 id="time-related">Time related</h3>
+<p>Times are configured in units of milliseconds.</p>
+<ul>
+<li><p><code>LUMINO_LONG_TIMEOUT</code> is the idle timeout in
+milliseconds after which the lighting turns off. If set to zero, the
+lighting never turns off. (<em>Default:</em> <code>120000</code> ms or
+2 minutes.)</p></li>
+<li><p><code>LUMINO_SOON_TIMEOUT</code> is the fast idle timeout, used
+when few keystrokes were received since the last time the keyboard woke
+up. If this timeout is zero or exceeds the long timeout, the long
+timeout always applies. (<em>Default:</em> <code>5000</code> ms or
+5 seconds.)</p></li>
+<li><p><code>LUMINO_TRANSITION</code> is the animated transition time
+for smoothly changing brightness levels. It must be no more than
+<code>2000</code> ms. (<em>Default:</em> <code>500</code> ms.)</p></li>
+</ul>
+<p>Define them in <code>config.h</code> to customize. For longer times,
+you may find it convenient to express them as
+<code>(1000 *</code> <em>&lt;seconds&gt;</em><code>)</code> or
+<code>(1000 * 60 *</code> <em>&lt;minutes&gt;</em><code>)</code> for
+tuning in units of seconds or minutes rather than milliseconds.
+Example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_LONG_TIMEOUT  </span><span class="dv">1000</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="dv">60</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="dv">5</span><span class="pp">  </span><span class="co">// = 5 minutes.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_SOON_TIMEOUT  </span><span class="dv">1000</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="dv">12</span><span class="pp">      </span><span class="co">// = 12 seconds.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_TRANSITION    </span><span class="dv">750</span><span class="pp">            </span><span class="co">// = 750 ms.</span></span></code></pre></div>
+<p>Another example, where lighting never turns off:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_LONG_TIMEOUT  </span><span class="dv">0</span><span class="pp">              </span><span class="co">// Never time out.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_SOON_TIMEOUT  </span><span class="dv">0</span><span class="pp">              </span><span class="co">// Never time out.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_TRANSITION    </span><span class="dv">500</span><span class="pp">            </span><span class="co">// = 500 ms.</span></span></code></pre></div>
+<h3 id="boot-color">Boot color</h3>
+<div class="callout" style="border-left-color: #e49f34">
+<div class="callout-header" style="background-color: #fdebd5">
+<p>
+⚠  Experimental
+</p>
+</div>
+<p><strong>I don’t know whether boot color works with all
+keyboards.</strong> It relies on the lighting PWM driver continuing to
+run while in DFU mode, which seems iffy. I’ve tested that it works on
+the ZSA Moonlander and Voyager keyboards.</p>
+</div>
+<p>When the <code>QK_BOOT</code> button is pressed for bootloader mode,
+the lighting is set to RGB color <code>LUMINO_BOOT_COLOR</code>. The
+default color is <code>RGB_RED</code>. Another RGB color such as one <a
+href="https://docs.qmk.fm/features/rgb_matrix#colors">in this list</a>
+may be specified as:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_BOOT_COLOR  </span>RGB_WHITE</span></code></pre></div>
+<p>Or use <code>RGB_OFF</code> to turn lighting off when going to
+bootloader mode:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_BOOT_COLOR  </span>RGB_OFF</span></code></pre></div>
+<h3 id="functions">Functions</h3>
+<p>These functions may be used to interact with Lumino
+programmatically:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> lumino_cycle_3_state<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> lumino_get_value<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> lumino_set_value<span class="op">(</span><span class="dt">uint8_t</span> new_value<span class="op">);</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> lumino_sleep_soon<span class="op">(</span><span class="dt">void</span><span class="op">);</span></span></code></pre></div>
+<p>Function <code>lumino_cycle_3_state()</code> cycles the brightness
+between 0, <code>LUMINO_LOW_BRIGHTNESS</code>, and
+<code>LUMINO_HIGH_BRIGHTNESS</code>. Call this function to invoke the
+same effect as the <kbd>LUMINO</kbd> key within a macro, tap dance,
+etc.</p>
+<p>The <code>lumino_get_value()</code> function returns the current
+Lumino brightness level as a <code>uint8_t</code> value between
+<code>0</code> and <code>RGB_MATRIX_MAXIMUM_BRIGHTNESS</code>. The
+corresponding function <code>lumino_set_value(value)</code> sets the
+value.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Set brightness to 100%.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>lumino_set_value<span class="op">(</span>RGB_MATRIX_MAXIMUM_BRIGHTNESS<span class="op">);</span></span></code></pre></div>
+<p>Function <code>lumino_sleep_soon()</code> tells Lumino to go to sleep
+after <code>LUMINO_SOON_TIMEOUT</code>, provided that few keystrokes
+occur in that time. This is useful to hint that the keyboard will likely
+go idle soon after using a certain key, say when a lock screen keycode
+has been pressed:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> G<span class="op">(</span>KC_L<span class="op">):</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Hint Lumino to sleep soon after lock screen GUI+L key is used.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      lumino_sleep_soon<span class="op">();</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>With the above, if <code>G(KC_L)</code> is pressed and followed by at
+most 5 key taps, the keyboard is considered idle and lighting will go to
+sleep after the “soon” timeout. If, however, <code>G(KC_L)</code> is
+followed by more than 5 keys, then the keyboard is not idle and the
+“long” timeout applies as usual.</p>
+<h2 id="implementation-notes">Implementation notes</h2>
+<ul>
+<li><p>Lumino is implemented through calling the <a
+href="https://docs.qmk.fm/features/rgb_matrix#api">RGB Matrix
+functions</a>. To avoid unnecessary EEPROM writes, the
+“<code>_noeeprom</code>” variants are used as much as possible.</p></li>
+<li><p>Brightness level changes are animated. A housekeeping task
+updates the RGB Matrix brightness once every 16 ms (≈ 60 fps). To
+transition smoothly, the animated brightness is computed with lib8tion’s
+<code>ease8InOutCubic()</code>.</p></li>
+</ul>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
