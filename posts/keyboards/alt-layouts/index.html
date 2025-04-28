@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-02-01)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-04-27)" />
   <title>A guide to alt keyboard layouts (why, how, which one?)</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -27,7 +27,7 @@
 <div id="header">
 <h1 class="title">A guide to alt keyboard layouts (why, how, which
 one?)</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-02-01)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-04-27)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -35,6 +35,9 @@ one?)</h1>
 <li><a href="#which-alt-keyboard-layout-should-i-learn"
 id="toc-which-alt-keyboard-layout-should-i-learn">Which alt keyboard
 layout should I learn?</a></li>
+<li><a href="#which-layout-is-best-for-programming"
+id="toc-which-layout-is-best-for-programming">Which layout is best for
+programming?</a></li>
 <li><a href="#why-do-people-want-to-use-alt-layouts"
 id="toc-why-do-people-want-to-use-alt-layouts">Why do people want to use
 alt layouts?</a></li>
@@ -727,6 +730,40 @@ Romak</a>, <a
 href="https://github.com/empressabyss/nordrassil">Nordrassil</a>, and <a
 href="https://github.com/MightyAcas/vylet">Vylet</a> are a few other
 layouts designed with an integrated magic key.</p>
+<h2 id="which-layout-is-best-for-programming">Which layout is best for
+programming?</h2>
+<p><em>See also <a href="../symbol-layer/index.html">Designing a symbol
+layer</a>.</em></p>
+<p><strong>The main bottleneck in writing code is not the alphas layout,
+but typing symbols.</strong> Conventional layouts put many common
+symbols in awfully inconvenient places. For instance, equals
+<code>=</code> and underscore <code>_</code> are among the most used
+symbols in code, yet they are 2u above home row on the right pinky. They
+could hardly be worse. And <code>&lt;</code> and <code>&gt;</code> are
+1u below home row, so there is an awkward 3u scissor in typing
+<code>&lt;=</code> and <code>&gt;=</code>.</p>
+<p><strong>I recommend creating a symbol layer</strong>: a secondary
+layer of symbol keys accessed by holding a layer switch. Here is an
+example, with common symbols on home row and syntax patterns
+<code>!= -&gt; += ):</code> etc. as <a
+href="../glossary/index.html#roll">comfortable rolls</a>.</p>
+<figure>
+<img src="../symbol-layer/my-layer.png"
+alt="An example symbol layer." />
+<figcaption aria-hidden="true">An example symbol layer.</figcaption>
+</figure>
+<p>Layers are a common feature on programmable keyboards. Alternatively,
+a software keyboard remapper like <a
+href="https://github.com/jtroo/kanata">Kanata</a> works on most
+keyboards to implement layers.</p>
+<p><strong>A symbol layer should be personalized to the programming
+languages you use.</strong> There is no one-size-fits-all “best symbol
+layer.” Which symbols are typed most differ by programming language.
+What symbol n-grams occur differ as well considering language-specific
+syntax, like <code>=&gt;</code> in JavaScript and C#, and the Rust
+turbofish “<code>::&lt;</code><em>type</em><code>&gt;</code>.”</p>
+<p>See <a href="../symbol-layer/index.html">Designing a symbol layer</a>
+for further discussion and examples.</p>
 <h2 id="why-do-people-want-to-use-alt-layouts">Why do people want to use
 alt layouts?</h2>
 <p><strong>The main motivation for alt layouts is better typing
