@@ -4,8 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-09-13 (updated 2022-12-29)" />
-  <title>QMK: Typing non-English letters</title>
+  <meta name="author" content="Pascal Getreuer, 2022-09-13 (updated 2025-04-27)" />
+  <title>Typing non-English letters</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -20,7 +20,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../../site.js" ></script>
 </head>
 <body>
@@ -89,12 +90,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="content">
 <div id="header">
-<h1 class="title">QMK: Typing non-English letters</h1>
-<h2 class="author">Pascal Getreuer, 2022-09-13 (updated 2022-12-29)</h2>
+<h1 class="title">Typing non-English letters</h1>
+<h2 class="author">Pascal Getreuer, 2022-09-13 (updated 2025-04-27)</h2>
 </div>
 <div id="TOC">
 <ul>
 <li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#eurkey-layout" id="toc-eurkey-layout">EurKEY
+layout</a></li>
 <li><a href="#us-international-layout"
 id="toc-us-international-layout">US-International layout</a></li>
 <li><a href="#using-non-us-layouts" id="toc-using-non-us-layouts">Using
@@ -112,22 +115,87 @@ codepoints</a></li>
 </p>
 <h2 id="overview">Overview</h2>
 <p>Writing in languages other than English quickly needs letters and
-symbols not found on the standard US keyboard. This section describes
+symbols not found on the standard US keyboard. This post describes
 several possible solutions to typing these symbols with QMK
 keyboards.</p>
+<h2 id="eurkey-layout">EurKEY layout</h2>
+<p>For typing most symbols in major Western European languages, a
+popular solution is to set the computer to use the <a
+href="https://en.wikipedia.org/wiki/EurKEY">EurKEY layout</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;keymap_eurkey.h&quot;</span></span></code></pre></div>
+<p>(EurKEY types the ASCII symbols in the same way as QWERTY, there is
+no need for a send string header.) Use these <a
+href="https://github.com/qmk/qmk_firmware/blob/master/quantum/keymap_extras/keymap_eurkey.h">EU-prefixed
+keycodes</a> in your keymap. Incomplete list:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Keycode</th>
+<th>Symbol</th>
+<th>Keycode</th>
+<th>Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>EU_AACU</code></td>
+<td>á</td>
+<td><code>EU_AE</code></td>
+<td>æ</td>
+</tr>
+<tr class="even">
+<td><code>EU_EACU</code></td>
+<td>é</td>
+<td><code>EU_CCED</code></td>
+<td>ç</td>
+</tr>
+<tr class="odd">
+<td><code>EU_IACU</code></td>
+<td>í</td>
+<td><code>EU_NTIL</code></td>
+<td>ñ</td>
+</tr>
+<tr class="even">
+<td><code>EU_OACU</code></td>
+<td>ó</td>
+<td><code>EU_OSTR</code></td>
+<td>ø</td>
+</tr>
+<tr class="odd">
+<td><code>EU_UACU</code></td>
+<td>ú</td>
+<td><code>EU_SS</code></td>
+<td>ß</td>
+</tr>
+<tr class="even">
+<td><code>EU_ADIA</code></td>
+<td>ä</td>
+<td><code>EU_EURO</code></td>
+<td>€</td>
+</tr>
+<tr class="odd">
+<td><code>EU_ODIA</code></td>
+<td>ö</td>
+<td><code>EU_IQUE</code></td>
+<td>¿</td>
+</tr>
+<tr class="even">
+<td><code>EU_UDIA</code></td>
+<td>ü</td>
+<td><code>EU_IEXL</code></td>
+<td>¡</td>
+</tr>
+</tbody>
+</table>
 <h2 id="us-international-layout">US-International layout</h2>
-<p>For typing most symbols in major Western European languages, a good
-solution is to set the computer to use the <a
+<p>Another option for major Western European languages is the <a
 href="https://en.wikipedia.org/wiki/QWERTY#US-International">US-International
-layout</a>. You want to use US-International if possible, since with
-this layout you’ll still be able to refer to keys in QMK using the usual
-<a
-href="https://docs.qmk.fm/faq_keymap#what-are-the-default-keycodes">KC-prefixed
-keycodes</a>. Beware that this is not the case for most other layouts,
-see <a href="#using-non-us-layouts">Using non-US layouts</a> below.</p>
-<p>At the top of your keymap.c, include the headers:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;keymap_us_international.h&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;sendstring_us_international.h&quot;</span></span></code></pre></div>
+layout</a>. Note that in US-International, <kbd>’</kbd> and <kbd>`</kbd>
+are <a href="https://en.wikipedia.org/wiki/Dead_key">dead keys</a> for
+typing accented letters. At the top of your <code>keymap.c</code>,
+include the headers:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;keymap_us_international.h&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;sendstring_us_international.h&quot;</span></span></code></pre></div>
 <p>This adds <a
 href="https://github.com/qmk/qmk_firmware/blob/master/quantum/keymap_extras/keymap_us_international.h">US-prefixed
 keycode definitions</a> for the additional symbols that US-International
@@ -175,8 +243,8 @@ can type. An incomplete list:</p>
 <tr class="even">
 <td><code>US_ADIA</code></td>
 <td>ä</td>
-<td><code>US_MICR</code></td>
-<td>µ</td>
+<td><code>US_EURO</code></td>
+<td>€</td>
 </tr>
 <tr class="odd">
 <td><code>US_ODIA</code></td>
@@ -192,27 +260,24 @@ can type. An incomplete list:</p>
 </tr>
 </tbody>
 </table>
-<p>Additionally, accented letters can be typed using <tt>’ ` ” ^ ~</tt>
-as <a href="https://en.wikipedia.org/wiki/Dead_key">dead keys</a>. For
-instance tapping <kbd>‘</kbd> and then <kbd>u</kbd> types ú. To type a
-literal <tt>’</tt>, tap the <kbd>’</kbd> key followed by space.</p>
 <h2 id="using-non-us-layouts">Using non-US layouts</h2>
-<p>As mentioned above, the US-International layout is preferable in
-order to use the usual <code>KC_</code>-prefixed keycodes. But perhaps
-you need other symbols, like Cyrillic or Greek letters, or for other
-reasons must set the computer to another keyboard layout. If you do
-this, beware that correspondence between <code>KC_</code>-prefixed
-keycodes and the keys they actually type may be mixed up.</p>
+<p>It’s preferable to use the EurKEY or US-International layout, since
+they are (mostly) compatible with the usual <code>KC</code>-prefixed
+keycodes. But perhaps you need other symbols, like Cyrillic or Greek
+letters, or for other reasons must set the computer to another keyboard
+layout. If you do this, beware that correspondence between
+<code>KC</code>-prefixed keycodes and the keys they actually type may be
+mixed up.</p>
 <p>Instead of the <code>KC</code> keycodes, you should use keycodes
 corresponding to your layout and (if you use <code>SEND_STRING</code>)
 the corresponding Sendstring implementation. If the computer is set to
 the German keyboard layout, then at the top of keymap.c add</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;keymap_german.h&quot;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;sendstring_german.h&quot;</span></span></code></pre></div>
-<p>The first header defines alternative “<code>DE_</code>”-prefixed
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;keymap_german.h&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;sendstring_german.h&quot;</span></span></code></pre></div>
+<p>The first header defines alternative “<code>DE</code>”-prefixed
 keycodes, including keycodes like <code>DE_SS</code> for ß to type
-non-English symbols. Use these <code>DE_</code> keycodes in your keymap
-instead of the <code>KC_</code> keycodes. The second header modifies
+non-English symbols. Use these <code>DE</code> keycodes in your keymap
+instead of the <code>KC</code> keycodes. The second header modifies
 <code>SEND_STRING</code> such that ASCII strings type correctly under
 the German layout. For further explanation, see <a
 href="https://docs.qmk.fm/features/unicode?id=additional-language-support">Additional
@@ -245,10 +310,10 @@ href="https://github.com/qmk/qmk_firmware/blob/master/quantum/keymap_extras/keym
 <li><a
 href="https://github.com/qmk/qmk_firmware/blob/master/quantum/keymap_extras/keymap_ukrainian.h">keymap_ukrainian.h</a>*</li>
 </ul>
-<p>* <code>SEND_STRING</code> is limited to (a subset of) the ASCII
-character set. Layouts for non-Latin languages lack a corresponding
-“<code>sendstring_</code>” header because they have no keys to enter
-most ASCII characters.</p>
+<p>* For these languages, <code>SEND_STRING</code> is limited to (a
+subset of) the ASCII character set. Layouts for non-Latin languages lack
+a corresponding “<code>sendstring_</code>” header because they have no
+keys to enter most ASCII characters.</p>
 <p><strong>Side note:</strong> Why do we have this complication of
 different keycodes for each language? When making keyboards with other
 layouts, it is standard practice to reuse US QWERTY keyboard firmware
@@ -316,8 +381,8 @@ also possible to list multiple methods here, useful if you use your
 keyboard with more than one OS. See the <a
 href="https://docs.qmk.fm/features/unicode#input-modes">Unicode input
 modes</a> documentation for further details.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Set Unicode input method for Linux.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define UNICODE_SELECTED_MODES </span>UNICODE_MODE_LINUX</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Set Unicode input method for Linux.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define UNICODE_SELECTED_MODES </span>UNICODE_MODE_LINUX</span></code></pre></div>
 <p><strong>Step 3.</strong> In keymap.c, define the
 <code>unicode_map</code> array, which lists the Unicode codepoint for
 each symbol you want to use. For shift-able symbols, define both the
@@ -327,37 +392,37 @@ interest are listed <a href="#appendix-unicode-codepoints">below in the
 appendix</a>. Codepoints are conventionally denoted like
 “<code>U+00E7</code>” with the number in hexadecimal, so I have written
 them here with <code>0x</code> prefix to make C hex constants.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> unicode_names <span class="op">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  U_SS_LOWER<span class="op">,</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  U_SS_UPPER<span class="op">,</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  U_NTIL_LOWER<span class="op">,</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  U_NTIL_UPPER<span class="op">,</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  U_CCED_LOWER<span class="op">,</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  U_CCED_UPPER<span class="op">,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  U_IQUE_SYM<span class="op">,</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint32_t</span> unicode_map<span class="op">[]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_SS_LOWER<span class="op">]</span>   <span class="op">=</span> <span class="bn">0x00df</span><span class="op">,</span>  <span class="co">// ß</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_SS_UPPER<span class="op">]</span>   <span class="op">=</span> <span class="bn">0x1e9e</span><span class="op">,</span>  <span class="co">// ẞ</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_NTIL_LOWER<span class="op">]</span> <span class="op">=</span> <span class="bn">0x00f1</span><span class="op">,</span>  <span class="co">// ñ</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_NTIL_UPPER<span class="op">]</span> <span class="op">=</span> <span class="bn">0x00d1</span><span class="op">,</span>  <span class="co">// Ñ</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_CCED_LOWER<span class="op">]</span> <span class="op">=</span> <span class="bn">0x00e7</span><span class="op">,</span>  <span class="co">// ç</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_CCED_UPPER<span class="op">]</span> <span class="op">=</span> <span class="bn">0x00c7</span><span class="op">,</span>  <span class="co">// Ç</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_IQUE_SYM<span class="op">]</span>   <span class="op">=</span> <span class="bn">0x00bf</span><span class="op">,</span>  <span class="co">// ¿</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> unicode_names <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  U_SS_LOWER<span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  U_SS_UPPER<span class="op">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  U_NTIL_LOWER<span class="op">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  U_NTIL_UPPER<span class="op">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  U_CCED_LOWER<span class="op">,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  U_CCED_UPPER<span class="op">,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  U_IQUE_SYM<span class="op">,</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint32_t</span> unicode_map<span class="op">[]</span> PROGMEM <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_SS_LOWER<span class="op">]</span>   <span class="op">=</span> <span class="bn">0x00df</span><span class="op">,</span>  <span class="co">// ß</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_SS_UPPER<span class="op">]</span>   <span class="op">=</span> <span class="bn">0x1e9e</span><span class="op">,</span>  <span class="co">// ẞ</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_NTIL_LOWER<span class="op">]</span> <span class="op">=</span> <span class="bn">0x00f1</span><span class="op">,</span>  <span class="co">// ñ</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_NTIL_UPPER<span class="op">]</span> <span class="op">=</span> <span class="bn">0x00d1</span><span class="op">,</span>  <span class="co">// Ñ</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_CCED_LOWER<span class="op">]</span> <span class="op">=</span> <span class="bn">0x00e7</span><span class="op">,</span>  <span class="co">// ç</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_CCED_UPPER<span class="op">]</span> <span class="op">=</span> <span class="bn">0x00c7</span><span class="op">,</span>  <span class="co">// Ç</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>U_IQUE_SYM<span class="op">]</span>   <span class="op">=</span> <span class="bn">0x00bf</span><span class="op">,</span>  <span class="co">// ¿</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <p><strong>Step 4.</strong> Define keycodes for the symbols. For ß, ñ,
 ç, use the <code>UP(i, j)</code> macro to represent the pair of
 unshifted and shifted symbols associated with the key. For ¿, let’s
 simply ignore shifting and use the <code>UM(i)</code> macro:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ß and ẞ keycode.</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_SS </span>UP<span class="op">(</span>U_SS_LOWER<span class="op">,</span><span class="pp"> </span>U_SS_UPPER<span class="op">)</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">// ñ and Ñ keycode.</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_NTIL </span>UP<span class="op">(</span>U_NTIL_LOWER<span class="op">,</span><span class="pp"> </span>U_NTIL_UPPER<span class="op">)</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">// ç and Ç keycode.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_CCED </span>UP<span class="op">(</span>U_CCED_LOWER<span class="op">,</span><span class="pp"> </span>U_CCED_UPPER<span class="op">)</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">// ¿ keycode.</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_IQUE </span>UM<span class="op">(</span>U_IQUE_SYM<span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ß and ẞ keycode.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_SS </span>UP<span class="op">(</span>U_SS_LOWER<span class="op">,</span><span class="pp"> </span>U_SS_UPPER<span class="op">)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">// ñ and Ñ keycode.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_NTIL </span>UP<span class="op">(</span>U_NTIL_LOWER<span class="op">,</span><span class="pp"> </span>U_NTIL_UPPER<span class="op">)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">// ç and Ç keycode.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_CCED </span>UP<span class="op">(</span>U_CCED_LOWER<span class="op">,</span><span class="pp"> </span>U_CCED_UPPER<span class="op">)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">// ¿ keycode.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#define U_IQUE </span>UM<span class="op">(</span>U_IQUE_SYM<span class="op">)</span></span></code></pre></div>
 <p><strong>Step 5.</strong> Finally, use the keycodes <code>U_SS</code>,
 <code>U_NTIL</code>, <code>U_CCED</code>, <code>U_IQUE</code> in your
 keymap.</p>
@@ -524,6 +589,12 @@ href="https://unicodelookup.com/">unicodelookup.com</a>.</p>
 <td>U+1E9E</td>
 <td>ß</td>
 <td>U+00DF</td>
+</tr>
+<tr class="even">
+<td>£</td>
+<td>U+00A3</td>
+<td>€</td>
+<td>U+20AC</td>
 </tr>
 </tbody>
 </table>
