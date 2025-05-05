@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2023-12-17)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2025-05-04)" />
   <title>Designing a Symbol Layer</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -20,7 +20,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -77,6 +77,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script type="text/javascript" src="../../../site.js" ></script>
 </head>
 <body>
@@ -90,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Designing a Symbol Layer</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2023-12-17)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2025-05-04)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -118,7 +119,12 @@ code</a></li>
 id="toc-multi-layer-designs">Multi-layer designs</a></li>
 </ul></li>
 <li><a href="#my-symbol-layer" id="toc-my-symbol-layer">My symbol
-layer</a></li>
+layer</a>
+<ul>
+<li><a href="#my-symbol-layer-v1-historical"
+id="toc-my-symbol-layer-v1-historical">My symbol layer v1
+(historical)</a></li>
+</ul></li>
 <li><a href="#learning-your-symbol-layer"
 id="toc-learning-your-symbol-layer">Learning your symbol layer</a></li>
 <li><a href="#symbol-character-frequencies"
@@ -133,7 +139,7 @@ frequencies</a></li>
 those symbols that didn’t fit on the base layer, especially with smaller
 boards.</p>
 <figure>
-<img src="my-layer.png" alt="A symbol layer." />
+<img src="my-layer-v2.png" alt="A symbol layer." />
 <figcaption aria-hidden="true">A symbol layer.</figcaption>
 </figure>
 <p>A lot of effort has gone into optimizing the layout of the alpha
@@ -168,7 +174,7 @@ from pinky to index finger.</p></li>
 <p>And a practicality:</p>
 <ul>
 <li>It’s a good idea to make your layout easy to learn. You won’t use
-keys that you forgot about!</li>
+what you forgot!</li>
 </ul>
 <p>While each principle above is reasonable for an isolated key, they
 will easily conflict when getting into the design. Obviously, not all
@@ -303,73 +309,88 @@ layers.</p></li>
 </ul>
 <h2 id="my-symbol-layer">My symbol layer</h2>
 <p>This is my symbol layer, with index fingers resting on <kbd>=</kbd>
-and <kbd>:</kbd>.</p>
+and <kbd>(</kbd>.</p>
 <figure>
-<img src="my-layer.png" alt="My symbol layer." />
-<figcaption aria-hidden="true">My symbol layer.</figcaption>
+<img src="my-layer-v2.png" alt="Version 2 of my symbol layer." />
+<figcaption aria-hidden="true">Version 2 of my symbol
+layer.</figcaption>
 </figure>
-<p>Note, not pictured here: my base layer has keys for
-<code>' , . ; - /</code> as usual and a <code>_</code> key. <a
-href="https://github.com/getreuer/qmk-keymap">See my keymap</a> for full
-details.</p>
+<p><a
+href="https://github.com/getreuer/qmk-keymap?tab=readme-ov-file#my-keymap">See
+my keymap</a> for full context.</p>
 <p>I don’t claim it’s the best for you, but that this may be a point of
 inspiration for optimizing your own symbol layer.</p>
-<p>The color tints show groups of related keys. I grouped these keys to
-try to make the layout easier to learn: comparisons
-<code>! &lt; &gt; =</code>, arithmetic <code>- + / *</code>, bitwise
-operators <code>&amp; | ~</code>, and brackets <code>[ ] ( ) { }</code>.
-The layout is geared for the programming languages I use: mainly C++ and
-some Python, shell, and LaTeX. Certainly, you should personalize your
-symbol layer for you.</p>
+<p>The colors mark groups of related keys: comparisons
+<code>! &lt; &gt; =</code>, arithmetic <code>- + / *</code>, brackets
+<code>[ ] ( ) { }</code>. To ease layer switching, punctuations
+<kbd>,</kbd> <kbd>.</kbd> appear at the same positions as on my base
+layer. The layout is geared for the programming languages I use: mainly
+C++, Python, shell, and LaTeX. You should personalize your symbol layer
+for you.</p>
 <p>Features:</p>
 <ul>
 <li><p>The following are inward rolls:</p>
 <ul>
-<li>Comparisons <code>!=</code>, <code>&lt;=</code>,
-<code>&gt;=</code></li>
-<li>A good share of assignment operators <code>-=</code>,
-<code>+=</code>, <code>/=</code>, <code>*=</code>, <code>^=</code></li>
-<li>C comments <code>/* ... */</code> start with an inward roll and end
-with an outward roll.</li>
-<li>Arrow operator <code>-&gt;</code></li>
-<li>Elvis operator <code>?:</code></li>
+<li>Comparisons <code>!=</code>, <code>&lt;=</code>, <code>&gt;=</code>,
+<code>~=</code></li>
+<li>Some assignment operators <code>+=</code>, <code>/=</code>,
+<code>*=</code></li>
+<li>C comments <code>/* ... */</code> start with an outward roll and end
+with an inward roll.</li>
+<li>Empty list <code>[]</code></li>
+<li>Home dir <code>~/</code></li>
+<li>Shell syntax <code>"${</code><em>variable…</em> and
+<code>"$(</code><em>command…</em></li>
+<li>Closing HTML tags <code>&lt;/</code><em>tag…</em></li>
+<li>Let <code>&lt;-</code></li>
 </ul></li>
-<li><p>Some other common bigrams are outward rolls. That’s not as good
+<li><p>Some other common patterns are outward rolls. That’s not as good
 as inward rolls, but I find these still pretty comfortable:</p>
 <ul>
-<li><code>()</code>, <code>[]</code>, <code>{}</code></li>
-<li>Shell shebang <code>#!</code></li>
-<li><code>${</code> (as in <code>${foo}</code>)</li>
+<li><code>();</code> – a very common trigram in C-like languages</li>
+<li><code>{}</code></li>
+<li>Arrow operator <code>-&gt;</code></li>
 <li>Fat arrow <code>=&gt;</code></li>
 </ul></li>
 <li><p>Most symbols are double tapped in some use:
-<code>&lt;&lt; == &amp;&amp; || **</code>. So pinky keys
-<code>' ! ^ % ? @</code> are deliberately things that
-<strong>aren’t</strong> commonly double tapped.</p></li>
-<li><p>There are two <a href="../glossary/index.html#macro-key">macro
-buttons</a>:</p>
-<ul>
-<li>a <kbd>../</kbd> button (left hand, bottom row) for up directory on
-the shell.</li>
-<li>a <kbd>::</kbd> button (right hand, top row) for the C++ scope
-operator.</li>
-</ul></li>
+<code>&lt;&lt; == &amp;&amp; || **</code>. So pinky keys <kbd>`</kbd>
+<kbd>!</kbd> <kbd>~</kbd> <kbd>→</kbd> <kbd>“</kbd> <kbd>’</kbd> are
+deliberately selected as symbols that <strong>aren’t</strong> commonly
+doubled.</p></li>
+<li><p>There is a <a href="../glossary/index.html#macro-key">macro
+button</a> <kbd>→</kbd> for typing Unicode arrows “→” and, when shifted,
+“⇒.” Since having this key, I frequently find these arrows useful in my
+writing.</p></li>
 </ul>
-<p>This layout isn’t perfect. Some bugs:</p>
+<h3 id="my-symbol-layer-v1-historical">My symbol layer v1
+(historical)</h3>
+<p>I previously shared this earlier version of my symbol layer:</p>
+<figure>
+<img src="my-layer.png" alt="Version 1 of my symbol layer." />
+<figcaption aria-hidden="true">Version 1 of my symbol
+layer.</figcaption>
+</figure>
+<p>There are a good number of features that I like about it, and indeed
+my current symbol layer has many similarities. Motivations in revising
+it were:</p>
 <ul>
-<li>It’s not great for HTML. Closing tags <code>&lt;/</code> is a clumsy
-<a href="../glossary/index.html#same-finger-bigram-sfb">same-finger
+<li>This earlier layout is awkward for HTML. Closing tags
+<code>&lt;/</code> is a clumsy <a
+href="../glossary/index.html#same-finger-bigram-sfb">same-finger
 bigram</a>, and HTML comments <code>&lt;!-- ... --&gt;</code> are
 awkward to type.</li>
-<li><code>&lt;-</code> and <code>\"</code> are same-finger bigrams.</li>
+<li>I wanted <code>();</code> as a roll, since this syntax appears so
+much in code.</li>
+<li>I wanted <kbd>,</kbd> <kbd>.</kbd> in the same positions as the base
+layer to ease layer switching.</li>
 </ul>
 <h2 id="learning-your-symbol-layer">Learning your symbol layer</h2>
 <p>As I mentioned, you won’t use keys that you forgot about. It’s
 important to learn your keyboard layers.</p>
 <figure>
 <img src="reminder-note.jpg"
-alt="A reminder note with my symbol layer." />
-<figcaption aria-hidden="true">A reminder note with my symbol
+alt="A reminder note with a symbol layer." />
+<figcaption aria-hidden="true">A reminder note with a symbol
 layer.</figcaption>
 </figure>
 <p>Whenever I change a keyboard layer, something that works for me is to
@@ -453,10 +474,6 @@ Shift + <kbd>.</kbd> with <code>?</code>. See my <a
 href="../custom-shift-keys/index.html">custom shift keys</a> post for a
 method of doing that.</p></li>
 </ul>
-<p>For more stats, check out Xah Lee’s <a
-href="http://xahlee.info/comp/computer_language_char_distribution.html">Computer
-Languages Character Frequency page</a>, showing character distributions
-for over a dozen languages.</p>
 <p>You can count character frequencies in your own files with this
 Python script: <a
 href="https://github.com/getreuer/qmk-keymap/blob/main/tools/count_chars.py">count_chars.py</a>.
