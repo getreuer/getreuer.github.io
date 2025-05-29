@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2025-03-15 (updated 2025-05-26)" />
+  <meta name="author" content="Pascal Getreuer, 2025-03-15 (updated 2025-05-29)" />
   <title>Tap Flow: disable HRMs during fast typing</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Tap Flow: disable HRMs during fast typing</h1>
-<h2 class="author">Pascal Getreuer, 2025-03-15 (updated 2025-05-26)</h2>
+<h2 class="author">Pascal Getreuer, 2025-03-15 (updated 2025-05-29)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -129,6 +129,16 @@ Tap!</strong> Flow Tap was released in QMK on 2025-05-26. <a
 href="https://docs.qmk.fm/newbs_git_using_your_master_branch#updating-your-master-branch">Update
 your QMK set up</a> and see <a
 href="https://docs.qmk.fm/tap_hold#flow-tap">Flow Tap</a>.</p>
+</div>
+<div class="callout">
+<div class="callout-header">
+<p>
+🚀  Launched
+</p>
+</div>
+<p><strong>Flow Tap is available for ZSA keyboards in Oryx!</strong>
+Find it under Oryx’s Advanced Configuration Settings (<a
+href="https://blog.zsa.io/tap-flow/">announcement</a>).</p>
 </div>
 <p><em>Tap Flow is for your keyboard, not your plumbing.</em></p>
 <h2 id="overview">Overview</h2>
@@ -349,7 +359,9 @@ tap_flow: 0805u tap release.
 tap_flow: 0802d unchanged (combo key).</code></pre>
 <p>The “<code>0805d</code>” syntax is a compact representation of key
 events. For instance <code>0805d</code> is read as a press event
-(<code>d</code> for “down”) on matrix position row 8, column 5.</p>
+(<code>d</code> for “down”) on <a
+href="../glossary/index.html#matrix-circuit">matrix position</a> row 8,
+column 5.</p>
 <h2 id="explanation">Explanation</h2>
 <p>Tap Flow hooks into <code>pre_process_record</code>, which runs
 before QMK’s core tap-hold logic:</p>
