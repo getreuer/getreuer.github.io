@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2024-12-26 (updated 2025-04-16)" />
+  <meta name="author" content="Pascal Getreuer, 2024-12-26 (updated 2025-06-24)" />
   <title>PaletteFx: Add more colors to your keyboard</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">PaletteFx: Add more colors to your keyboard</h1>
-<h2 class="author">Pascal Getreuer, 2024-12-26 (updated 2025-04-16)</h2>
+<h2 class="author">Pascal Getreuer, 2024-12-26 (updated 2025-06-24)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -824,10 +824,7 @@ programmatically. The following two subsections show two examples.</p>
 <p>If you’d like to set a favorite effect and palette at startup, use
 the <a href="https://docs.qmk.fm/features/rgb_matrix#api">RGB Matrix
 functions</a> in <code>keyboard_post_init_user()</code>. Here is an
-example. This supposes you copied the <a
-href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/palettefx.h">palettefx.h</a>
-header for the definition of <code>PALETTEFX_CARNIVAL</code>. In
-keymap.c, add:</p>
+example. In keymap.c, add:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> keyboard_post_init_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Set the effect.</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  rgb_matrix_mode_noeeprom<span class="op">(</span>RGB_MATRIX_CUSTOM_PALETTEFX_FLOW<span class="op">);</span></span>
@@ -839,6 +836,13 @@ keymap.c, add:</p>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Make sure RGB Matrix is on.</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  rgb_matrix_enable_noeeprom<span class="op">();</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>There are handy constants of the form
+<code>PALETTEFX_</code><em>&lt;name&gt;</em> to refer to palettes by
+name, e.g. <code>PALETTEFX_CARNIVAL</code> for the index of the Carnival
+palette. Or for a user-defined palette as <a
+href="#make-your-own-palettes">described below</a>, use
+<code>PALETTEFX_USER_0</code>, <code>PALETTEFX_USER_1</code>, and so
+on.</p>
 <h3 id="random-palette-button">Random palette button</h3>
 <p>A “random palette” <a href="../macros/index.html">macro button</a>
 can be implemented by setting the hue pseudorandomly. Here is a possible
