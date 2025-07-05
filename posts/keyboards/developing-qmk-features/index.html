@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2023-12-17 (updated 2025-03-25)" />
+  <meta name="author" content="Pascal Getreuer, 2023-12-17 (updated 2025-07-05)" />
   <title>Developing QMK features</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Developing QMK features</h1>
-<h2 class="author">Pascal Getreuer, 2023-12-17 (updated 2025-03-25)</h2>
+<h2 class="author">Pascal Getreuer, 2023-12-17 (updated 2025-07-05)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -173,10 +173,9 @@ is the recommended approach to developing third-party QMK features. The
 structure of module <code>&lt;name&gt;</code> is a folder
 <code>&lt;name&gt;</code> with the following contents:</p>
 <ul>
-<li><code>&lt;name&gt;.c</code>: the main implementation
-<em>(required)</em>.</li>
 <li><code>qmk_module.json</code>: module metadata
 <em>(required)</em>.</li>
+<li><code>&lt;name&gt;.c</code>: the main implementation.</li>
 <li><code>README.md</code>: module documentation.</li>
 <li><code>introspection.h</code>: header automatically included in the
 user’s <code>keymap.c</code>.</li>
@@ -185,12 +184,11 @@ the user’s <code>keymap.c</code>.</li>
 <li><code>config.h</code>: additional config definitions.</li>
 <li><code>rules.mk</code>: additional Makefile build definitions.</li>
 </ul>
-<p>Only <code>&lt;name&gt;.c</code> and <code>qmk_module.json</code> are
-required, the other files may be included as needed. The
-<code>&lt;name&gt;.c</code> file is automatically linked in the build.
-If you want to compile other <code>.c</code> files, these need to be
-added with “<code>SRCS += filename.c</code>” in
-<code>rules.mk</code>.</p>
+<p>Only <code>qmk_module.json</code> is required, the other files may be
+included as needed. The <code>&lt;name&gt;.c</code> file is
+automatically linked in the build. If you want to compile other
+<code>.c</code> files, these need to be added with
+“<code>SRCS += filename.c</code>” in <code>rules.mk</code>.</p>
 <p>The modules framework enables the module to hook into many of QMK’s
 APIs in a pattern similar to the <code>_user</code> callbacks. A few
 significant hooks (see <a
@@ -247,10 +245,12 @@ weird C syntax</a>).</p>
 class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;module_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Cool&quot;</span><span class="fu">,</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;maintainer&quot;</span><span class="fu">:</span> <span class="st">&quot;authorname&quot;</span><span class="fu">,</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;keycodes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;COOLKEY&quot;</span> <span class="fu">}</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;license&quot;</span><span class="fu">:</span> <span class="st">&quot;Apache-2.0&quot;</span><span class="fu">,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://cool.project.url&quot;</span><span class="fu">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;keycodes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;key&quot;</span><span class="fu">:</span> <span class="st">&quot;COOLKEY&quot;</span> <span class="fu">}</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <p>The <code>qmk_module.json</code> file must at least define
 <code>module_name</code> and <code>maintainer</code>. It may optionally
 declare one or more keycodes. See <a
@@ -353,8 +353,12 @@ feature’s complexity and reviewer availability.</p>
 <p>It is enormously helpful to look at the PRs for existing features to
 see how things are done. An incomplete list:</p>
 <ul>
+<li><a href="https://github.com/qmk/qmk_firmware/pull/25125">#25125 –
+Flow Tap</a></li>
 <li><a href="https://github.com/qmk/qmk_firmware/pull/24560">#24560 –
 Chordal Hold</a></li>
+<li><a href="https://github.com/qmk/qmk_firmware/pull/21881">#21881 –
+PDF(layer) switch</a></li>
 <li><a href="https://github.com/qmk/qmk_firmware/pull/19795">#19795 –
 Tri Layer</a></li>
 <li><a href="https://github.com/qmk/qmk_firmware/pull/19700">#19700 –
@@ -373,6 +377,12 @@ Key Overrides</a></li>
 Dynamic Tapping Term</a></li>
 <li><a href="https://github.com/qmk/qmk_firmware/pull/10174">#10174 –
 Quantum Painter</a></li>
+<li><a href="https://github.com/qmk/qmk_firmware/pull/6739">#6739 –
+Mouse Keys Kinetic Mode</a></li>
+<li><a href="https://github.com/qmk/qmk_firmware/pull/671">#671 – Swap
+Hands</a></li>
+<li><a href="https://github.com/qmk/qmk_firmware/pull/451">#451 – Tap
+Dance</a></li>
 </ul>
 <h2 id="exposing-options">Exposing options</h2>
 <p>Most features involve some options. Avoid baked-in assumptions about
