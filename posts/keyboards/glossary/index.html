@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2024-08-04 (updated 2025-05-03)" />
+  <meta name="author" content="Pascal Getreuer, 2024-08-04 (updated 2025-07-05)" />
   <title>Glossary of keyboard terms</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -26,7 +26,7 @@
 <div id="content">
 <div id="header">
 <h1 class="title">Glossary of keyboard terms</h1>
-<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2025-05-03)</h2>
+<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2025-07-05)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -63,6 +63,7 @@ id="toc-microcontroller-unit-mcu">Microcontroller unit (MCU)</a></li>
 <li><a href="#mouse-keys" id="toc-mouse-keys">Mouse keys</a></li>
 <li><a href="#pinky-stagger" id="toc-pinky-stagger">Pinky
 stagger</a></li>
+<li><a href="#polling-rate" id="toc-polling-rate">Polling rate</a></li>
 <li><a href="#printed-circuit-board-pcb"
 id="toc-printed-circuit-board-pcb">Printed circuit board (PCB)</a></li>
 <li><a href="#pronation-supination"
@@ -87,6 +88,8 @@ clusters</a></li>
 <li><a href="#ulnar-deviation-radial-deviation"
 id="toc-ulnar-deviation-radial-deviation">Ulnar deviation / radial
 deviation</a></li>
+<li><a href="#words-per-minute-wpm" id="toc-words-per-minute-wpm">Words
+per minute (WPM)</a></li>
 <li><a href="#wrist-extension-flexion"
 id="toc-wrist-extension-flexion">Wrist extension / flexion</a></li>
 </ul>
@@ -109,6 +112,8 @@ alt="Example of a “50%” keyboard, having 52 keys (ZSA Voyager)." />
 <figcaption aria-hidden="true">Example of a “50%” keyboard, having 52
 keys (ZSA Voyager).</figcaption>
 </figure>
+<p>A <strong>tenkeyless</strong> or <strong>TKL</strong> is a keyboard
+without the number pad.</p>
 <h3 id="alpha-layout">Alpha layout</h3>
 <p><em>Detailed description: <a href="../alt-layouts/index.html">A guide
 to alt keyboard layouts (why, how, which one?)</a></em></p>
@@ -254,12 +259,13 @@ with a distinctive tactile ridge or dish, conventionally on the
 QWERTY layout). This feature allows typists to locate home position
 without needing to look at the keyboard.</p>
 <h3 id="hot-swappable-switches">Hot-swappable switches</h3>
-<p><strong>Hot-swappable switches</strong> are <a href="#key-switch">key
-switches</a> in a mechanical keyboard that can be easily changed using a
-key puller tool. The switch snaps into a <strong>swappable
-keysocket</strong> without using solder. In contrast, switches in a
-non-swappable mechanical keyboard are soldered to the <a
-href="#printed-circuit-board-pcb">printed circuit board</a>.</p>
+<p>The <a href="#printed-circuit-board-pcb">printed circuit board</a> or
+PCB of a mechanical keyboard may support <strong>hotswapping</strong>
+the <a href="#key-switch">key switches</a>, meaning the switches can be
+easily changed using a key puller tool. The switch snaps into a
+<strong>swappable keysocket</strong> without using solder. In contrast,
+switches in a non-swappable mechanical keyboard are soldered to the
+PCB.</p>
 <h3 id="key-rollover-6kro-nkro">Key rollover (6KRO, NKRO)</h3>
 <p><strong>Key rollover</strong> is the max number of simultaneously key
 presses that can be correctly <a href="#keyboard-report">reported</a>.
@@ -278,27 +284,28 @@ keyboard.</p>
 </figure>
 <p>Some key switch terminology:</p>
 <ul>
-<li><strong>Pre-travel</strong> is the depth or distance of travel
+<li><p><strong>Pre-travel</strong> is the depth or distance of travel
 before reaching the <strong>actuation point</strong> where the switch
-<strong>actuates</strong> and registers the press.</li>
-<li><strong>Total travel</strong> is the full distance of travel before
-<strong>bottoming out</strong> the switch.</li>
-<li><strong>Actuation force</strong> is the minimum force needed to
+<strong>actuates</strong> and registers the press.</p></li>
+<li><p><strong>Total travel</strong> is the full distance of travel
+before <strong>bottoming out</strong> the switch.</p></li>
+<li><p><strong>Actuation force</strong> is the minimum force needed to
 actuate the switch. This force is conventionally reported in units of gf
 (gram-force) or cN (centinewtons), being close to equal at 1 gf ≈
-0.98 cN. Actuation force of around 45 gf is typical.</li>
-<li>The <a href="#keycap">keycap</a> mounts on the <strong>stem</strong>
-on the top of the switch. There are several types of stems, including
-<strong>MX-style stems</strong> with a cross shape, <strong>box
-stems</strong> in some Kailh switches, and <strong>Choc stems</strong>
-having two prongs. Keycaps must be compatible to mate.</li>
-</ul>
+0.98 cN. Actuation force of around 45 gf is typical.</p></li>
+<li><p>The <a href="#keycap">keycap</a> mounts on the
+<strong>stem</strong> on the top of the switch. There are several types
+of stems, including <strong>MX-style stems</strong> with a cross shape,
+<strong>box stems</strong> in some Kailh switches, and <strong>Choc
+stems</strong> having two prongs. Keycaps must be compatible to
+mate.</p>
 <figure>
 <img src="../glossary/key-switches.jpg"
 alt="Left: Cherry MX Brown switch. Right: Ambients Silent Nocturnal Choc V1 switch." />
 <figcaption aria-hidden="true">Left: Cherry MX Brown switch. Right:
 Ambients Silent Nocturnal Choc V1 switch.</figcaption>
-</figure>
+</figure></li>
+</ul>
 <p>Key switches are often named by color, referring to how Cherry
 originally used stem colors to distinguish different switches:</p>
 <ul>
@@ -322,7 +329,8 @@ href="https://deskthority.net/wiki/Category:List_of_all_keyboard_switches">Deskt
 <p><strong>Key wells</strong> are an ergonomic feature on some keyboards
 where off-home rows curl toward the fingers, and the depths of the
 columns are designed to fit the length of the finger, forming concave
-“wells.”</p>
+“wells.” Dactyl is a family of open source keyboards featuring key
+wells.</p>
 <figure>
 <img src="../dactyl-ergodox.jpg"
 alt="A keyboard with concave key wells (Dactyl Ergodox)." />
@@ -373,10 +381,15 @@ function the key has. <strong>Printed legends</strong> are cheap but
 fade with wear. <strong>Double shot</strong> and <strong>dye
 sublimation</strong> are more expensive manufacturing methods with
 better durability.</p></li>
-<li><p>Keycaps are made of <strong>ABS</strong> (acrylonitrile butadiene
-styrene), <strong>PBT</strong> (polybutylene terephthalate), or less
-commonly <strong>POM</strong> (polyoxymethylene) plastics, or
-occasionally other materials. Summary comparison:</p></li>
+<li><p><strong>Stabilizers</strong> or <strong>stabs</strong> are
+components used with larger keycaps to prevent wobble and rattle and
+ensure even key travel.</p></li>
+<li><p><strong>Artisans</strong> are decorative, handmade keycaps,
+treated like a piece of art.</p></li>
+<li><p>Most keycaps are made of <strong>ABS</strong> (acrylonitrile
+butadiene styrene), <strong>PBT</strong> (polybutylene terephthalate),
+or less commonly <strong>POM</strong> (polyoxymethylene) plastics.
+Summary comparison:</p></li>
 </ul>
 <div class="eqscroll">
 <table>
@@ -596,6 +609,17 @@ alt="Pinky stagger on the left half of a columnar keyboard." />
 <figcaption aria-hidden="true">Pinky stagger on the left half of a
 columnar keyboard.</figcaption>
 </figure>
+<h3 id="polling-rate">Polling rate</h3>
+<p><strong>Polling rate</strong> refers to how frequently the keyboard
+sends <a href="#keyboard-report">keyboard reports</a> to the host
+computer. A higher rate reduces <strong>input lag</strong> and improves
+responsiveness. A typical keyboard has a polling rate of at least
+125 Hz, or once every 8 milliseconds. This is so fast that polling delay
+is visually imperceptible, less than one frame of 60 fps video
+(16.7 ms).</p>
+<p>See also: <a
+href="../faqs/index.html#how-much-lag-do-custom-keyboards-have">How much
+lag do custom keyboards have?</a></p>
 <h3 id="printed-circuit-board-pcb">Printed circuit board (PCB)</h3>
 <p>A <strong>printed circuit board</strong> or <strong>PCB</strong> is
 sandwiched layers of conductive and insulating material. Conductive
@@ -711,8 +735,8 @@ resolution.</figcaption>
 <li><a
 href="https://www.hitboxarcade.com/blogs/support/what-is-socd">HitBox –
 Introduction to SOCD and Resolutions</a></li>
-<li><a href="../socd-cleaner/index.html">SOCD Cleaner (QMK feature
-library)</a></li>
+<li><a href="../socd-cleaner/index.html">SOCD Cleaner (QMK
+module)</a></li>
 </ul>
 <h3 id="splay">Splay</h3>
 <p><strong>Splay</strong> is the angle between the two sides of a <a
@@ -867,6 +891,19 @@ href="#row-staggered-ortholinear-column-staggered">Column stagger</a>
 can help as well on the left hand. For additional guidance, see <a
 href="https://www.osha.gov/etools/computer-workstations/components/keyboards">OSHA’s
 recommendations</a> on keyboard ergonomics.</p>
+<h3 id="words-per-minute-wpm">Words per minute (WPM)</h3>
+<p>Typing speed is usually reported in units of <strong>words per
+minute</strong> or <strong>WPM</strong>.</p>
+<p>To account for that words have varying length, a “word” in WPM
+measurement is typically defined as 5 characters, counting also spaces
+and punctuation. That is, WPM = CPM / 5, with CPM being the
+<strong>characters per minute</strong>. In English, the average word
+length is about 4.7 letters (see e.g. <a
+href="https://arxiv.org/abs/1208.6109">Average word length dynamics as
+indicator of cultural changes in society</a>), so the conversion factor
+of 5 is pretty well calibrated.</p>
+<p>See also: <a href="../faqs/index.html#i-type-xxx-wpm-is-that-fast">I
+type XXX wpm – Is that fast?</a></p>
 <h3 id="wrist-extension-flexion">Wrist extension / flexion</h3>
 <p><strong>Wrist extension</strong> engages the forearm extensor muscles
 to raise the back of the hand toward the arm. <strong>Wrist
