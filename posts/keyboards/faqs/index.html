@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-04-12)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-07-20)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-04-12)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-07-20)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -395,9 +395,20 @@ tab).</li>
 <li><p><strong>Vial</strong> (which is a fork of QMK): Use the
 <kbd>LCtl_T</kbd>, <kbd>LSft_T</kbd>, etc. mod-tap keys under the
 Quantum tab for your home row keys. Don’t use Tap Dances for that. Under
-the QMK Settings tab, make sure that <strong>Permissive Hold</strong>
-and <strong>Ignore Mod Tap Interrupt</strong> are both checked. Vial
-does not (yet) expose Chordal Hold.</p>
+the QMK Settings tab, supposing you have Vial 0.7.4 or newer, check
+<strong>Permissive Hold</strong> and <strong>Chordal Hold</strong>, and
+ensure that <strong>Hold On Other Key Press</strong> is
+<em>unchecked</em>.</p>
+<figure>
+<img src="./vial-tap-hold-options.png"
+alt="Suggested Vial tap-hold configuration." />
+<figcaption aria-hidden="true">Suggested Vial tap-hold
+configuration.</figcaption>
+</figure>
+<p><em>Vial pre-0.7.4:</em> Older versions of Vial use different naming
+and don’t expose Chordal Hold. Make sure <strong>Permissive
+Hold</strong> and <strong>Ignore Mod Tap Interrupt</strong> are both
+checked.</p>
 <p><em>Why not Tap Dance?</em> Mod-tap keys <kbd>*_T</kbd> use <a
 href="https://docs.qmk.fm/tap_hold">an elaborate set of rules</a> to
 decide when the key is tapped vs. held, much of this designed with home
@@ -428,9 +439,9 @@ settings. But after a couple months of persistence, my typing adapted.
 Now I use home row mods with confidence.</p>
 <p><strong>Other tips:</strong></p>
 <ul>
-<li><p><strong>Tap Flow</strong>: Use my <a
-href="../tap-flow/index.html">Tap Flow</a> QMK module to disable HRMs
-during fast typing. For ZMK, use <a
+<li><p><strong>Flow Tap</strong>: Use <a
+href="https://docs.qmk.fm/tap_hold#flow-tap">Flow Tap</a> to disable
+HRMs during fast typing. For ZMK, use <a
 href="https://zmk.dev/docs/config/behaviors#devicetree-2">require-prior-idle-ms</a>.
 For Kanata, see <a
 href="https://github.com/jtroo/kanata/discussions/1425">gerhard-h’s
