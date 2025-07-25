@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-07-20)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-07-25)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-07-20)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-07-25)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -448,6 +448,12 @@ href="https://github.com/jtroo/kanata/discussions/1425">gerhard-h’s
 automatic fast typing layer</a> and <a
 href="https://github.com/jtroo/kanata/discussions/1455">argenkiwi’s
 implementation</a>.</p></li>
+<li><p><strong>Speculative Hold</strong>: Use <a
+href="../speculative-hold/index.html">Speculative Hold</a> to apply
+mod-tap mods immediately on key down. This is useful particularly to
+remove lag when using mod-taps together with an external mouse. For ZMK,
+use <a
+href="https://zmk.dev/docs/keymaps/behaviors/hold-tap#hold-while-undecided">hold-while-undecided</a>.</p></li>
 <li><p><strong>Repeat a mod-tap key:</strong> A little known feature! If
 you quickly tap and then hold the key, its tap action is repeated. In
 QMK, this is enabled by default and disabled by setting <a
