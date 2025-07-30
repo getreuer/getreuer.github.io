@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2025-07-25" />
+  <meta name="author" content="Pascal Getreuer, 2025-07-29" />
   <title>Speculative Hold</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Speculative Hold</h1>
-<h2 class="author">Pascal Getreuer, 2025-07-25</h2>
+<h2 class="author">Pascal Getreuer, 2025-07-29</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -120,8 +120,8 @@ id="toc-acknowledgements">Acknowledgements</a></li>
 <h2 id="overview">Overview</h2>
 <p>Speculative Hold is a QMK community module that modifies mod-tap
 <code>MT</code> keys. The mod is applied immediately on key down,
-eliminating delay, particularly when using mod-tap keys in tandem with
-an external mouse. Speculative Hold is analogous to
+eliminating delay, especially when using mod-tap keys in tandem with an
+external mouse. Speculative Hold is analogous to
 <code>hold-while-undecided</code> in ZMK.</p>
 <p><strong>How it works:</strong> Consider a <kbd>LCTL_T(KC_ESC)</kbd>
 mod-tap key, behaving as Esc when tapped and Ctrl when held, and suppose
@@ -266,7 +266,9 @@ similar effects through <code>pre_process_record_user()</code> and was
 helpful in developing Speculative Hold.</p></li>
 </ul>
 <h2 id="acknowledgements">Acknowledgements</h2>
-<p>Much thanks to <span class="citation"
+<p>Thank you to <span class="citation"
+data-cites="Diaoul">@Diaoul</span> for helpful feedback to improve
+Speculative Hold. Much thanks to <span class="citation"
 data-cites="filterpaper">@filterpaper</span> for <a
 href="https://github.com/filterpaper/qmk_userspace?tab=readme-ov-file#contextual-mod-taps">Contextual
 Mod-Taps</a>, which motivated this work.</p>
