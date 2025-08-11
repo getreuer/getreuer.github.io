@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-07-18)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-08-10)" />
   <title>A guide to alt keyboard layouts (why, how, which one?)</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -27,7 +27,7 @@
 <div id="header">
 <h1 class="title">A guide to alt keyboard layouts (why, how, which
 one?)</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-07-18)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-08-10)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -47,7 +47,14 @@ alt layouts?</a></li>
 <li><a href="#should-i-use-an-alt-layout"
 id="toc-should-i-use-an-alt-layout">Should I use an alt layout?</a></li>
 <li><a href="#outside-the-box" id="toc-outside-the-box">Outside the
-box</a></li>
+box</a>
+<ul>
+<li><a href="#layouts-with-thumb-keys"
+id="toc-layouts-with-thumb-keys">Layouts with thumb keys</a></li>
+<li><a href="#one-handed-typing-devices-and-layouts"
+id="toc-one-handed-typing-devices-and-layouts">One-handed typing devices
+and layouts</a></li>
+</ul></li>
 <li><a href="#how-long-does-it-take-to-learn-an-alt-layout"
 id="toc-how-long-does-it-take-to-learn-an-alt-layout">How long does it
 take to learn an alt layout?</a></li>
@@ -608,8 +615,12 @@ Neu (2021)</a>
 </tr>
 </table>
 </div>
-<p>See also <a href="./stats.html">this page</a> for an expanded version
-of this table.</p>
+<ul>
+<li><p>See <a href="#layouts-with-thumb-keys">Layouts with thumb
+keys</a> for metrics on layouts with thumb keys.</p></li>
+<li><p>See also <a href="./stats.html">this page</a> for an expanded
+version of this table.</p></li>
+</ul>
 <p>This table is periodically updated. Since 2025-02-01, metrics are now
 computed with <a
 href="https://cyanophage.github.io/index.html">Cyanophage’s layout
@@ -827,12 +838,13 @@ investment in my health and comfort. I will type a lot in my life (I
 work as a software engineer), so spending several months learning a new
 layout is a fair price.</p>
 <h2 id="outside-the-box">Outside the box</h2>
-<p>Most layouts are designed so that it could work with two-handed
-typing on a standard keyboard. But some layouts go outside the box.
-Arguably, these differ enough from standard typing that they are not
-just “layouts” but distinct input systems.</p>
-<p><strong>Layouts with thumb keys</strong>: Some layouts designed for
-<a href="../glossary/index.html#split-keyboard">split ergo keyboards</a>
+<p>Most layouts are designed to work with two-handed typing on a
+standard keyboard. But some layouts go outside the box. Arguably, these
+differ enough from standard typing that they are not just “layouts” but
+distinct input systems.</p>
+<h3 id="layouts-with-thumb-keys">Layouts with thumb keys</h3>
+<p>Some layouts designed for <a
+href="../glossary/index.html#split-keyboard">split ergo keyboards</a>
 use <a href="../glossary/index.html#thumb-clusters">a thumb key</a> (or
 sometimes multiple thumb keys) to type <code>E</code> or other letters.
 The first such layout was the <a
@@ -1042,26 +1054,79 @@ Pinky off
 3.06%
 </td>
 </tr>
+<tr>
+<td>
+<a href="https://github.com/sunaku/enthium"target="_blank">Enthium v10
+(2025)</a>
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.43%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.15%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+0.08%
+</td>
+<td style="text-align:right; background-color:#d7bdc8">
+45.31%
+</td>
+<td style="text-align:right; background-color:#a0dcf8">
+2.18%
+</td>
+<td style="text-align:right; background-color:#dbbac4">
+3.31%
+</td>
+</tr>
 </table>
 </div>
 <p>Many other thumb key layouts are catalogued and discussed in
 Precondition’s post <a
 href="https://precondition.github.io/pressing-e-with-the-thumb">Pressing
 E with the thumb</a>. The advantages are gaining a free home row key and
-removing conflicts with bigrams involving <code>E</code>. A downside is
-that such layouts are not usable (without creativity) on conventional
-keyboards. Another potential concern is the extra load on the thumbs—<a
+removing conflicts with bigrams involving <code>E</code> for significant
+improvement in SFBs, as well as other metrics. A downside is that such
+layouts are not usable (without creativity) on conventional keyboards.
+Another potential concern is the extra load on the thumbs—<a
 href=".../thumb-ergo/index.html">PSA: Thumbs can get overuse
 injuries</a>.</p>
-<p><strong>One-handed layouts:</strong> <a
-href="https://ardux.io/">Ardux</a> is a one-handed keyboard system for
-use on 8 to 36 keys. All keys from a full keyboard are available through
-chording and layers. Many other one-handed typing systems have been
-developed. A well-known older one is <a
+<h3 id="one-handed-typing-devices-and-layouts">One-handed typing devices
+and layouts</h3>
+<p>A variety of methods have been developed for typing with one hand.
+Many of these use chording heavily to represent a complete set of
+keyboard functions on few physical keys.</p>
+<ul>
+<li><p>On QMK keyboards, the <a
+href="https://docs.qmk.fm/features/swap_hands">Swap Hands feature</a>
+temporarily mirrors the keymap to enable one-handed typing without
+requiring a separate layer. See also <a
+href="https://www.billbuxton.com/matias93.html">Half-QWERTY</a> on the
+ease of learning of this approach.</p></li>
+<li><p>There are <a
+href="https://en.wikipedia.org/wiki/Dvorak_keyboard_layout#One-handed_versions">one-handed
+variants</a> of the Dvorak layout.</p></li>
+<li><p><a
+href="https://www.maltron.com/store/p19/Maltron_Single_Hand_Keyboards_-_US_English.html">Maltron</a>
+specializes in one-handed keyboards. The left-handed keyboard looks like
+a large, 8-row concave keywell on the left plus a numpad on the
+right.</p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/FrogPad">FrogPad</a> is a
+keyboard the size of a num keypad designed for typing with one
+hand.</p></li>
+<li><p>The <a href="https://www.tapwithus.com/product/tap-strap-2/">Tap
+Strap 2</a> is a wearable one-handed keyboard and mouse
+controller.</p></li>
+<li><p>A well-known older one-handed system is <a
 href="https://dougengelbart.org/content/view/273/">Doug Engelbart’s
-five-key Keyset</a> (~1965). A modern device is the <a
-href="https://www.tapwithus.com/product/tap-strap-2/">TapXR Tap Strap
-2</a>, a wearable one-handed keyboard and mouse controller.</p>
+five-key Keyset</a> (~1965).</p></li>
+<li><p><a href="https://ardux.io/">Ardux</a> is a one-handed keyboard
+system available in several sizes, from 8 to 36 keys.</p></li>
+<li><p><a href="https://inkeys.wiki/en/keymaps/taipo">Taipo</a> is a
+layout with 10 keys per hand. The layout is intended to be used with a
+mirror copy on each hand, but can also be used one-handed. <a
+href="https://inkeys.wiki/en/keymaps/posh">Posh</a> is a smaller variant
+that removes pinky keys.</p></li>
+</ul>
 <h2 id="how-long-does-it-take-to-learn-an-alt-layout">How long does it
 take to learn an alt layout?</h2>
 <p><strong>Realistically, expect it to take at least a couple months of
@@ -1258,8 +1323,9 @@ href="https://github.com/GalileoBlues/Gallium">Gallium</a> are decent.
 comfortable positions. <a href="#magic-sturdy">My Magic Sturdy
 flavor</a> modifies Sturdy for comfortable <code>jk</code> positions. Or
 if you’d consider a letter thumb key, <a
+href="https://github.com/sunaku/enthium">Enthium</a> and <a
 href="https://www.reddit.com/r/KeyboardLayouts/comments/1g66ivi/hands_down_promethium_snth_meets_hd_silverengram/">Promethium</a>
-is designed to be Vim friendly.</p>
+are designed to be Vim friendly.</p>
 <p>It’s also often doable to mod a given layout to swap <kbd>j</kbd>
 into a better position. Since <code>j</code> is a rare letter, swapping
 it with punctuation or another rare letter (such as one of
