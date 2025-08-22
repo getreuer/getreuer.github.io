@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2024-08-04 (updated 2025-07-05)" />
+  <meta name="author" content="Pascal Getreuer, 2024-08-04 (updated 2025-08-22)" />
   <title>Glossary of keyboard terms</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -26,7 +26,7 @@
 <div id="content">
 <div id="header">
 <h1 class="title">Glossary of keyboard terms</h1>
-<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2025-07-05)</h2>
+<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2025-08-22)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -53,6 +53,9 @@ id="toc-key-rollover-6kro-nkro">Key rollover (6KRO, NKRO)</a></li>
 <li><a href="#keyboard-report" id="toc-keyboard-report">Keyboard
 report</a></li>
 <li><a href="#keycap" id="toc-keycap">Keycap</a></li>
+<li><a href="#lateral-stretch-bigram-lsb"
+id="toc-lateral-stretch-bigram-lsb">Lateral stretch bigram
+(LSB)</a></li>
 <li><a href="#macro-key" id="toc-macro-key">Macro key</a></li>
 <li><a href="#matrix-circuit" id="toc-matrix-circuit">Matrix
 circuit</a></li>
@@ -68,12 +71,15 @@ stagger</a></li>
 id="toc-printed-circuit-board-pcb">Printed circuit board (PCB)</a></li>
 <li><a href="#pronation-supination"
 id="toc-pronation-supination">Pronation / supination</a></li>
+<li><a href="#redirect" id="toc-redirect">Redirect</a></li>
 <li><a href="#roll" id="toc-roll">Roll</a></li>
 <li><a href="#row-staggered-ortholinear-column-staggered"
 id="toc-row-staggered-ortholinear-column-staggered">Row staggered /
 ortholinear / column staggered</a></li>
 <li><a href="#same-finger-bigram-sfb"
 id="toc-same-finger-bigram-sfb">Same-finger bigram (SFB)</a></li>
+<li><a href="#same-finger-skipgram-sfs"
+id="toc-same-finger-skipgram-sfs">Same-finger skipgram (SFS)</a></li>
 <li><a href="#simultaneous-opposing-cardinal-directions-socd"
 id="toc-simultaneous-opposing-cardinal-directions-socd">Simultaneous
 opposing cardinal directions (SOCD)</a></li>
@@ -473,6 +479,19 @@ SA, MT3, MDA, …</li>
 href="https://ranked.gg/blogs/news/understanding-keycap-materials-abs-pbt-and-pom">Understanding
 Keycap Materials: ABS, PBT, and POM</a></li>
 </ul>
+<h3 id="lateral-stretch-bigram-lsb">Lateral stretch bigram (LSB)</h3>
+<p>A <strong>lateral stretch bigram</strong> or <strong>LSB</strong> is
+a two-key sequence typed by adjacent fingers where a lateral stretch
+(abduction) is involved to reach the keys. How frequently LSBs occur is
+often considered in <a href="#alpha-layout">layout design</a>. LSBs are
+generally considered undesirable.</p>
+<p>What exactly constitutes a “lateral stretch” is complicated,
+influenced by hand size, wrist angle, and whether the keys are <a
+href="#row-staggered-ortholinear-column-staggered">row staggered</a> or
+something else.</p>
+<p><em>Example:</em> Typing <code>ET</code> on QWERTY is an LSB with the
+left middle and index fingers. The fingers stretch laterally apart to
+span the 2u distance between keys <kbd>E</kbd> and <kbd>T</kbd>.</p>
 <h3 id="macro-key">Macro key</h3>
 <p>A <strong>macro key</strong> is a key that, when pressed, sends a
 predefined sequence of keys such as typing your email address. Or used
@@ -645,6 +664,28 @@ Supination.</figcaption>
 pronation increases pressure on the tissues and reduces blood
 circulation. This can lead to fatigue and injury. Many ergonomic
 keyboards are <a href="#tenting">tented</a> to reduce pronation.</p>
+<h3 id="redirect">Redirect</h3>
+<p>A <strong>redirect</strong> or <strong>roll reversal</strong> is a
+sequence of three keys typed by one hand that changes <a
+href="#roll">roll direction</a> from inward to outward or vice versa.
+How frequently redirects occur is often considered in <a
+href="#alpha-layout">layout design</a>. Redirects are generally
+undesirable, as they tend to be more difficult to type quickly compared
+to sequences that alternate hands or maintain the same roll
+direction.</p>
+<p>Redirects might be more tolerable when they involve an index finger,
+since they are especially dexterous. Redirects that do or don’t include
+index fingers are sometimes distinguished, e.g. “weak redirects,” though
+terminology varies.</p>
+<p><em>Examples, on QWERTY:</em></p>
+<ul>
+<li><code>SAD</code> is a redirect: <kbd>S</kbd> → <kbd>A</kbd> rolls
+outward, and <kbd>A</kbd> → <kbd>D</kbd> rolls inward.</li>
+<li><code>ARE</code> is a weak redirect, with <kbd>R</kbd> is typed by
+left index finger.</li>
+<li><code>NOW</code> is <em>not</em> a redirect, since it is not a
+one-handed typing sequence.</li>
+</ul>
 <h3 id="roll">Roll</h3>
 <p>A <strong>roll</strong> is a sequence of two or more keystrokes made
 by one hand, where the fingers move sequentially across the keyboard,
@@ -716,6 +757,23 @@ alt="SW is an SFB since S and W are pressed by the same finger." />
 <kbd>S</kbd> and <kbd>W</kbd> are pressed by the same
 finger.</figcaption>
 </figure>
+<h3 id="same-finger-skipgram-sfs">Same-finger skipgram (SFS)</h3>
+<p>A <strong>same-finger skipgram</strong> or <strong>SFS</strong>, also
+known as a <strong>disjointed same-finger bigram</strong> or
+<strong>DSFB</strong>, is a key sequence in which two keys are typed by
+the same finger, separated by one or more keys. How frequently SFSs
+occur is often considered in <a href="#alpha-layout">layout design</a>.
+Reducing SFSs is desirable to reduce how quickly fingers need to be
+repositioned.</p>
+<p>A <strong>skip-1-gram</strong> has one key in between, and generally
+a <strong>skip-N-gram</strong> has a skip distance of N keys in between.
+By extension of this terminology, a <a
+href="#same-finger-bigram-sfb">same-finger bigram</a> would be a
+“skip-0-gram.”</p>
+<p><em>Example:</em> When typing <code>WAS</code> on QWERTY, the left
+ring finger types <kbd>W</kbd> and <kbd>S</kbd>, and the pinky types
+<kbd>A</kbd>. Therefore <code>WAS</code> is an SFS, specifically, a
+“same finger skip-1-gram.”</p>
 <h3 id="simultaneous-opposing-cardinal-directions-socd">Simultaneous
 opposing cardinal directions (SOCD)</h3>
 <p><strong>Simultaneous Opposing Cardinal Directions</strong> or
