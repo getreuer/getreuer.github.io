@@ -56,6 +56,8 @@ report</a></li>
 <li><a href="#lateral-stretch-bigram-lsb"
 id="toc-lateral-stretch-bigram-lsb">Lateral stretch bigram
 (LSB)</a></li>
+<li><a href="#layout-design" id="toc-layout-design">Layout
+design</a></li>
 <li><a href="#macro-key" id="toc-macro-key">Macro key</a></li>
 <li><a href="#matrix-circuit" id="toc-matrix-circuit">Matrix
 circuit</a></li>
@@ -80,6 +82,7 @@ ortholinear / column staggered</a></li>
 id="toc-same-finger-bigram-sfb">Same-finger bigram (SFB)</a></li>
 <li><a href="#same-finger-skipgram-sfs"
 id="toc-same-finger-skipgram-sfs">Same-finger skipgram (SFS)</a></li>
+<li><a href="#scissor" id="toc-scissor">Scissor</a></li>
 <li><a href="#simultaneous-opposing-cardinal-directions-socd"
 id="toc-simultaneous-opposing-cardinal-directions-socd">Simultaneous
 opposing cardinal directions (SOCD)</a></li>
@@ -137,10 +140,11 @@ alternative alpha layout.</figcaption>
 </figure>
 <p>Most modern alternative layouts focus on improved typing comfort and
 efficiency, with keys arranged such that awkward motions are avoided.
-This is usually evaluated in terms of metrics that quantify the
-frequencies of specific undesired finger motions, such as <a
+This is evaluated in terms of metrics that quantify the frequencies of
+specific undesired finger motions, such as <a
 href="#same-finger-bigram-sfb">same-finger bigrams</a> and <a
-href="#roll">rolls</a>, measured over a given text corpus.</p>
+href="#roll">rolls</a>, measured over a given text corpus. See also <a
+href="#layout-design">layout design</a>.</p>
 <ul>
 <li><a
 href="https://www.reddit.com/r/KeyboardLayouts/comments/fedsnb/introduction_to_rkeyboardlayouts_and_why_this_sub/">r/KeyboardLayouts
@@ -483,7 +487,7 @@ Keycap Materials: ABS, PBT, and POM</a></li>
 <p>A <strong>lateral stretch bigram</strong> or <strong>LSB</strong> is
 a two-key sequence typed by adjacent fingers where a lateral stretch
 (abduction) is involved to reach the keys. How frequently LSBs occur is
-often considered in <a href="#alpha-layout">layout design</a>. LSBs are
+often considered in <a href="#layout-design">layout design</a>. LSBs are
 generally considered undesirable.</p>
 <p>What exactly constitutes a “lateral stretch” is complicated,
 influenced by hand size, wrist angle, and whether the keys are <a
@@ -492,6 +496,50 @@ something else.</p>
 <p><em>Example:</em> Typing <code>ET</code> on QWERTY is an LSB with the
 left middle and index fingers. The fingers stretch laterally apart to
 span the 2u distance between keys <kbd>E</kbd> and <kbd>T</kbd>.</p>
+<h3 id="layout-design">Layout design</h3>
+<p><strong>Layout design</strong> refers to the design of an <a
+href="#alpha-layout">alpha layout</a>, such as QWERTY or Colemak.</p>
+<div class="callout" style="border-left-color: #8ad359">
+<div class="callout-header" style="background-color: #e5f3d8">
+<p>
+📝  Note
+</p>
+</div>
+<p><strong>“Layout” is an overloaded term.</strong> Depending on
+context, “layout design” might be understood as the physical arrangement
+of keys, underlying electronic design, or generally some notion of
+arranging or mapping keys.</p>
+</div>
+<p>Designing a good layout involves more than simply putting the most
+frequent letters in the best positions. Multiple competing metrics are
+considered, such as <a href="#same-finger-bigram-sfb">SFBs</a>, <a
+href="#scissor">scissors</a>, <a href="#redirect">redirects</a>, and <a
+href="#roll">rolls</a>. See also <a
+href="../alt-layouts/index.html#is-it-really-that-hard-to-arrange-30-keys">Is
+it really that hard to arrange 30 keys</a>.</p>
+<p>Layouts are often created using a <strong>layout optimizer</strong>,
+software that searches for a layout by optimizing an objective function
+of such metrics. Alternatively or in combination with optimizers,
+layouts are designed manually, applying patterns of key arrangements for
+favorable metrics. The <a
+href="https://docs.google.com/document/d/1W0jhfqJI2ueJ2FNseR4YAFpNfsUM-_FlREHbpNGmC2o">Keyboard
+layouts doc</a> has detailed discussion of such patterns.</p>
+<ul>
+<li><a
+href="https://docs.google.com/document/d/1W0jhfqJI2ueJ2FNseR4YAFpNfsUM-_FlREHbpNGmC2o">Keyboard
+layouts doc</a></li>
+<li><a
+href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
+Layout Playground</a> – see how swapping keys affects layout
+metrics</li>
+<li><a
+href="https://cyanophage.github.io/playground.html?layout=qwfpbjluy%3B-arstgmneio%27zxcdvkh%2C.%2F%5C%5E&amp;mode=ergo&amp;lan=english">Cyanophage’s
+Layout Playground</a></li>
+<li><a href="https://github.com/O-X-E-Y/oxeylyzer"><img src="../../../github.svg"
+style="width:1.25em"> O-X-E-Y/oxeylyzer</a> layout optimizer</li>
+<li><a href="https://github.com/semilin/genkey"><img src="../../../github.svg"
+style="width:1.25em"> semilin/genkey</a> layout optimizer</li>
+</ul>
 <h3 id="macro-key">Macro key</h3>
 <p>A <strong>macro key</strong> is a key that, when pressed, sends a
 predefined sequence of keys such as typing your email address. Or used
@@ -706,14 +754,13 @@ outward rolls.</p>
 <figcaption aria-hidden="true"><code>ER</code> is an inward roll on
 QWERTY.</figcaption>
 </figure>
-<p>Inward rolls are generally considered desirable. Modern <a
-href="#alpha-layout">alpha layouts</a> are often designed to maximize
-rolls. A <strong>rolly layout</strong> is a layout where rolls are
-frequent.</p>
+<p>Inward rolls are generally considered desirable. In modern <a
+href="#layout-design">layout design</a>, rolls are often maximized. A
+<strong>rolly layout</strong> is a layout where rolls are frequent.</p>
 <p>Subjective preferences vary on whether outward rolls are also
-favored. Accordingly, layouts sometimes maximize the <strong>in-roll
-ratio</strong>, the frequency of inward rolls divided by the frequency
-of outward rolls.</p>
+favored. Layouts sometimes maximize the <strong>in-roll ratio</strong>,
+the frequency of inward rolls divided by the frequency of outward
+rolls.</p>
 <h3 id="row-staggered-ortholinear-column-staggered">Row staggered /
 ortholinear / column staggered</h3>
 <p>Standard keyboards have <strong>row staggered</strong> keys, with a
@@ -748,8 +795,8 @@ left half of a keyboard.</figcaption>
 two-key sequence in which both keys are typed by the same finger, such
 as <code>SW</code> or <code>UN</code> on QWERTY with standard technique.
 SFBs are generally considered undesirable. Modern <a
-href="#alpha-layout">alpha layouts</a> are designed to minimize
-them.</p>
+href="#layout-design">layout design</a> attempts to minimize SFBs, among
+other metrics.</p>
 <figure>
 <img src="sfb.gif"
 alt="SW is an SFB since S and W are pressed by the same finger." />
@@ -762,7 +809,7 @@ finger.</figcaption>
 known as a <strong>disjointed same-finger bigram</strong> or
 <strong>DSFB</strong>, is a key sequence in which two keys are typed by
 the same finger, separated by one or more keys. How frequently SFSs
-occur is often considered in <a href="#alpha-layout">layout design</a>.
+occur is often considered in <a href="#layout-design">layout design</a>.
 Reducing SFSs is desirable to reduce how quickly fingers need to be
 repositioned.</p>
 <p>A <strong>skip-1-gram</strong> has one key in between, and generally
@@ -774,6 +821,26 @@ href="#same-finger-bigram-sfb">same-finger bigram</a> would be a
 ring finger types <kbd>W</kbd> and <kbd>S</kbd>, and the pinky types
 <kbd>A</kbd>. Therefore <code>WAS</code> is an SFS, specifically, a
 “same finger skip-1-gram.”</p>
+<h3 id="scissor">Scissor</h3>
+<p>In <a href="#layout-design">layout design</a>, a
+<strong>scissor</strong> is a two-key sequence where one finger extends
+to reach a key at the same time as an adjacent, longer finger flexes to
+reach a key in a lower row. Scissors are distinguished by vertical
+distance. A <strong>full scissor</strong> has a 2-row separation between
+the keys. A <strong>half scissor</strong> has a 1-row separation.</p>
+<p>Scissors are considered undesirable. How tolerable or awkward a
+particular scissor pattern feels may depend on personal factors like
+finger dexterity, proportions of finger lengths, as well as whether the
+keys are <a href="#row-staggered-ortholinear-column-staggered">row
+staggered</a> or something else.</p>
+<p><em>Example:</em> Typing <code>CR</code> on QWERTY is a full scissor.
+The (longer) middle finger types <kbd>C</kbd> on the bottom row as the
+(shorter) index finger types <kbd>R</kbd> on the top row.</p>
+<figure>
+<img src="scissor.gif" alt="CR is a full scissor on QWERTY." />
+<figcaption aria-hidden="true"><code>CR</code> is a full scissor on
+QWERTY.</figcaption>
+</figure>
 <h3 id="simultaneous-opposing-cardinal-directions-socd">Simultaneous
 opposing cardinal directions (SOCD)</h3>
 <p><strong>Simultaneous Opposing Cardinal Directions</strong> or
