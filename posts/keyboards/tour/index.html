@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-10-09 (updated 2024-08-10)" />
+  <meta name="author" content="Pascal Getreuer, 2022-10-09 (updated 2025-09-07)" />
   <title>Tour of split ergo keyboards</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -26,7 +26,7 @@
 <div id="content">
 <div id="header">
 <h1 class="title">Tour of split ergo keyboards</h1>
-<h2 class="author">Pascal Getreuer, 2022-10-09 (updated 2024-08-10)</h2>
+<h2 class="author">Pascal Getreuer, 2022-10-09 (updated 2025-09-07)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -63,8 +63,13 @@ thoughts</a></li>
 <p>Thinking of buying a custom keyboard? Or got one and looking to
 leverage its features? Here’s a tour.</p>
 <figure>
-<img src="../voyager.jpg" alt="My daily driver: ZSA Voyager" />
-<figcaption aria-hidden="true">My daily driver: ZSA Voyager</figcaption>
+<picture> <source type="image/webp" srcset="../splash.webp">
+<source type="image/jpeg" srcset="../splash.jpg">
+<img src="splash.jpg" alt=""> </picture>
+<figcaption aria-hidden="true">
+My daily driver: ZSA Voyager split keyboard (with Kensington Expert
+trackball)
+</figcaption>
 </figure>
 <h2 id="ergonomic-hardware">Ergonomic hardware</h2>
 <p>For typing comfort, I highly recommend a keyboard that is <strong><a
@@ -236,24 +241,21 @@ buttons</a> for a collection of QMK macros and <a
 href="../triggers/index.html">QMK triggers</a> for further tricks.</p>
 <p>QMK allows the user to write arbitrary C code to handle events. This
 is great flexibility. I’ve been having fun with this to write my own
-features as userspace libraries:</p>
+features as <a href="../qmk-community-modules/index.html">QMK community
+modules</a>:</p>
 <ul>
-<li><p><a href="../achordion/index.html">Achordion</a> – customize the
-tap-hold decision</p></li>
-<li><p><a href="../autocorrection/index.html">Autocorrection</a> – run
-rudimentary autocorrection on your keyboard</p></li>
-<li><p><a href="../caps-word/index.html">Caps Word</a> – modern
-alternative to Caps Lock</p></li>
-<li><p><a href="../custom-shift-keys/index.html">Custom shift keys</a> –
-they’re surprisingly tricky to get right; here is my approach</p></li>
-<li><p><a href="../layer-lock/index.html">Layer Lock key</a> – macro to
-stay in the current layer</p></li>
 <li><p><a href="../mouse-turbo-click/index.html">Mouse Turbo Click</a> –
 macro that clicks the mouse rapidly</p></li>
-<li><p><a href="../repeat-key/index.html">Repeat Key</a> – an extensible
-“repeat last key” implementation</p></li>
+<li><p><a href="../orbital-mouse/index.html">Orbital Mouse</a> – a polar
+approach to mouse key control</p></li>
+<li><p><a href="../palettefx/index.html">PaletteFx</a> – palette-based
+RGB matrix lighting effects</p></li>
+<li><p><a href="../select-word/index.html">Select Word</a> – macro for
+convenient word or line selection</p></li>
 <li><p><a href="../sentence-case/index.html">Sentence Case</a> –
 automatically capitalize the first letter of sentences</p></li>
+<li><p><a href="../socd-cleaner/index.html">SOCD Cleaner</a> – enhance
+WASD for fast inputs for gaming</p></li>
 <li><p><a href="../select-word/index.html">Word selection</a> – macro
 for convenient word or line selection</p></li>
 </ul>
