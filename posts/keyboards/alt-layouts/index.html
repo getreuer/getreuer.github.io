@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-08-22)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-09-13)" />
   <title>A guide to alt keyboard layouts (why, how, which one?)</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -27,7 +27,7 @@
 <div id="header">
 <h1 class="title">A guide to alt keyboard layouts (why, how, which
 one?)</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-08-22)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-09-13)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -58,6 +58,15 @@ and layouts</a></li>
 <li><a href="#how-long-does-it-take-to-learn-an-alt-layout"
 id="toc-how-long-does-it-take-to-learn-an-alt-layout">How long does it
 take to learn an alt layout?</a></li>
+<li><a href="#how-to-install-an-alt-layout"
+id="toc-how-to-install-an-alt-layout">How to install an alt layout?</a>
+<ul>
+<li><a href="#kanata-software-solution"
+id="toc-kanata-software-solution">Kanata (software solution)</a></li>
+<li><a href="#programmable-keyboard-hardware-solution"
+id="toc-programmable-keyboard-hardware-solution">Programmable keyboard
+(hardware solution)</a></li>
+</ul></li>
 <li><a href="#how-to-learn-an-alt-layout"
 id="toc-how-to-learn-an-alt-layout">How to learn an alt layout?</a>
 <ul>
@@ -112,10 +121,7 @@ href="../glossary/index.html#lateral-stretch-bigram-lsb">LSBs</a>, <a
 href="../glossary/index.html#scissor">scissors</a>, <a
 href="../glossary/index.html#redirect">redirects</a>, and off-home pinky
 use; higher is better for <a
-href="../glossary/index.html#roll">rolls</a>. Metrics were computed for
-English with <a
-href="https://cyanophage.github.io/index.html">Cyanophage’s layout
-playground</a>.</p>
+href="../glossary/index.html#roll">rolls</a>.</p>
 <div class="eqscroll">
 <table class="metrics">
 <tr>
@@ -143,7 +149,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://en.wikipedia.org/wiki/QWERTY"target="_blank">QWERTY
+<a href="https://en.wikipedia.org/wiki/QWERTY" target="_blank">QWERTY
 (1873)</a>
 </td>
 <td style="text-align:right; background-color:#f99c9c">
@@ -167,7 +173,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://en.wikipedia.org/wiki/Dvorak_keyboard_layout"target="_blank">Dvorak
+<a href="https://en.wikipedia.org/wiki/Dvorak_keyboard_layout" target="_blank">Dvorak
 (1936)</a>
 </td>
 <td style="text-align:right; background-color:#f99c9c">
@@ -191,7 +197,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="http://www.pvv.org/~hakonhal/main.cgi/keyboard"target="_blank">Arensito
+<a href="http://www.pvv.org/~hakonhal/main.cgi/keyboard" target="_blank">Arensito
 (2001)</a>
 </td>
 <td style="text-align:right; background-color:#e5b1b8">
@@ -215,7 +221,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://colemak.com/"target="_blank">Colemak (2006)</a>
+<a href="https://colemak.com/" target="_blank">Colemak (2006)</a>
 </td>
 <td style="text-align:right; background-color:#dbb9c3">
 0.91%
@@ -238,7 +244,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://workmanlayout.org/"target="_blank">Workman (2010)</a>
+<a href="https://workmanlayout.org/" target="_blank">Workman (2010)</a>
 </td>
 <td style="text-align:right; background-color:#f99c9c">
 1.97%
@@ -261,7 +267,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://mathematicalmulticore.wordpress.com/the-keyboard-layout-project/"target="_blank">MTGAP
+<a href="https://mathematicalmulticore.wordpress.com/the-keyboard-layout-project/" target="_blank">MTGAP
 (2010)</a>
 </td>
 <td style="text-align:right; background-color:#ddb8c1">
@@ -285,7 +291,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://colemakmods.github.io/mod-dh/"target="_blank">Colemak-DH
+<a href="https://colemakmods.github.io/mod-dh/" target="_blank">Colemak-DH
 (2014)</a>
 </td>
 <td style="text-align:right; background-color:#dbb9c3">
@@ -309,7 +315,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://github.com/MadRabbit/halmak"target="_blank">Halmak
+<a href="https://github.com/MadRabbit/halmak" target="_blank">Halmak
 (2016)</a>
 </td>
 <td style="text-align:right; background-color:#f99c9c">
@@ -333,7 +339,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://cyanophage.github.io/playground.html?layout=qyouzwdnck-hiea%2Cgtrsp%3Bj%27%2F.xvmlfb%5C%5E&mode=ergo&lan=english"target="_blank">BEAKL19bis
+<a href="https://cyanophage.github.io/playground.html?layout=qyouzwdnck-hiea%2Cgtrsp%3Bj%27%2F.xvmlfb%5C%5E&mode=ergo&lan=english" target="_blank">BEAKL19bis
 (2020)</a>
 </td>
 <td style="text-align:right; background-color:#e2b4bb">
@@ -357,7 +363,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://sites.google.com/alanreiser.com/handsdown"target="_blank">Handsdown
+<a href="https://sites.google.com/alanreiser.com/handsdown" target="_blank">Handsdown
 Neu (2021)</a>
 </td>
 <td style="text-align:right; background-color:#c5c9da">
@@ -381,7 +387,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://engram.dev/"target="_blank">Engram (2021)</a>
+<a href="https://engram.dev/" target="_blank">Engram (2021)</a>
 </td>
 <td style="text-align:right; background-color:#f0a6a9">
 1.01%
@@ -404,7 +410,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://semilin.github.io/"target="_blank">Semimak (2021)</a>
+<a href="https://semilin.github.io/" target="_blank">Semimak (2021)</a>
 </td>
 <td style="text-align:right; background-color:#9cddf9">
 0.59%
@@ -427,7 +433,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/Apsu/APT#aptv3-layout"target="_blank">APTv3
+<a href="https://github.com/Apsu/APT#aptv3-layout" target="_blank">APTv3
 (2021)</a>
 </td>
 <td style="text-align:right; background-color:#cac6d5">
@@ -451,7 +457,31 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://www.reddit.com/r/KeyboardLayouts/comments/tpwyjc/sertain_nerts_nerps_low_redirect_low_sfb_low/"target="_blank">Nerps
+<a href="https://o-x-e-y.github.io/layouts/sturdy/index.html" target="_blank">Sturdy
+(2021)</a>
+</td>
+<td style="text-align:right; background-color:#a6d9f3">
+0.62%
+</td>
+<td style="text-align:right; background-color:#e7b0b6">
+1.58%
+</td>
+<td style="text-align:right; background-color:#c3cadb">
+0.42%
+</td>
+<td style="text-align:right; background-color:#9cddf9">
+50.10%
+</td>
+<td style="text-align:right; background-color:#bccee2">
+2.85%
+</td>
+<td style="text-align:right; background-color:#c2cadc">
+2.09%
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://www.reddit.com/r/KeyboardLayouts/comments/tpwyjc/sertain_nerts_nerps_low_redirect_low_sfb_low/" target="_blank">Nerps
 (2022)</a>
 </td>
 <td style="text-align:right; background-color:#d1c1ce">
@@ -475,7 +505,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/Apsu/Canary"target="_blank">Canary
+<a href="https://github.com/Apsu/Canary" target="_blank">Canary
 (2022)</a>
 </td>
 <td style="text-align:right; background-color:#b1d4eb">
@@ -499,31 +529,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://o-x-e-y.github.io/layouts/sturdy/index.html"target="_blank">Sturdy
-(2022)</a>
-</td>
-<td style="text-align:right; background-color:#a6d9f3">
-0.62%
-</td>
-<td style="text-align:right; background-color:#e7b0b6">
-1.58%
-</td>
-<td style="text-align:right; background-color:#c3cadb">
-0.42%
-</td>
-<td style="text-align:right; background-color:#9cddf9">
-50.10%
-</td>
-<td style="text-align:right; background-color:#bccee2">
-2.85%
-</td>
-<td style="text-align:right; background-color:#c2cadc">
-2.09%
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/GalileoBlues/Gallium"target="_blank">Gallium
+<a href="https://github.com/GalileoBlues/Gallium" target="_blank">Gallium
 (2023)</a>
 </td>
 <td style="text-align:right; background-color:#aad7f0">
@@ -547,7 +553,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/rdavison/graphite-layout"target="_blank">Graphite
+<a href="https://github.com/rdavison/graphite-layout" target="_blank">Graphite
 (2023)</a>
 </td>
 <td style="text-align:right; background-color:#b7d1e6">
@@ -571,7 +577,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/GalileoBlues/Recurva"target="_blank">Recurva
+<a href="https://github.com/GalileoBlues/Recurva" target="_blank">Recurva
 (2023)</a>
 </td>
 <td style="text-align:right; background-color:#9cddf9">
@@ -595,7 +601,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/Keyhabit/Focal-keyboard-layout/"target="_blank">Focal
+<a href="https://github.com/Keyhabit/Focal-keyboard-layout/" target="_blank">Focal
 (2024)</a>
 </td>
 <td style="text-align:right; background-color:#9cddf9">
@@ -625,53 +631,93 @@ keys</a> for metrics on layouts with thumb keys.</p></li>
 <li><p>See also <a href="./stats.html">this page</a> for an expanded
 version of this table.</p></li>
 </ul>
-<p>This table is periodically updated. Since 2025-02-01, metrics are now
-computed with <a
-href="https://cyanophage.github.io/index.html">Cyanophage’s layout
-playground</a>, which supports scissors and outer columns.</p>
-<p><a href="https://colemakmods.github.io/mod-dh/">Colemak-DH</a> is
-quite popular in the custom keyboard community. It is a solid,
-well-tested option. If you don’t know what to pick, go with
-Colemak-DH.</p>
-<figure>
-<img src="colemak-dh-layout.svg" alt="SteveP’s Colemak-DH layout." />
-<figcaption aria-hidden="true">SteveP’s Colemak-DH layout.</figcaption>
-</figure>
+<p>This table is periodically updated. Metrics are computed for English
+with <a href="https://cyanophage.github.io/index.html">Cyanophage’s
+layout playground</a>.</p>
+<p><strong>If you don’t know what to pick, Gallium is
+recommended.</strong></p>
 <p>Some recent favorites on <a
 href="https://www.reddit.com/r/KeyboardLayouts/">r/KeyboardLayouts</a>
-are APTv3, Canary, Sturdy, and Graphite. Each of these layouts came from
-distinct design priorities, which is interesting to see reflected in the
-metrics in the table above.</p>
+and <a href="https://discord.com/invite/keyboard-layouts">Alt Keyboard
+Layouts Discord</a> are Gallium (or the very similar Graphite), Sturdy,
+and Canary. Each of these layouts came from distinct design priorities,
+which is interesting to see reflected in the metrics in the table
+above.</p>
 <ul>
-<li><p><a href="https://github.com/Apsu/APT"><strong>APTv3</strong></a>
-has a mention of inspiration from MTGAP and CTGAP. I don’t know beyond
-that what design is behind it. Quantitatively, APTv3 is solid across the
-metrics.</p></li>
 <li><p><a
-href="https://github.com/Apsu/Canary"><strong>Canary</strong></a> is
-heavily <a
+href="https://github.com/GalileoBlues/Gallium"><strong>Gallium</strong></a>
+(Bryson James (GalileoBlues), 2023) takes inspiration from Nerps and
+Sturdy. Gallium is very similar to <a
+href="https://github.com/rdavison/graphite-layout">Graphite</a> (Richard
+Davison, 2023), which is also highly recommended. Gallium and Graphite
+differ mainly in punctuation keys, and considering the <kbd>j</kbd> key,
+Gallium may be preferable for Vim (see <a href="#what-about-vim">What
+about Vim</a>).</p>
+<figure>
+<img src="gallium-rowstag-layout.svg"
+alt="Gallium layout, row-staggered variant." />
+<figcaption aria-hidden="true">Gallium layout, row-staggered
+variant.</figcaption>
+</figure>
+<figure>
+<img src="gallium-layout.svg"
+alt="Gallium layout, column-staggered variant." />
+<figcaption aria-hidden="true">Gallium layout, column-staggered
+variant.</figcaption>
+</figure>
+<p>Besides Gallium vs. Graphite, a further wrinkle is that Gallium has
+variants for <a
+href="../glossary/index.html#row-staggered-ortholinear-column-staggered">row-staggered
+vs. column-staggered keys</a>, differing by a cycle of <kbd>Y</kbd>,
+<kbd>P</kbd>, <kbd>F</kbd>. Graphite has just one variant, designed with
+row stagger in mind.</p>
+<figure>
+<img src="graphite-layout.svg" alt="Graphite layout." />
+<figcaption aria-hidden="true">Graphite layout.</figcaption>
+</figure>
+<p>Gallium and Graphite are both extensively tested with many happy
+users. They are balanced in the sense of perform decently across all
+main layout metrics. Other layouts listed here are more “opinionated”
+and vary in which metrics are favored.</p></li>
+<li><p><a
+href="https://o-x-e-y.github.io/layouts/sturdy/index.html"><strong>Sturdy</strong></a>
+(Oxey, 2021) is particularly remarkable in that it has very high rolls
+while attaining relatively low redirects. This is a rare combination, as
+these metrics are usually in opposition. It also scores well in SFBs and
+reasonably in other metrics. It was created with <a
+href="https://github.com/O-X-E-Y/oxeylyzer">Oxeylyzer</a>.</p>
+<figure>
+<img src="sturdy-layout.svg" alt="Sturdy layout." />
+<figcaption aria-hidden="true">Sturdy layout.</figcaption>
+</figure></li>
+<li><p><a
+href="https://github.com/Apsu/Canary"><strong>Canary</strong></a> (Apsu,
+2022) is heavily <a
 href="https://github.com/Apsu/Canary#colemak-dh-similarity-and-problem-solving">Colemak
 inspired</a>. It might be considered an evolution of Colemak to take row
 stagger into account, make the <code>Y</code> key more comfortable, and
 optimize the metrics, especially in SFBs and redirects.</p></li>
 <li><p><a
-href="https://o-x-e-y.github.io/layouts/sturdy/index.html"><strong>Sturdy</strong></a>
-is particularly remarkable in that it has very high rolls while
-attaining relatively low redirects. This is a rare combination, as these
-metrics are usually in opposition. It also scores well in SFBs and
-reasonably in other metrics. It was created with <a
-href="https://github.com/O-X-E-Y/oxeylyzer">Oxeylyzer</a>.</p>
+href="https://colemakmods.github.io/mod-dh/"><strong>Colemak-DH</strong></a>
+(SteveP, 2014) is a light modification of <a
+href="https://colemak.com/">Colemak</a> (Shai Coleman, 2006) to reduce
+LSBs. It is an older layout, and the layouts above in this list are
+considered to have improved metrics generally. Nevertheless, Colemak-DH
+is a solid layout and continues to be quite popular in the custom
+keyboard community. Colemak and Colemak-DH have the ergonomically
+attractive property of very low off-home pinky use. Additionally for
+sake of common hotkeys, Colemak-DH maintains the QWERTY positions of the
+<kbd>Z</kbd>, <kbd>X</kbd>, <kbd>C</kbd> keys, and Colemak additionally
+maintains <kbd>V</kbd>.</p>
 <figure>
-<img src="sturdy-layout.svg" alt="Oxey’s Sturdy layout." />
-<figcaption aria-hidden="true">Oxey’s Sturdy layout.</figcaption>
+<img src="colemak-dh-layout.svg" alt="Colemak-DH layout." />
+<figcaption aria-hidden="true">Colemak-DH layout.</figcaption>
 </figure></li>
-<li><p><a
-href="https://github.com/rdavison/graphite-layout"><strong>Graphite</strong></a>
-takes inspiration from Sturdy and MTGAP. It revises Sturdy with a
-reduced emphasis on rolls in exchange for lower LSBs and redirects.
-Special effort is made for low pinky use and punctuation bigrams common
-in programming syntax.</p></li>
 </ul>
+<p>See also <a
+href="https://layouts.wiki/guides/start/recommendations/">Layouts Wiki
+Recommended Layouts</a>, which describes and compares these layouts in
+further detail.</p>
 <div id="magic-sturdy">
 
 </div>
@@ -723,9 +769,10 @@ magic key.
 </figure>
 <p>More magic: <a href="https://rafaelromao.github.io/romak/">Magic
 Romak</a>, <a
-href="https://github.com/empressabyss/nordrassil">Nordrassil</a>, and <a
-href="https://github.com/MightyAcas/vylet">Vylet</a> are a few other
-layouts designed with an integrated magic key.</p>
+href="https://github.com/empressabyss/nordrassil">Nordrassil</a>, <a
+href="https://github.com/MightyAcas/vylet">Vylet</a>, and <a
+href="https://blog.simn.me/posts/2025/afterburner/">Afterburner</a> are
+a few other layouts designed with an integrated magic key.</p>
 <h2 id="which-layout-is-best-for-programming">Which layout is best for
 programming?</h2>
 <p><em>See also <a href="../symbol-layer/index.html">Designing a symbol
@@ -861,8 +908,8 @@ href="https://github.com/empressabyss/nordrassil">Nordrassil</a>, and <a
 href="https://www.reddit.com/r/KeyboardLayouts/comments/1g66ivi/hands_down_promethium_snth_meets_hd_silverengram/">Hands
 Down Promethium</a>.</p>
 <figure>
-<img src="rsthd-layout.svg" alt="xsznix’s RSTHD layout." />
-<figcaption aria-hidden="true">xsznix’s RSTHD layout.</figcaption>
+<img src="rsthd-layout.svg" alt="RSTHD layout." />
+<figcaption aria-hidden="true">RSTHD layout.</figcaption>
 </figure>
 <p>Metrics for a few such layouts:</p>
 <div class="eqscroll">
@@ -1112,8 +1159,8 @@ variants</a> of the Dvorak layout.</p></li>
 <li><p><a
 href="https://www.maltron.com/store/p19/Maltron_Single_Hand_Keyboards_-_US_English.html">Maltron</a>
 specializes in one-handed keyboards. The left-handed keyboard looks like
-a large, 8-row concave keywell on the left plus a numpad on the
-right.</p></li>
+a large, 8-row concave <a href="../glossary/index.html#key-wells">key
+well</a> on the left plus a numpad on the right.</p></li>
 <li><p><a href="https://en.wikipedia.org/wiki/FrogPad">FrogPad</a> is a
 keyboard the size of a num keypad designed for typing with one
 hand.</p></li>
@@ -1147,6 +1194,70 @@ seriously).</p>
 <p>It’s worth it for the comfort, but be patient and approach it as a
 long project. Developing muscle memory takes time and consistent
 practice.</p>
+<h2 id="how-to-install-an-alt-layout">How to install an alt layout?</h2>
+<p>There are multiple possible ways to install a keyboard layout. Some
+depend on operating system, and can get quite confusing. I suggest one
+of the following as the easiest: use the Kanata remapping software, or
+buy a programmable keyboard.</p>
+<h3 id="kanata-software-solution">Kanata (software solution)</h3>
+<p>The <a href="https://github.com/jtroo/kanata">Kanata keyboard
+remapping software</a> is a free and software-only tool for redefining
+the function of the keys on your keyboard. It also supports advanced
+behaviors like multiple layers, tap-hold keys, macros, and Unicode
+input. Kanata works on Windows, Mac, and Linux and is compatible with
+almost any keyboard.</p>
+<p><strong>Instructions:</strong></p>
+<ol type="1">
+<li><p>Follow Kanata’s <a
+href="https://github.com/jtroo/kanata?tab=readme-ov-file#usage">installation
+instructions</a> for your operating system.</p></li>
+<li><p>Write a configuration file. At its simplest, this begins with a
+“<code>defsrc</code>” section to tell Kanata which “source” keyboard
+keys it will modify, followed by a “<code>deflayer</code>” definition of
+remapped behaviors. The following example (reproduced <a
+href="https://jtroo.github.io/config.html#deflayer">from the
+documentation</a>) remaps the keyboard with Dvorak layout:</p>
+<pre><code>(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    &#39;    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet rctl
+)
+
+(deflayer dvorak
+  grv  1    2    3    4    5    6    7    8    9    0    [    ]    bspc
+  tab  &#39;    ,    .    p    y    f    g    c    r    l    /    =    \
+  caps a    o    e    u    i    d    h    t    n    s    -    ret
+  lsft ;    q    j    k    x    b    m    w    v    z    rsft
+  lctl lmet lalt           spc            ralt rmet rctl
+)</code></pre>
+<p>More sample configurations are under the <a
+href="https://github.com/jtroo/kanata/tree/main/cfg_samples">cfg_samples
+folder</a>. See the <a href="https://jtroo.github.io/config.html">Kanata
+Configuration Guide</a> for detailed explanation and documentation of
+Kanata’s many other capabilities.</p></li>
+<li><p>Start Kanata <a
+href="https://github.com/jtroo/kanata/tree/main?tab=readme-ov-file#build-it-yourself">as
+described here</a> for your operating system, passing your configuration
+file after the <code>--cfg</code> argument.</p></li>
+</ol>
+<h3 id="programmable-keyboard-hardware-solution">Programmable keyboard
+(hardware solution)</h3>
+<p>Another solution is to get a programmable keyboard, that is, one
+running QMK firmware, VIA, Vial, ZMK, or similar. The essential feature
+of such a keyboard is that the behavior of each key may be defined, and
+this definition is stored on the keyboard itself. An advantage is that
+your layout requires no special software on the computer. It is also
+portable, you can plug the keyboard into any computer and use your
+layout.</p>
+<p>To buy a programmable keyboard, <a
+href="https://keeb-finder.com/keyboards?ems_extraFeatures=QMK+Support">KeebFinder</a>
+is a great tool that searches a catalog of keyboards for given
+parameters.</p>
+<p>If you are simultaneously interested in <em>ergonomics</em>, see <a
+href="../faqs/index.html#keyboard-shopping-tips">Keyboard shopping
+tips</a>.</p>
 <h2 id="how-to-learn-an-alt-layout">How to learn an alt layout?</h2>
 <p><strong>It doesn’t have to be cold turkey.</strong> The first couple
 weeks are the hardest since your typing will be frustratingly slow. Some
@@ -1373,9 +1484,10 @@ Repeat key</a> for navigating in the reverse direction as well.</p></li>
 </ul>
 <h2 id="what-about-keycap-legends">What about keycap legends?</h2>
 <p>You would think that to avoid confusion, changing to an alternative
-layout means you also need to rearrange or relabel your keycaps to agree
-with the layout. Fortunately, this turns out to be a non-issue in
-practice. Surely, you plan to touch type on the new layout? <a
+layout means you also need to rearrange or relabel your <a
+href="../glossary/index.html#keycap">keycaps</a> to agree with the
+layout. Fortunately, this turns out to be a non-issue in practice.
+Surely, you plan to touch type on the new layout? <a
 href="../faqs/index.html#should-i-learn-how-to-touch-type">You
 should!</a> With proper touch typing, you will never look at the keys,
 and keycap legends don’t matter.</p>
@@ -1389,7 +1501,11 @@ isolation. The first obvious idea of putting the most frequent letters
 in the best positions minimizes only a positional cost and has low
 quality results. A good layout comes through ensuring that multiple
 metrics are simultaneously reasonable—typically including at least a
-positional cost, SFBs, scissors, redirects, and rolls.</p>
+positional cost, <a
+href="../glossary/index.html#same-finger-bigram-sfb">SFBs</a>, <a
+href="../glossary/index.html#scissor">scissors</a>, <a
+href="../glossary/index.html#redirect">redirects</a>, and <a
+href="../glossary/index.html#roll">rolls</a>.</p>
 <p>Layouts are often created using a layout optimizer such as <a
 href="https://github.com/O-X-E-Y/oxeylyzer">oxeylyzer</a> or <a
 href="https://github.com/semilin/genkey">genkey</a>, software that
@@ -1460,17 +1576,19 @@ with a new layout to get feel for it in a qualitative sense.</p></li>
 <li><a
 href="https://docs.google.com/document/d/1W0jhfqJI2ueJ2FNseR4YAFpNfsUM-_FlREHbpNGmC2o">Keyboard
 layouts doc</a></li>
-<li><a href="https://news.ycombinator.com/item?id=17841832">Ask HN: How
-long does it take to learn a new keyboard layout?</a></li>
+<li><a href="https://layouts.wiki/guides/start/recommendations/">Layouts
+Wiki Recommended Layouts</a></li>
 <li><a href="https://dreymar.colemak.org/">DreymaR’s Big Bag Of Keyboard
 Tricks</a></li>
+<li><a href="https://news.ycombinator.com/item?id=17841832">Ask HN: How
+long does it take to learn a new keyboard layout?</a></li>
 <li><a
-href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
+href="https://cyanophage.github.io/playground.html?layout=qwfpbjluy%3B-arstgmneio%27zxcdvkh%2C.%2F%5C%5E&amp;mode=ergo&amp;lan=english">Cyanophage’s
 Layout Playground</a> – see how swapping keys affects layout
 metrics</li>
 <li><a
-href="https://cyanophage.github.io/playground.html?layout=qwfpbjluy%3B-arstgmneio%27zxcdvkh%2C.%2F%5C%5E&amp;mode=ergo&amp;lan=english">Cyanophage’s
-Layout Playground</a> – another playground, supports thumb keys</li>
+href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
+Layout Playground</a> – another playground</li>
 <li><a href="https://mk.bcgsc.ca/carpalx/?typing_effort">Carpalx typing
 effort model</a></li>
 <li><a href="https://github.com/O-X-E-Y/oxeylyzer"><img src="../../../github.svg"
