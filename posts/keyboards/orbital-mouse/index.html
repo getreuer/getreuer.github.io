@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2023-12-31 (updated 2025-09-26)" />
+  <meta name="author" content="Pascal Getreuer, 2023-12-31 (updated 2025-11-01)" />
   <title>Orbital Mouse</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -94,7 +94,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Orbital Mouse</h1>
-<h2 class="author">Pascal Getreuer, 2023-12-31 (updated 2025-09-26)</h2>
+<h2 class="author">Pascal Getreuer, 2023-12-31 (updated 2025-11-01)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -111,6 +111,8 @@ id="toc-non-module-installation-historical">Non-module installation
 </ul></li>
 <li><a href="#keycodes" id="toc-keycodes">Keycodes</a>
 <ul>
+<li><a href="#updownleftright-movement"
+id="toc-updownleftright-movement">Up/down/left/right movement</a></li>
 <li><a href="#slow-mode-and-fast-mode"
 id="toc-slow-mode-and-fast-mode">Slow mode and fast mode</a></li>
 <li><a href="#mouse-wheel-controls" id="toc-mouse-wheel-controls">Mouse
@@ -266,6 +268,22 @@ layout in <code>keymap.c</code>.</p>
 <td>Steer right (clockwise).</td>
 </tr>
 <tr class="odd">
+<td><code>OM_CS_U</code></td>
+<td>Move up.</td>
+</tr>
+<tr class="even">
+<td><code>OM_CS_D</code></td>
+<td>Move down.</td>
+</tr>
+<tr class="odd">
+<td><code>OM_CS_L</code></td>
+<td>Move left.</td>
+</tr>
+<tr class="even">
+<td><code>OM_CS_R</code></td>
+<td>Move right.</td>
+</tr>
+<tr class="odd">
 <td><code>OM_SLOW</code></td>
 <td>Slow mode. Movement is slower while held.</td>
 </tr>
@@ -298,6 +316,14 @@ layout in <code>keymap.c</code>.</p>
 <p>Of course, you don’t have to use all of them in your layout, just use
 what is useful. There are many ways these keys could be arranged in a
 layout. I leave it to you to explore.</p>
+<h3 id="updownleftright-movement">Up/down/left/right movement</h3>
+<p>To complement the default polar cursor movement scheme, the “cardinal
+snapping” keycodes <code>OM_CS_U</code>, <code>OM_CS_D</code>,
+<code>OM_CS_L</code>, <code>OM_CS_R</code> perform conventional
+up/down/left/right movement. The steering angle is “snapped” immediately
+to the cardinal direction of the key. Diagonals are supported,
+e.g. holding <code>OM_CS_U</code> and <code>OM_CS_R</code> moves in the
+up-right diagonal direction.</p>
 <h3 id="slow-mode-and-fast-mode">Slow mode and fast mode</h3>
 <p>Keycode <code>OM_SLOW</code> momentarily activates slow mode, aka
 “sniping.” This key is useful for fine adjustments. While held,
@@ -594,15 +620,9 @@ report to the host.</p>
 <li><p>The mouse report is created by filling a
 <code>report_mouse_t</code> struct, then passing this struct to
 <code>host_mouse_send()</code>.</p></li>
-<li><p>Orbital Mouse needs 30 keycodes. While keycodes for userspace
-features are conventionally allocated in the user-defined keycode range,
-that range is limited. It would be unreasonable to allocate Orbital
-Mouse’s keys there. Being a Mouse Keys replacement, we repurpose the
-Mouse Keys keycodes (<code>MS_U</code>, <code>MS_BTN1</code>, etc.) for
-the analogous functions in Orbital Mouse. We also repurpose the block of
-keycodes <code>UC(0x41)</code> to <code>UC(0x4a)</code>. These keycode
-represent Unicode input of ASCII characters, which seems unlikely to be
-missed.</p></li>
+<li><p>Being a Mouse Keys replacement, we repurpose the Mouse Keys
+keycodes (<code>MS_U</code>, <code>MS_BTN1</code>, etc.) for the
+analogous functions in Orbital Mouse.</p></li>
 <li><p>The Orbital Mouse implementation uses no floating point
 arithmetic at run time. Instead, <a
 href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic">fixed point
