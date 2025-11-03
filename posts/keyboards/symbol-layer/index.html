@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2025-05-04)" />
+  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2025-11-02)" />
   <title>Designing a Symbol Layer</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Designing a Symbol Layer</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2025-05-04)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2025-11-02)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -109,6 +109,8 @@ existing designs</a>
 reasonable default</a></li>
 <li><a href="#extend2" id="toc-extend2">Extend2</a></li>
 <li><a href="#seniply" id="toc-seniply">Seniply</a></li>
+<li><a href="#shelzuuzs-symbol-layer"
+id="toc-shelzuuzs-symbol-layer">ShelZuuz’s symbol layer</a></li>
 <li><a href="#sunakus-symbol-layer"
 id="toc-sunakus-symbol-layer">Sunaku’s symbol layer</a></li>
 <li><a href="#layer-optimized-for-elixir-code"
@@ -230,6 +232,35 @@ mods on the left-hand home row:</p>
 <figcaption aria-hidden="true">Seniply symbol layer.</figcaption>
 </figure>
 <p>(index fingers rest on <kbd>Ctrl</kbd> and <kbd>(</kbd>)</p>
+<h3 id="shelzuuzs-symbol-layer">ShelZuuz’s symbol layer</h3>
+<p>ShelZuuz <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1cim5s9/comment/l2adh8g/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button">described</a>
+this symbol layer, optimized for C++ coding on a 3x5 keyboard:</p>
+<figure>
+<img src="shelzuuz.png" alt="ShelZuuz’s symbol layer." />
+<figcaption aria-hidden="true">ShelZuuz’s symbol layer.</figcaption>
+</figure>
+<p>(index finger rests on <kbd>=</kbd> and <kbd>(</kbd>)</p>
+<p>The symbol layer is entered using layer-tap keys on the base layer,
+placed symmetrically on the home row ring finger keys (<kbd>S</kbd> and
+<kbd>L</kbd> on QWERTY). This is why _ appears twice in the symbol
+layer, so that _ may be typed by pressing both ring fingers in either
+order.</p>
+<p>Features:</p>
+<ul>
+<li>The very common code trigram <code>();</code> is an outward roll on
+the right hand home row. If you prefer inward rolls, ShelZuuz suggests
+to consider swapping the <code>();</code> <code>{}</code>
+<code>[]</code> keys to the left hand so that their natural order is the
+roll order.</li>
+<li>The right hand bottom row facilitates arrow bigrams
+<code>-&gt;</code> and <code>&lt;-</code>.</li>
+<li><code>!=</code> is an inward roll.</li>
+<li>For easier learning: Keys <code>{}</code> are stacked directly above
+<code>()</code>. Keys <code>&lt;&gt;</code> and <code>;</code> are in
+their usual QWERTY positions. Keys <code>+</code> and <code>\</code> are
+mirrored by <code>/</code> and <code>-</code>.</li>
+</ul>
 <h3 id="sunakus-symbol-layer">Sunaku’s symbol layer</h3>
 <p>Sunaku described this as “the crown jewel of my keyboard’s
 configuration,” resulting from “several hundreds of layout iterations
@@ -379,8 +410,9 @@ it were:</p>
 href="../glossary/index.html#same-finger-bigram-sfb">same-finger
 bigram</a>, and HTML comments <code>&lt;!-- ... --&gt;</code> are
 awkward to type.</li>
-<li>I wanted <code>();</code> as a roll, since this syntax appears so
-much in code.</li>
+<li>I want <code>();</code> as a roll, like <a
+href="#shelzuuzs-symbol-layer">ShelZuuz’s layer</a>, since this syntax
+appears so much in code.</li>
 <li>I wanted <kbd>,</kbd> <kbd>.</kbd> in the same positions as the base
 layer to ease layer switching.</li>
 </ul>
@@ -455,7 +487,7 @@ For instance in Vim, many symbol keys are hotkeys in normal mode, like
 <ul>
 <li><p><code>.</code> and <code>,</code> are extremely frequent. You
 probably want them as unshifted keys on the base layer. In code,
-<code>_</code> is also near the top, so I put a <kbd>_</kbd> key on my
+<code>_</code> is also near the top, so I put a <kbd>∗</kbd> key on my
 base layer.</p></li>
 <li><p>Digits <code>0 1 2</code> are more frequent than the other
 digits, an observation known as <a
