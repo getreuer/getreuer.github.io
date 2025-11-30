@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2025-11-01 (updated 2025-11-28)" />
+  <meta name="author" content="Pascal Getreuer, 2025-11-01 (updated 2025-11-29)" />
   <title>Lumino: opinionated RGB Matrix light control</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Lumino: opinionated RGB Matrix light control</h1>
-<h2 class="author">Pascal Getreuer, 2025-11-01 (updated 2025-11-28)</h2>
+<h2 class="author">Pascal Getreuer, 2025-11-01 (updated 2025-11-29)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -270,11 +270,11 @@ most 5 key taps, the keyboard is considered idle and lighting will go to
 sleep after the “soon” timeout. If, however, <code>G(KC_L)</code> is
 followed by more than 5 keys, then the keyboard is not idle and the
 “long” timeout applies as usual.</p>
-<p>Function <code>lumino_wake(event_count)</code> is used to indicate or
+<p>Function <code>lumino_wake(step)</code> is used to indicate or
 simulate user activity. It tells the lighting to wake up (if sleeping)
-and adds <code>event_count</code> to the activity counter. The argument
-is typically <code>event_count = 1</code> to consider the call as
-representing one key event’s worth of activity.</p>
+and adds <code>step</code> to the activity counter. The argument is
+typically <code>step = 1</code> to consider the call as representing one
+key event’s worth of activity.</p>
 <h2 id="implementation-notes">Implementation notes</h2>
 <ul>
 <li><p>Lumino is implemented through calling the <a
