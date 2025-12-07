@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2025-07-24)" />
+  <meta name="author" content="Pascal Getreuer, 2022-03-22 (updated 2025-12-07)" />
   <title>Achordion: Customizing the tap-hold decision</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Achordion: Customizing the tap-hold decision</h1>
-<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2025-07-24)</h2>
+<h2 class="author">Pascal Getreuer, 2022-03-22 (updated 2025-12-07)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -220,9 +220,10 @@ configuration.</li>
 </ul>
 <p>Limitations:</p>
 <ul>
-<li>Chordal Hold does not have behavior analogous to Achordion’s “eager”
-mods. Fortunately with the reduced input lag, the need for eagerness is
-less of an issue.</li>
+<li>Chordal Hold itself does not implement behavior analogous to
+Achordion’s “eager” mods. Instead, see <a
+href="https://docs.qmk.fm/tap_hold#speculative-hold">Speculative
+Hold</a> for that.</li>
 </ul>
 <p><strong>For former Achordion users</strong>, here is how to migrate
 to Chordal Hold:</p>
@@ -242,8 +243,12 @@ from the “opposite hands” rule.</p></li>
 <code>get_chordal_hold()</code> callback.</p></li>
 </ul>
 <p>See <a href="https://docs.qmk.fm/tap_hold#chordal-hold">QMK’s Chordal
-Hold documentation</a> for more information. The remainder of this page
-describes Achordion.</p>
+Hold documentation</a> for more information. You may also be interested
+in <a href="https://docs.qmk.fm/tap_hold#flow-tap">QMK’s Flow Tap</a>,
+analogous to <code>ARCHORDION_STREAK</code>, and <a
+href="https://docs.qmk.fm/tap_hold#speculative-hold">QMK’s Speculative
+Hold</a>, analogous to Achordion eager mods.</p>
+<p>The remainder of this page describes Achordion.</p>
 <h2 id="achordion">Achordion</h2>
 <p><strong>Achordion</strong> is a userspace QMK library that customizes
 when tap-hold keys are considered held vs. tapped based on the next

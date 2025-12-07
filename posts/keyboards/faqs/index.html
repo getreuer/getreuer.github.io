@@ -366,12 +366,12 @@ HRMs) are tricky for most people. <strong>Configuration is critical, and
 on top of that it takes time to get used to it.</strong></p>
 <p>Home row mods are nontrivial to use reliably because of accidental
 mod triggers during fast typing. You might think of normal typing as
-pressing and releasing one key at a time like “<kbd>T</kbd> ↓,
-<kbd>T</kbd> ↑, <kbd>H</kbd> ↓, <kbd>H</kbd> ↑.” But fast typing is
+pressing and releasing one key at a time like “<kbd>A</kbd> ↓,
+<kbd>A</kbd> ↑, <kbd>S</kbd> ↓, <kbd>S</kbd> ↑.” But fast typing is
 often <a href="../glossary/index.html#roll">“rolled”</a>, pressing the
-next key before the current one is released, like “<kbd>T</kbd> ↓,
-<kbd>H</kbd> ↓, <kbd>T</kbd> ↑, <kbd>H</kbd> ↑.” This happens especially
-over adjacent keys like <code>io</code> or <code>ast</code> in QWERTY.
+next key before the current one is released, like “<kbd>A</kbd> ↓,
+<kbd>S</kbd> ↓, <kbd>A</kbd> ↑, <kbd>S</kbd> ↑.” This happens especially
+over adjacent keys like <code>as</code> or <code>io</code> in QWERTY.
 There’s also the complementary problem of failing to trigger a mod when
 it was intended.</p>
 <p>If you haven’t already, read <a
@@ -456,10 +456,10 @@ automatic fast typing layer</a> and <a
 href="https://github.com/jtroo/kanata/discussions/1455">argenkiwi’s
 implementation</a>.</p></li>
 <li><p><strong>Speculative Hold</strong>: Use <a
-href="../speculative-hold/index.html">Speculative Hold</a> to apply
-mod-tap mods immediately on key down. This is useful particularly to
-remove lag when using mod-taps together with an external mouse. For ZMK,
-use <a
+href="https://docs.qmk.fm/tap_hold#speculative-hold">Speculative
+Hold</a> to apply mod-tap mods immediately on key down. This is useful
+particularly to remove lag when using mod-taps together with an external
+mouse. For ZMK, use <a
 href="https://zmk.dev/docs/keymaps/behaviors/hold-tap#hold-while-undecided">hold-while-undecided</a>.</p></li>
 <li><p><strong>Repeat a mod-tap key:</strong> A little known feature! If
 you quickly tap and then hold the key, its tap action is repeated. In
