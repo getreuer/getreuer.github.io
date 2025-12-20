@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-09-13)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-12-20)" />
   <title>A guide to alt keyboard layouts (why, how, which one?)</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -27,7 +27,7 @@
 <div id="header">
 <h1 class="title">A guide to alt keyboard layouts (why, how, which
 one?)</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-09-13)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-12-20)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -387,7 +387,8 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://engram.dev/" target="_blank">Engram (2021)</a>
+<a href="https://github.com/binarybottle/engram" target="_blank">Engram
+(2021)</a>
 </td>
 <td style="text-align:right; background-color:#f0a6a9">
 1.01%
@@ -1368,6 +1369,7 @@ random words.</p></li>
 </ul>
 <h2 id="what-about-languages-other-than-english">What about languages
 other than English?</h2>
+<p>🇳🇱   🇫🇷   🇩🇪   🇵🇱   🇪🇸   🇸🇪</p>
 <p>Most alt layout development is optimized for typing in the English
 language. Unfortunately, English-optimized layouts may be poor designs
 for other languages.</p>
@@ -1382,8 +1384,104 @@ across languages</a>, enormously in some cases. In French for instance,
 letter <code>q</code> is 10x more frequent and letter <code>w</code> is
 50x less frequent than in English. N-gram statistics are different too,
 of course, disrupting SFBs, rolls, and other layout metrics.</p></li>
+<li><p>And, of course, typing in Chinese, Cyrillic, and other non-Latin
+script languages is different entirely.</p></li>
 </ul>
-<p>To salvage this situation, <a
+<p><strong>Some pointers:</strong> The following are worth a look,
+depending on your language(s) of interest:</p>
+<table>
+<tr>
+<th>
+Layout
+</th>
+<th>
+Designed for…
+</th>
+</tr>
+<tr>
+<td>
+<a
+href="https://www.reddit.com/r/KeyboardLayouts/comments/1oazi45/galliumnl_a_more_dutchfriendly_gallium_mod/">Gallium-NL</a>
+</td>
+<td>
+English + Dutch
+</td>
+<tr>
+<tr>
+<td>
+<a href="https://ergol.org/">Ergo-L</a>
+</td>
+<td>
+English + French
+</td>
+<tr>
+<tr>
+<td>
+<a href="https://dariogoetz.github.io/noted-layout/">Noted</a>
+</td>
+<td>
+English + German
+</td>
+<tr>
+<tr>
+<td>
+<a href="https://github.com/rpnfan/Anymak">Anymak</a>
+</td>
+<td>
+English + German + Dutch
+</td>
+<tr>
+<tr>
+<td>
+<a href="https://www.kordos.com/keyboard.html">Kordos</a>
+</td>
+<td>
+English + Polish
+</td>
+<tr>
+<tr>
+<td>
+<a href="https://github.com/christoofar/canaria">Canaria</a>
+</td>
+<td>
+English + Spanish
+</td>
+<tr>
+<tr>
+<td>
+<a href="https://github.com/rollbear/keyboard-layout">Fahller</a>
+</td>
+<td>
+English + Swedish
+</td>
+<tr>
+<tr>
+<td>
+<a href="https://bepo.fr/wiki/Accueil">Bépo</a>
+</td>
+<td>
+French
+</td>
+<tr>
+<tr>
+<td>
+<a href="https://www.neo-layout.org/">Neo</a>
+</td>
+<td>
+German
+</td>
+<tr>
+<tr>
+<td>
+<a href="https://engram-layouts.xyz/engram-es/">Engram-es</a>
+</td>
+<td>
+Spanish
+</td>
+</tr>
+</table>
+<p><strong>Evaluating a layout for non-English typing:</strong> For the
+major Western European languages, <a
 href="https://cyanophage.github.io/playground.html?layout=qwertyuiop%C3%BCasdfghjkl%C3%B6%27zxcvbnm%2C.%C3%A4%C3%9F%5E&amp;mode=ergo&amp;lan=german">Cyanophage’s
 Layout Playground</a> or <a
 href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
@@ -1391,11 +1489,12 @@ Layout Playground</a> are useful tools. Both of these playground web
 apps have a dropdown menu to select the language, making it possible to
 include language-specific keys and to compute metrics according to that
 language’s letter statistics. You can use them to evaluate
-English-optimized layouts to look for which better fit your language.
-You can also edit a layout to fix its shortcomings.</p>
-<p>If you aim to create a layout for typing in two (or more?) languages,
-keep in mind that it is impossible to make it perfect for both. Even
-layouts optimized for just one language are <a
+English-optimized layouts to find which better fit your language. You
+can also edit a layout to fix its shortcomings.</p>
+<p><strong>Designing multi-lingual layouts:</strong> If you aim to
+create a layout for typing in two (or more?) languages, keep in mind
+that it is impossible to make it perfect for both. Even layouts
+optimized for just one language are <a
 href="#is-it-really-that-hard-to-arrange-30-keys">imperfect</a>.
 Instead, address the worst spots and look for a solution that has
 decently tolerable metrics at the same time for both languages.</p>
