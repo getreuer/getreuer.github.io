@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-09-30)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2026-02-21)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-09-30)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2026-02-21)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -378,6 +378,17 @@ it was intended.</p>
 href="https://precondition.github.io/home-row-mods">Precondition’s guide
 to home row mods</a>. It explains a bunch of tap-hold configurations and
 variations to mitigate these problems.</p>
+<p><a
+href="https://github.com/urob/zmk-config?tab=readme-ov-file#timeless-homerow-mods">urob’s
+“Timeless Home Row Mods”</a> is a popular HRMs configuration originally
+written for ZMK, which has since been <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1q1jo3c/urobs_zmk_timeless_home_row_mods_ported_to_native/">ported
+to QMK</a> and <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1qosvc0/a_try_on_urobs_timeless_home_row_mods_for_kanata/">to
+Kanata</a>. While it’s not the only approach, it’s a highly effective
+solution. urob introduces his configuration incrementally, explaining
+how each option solves a problem—worth a read, even if you don’t use
+ZMK.</p>
 <p><strong>Suggested settings:</strong></p>
 <ul>
 <li><p><strong>QMK firmware:</strong> Start with these settings in your
@@ -385,8 +396,12 @@ variations to mitigate these problems.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM </span><span class="dv">250</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CHORDAL_HOLD</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PERMISSIVE_HOLD</span></span></code></pre></div>
-<p>Read the <a href="https://docs.qmk.fm/tap_hold">Tap-Hold
-documentation</a> for what these mean and further options.</p></li>
+<p>Read my post on <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1q1jo3c/urobs_zmk_timeless_home_row_mods_ported_to_native/">Timeless
+Home Row Mods in QMK</a> for a longer configuration guide exploring
+additional options. See the <a
+href="https://docs.qmk.fm/tap_hold">Tap-Hold documentation</a> for full
+details on what these options mean.</p></li>
 <li><p><strong>ZSA Oryx</strong> (where QMK is under the hood): Make
 these settings under Advanced Configuration Settings (gear icon on the
 upper right):</p>
@@ -430,13 +445,17 @@ Mods example</a> configuration. Particularly, set
 <code>flavor = "balanced"</code> (similar to Permissive Hold), and <a
 href="https://zmk.dev/docs/keymaps/behaviors/hold-tap?examples=home_row_mods#positional-hold-tap-and-hold-trigger-key-positions">positional
 hold taps</a> (similar to Chordal Hold). See also <a
-href="https://github.com/urob/zmk-config?tab=readme-ov-file#timeless-homerow-mods">urob’s
-Timeless Home Row Mods</a>.</p></li>
+href="https://github.com/urob/zmk-config?tab=readme-ov-file#timeless-homerow-mods">Timeless
+Home Row Mods</a>.</p></li>
 <li><p><strong>Kanata:</strong> <a
 href="https://github.com/jtroo/kanata/blob/main/cfg_samples/home-row-mod-basic.kbd">home-row-mod-basic.kbd</a>
 and <a
 href="https://github.com/jtroo/kanata/blob/main/cfg_samples/home-row-mod-advanced.kbd">home-row-mod-advanced.kbd</a>
-are suggested sample configurations.</p></li>
+are suggested tutorial configurations. See <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1qosvc0/a_try_on_urobs_timeless_home_row_mods_for_kanata/"><span
+class="citation" data-cites="ldebritto">@ldebritto</span>’s
+configuration guide</a> for a sophisticated Kanata implementation of
+Timeless Home Row Mods.</p></li>
 </ul>
 <p><strong>In addition to good configuration, I suggest you may need a
 couple months to get used to home row mods.</strong> Everyone’s typing

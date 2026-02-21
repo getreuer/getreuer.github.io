@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2025-12-28)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2026-02-21)" />
   <title>A guide to alt keyboard layouts (why, how, which one?)</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -27,7 +27,7 @@
 <div id="header">
 <h1 class="title">A guide to alt keyboard layouts (why, how, which
 one?)</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2025-12-28)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2026-02-21)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -729,11 +729,9 @@ further detail.</p>
 something more experimental, I use Ikcelaks’ <a
 href="https://github.com/Ikcelaks/keyboard_layouts/blob/main/magic_sturdy/magic_sturdy.md">Magic
 Sturdy</a>, a variation of Sturdy. The “magic” is a key whose function
-depends on the last pressed key (aka an “adaptive” key), implemented
-using the <a
-href="https://docs.qmk.fm/features/repeat_key#alternate-repeating">Alternate
-Repeat Key</a>. This key is used to remove the top SFBs and type common
-n-grams. It’s a magical typing experience!</p>
+depends on the last pressed key (aka an “adaptive” key). This key is
+used to remove the top SFBs and type common n-grams. It’s a magical
+typing experience!</p>
 <figure>
 <div>
 <p><img src="magic-sturdy-layout.svg"
@@ -771,12 +769,18 @@ Ikcelaks’ Magic Sturdy layout plus a few tweaks of my own. ★ is the
 magic key.
 </figcaption>
 </figure>
+<p>The magic key is implemented in QMK using the <a
+href="https://docs.qmk.fm/features/repeat_key#alternate-repeating">Alternate
+Repeat Key</a>. Or in Kanata, one can implement magic keys using Kanta’s
+<a href="https://jtroo.github.io/config.html#switch">switch and
+key-history</a> constructs.</p>
 <p>More magic: <a href="https://rafaelromao.github.io/romak/">Magic
 Romak</a>, <a
 href="https://github.com/empressabyss/nordrassil">Nordrassil</a>, <a
-href="https://github.com/MightyAcas/vylet">Vylet</a>, and <a
-href="https://blog.simn.me/posts/2025/afterburner/">Afterburner</a> are
-a few other layouts designed with an integrated magic key.</p>
+href="https://github.com/MightyAcas/vylet">Vylet</a>, <a
+href="https://blog.simn.me/posts/2025/afterburner/">Afterburner</a>, and
+<a href="https://github.com/Brooklyn-Style/Magic_Roll">Magic Roll</a>
+are a few other layouts designed with an integrated magic key.</p>
 <h2 id="which-layout-is-best-for-programming">Which layout is best for
 programming?</h2>
 <p><em>See also <a href="../symbol-layer/index.html">Designing a symbol
