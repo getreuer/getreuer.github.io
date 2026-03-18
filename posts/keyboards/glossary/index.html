@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2024-08-04 (updated 2026-02-21)" />
+  <meta name="author" content="Pascal Getreuer, 2024-08-04 (updated 2026-03-17)" />
   <title>Glossary of keyboard terms</title>
   <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css" type="text/css" />
@@ -26,7 +26,7 @@
 <div id="content">
 <div id="header">
 <h1 class="title">Glossary of keyboard terms</h1>
-<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2026-02-21)</h2>
+<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2026-03-17)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -39,6 +39,8 @@ mods</a></li>
 tunnel</a></li>
 <li><a href="#debouncing" id="toc-debouncing">Debouncing</a></li>
 <li><a href="#eeprom" id="toc-eeprom">EEPROM</a></li>
+<li><a href="#esd-and-short-circuits"
+id="toc-esd-and-short-circuits">ESD and short circuits</a></li>
 <li><a href="#firmware" id="toc-firmware">Firmware</a></li>
 <li><a href="#home-row-mods-hrms" id="toc-home-row-mods-hrms">Home row
 mods (HRMs)</a></li>
@@ -236,6 +238,32 @@ href="https://docs.qmk.fm/keycodes_magic">magic settings</a> on
 QMK-based keyboards. These settings are retained when the keyboard is
 unpowered and even when new <a href="#firmware">firmware</a> is
 flashed.</p>
+<h3 id="esd-and-short-circuits">ESD and short circuits</h3>
+<p><strong>ESD</strong> or <strong>electrostatic discharge</strong> is a
+sudden and momentary flow of electric current. In a keyboard, an ESD
+event can destroy the <a
+href="#microcontroller-unit-mcu">microcontroller</a>, as the discharge
+voltage can greatly exceed the limits of its sensitive I/O pins.</p>
+<p>ESD is often informally conflated with <strong>short
+circuits</strong>. These are distinct phenomena, though they are both
+hazards to the hardware. True ESD typically occurs when a user
+discharges built-up static electricity into exposed metal contacts.
+<strong>Short circuits</strong> occur through physical bridging of
+active connections. Particularly, connecting or disconnecting a split
+keyboard’s <a href="#trrs-cable">TRRS cable</a> while the board is
+powered (“hot-plugging”) causes the plug’s tip to slide past the sleeve
+and ring contacts. This momentarily bridges different electrical
+signals, often dumping a 5V power line directly into a low-voltage data
+pin and causing a destructive short circuit.</p>
+<p>Caseless keyboards with exposed <a
+href="#printed-circuit-board-pcb">printed circuit boards</a> are
+especially vulnerable to ESD and shorts. A static discharge can occur
+whenever you physically touch a conductive trace or if a charged object
+gets close enough for a static arc to bridge the gap.</p>
+<p>Some keyboards have <strong>ESD/short protection</strong>. This is
+typically implemented with SRV05-4 chips or other TVS (Transient Voltage
+Suppression) diode arrays, which shunt voltage spikes to ground before
+they can damage the microcontroller.</p>
 <h3 id="firmware">Firmware</h3>
 <p>A keyboard’s <strong>firmware</strong> is software that runs on the
 <a href="#microcontroller-unit-mcu">microcontroller</a>. This software
@@ -954,10 +982,11 @@ alt="Left: TRRS tip-ring-ring-connector. Right: TRS tip-ring-connector." />
 Right: TRS tip-ring-connector.</figcaption>
 </figure>
 <p>Caution: <strong>do not connect or disconnect the TRRS cable while
-the keyboard is powered.</strong> Doing so may create a short circuit
-and damage the keyboard. Some keyboards have short protection to
-tolerate this, but even so, it’s safer to unpower the keyboard first
-before connecting or disconnecting the TRRS cable.</p>
+the keyboard is powered.</strong> Doing so may create a <a
+href="#esd-and-short-circuits">short circuit</a> and damage the
+keyboard. Some keyboards have short protection to tolerate this, but
+even so, it’s safer to unpower the keyboard first before connecting or
+disconnecting the TRRS cable.</p>
 <h3 id="tenting">Tenting</h3>
 <p><strong>Tenting</strong> is angling each side of the keyboard in the
 <a href="#pronation-supination">supinating</a> direction, an ergonomic
