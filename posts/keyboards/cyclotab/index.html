@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Pascal Getreuer, 2025-03-17" />
+  <title>Cyclotab</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css" type="text/css" />
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<script type="text/javascript" src="../../../site.js" ></script>
+</head>
+<body>
+<div id="navbar">
+<div id="navhold">
+  <a href="../../../index.html">Home</a>
+  <a href="../../../papers/index.html">Papers</a>
+  <a href="../../../posts/index.html">Posts</a>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">Cyclotab</h1>
+<h2 class="author">Pascal Getreuer, 2025-03-17</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#add-cyclotab-to-your-keymap"
+id="toc-add-cyclotab-to-your-keymap">Add Cyclotab to your
+keymap</a></li>
+<li><a href="#how-to-use-cyclotab" id="toc-how-to-use-cyclotab">How to
+use Cyclotab</a></li>
+<li><a href="#customization" id="toc-customization">Customization</a>
+<ul>
+<li><a href="#other-alt-tab-like-hotkeys"
+id="toc-other-alt-tab-like-hotkeys">Other Alt-Tab-like hotkeys</a></li>
+<li><a href="#timeout" id="toc-timeout">Timeout</a></li>
+</ul></li>
+<li><a href="#other-implementations"
+id="toc-other-implementations">Other implementations</a></li>
+<li><a href="#further-thoughts-on-window-management"
+id="toc-further-thoughts-on-window-management">Further thoughts on
+window management</a></li>
+</ul>
+</div>
+<p><a href="../index.html">← More about keyboards</a></p>
+<p><img src="cyclotab-splash.svg" alt="" style="display:block; margin:0 auto"></p>
+<h2 id="overview">Overview</h2>
+<p><strong>Cyclotab</strong> is a QMK community module for more
+conveniently invoking Alt+Tab and other hotkeys of the same form (⌘+Tab,
+etc.).</p>
+<p>For keyboard-driven window management, Alt+Tab is a frequently used
+hotkey, or ⌘+Tab for Mac users. This hotkey is ergonomically
+objectionable in that you continue to hold <kbd>Alt</kbd> while tapping
+<kbd>Tab</kbd> possibly multiple times, or for even more finger
+gymnastics, holding <kbd>Shift</kbd>+<kbd>Alt</kbd> and tapping
+<kbd>Tab</kbd> to cycle in the reverse direction. On a programmable
+keyboard, you might perform window management on a secondary layer,
+meaning you are holding a layer switch key <em>in addition</em> to these
+hotkey chords.</p>
+<p>Cyclotab aims to make Alt+Tabbing easier. There are <a
+href="#other-implementations">other implementations</a> for similar
+behavior; this is my take on a “swapper.” What’s attractive about
+Cyclotab is it’s comparatively little fuss to install and <a
+href="#how-to-use-cyclotab">usable in multiple ways</a>.</p>
+<h2 id="add-cyclotab-to-your-keymap">Add Cyclotab to your keymap</h2>
+<p><strong>Step 1.</strong> Install my <a
+href="../qmk-community-modules/index.html">community modules</a>. Then
+enable module <a
+href="https://github.com/getreuer/qmk-modules/tree/main/cyclotab">getreuer/cyclotab</a>
+in your <code>keymap.json</code> file. Or if <code>keymap.json</code>
+does not exist, create it with the following content:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/cyclotab&quot;</span><span class="ot">]</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Step 2.</strong> By default, Cyclotab is configured for the
+Alt+Tab hotkey, activated by keycodes <code>A(KC_TAB)</code> (Alt+Tab)
+and <code>S(A(KC_TAB))</code> (Shift+Alt+Tab). Use one or both of these
+keycodes somewhere in your keymap. Other possible configurations are <a
+href="#other-alt-tab-like-hotkeys">described below</a>.</p>
+<div class="callout" style="border-left-color: #8ad359">
+<div class="callout-header" style="background-color: #e5f3d8">
+<p>
+📝  Note
+</p>
+</div>
+<p>Pressing <code>KC_TAB</code> while holding <code>KC_LALT</code> does
+not activate Cyclotab, even though that composes to Alt+Tab. Cyclotab
+listens specifically for <code>A(KC_TAB)</code> and
+<code>S(A(KC_TAB))</code>.</p>
+</div>
+<h2 id="how-to-use-cyclotab">How to use Cyclotab</h2>
+<p>There are several practical ways to use Cyclotab. Here are some
+recipes.</p>
+<p><strong>Base layer use:</strong> Assign <code>A(KC_TAB)</code> to a
+key or combo on your base layer. Use it like:</p>
+<ol type="1">
+<li><p>Tap <kbd>A(KC_TAB)</kbd> (and/or <kbd>S(A(KC_TAB))</kbd>) to
+activate. Even after the key is released, Cyclotab continues to hold the
+Alt mod for a second, allowing for multiple taps to navigate among
+windows.</p></li>
+<li><p>To complete the selection and release the Alt mod, press or
+release any other key such as Space. This key is “consumed” and not sent
+to the computer, e.g. so that a space is not inadvertently typed when
+switching to your terminal.</p>
+<p><img src="cyclotab-base-layer.svg" /></p>
+<p>Alternatively, Alt is released automatically after a <a
+href="#timeout">configurable timeout</a>.</p>
+<p><img src="cyclotab-timeout.svg" /></p></li>
+</ol>
+<p><strong>Use on a layer:</strong> You can use release of a layer
+switch to signal completion. Assign <code>A(KC_TAB)</code> to a key on a
+layer above the base layer, say, layer 3. Then:</p>
+<ol type="1">
+<li><p>Hold <kbd>MO(3)</kbd> (or another held layer switch) to switch to
+layer 3.</p></li>
+<li><p>Tap <kbd>A(KC_TAB)</kbd> (and/or <kbd>S(A(KC_TAB))</kbd>) any
+number of times.</p></li>
+<li><p>Releasing <kbd>MO(3)</kbd> has the effect of releasing Alt
+immediately.</p>
+<p><img src="cyclotab-secondary-layer.svg" /></p></li>
+</ol>
+<p>The Alt mod is released the instant the layer is exited. You might
+prefer this over waiting for the timeout. Note, Cyclotab still times out
+by default even when used on a secondary layer. If you don’t want that,
+<a href="#disabling-timeout">timeout may be disabled</a>.</p>
+<p><strong>Use with Repeat Key:</strong> Assign <code>A(KC_TAB)</code>
+to a key or combo and the <a
+href="https://docs.qmk.fm/features/repeat_key">Repeat Key</a>
+<code>QK_REP</code> on the same layer. Use them like:</p>
+<ol type="1">
+<li>Tap <kbd>A(KC_TAB)</kbd> (and/or <kbd>S(A(KC_TAB))</kbd>).</li>
+<li>Tap <kbd>QK_REP</kbd> to effectively send <code>A(KC_TAB)</code> any
+number of times.</li>
+<li>Press another key or wait for the timeout to complete the
+selection.</li>
+</ol>
+<p>You can also use the <a
+href="https://docs.qmk.fm/features/repeat_key#alternate-repeating">Alternate
+Repeat Key</a> <kbd>QK_AREP</kbd> to send <code>S(A(KC_TAB))</code>,
+enabling navigation in both directions. To do that, configure
+<code>S(A(KC_TAB))</code> to be the alternate of <code>A(KC_TAB)</code>
+by adding in keymap.c:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> get_alt_repeat_key_keycode_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> <span class="dt">uint8_t</span> mods<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> A<span class="op">(</span>KC_TAB<span class="op">):</span> <span class="cf">return</span> S<span class="op">(</span>A<span class="op">(</span>KC_TAB<span class="op">));</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Alternates for other keys...</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> KC_TRNS<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>With arrow keys, Shift, Escape:</strong> A few keys are
+specially handled while Cyclotab is active. These may be incorporated in
+any of the above recipes:</p>
+<ul>
+<li><p>Arrow keys may be used. Depending on the window manager, this may
+work as an alternative to (Shift+)Alt+Tab for menu nagivation.</p></li>
+<li><p>Shift keys may be used to navigate in the reverse direction.
+<code>KC_LSFT</code>, <code>KC_RSFT</code>, one-shot Shifts, and mod-tap
+Shift keys are supported.</p></li>
+<li><p>Tapping <kbd>Escape</kbd> sends Escape before releasing mods.
+Depending on the window manager, this cancels switching
+windows.</p></li>
+</ul>
+<h2 id="customization">Customization</h2>
+<h3 id="other-alt-tab-like-hotkeys">Other Alt-Tab-like hotkeys</h3>
+<p>Cyclotab handles Alt+Tab (and Shift+Alt+Tab) by default. To handle
+other hotkeys, define <code>CYCLOTAB_KEYS</code> in your config.h. For
+instance to handle (Shift+)⌘+Tab instead, use:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Handle Command+Tab.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CYCLOTAB_KEYS </span>LCMD<span class="op">(</span><span class="pp">KC_TAB</span><span class="op">)</span></span></code></pre></div>
+<p>Comma-separated keycodes may be listed to handle multiple hotkeys
+(and here too, the Shifted versions of these hotkeys are handled as
+well):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Handle Command+Tab and Command+Grave</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CYCLOTAB_KEYS </span>LCMD<span class="op">(</span><span class="pp">KC_TAB</span><span class="op">),</span><span class="pp"> </span>LCMD<span class="op">(</span><span class="pp">KC_GRAVE</span><span class="op">)</span></span></code></pre></div>
+<p>Generally, a hotkey is a <a
+href="https://docs.qmk.fm/feature_advanced_keycodes">modifier + basic
+keycode combination</a> like <code>A(KC_TAB)</code> or
+<code>LCMD(KC_GRAVE)</code> (aka equivalently
+<code>LGUI(KC_GRAVE)</code> or <code>G(KC_GRV)</code>).</p>
+<h3 id="timeout">Timeout</h3>
+<p>By default, Cyclotab times out and releases held mods after 1000 ms
+(1 second). Define <code>CYCLOTAB_TIMEOUT</code> in your config.h to set
+a different value in units of milliseconds:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CYCLOTAB_TIMEOUT </span><span class="dv">2500</span><span class="pp">  </span><span class="co">// 2.5 seconds.</span></span></code></pre></div>
+<div id="disabling-timeout">
+
+</div>
+<p><strong>Disabling timeout:</strong> Setting a value of <code>0</code>
+disables timeout, in which case mods are then held indefinitely until
+another key is pressed or released.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CYCLOTAB_TIMEOUT </span><span class="dv">0</span><span class="pp">  </span><span class="co">// Disable timeout.</span></span></code></pre></div>
+<p>For per-key control of the timeout, define
+<code>cyclotab_timeout()</code> in your keymap.c. The
+<code>keycode</code> argument is the hotkey keycode, allowing for
+different timeouts for different hotkeys. Example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint16_t</span> cyclotab_timeout<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> A<span class="op">(</span>KC_TAB<span class="op">):</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">2500</span><span class="op">;</span>  <span class="co">// Timeout of 2.5 seconds for Alt+Tab.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> A<span class="op">(</span>KC_GRAVE<span class="op">):</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span>     <span class="co">// Disable timeout for Alt+`.</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">1000</span><span class="op">;</span>  <span class="co">// Timeout of 1.0 seconds otherwise.</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="callout" style="border-left-color: #8ad359">
+<div class="callout-header" style="background-color: #e5f3d8">
+<p>
+📝  Note
+</p>
+</div>
+<p>If you define both <code>CYCLOTAB_TIMEOUT</code> and
+<code>cyclotab_timeout()</code>, the latter takes precedence.</p>
+</div>
+<h2 id="other-implementations">Other implementations</h2>
+<p>Besides Cyclotab, there are other implementations for similar
+behavior:</p>
+<ul>
+<li><p>The QMK documentation includes a <a
+href="https://docs.qmk.fm/feature_macros#super-alt%E2%86%AFtab">“Super
+ALT↯TAB” example</a>, a simple single-key alt-tabbing implementation
+where Alt releases after a timeout.</p></li>
+<li><p><a
+href="https://git.tfcconnection.org/chris/qmk/src/commit/08b2d08593caf61ad404f83f7336ef08fe0ebe08/users/callum/swapper.c">Callum
+Oakley’s swapper</a> is a single-key alt-tabbing implementation where
+Alt releases when any other key is pressed. Additionally, Alt and Tab
+are parameterized.</p></li>
+<li><p>For ZMK, <a
+href="https://github.com/caksoylar/zmk-smart-toggle">caksoylar/zmk-smart-toggle</a>
+implements a behavior to automatically toggle a key off when exiting a
+layer.</p></li>
+<li><p>For ZMK, <a
+href="https://github.com/zmkfirmware/zmk/pull/1366">Nick Conway’s
+swapper</a> is a PR for another swapper implementation.</p></li>
+</ul>
+<h2 id="further-thoughts-on-window-management">Further thoughts on
+window management</h2>
+<p>The standard Alt+Tab switcher is a recency-based stack. The presented
+order of the windows changes dynamically according to which window was
+most recently focused. The constant shifting of the menu makes it
+challenging to leverage muscle memory.</p>
+<p>Here is a better way to switch among windows:</p>
+<ul>
+<li>Use multiple virtual workspaces/desktops.</li>
+<li>For your most heavily used applications, assign each one a dedicated
+workspace.</li>
+<li>Configure hotkeys GUI+<em>n</em>, <em>n</em> = 1, 2, …, to jump to
+the <em>n</em>th workspace (also convenient: Shift+GUI+<em>n</em> to
+move the current window to the <em>n</em>th workspace).</li>
+</ul>
+<p>That’s how I do the bulk of my window management. This is a common
+pattern with tiled window managers, though the essential idea does not
+require tiling.</p>
+<p><img src="virtual-workspaces.webp" /></p>
+<p>The idea is a given application is always on a specific workspace,
+and it is the only window on that workspace, like workspace <strong>1 =
+web browser</strong>, <strong>2 = terminal</strong>, <strong>3 = music
+player</strong>, etc. This stable one-to-one relationship promotes
+muscle memory. I simply think “music player” and muscle memory types
+GUI+3 to take me there. Of course, this relies on consistently placing
+the music player on workspace 3.</p>
+<p>Most modern OSs / window managers support virtual workspaces.
+Configuring “jump to nth workspace” hotkeys can be done as follows:</p>
+<ul>
+<li><p><strong>On Windows:</strong> <a
+href="https://github.com/widavies/WinJump">widavies/WinJump</a> or <a
+href="https://superuser.com/a/1050690">an AutoHotkey
+script</a>.</p></li>
+<li><p><strong>On Mac:</strong> Go to Keyboard → Keyboard Shortcuts →
+Mission Control and enable the “Switch to Desktop” hotkeys.</p></li>
+<li><p><strong>On Linux:</strong> Look for “keyboard shortcuts” under
+system settings, or refer to your window manager’s
+documentation.</p></li>
+</ul>
+<p>Around 4 to 10 workspaces is a practical number. I’d say minimally 4
+are needed to organize the chaos, and on the other extreme, I lose track
+of which workspace I put things when approaching 10 workspaces. The
+one-window-per-workspace rule need not be followed rigorously, and I
+bend that rule for lesser-used windows. Cyclotab is useful where
+workspaces are messier. It’s a blissful way to do keyboard-driven
+multitasking.</p>
+<p><a href="../index.html">← More about keyboards</a></p>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank">Google Scholar</a>
+<a href="http://www.linkedin.com/in/pascalgetreuer" target="_blank">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
