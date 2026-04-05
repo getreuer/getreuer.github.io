@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2026-02-21)" />
+  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2026-04-05)" />
   <title>Keyboard FAQs</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -91,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2026-02-21)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2026-04-05)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -116,6 +116,9 @@ get used to a split columnar keyboard?</a></li>
 <li><a href="#pressing-a-key-sometimes-types-it-twice"
 id="toc-pressing-a-key-sometimes-types-it-twice">Pressing a key
 sometimes types it twice</a></li>
+<li><a href="#mo1-key-not-working-when-on-layer-2"
+id="toc-mo1-key-not-working-when-on-layer-2">MO(1) key not working when
+on layer 2</a></li>
 <li><a href="#how-much-lag-do-custom-keyboards-have"
 id="toc-how-much-lag-do-custom-keyboards-have">How much lag do custom
 keyboards have?</a></li>
@@ -197,6 +200,22 @@ region. For yet more options there is an extensive vendor list in <a
 href="https://kbd.news/vendors">Keyboard Builders’ Digest</a>. You can
 also try <a
 href="https://www.reddit.com/r/mechmarket/">r/mechmarket</a>.</p>
+<figure>
+<picture>
+<source type="image/webp" srcset="../thumb-ergo/test-fit.webp">
+<source type="image/jpeg" srcset="../thumb-ergo/test-fit.jpg">
+<img src="../thumb-ergo/test-fit.jpg" alt=""> </picture>
+<figcaption aria-hidden="true">
+Trying my hand on a print of the Lily58.
+</figcaption>
+</figure>
+<p>If you are thinking to buy a keyboard, look it up on <a
+href="https://jhelvy.shinyapps.io/splitkbcompare/">Splitkbcompare</a>,
+which contains the layouts for many popular split models, and make a 1:1
+paper print to test how it fits your hand. Printing tips: check the
+paper type and orientation, and measure the included centimeter marks to
+verify the scaling. Pay attention especially to the thumbs and pinkies,
+since that is where the fit issues are most troublesome.</p>
 <p><strong>A few notes to give fair warning…</strong></p>
 <ul>
 <li><p>Expect to pay $250 USD or more for a prebuilt custom keyboard.
@@ -654,6 +673,34 @@ href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-
 and reduce keyboard input latency with QMK</a> – tuning debouncing and
 other configurations for minimal latency</p></li>
 </ul>
+<h2 id="mo1-key-not-working-when-on-layer-2">MO(1) key not working when
+on layer 2</h2>
+<p><a href="#mo1-key-not-working-when-on-layer-2">🔗 Link</a></p>
+<p>Reorder the switched-to layer above the layer with the layer switch
+key.</p>
+<figure>
+<img src="keymap-layers.svg"
+alt="Example: Reaching layer 3 with a layer switch on layer 0." />
+<figcaption aria-hidden="true">Example: Reaching layer 3 with a layer
+switch on layer 0.</figcaption>
+</figure>
+<p>In QMK, ZMK, and other firmware, <strong>the keymap behaves as a
+<em>stack</em> of layers in which multiple layers can be active at
+once</strong>. Higher layers take precedence, stacking on top of lower
+layers. You want a layer switch key on layer <em>n</em> to activate
+layer <em>n+1</em> or higher. If instead the activated layer were lower,
+it would be covered up by current layer and the layer switch has no
+apparent effect (unless the current layer makes use of transparent
+keys).</p>
+<p>If you are sure you want to switch a lower layer, use a
+<code>TO(</code><em>n</em><code>)</code> switch in QMK to activate layer
+<em>n</em> and turn off all others, except the default layer. Or in ZMK,
+use the <code>&amp;to</code> <a
+href="https://zmk.dev/docs/keymaps/behaviors/layers#to-layer">to layer
+behavior</a> for the equivalent effect.</p>
+<p>See also <a href="https://docs.qmk.fm/keymap">QMK Keymap Overview</a>
+and <a href="https://blog.zsa.io/layout-buffet-layers/">Layout Buffet -
+Layers</a>.</p>
 <h2 id="how-much-lag-do-custom-keyboards-have">How much lag do custom
 keyboards have?</h2>
 <p><a href="#how-much-lag-do-custom-keyboards-have">🔗 Link</a></p>
