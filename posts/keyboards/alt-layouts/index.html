@@ -21,6 +21,7 @@
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -92,10 +93,8 @@ reading</a></li>
 </div>
 <style>
 .metrics { font-size: 87%; }
-.metrics tr:hover { background-color: #ddd; }
-.typo {
-  text-decoration: #cc4000 wavy underline; background-color: #ffe0d0;
-}
+.metrics tr:hover { background-color: rgba(221, 221, 221, 0.5); }
+.metrics td[style*="background-color"] { color: #000 !important; }
 </style>
 <p><a href="../index.html">← More about keyboards</a></p>
 <h2 id="overview">Overview</h2>
@@ -1294,11 +1293,11 @@ mod”</a> finger placement. By default, standard fingering is assumed as
 in the top figure. An angle-modded layout follows the middle or bottom
 figure:</p>
 <figure>
-<img src="anglemods.svg"
-alt="Colemak-DH with standard vs. two variations of angle modded fingering. Note displacement of the lower row." />
-<figcaption aria-hidden="true">Colemak-DH with standard vs. two
-variations of angle modded fingering. Note displacement of the lower
-row.</figcaption>
+<img src="anglemods.svg" class="white-bg-svg" alt="Colemak-DH with standard vs. two variations of angle modded fingering. Note displacement of the lower row." />
+<figcaption aria-hidden="true">
+Colemak-DH with standard vs. two variations of angle modded fingering.
+Note displacement of the lower row.
+</figcaption>
 </figure>
 <p><strong>⚠ Be careful about rearranging keys in a layout</strong> for
 the same reason as the previous point. Rearranging keys is likely to
@@ -1700,10 +1699,10 @@ href="https://o-x-e-y.github.io/layouts/playground/index.html">Oxey’s
 Layout Playground</a> – another playground</li>
 <li><a href="https://mk.bcgsc.ca/carpalx/?typing_effort">Carpalx typing
 effort model</a></li>
-<li><a href="https://github.com/O-X-E-Y/oxeylyzer"><img src="../../../github.svg"
-style="width:1.25em"> O-X-E-Y/oxeylyzer</a> layout analyzer</li>
-<li><a href="https://github.com/semilin/genkey"><img src="../../../github.svg"
-style="width:1.25em"> semilin/genkey</a> layout analyzer</li>
+<li><a href="https://github.com/O-X-E-Y/oxeylyzer"><img src="../../../github.svg" class="light-only" style="width:1.25em" /><img src="../../../github-dark.svg" class="dark-only" style="width:1.25em" /> O-X-E-Y/oxeylyzer</a>
+layout analyzer</li>
+<li><a href="https://github.com/semilin/genkey"><img src="../../../github.svg" class="light-only" style="width:1.25em" /><img src="../../../github-dark.svg" class="dark-only" style="width:1.25em" /> semilin/genkey</a>
+layout analyzer</li>
 </ul>
 <p><a href="../index.html">← More about keyboards</a></p>
 </div>

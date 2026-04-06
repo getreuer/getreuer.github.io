@@ -86,6 +86,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -140,12 +141,6 @@ id="toc-what-is-this-weird-c-syntax-qmk">What is this weird C syntax
 (QMK)</a></li>
 </ul>
 </div>
-<style>
-.badcode pre {
-background-color: #ffe8e8;
-border-color: #d48888;
-}
-</style>
 <p><a href="../index.html">← More about keyboards</a></p>
 <p>Certain topics come up pretty regularly on <a
 href="https://www.reddit.com/r/olkb/">r/olkb</a>, so I’ve collected some
@@ -343,7 +338,9 @@ href="https://onlinetyping.org/blog/average-typing-speed.php">distributions
 of typing speed</a>, based on tests on their site. By this data,
 <strong>if you can type over 70 words per minute (wpm), you are faster
 than about 95% of people.</strong> But see also the caveats below.</p>
-<p><img src="wpm-hists.svg" /></p>
+<figure>
+<img src="wpm-hists.svg" class="white-bg-svg" alt="WPM Distributions"/>
+</figure>
 <p>Some people can type well over 100 wpm. A few can type over 200 wpm.
 If you include stenography, some fast stenotypists can type over
 300 wpm.</p>
@@ -607,7 +604,10 @@ contacts are usually springy material. When the switch is pressed, the
 contacts bounce, making and breaking contact for some milliseconds
 before settling to a steady contact. So rather than a clean 0 to 1
 transition, the raw digital reading bounces between 0 and 1.</p>
-<p><img src="bounce.svg" /></p>
+<div style="text-align: center;">
+<p><img src="bounce.svg" class="light-only" alt="Bounce" />
+<img src="bounce-dark.svg" class="dark-only" alt="Bounce" /></p>
+</div>
 <p>A similar bouncing problem occurs in the other direction when the key
 is released. The settling time depends on the kind of switch and may be
 different for press vs. release. Additionally, the settling time tends
@@ -835,9 +835,10 @@ href="https://docs.qmk.fm/feature_layers">layer-tap keys</a>
 href="https://docs.qmk.fm/keycodes_basic">basic keycode</a>, a keycode
 in the 0–255 range.</p>
 <figure>
-<img src="mod-tap-keycode.svg" alt="Encoding of a mod-tap keycode." />
-<figcaption aria-hidden="true">Encoding of a mod-tap
-keycode.</figcaption>
+<img src="mod-tap-keycode.svg" class="white-bg-svg" alt="Encoding of a mod-tap keycode." />
+<figcaption aria-hidden="true">
+Encoding of a mod-tap keycode.
+</figcaption>
 </figure>
 <p>All keycodes in QMK are 16 bits, so in order to pack identifiers, the
 mod or layer, and <code>kc</code> in that space, the <code>kc</code>

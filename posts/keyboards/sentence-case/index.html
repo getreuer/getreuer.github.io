@@ -86,6 +86,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -139,6 +140,22 @@ thoughts</a></li>
 }
 .state-primed {
   background-color: #f8f068;
+}
+[data-theme="dark"] .state-match {
+  background-color: #005577;
+  color: #fff;
+}
+[data-theme="dark"] .state-abbrev {
+  background-color: #444444;
+  color: #fff;
+}
+[data-theme="dark"] .state-ending {
+  background-color: #ccaa00;
+  color: #fff;
+}
+[data-theme="dark"] .state-primed {
+  background-color: #b39500;
+  color: #fff;
 }
 .legend {display:inline-block; vertical-align:middle; width:1.2em; height:0.9em;
 border:1px solid #666; border-radius:3px}
@@ -211,8 +228,8 @@ enabled by default, but can be disabled by
 your <code>config.h</code> includes such a line, please remove it.</p>
 <h3 id="non-module-installation-historical">Non-module installation
 (historical)</h3>
-<div class="callout" style="border-left-color: #e49f34">
-<div class="callout-header" style="background-color: #fdebd5">
+<div class="callout important">
+<div class="callout-header">
 <p>
 ⚠  Important
 </p>

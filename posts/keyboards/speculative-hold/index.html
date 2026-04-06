@@ -86,6 +86,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -117,7 +118,7 @@ id="toc-acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
-<div class="callout">
+<div class="callout important">
 <div class="callout-header">
 <p>
 🚀  Launched
@@ -145,18 +146,18 @@ function is delayed until the tap-hold decision has settled, by default
 200 ms after the key has been pressed. Practically, one must hold the
 key, pause for a beat, then click the mouse.</p>
 <figure>
-<p><img src="default-hold-timeline.svg"></p>
+<p><img src="default-hold-timeline.svg" class="white-bg-svg"></p>
 </figure></li>
 <li><p><strong>With Speculative Hold</strong>, the key’s Ctrl function
 applies immediately on key down.</p>
 <figure>
-<p><img src="speculative-hold-timeline.svg"></p>
+<p><img src="speculative-hold-timeline.svg" class="white-bg-svg"></p>
 </figure>
 <p>The mod-tap nevertheless continues to function as Esc when it should.
 When settled as tapped, the speculatively-held Ctrl is cleared the
 instant before the Esc tap is sent.</p>
 <figure>
-<p><img src="speculative-tap-timeline.svg"></p>
+<p><img src="speculative-tap-timeline.svg" class="white-bg-svg"></p>
 </figure></li>
 </ul>
 <p>Even though Speculative Hold applies the modifier early, it does not

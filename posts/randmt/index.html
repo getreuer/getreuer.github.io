@@ -89,6 +89,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../index.html">Home</a>
   <a href="../../papers/index.html">Papers</a>
   <a href="../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -99,7 +100,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="TOC">
 <ul>
 <li><a href="#overview" id="toc-overview">Overview</a></li>
-<li><a href="#warning" id="toc-warning">Warning</a></li>
 <li><a href="#license" id="toc-license">License</a></li>
 <li><a href="#use" id="toc-use">Use</a></li>
 <li><a href="#reentrant-versions" id="toc-reentrant-versions">Reentrant
@@ -141,7 +141,7 @@ id="toc-rand_poisson_r">rand_poisson_r</a></li>
 </ul>
 </div>
 <div class="features">
-<p><a href="randmt-20111011.zip">Download</a></p>
+<p><a class="feature-button" href="randmt-20111011.zip">Download</a></p>
 </div>
 <div style="clear: both">
  
@@ -150,9 +150,15 @@ id="toc-rand_poisson_r">rand_poisson_r</a></li>
 <p>This C/C++ software contains a high-quality pseudorandom number
 generator, the Mersenne Twister MT19937 by Takuji Nishimura and Makoto
 Matsumoto, and routines for sampling from several distributions.</p>
-<h2 id="warning">Warning</h2>
+<div class="callout warning">
+<div class="callout-header">
+<p>
+⚠  Warning
+</p>
+</div>
 <p><strong>Do not use for cryptographic purposes.</strong> Read <a
 href="http://tools.ietf.org/html/rfc4086">Internet RFC4086</a>.</p>
+</div>
 <h2 id="license">License</h2>
 <p>This software is distributed under the BSD license. See the included
 file license.txt for details.</p>

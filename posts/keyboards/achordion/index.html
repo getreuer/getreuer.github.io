@@ -86,6 +86,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -136,7 +137,7 @@ id="toc-acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
-<div class="callout">
+<div class="callout important">
 <div class="callout-header">
 <p>
 🚀  Launched
@@ -149,7 +150,7 @@ href="https://docs.qmk.fm/newbs_git_using_your_master_branch#updating-your-maste
 your QMK set up</a> and see <a
 href="https://docs.qmk.fm/tap_hold#chordal-hold">Chordal Hold</a>.</p>
 </div>
-<div class="callout">
+<div class="callout important">
 <div class="callout-header">
 <p>
 🚀  Launched
@@ -159,7 +160,7 @@ href="https://docs.qmk.fm/tap_hold#chordal-hold">Chordal Hold</a>.</p>
 Find it under Oryx’s Advanced Configuration Settings (<a
 href="https://blog.zsa.io/chordal-hold/">announcement</a>).</p>
 </div>
-<div class="callout">
+<div class="callout important">
 <div class="callout-header">
 <p>
 🚀  Launched
@@ -255,7 +256,9 @@ when tap-hold keys are considered held vs. tapped based on the next
 pressed key. The library works on top of QMK’s existing tap-hold
 implementation. You define mod-tap and layer-tap keys as usual and use
 Achordion to fine-tune the behavior.</p>
-<p><img src="achordion.svg" /></p>
+<figure>
+<img src="achordion.svg" class="white-bg-svg" alt="Achordion diagram" />
+</figure>
 <p>When QMK settles a tap-hold key as “held,” Achordion intercepts the
 event. Achordion then revises the event as a tap or passes it along as a
 hold based on the following rules:</p>
@@ -317,8 +320,8 @@ href="../faqs/index.html#home-row-mods-are-hard-to-use">Home row mods
 are hard to use</a>.</p>
 <h3 id="non-module-installation-historical">Non-module installation
 (historical)</h3>
-<div class="callout" style="border-left-color: #e49f34">
-<div class="callout-header" style="background-color: #fdebd5">
+<div class="callout important">
+<div class="callout-header">
 <p>
 ⚠  Important
 </p>

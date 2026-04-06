@@ -89,6 +89,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -196,8 +197,8 @@ layout.</figcaption>
 </figure>
 <h3 id="non-module-installation-historical">Non-module installation
 (historical)</h3>
-<div class="callout" style="border-left-color: #e49f34">
-<div class="callout-header" style="background-color: #fdebd5">
+<div class="callout important">
+<div class="callout-header">
 <p>
 ⚠  Important
 </p>
@@ -403,10 +404,10 @@ speed of 66, for large-scale motions:</p>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">      </span><span class="op">{</span><span class="dv">24</span><span class="op">,</span><span class="pp"> </span><span class="dv">24</span><span class="op">,</span><span class="pp"> </span><span class="dv">24</span><span class="op">,</span><span class="pp"> </span><span class="dv">32</span><span class="op">,</span><span class="pp"> </span><span class="dv">58</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">,</span><span class="pp"> </span><span class="dv">66</span><span class="op">}</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">//     |               |               |               |           |</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">// t = 0.000           1.024           2.048           3.072       3.840 s</span></span></code></pre></div>
-<figure>
-<img src="default-curve.svg" alt="The default speed curve." />
-<figcaption aria-hidden="true">The default speed curve.</figcaption>
-</figure>
+<div style="text-align: center;">
+<p><img src="default-curve.svg" class="light-only" alt="The default speed curve." />
+<img src="default-curve-dark.svg" class="dark-only" alt="The default speed curve." /></p>
+</div>
 <p>Define <code>ORBITAL_MOUSE_SPEED_CURVE</code> in your config.h to use
 a different speed curve. You can represent just about any speed curve
 you like in this manner.</p>
@@ -495,8 +496,10 @@ function drawAxis(context) {
   var xScale = (canvas.width - 2 * xMargin) / 3.84;
 
   context.lineWidth = 1;
-  context.strokeStyle = "#000";
-  context.fillStyle = "#000";
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const color = isDark ? "#fff" : "#000";
+  context.strokeStyle = color;
+  context.fillStyle = color;
   context.moveTo(xMargin + 0.5, axisY);
   context.lineTo(canvas.width - xMargin + 1, axisY);
 
@@ -556,6 +559,14 @@ sfSlider.addEventListener("input", drawPlot, false);
 tfSlider.addEventListener("input", drawPlot, false);
 expSlider.addEventListener("input", drawPlot, false);
 window.addEventListener("resize", resizePlot);
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.type === "attributes" && mutation.attributeName === "data-theme") {
+      drawPlot();
+    }
+  });
+});
+observer.observe(document.documentElement, { attributes: true });
 resizePlot();
 </script>
 <h3 id="options">Options</h3>

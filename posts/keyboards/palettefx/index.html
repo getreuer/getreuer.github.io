@@ -86,6 +86,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -169,6 +170,20 @@ Acknowledgements</a></li>
 .palette-menu td img {
   border: 1px solid #444;
 }
+
+#color-picker {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--table-border);
+  padding: 2px;
+}
+
+#color-code {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--table-border);
+  padding: 4px 6px;
+}
 </style>
 <p><a href="../index.html">← More about keyboards</a></p>
 <div style="color: #ccc; background-color: #000; margin:auto; padding: 1em; text-align:center">
@@ -188,8 +203,9 @@ href="https://docs.qmk.fm/features/rgb_matrix#rgb-matrix-effects">QMK’s
 RGB Matrix</a> in which colors are sampled from a palette, aka color
 gradient or color map.</p>
 <figure>
-<img src="palette-synthwave.png" width="65.5%" style="margin: 0 1.5% 5pt 0"><br><img src="value-axis.svg"
-width="70%">
+<img src="palette-synthwave.png" width="65.5%" style="margin: 0 1.5% 5pt 0"><br>
+<img src="value-axis.svg" class="light-only" width="70%">
+<img src="value-axis-dark.svg" class="dark-only" width="70%">
 <figcaption aria-hidden="true">
 Mapping values in 0–255 to colors with the Synthwave palette.
 </figcaption>
@@ -764,8 +780,8 @@ Example:</p>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">// Or enable all palettes with</span></span>
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co">// #define PALETTEFX_ENABLE_ALL_PALETTES</span></span></code></pre></div>
-<div class="callout" style="border-left-color: #8ad359">
-<div class="callout-header" style="background-color: #e5f3d8">
+<div class="callout note">
+<div class="callout-header">
 <p>
 📝  Note
 </p>

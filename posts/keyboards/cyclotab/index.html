@@ -86,6 +86,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -115,7 +116,10 @@ window management</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
-<p><img src="cyclotab-splash.svg" alt="" style="display:block; margin:0 auto"></p>
+<div style="text-align: center;">
+<p><img src="cyclotab-splash.svg" alt="" class="light-only">
+<img src="cyclotab-splash-dark.svg" alt="" class="dark-only"></p>
+</div>
 <h2 id="overview">Overview</h2>
 <p><strong>Cyclotab</strong> is a QMK community module for more
 conveniently invoking Alt+Tab and other hotkeys of the same form (⌘+Tab,
@@ -150,8 +154,8 @@ Alt+Tab hotkey, activated by keycodes <code>A(KC_TAB)</code> (Alt+Tab)
 and <code>S(A(KC_TAB))</code> (Shift+Alt+Tab). Use one or both of these
 keycodes somewhere in your keymap. Other possible configurations are <a
 href="#other-alt-tab-like-hotkeys">described below</a>.</p>
-<div class="callout" style="border-left-color: #8ad359">
-<div class="callout-header" style="background-color: #e5f3d8">
+<div class="callout note">
+<div class="callout-header">
 <p>
 📝  Note
 </p>
@@ -175,10 +179,14 @@ windows.</p></li>
 release any other key such as Space. This key is “consumed” and not sent
 to the computer, e.g. so that a space is not inadvertently typed when
 switching to your terminal.</p>
-<p><img src="cyclotab-base-layer.svg" /></p>
+<figure>
+<p><img src="cyclotab-base-layer.svg" class="white-bg-svg" alt="Cyclotab Base Layer"/></p>
+</figure>
 <p>Alternatively, Alt is released automatically after a <a
 href="#timeout">configurable timeout</a>.</p>
-<p><img src="cyclotab-timeout.svg" /></p></li>
+<figure>
+<p><img src="cyclotab-timeout.svg" class="white-bg-svg" alt="Cyclotab Timeout"/></p>
+</figure></li>
 </ol>
 <p><strong>Use on a layer:</strong> You can use release of a layer
 switch to signal completion. Assign <code>A(KC_TAB)</code> to a key on a
@@ -190,7 +198,9 @@ layer 3.</p></li>
 number of times.</p></li>
 <li><p>Releasing <kbd>MO(3)</kbd> has the effect of releasing Alt
 immediately.</p>
-<p><img src="cyclotab-secondary-layer.svg" /></p></li>
+<figure>
+<p><img src="cyclotab-secondary-layer.svg" class="white-bg-svg" alt="Cyclotab Secondary Layer"/></p>
+</figure></li>
 </ol>
 <p>The Alt mod is released the instant the layer is exited. You might
 prefer this over waiting for the timeout. Note, Cyclotab still times out
@@ -276,8 +286,8 @@ different timeouts for different hotkeys. Example:</p>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="dv">1000</span><span class="op">;</span>  <span class="co">// Timeout of 1.0 seconds otherwise.</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<div class="callout" style="border-left-color: #8ad359">
-<div class="callout-header" style="background-color: #e5f3d8">
+<div class="callout note">
+<div class="callout-header">
 <p>
 📝  Note
 </p>

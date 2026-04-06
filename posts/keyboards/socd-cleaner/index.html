@@ -86,6 +86,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -129,8 +130,8 @@ id="toc-acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
-<div class="callout" style="border-left-color: #e49f34">
-<div class="callout-header" style="background-color: #fdebd5">
+<div class="callout warning">
+<div class="callout-header">
 <p>
 ⚠  Caution
 </p>
@@ -261,8 +262,8 @@ resolution strategy (more explanation below). For example, the following
 line defines <kbd>A</kbd> and <kbd>D</kbd> as opposing keys with
 <code>SOCD_CLEANER_LAST</code> resolution:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">{{</span>KC_A<span class="op">,</span> KC_D<span class="op">},</span> SOCD_CLEANER_LAST<span class="op">}</span></span></code></pre></div>
-<div class="callout" style="border-left-color: #8ad359">
-<div class="callout-header" style="background-color: #e5f3d8">
+<div class="callout note">
+<div class="callout-header">
 <p>
 📝  Note
 </p>
@@ -281,10 +282,14 @@ released while the opposing key is still held, the opposing key is
 reactivated. Rapid alternating inputs can be made. Repeatedly tapping
 the <kbd>D</kbd> key while <kbd>A</kbd> is held sends
 <code>ADADADAD</code>.</p>
-<p><img src="socd-last-timeline.svg" /></p></li>
+<figure>
+<p><img src="socd-last-timeline.svg" class="white-bg-svg" alt="SOCD Last Timeline"/></p>
+</figure></li>
 <li><p><code>SOCD_CLEANER_NEUTRAL</code>: Neutral resolution. When both
 keys are pressed, they cancel and neither is sent.</p>
-<p><img src="socd-neutral-timeline.svg" /></p></li>
+<figure>
+<p><img src="socd-neutral-timeline.svg" class="white-bg-svg" alt="SOCD Neutral Timeline"/></p>
+</figure></li>
 <li><p><code>SOCD_CLEANER_0_WINS</code>: Key 0 always wins, the first
 key listed in defining the <code>socd_cleaner_t</code>. For example, the
 <kbd>W</kbd> key always wins in</p>

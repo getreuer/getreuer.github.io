@@ -86,6 +86,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -124,11 +125,10 @@ types when it is shifted. For instance, how to make a key with
 normally and <code>;</code> when pressed shifted. Or how to implement
 “programmer” layouts having keys that type symbols normally and type the
 digits when pressed shifted.</p>
-<figure>
-<img src="example-custom-shifts.svg"
-alt="Some example custom shifts." />
-<figcaption aria-hidden="true">Some example custom shifts.</figcaption>
-</figure>
+<div style="text-align: center;">
+<p><img src="example-custom-shifts.svg" class="light-only" alt="Some example custom shifts." />
+<img src="example-custom-shifts-dark.svg" class="dark-only" alt="Some example custom shifts." /></p>
+</div>
 <p>It’s surprisingly tricky to get a custom shift key implemented just
 right. I’ve seen a lot of proposed solutions, and tried a few things
 myself. Some subtle gotchas:</p>
@@ -200,8 +200,8 @@ class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1
 </ul>
 <h3 id="non-module-installation-historical">Non-module installation
 (historical)</h3>
-<div class="callout" style="border-left-color: #e49f34">
-<div class="callout-header" style="background-color: #fdebd5">
+<div class="callout important">
+<div class="callout-header">
 <p>
 ⚠  Important
 </p>

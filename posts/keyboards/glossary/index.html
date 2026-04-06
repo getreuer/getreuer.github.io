@@ -21,6 +21,7 @@
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -201,10 +202,10 @@ retinaculum</a> connective tissue. The flexor tendons to the fingers and
 the <a href="https://en.wikipedia.org/wiki/Median_nerve">median
 nerve</a> pass through the carpal tunnel.</p>
 <figure>
-<img src="../thumb-ergo/carpal-tunnel.svg"
-alt="Median nerve passing through the carpal tunnel." />
-<figcaption aria-hidden="true">Median nerve passing through the carpal
-tunnel.</figcaption>
+<img src="../thumb-ergo/carpal-tunnel.svg" class="white-bg-svg" alt="Median nerve passing through the carpal tunnel." />
+<figcaption aria-hidden="true">
+Median nerve passing through the carpal tunnel.
+</figcaption>
 </figure>
 <p><a href="https://en.wikipedia.org/wiki/Carpal_tunnel_syndrome">Carpal
 tunnel syndrome (CTS)</a>, also more specifically referred to as
@@ -219,7 +220,10 @@ switch</a> are usually springy material. When the switch is pressed, the
 contacts bounce, causing a phenomenon called contact bounce or chatter
 where the raw digital reading bounces between 0 and 1 before settling to
 a steady contact.</p>
-<p><img src="../faqs/bounce.svg" /></p>
+<div style="text-align: center;">
+<p><img src="../faqs/bounce.svg" class="light-only" alt="Bounce" />
+<img src="../faqs/bounce-dark.svg" class="dark-only" alt="Bounce" /></p>
+</div>
 <ul>
 <li><a
 href="../faqs/index.html#pressing-a-key-sometimes-types-it-twice">Pressing
@@ -403,15 +407,21 @@ in <a
 href="https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf">HID
 Keyboard/Keypad Usage Page (0x07) spec</a>. The mods state is
 represented as an 8-bit bitfield:</p>
-<p><img src="8-bit-mods.svg" /></p>
+<figure>
+<img src="8-bit-mods.svg" class="white-bg-svg" alt="8-bit Mods"/>
+</figure>
 <p>Typically, the report has capacity to represent up to 6 held keys at
 once, implementing <a href="#key-rollover-6kro-nkro">6-key
 rollover</a>:</p>
-<p><img src="keyboard-report-6kro.svg" /></p>
+<figure>
+<img src="keyboard-report-6kro.svg" class="white-bg-svg" alt="6KRO Keyboard Report"/>
+</figure>
 <p>For <a href="#key-rollover-6kro-nkro">N-key rollover</a>, the report
 is extended with a 120-bit bitfield to represent the state of all 120
 supported keys:</p>
-<p><img src="keyboard-report-nkro.svg" /></p>
+<figure>
+<img src="keyboard-report-nkro.svg" class="white-bg-svg" alt="NKRO Keyboard Report"/>
+</figure>
 <h3 id="keycap">Keycap</h3>
 <p>The <strong>keycap</strong> is the flesh-facing part of the key that
 is pressed with the finger. On mechanical keyboards, it mounts on the
@@ -535,8 +545,8 @@ span the 2u distance between keys <kbd>E</kbd> and <kbd>T</kbd>.</p>
 <h3 id="layout-design">Layout design</h3>
 <p><strong>Layout design</strong> refers to the design of an <a
 href="#alpha-layout">alpha layout</a>, such as QWERTY or Colemak.</p>
-<div class="callout" style="border-left-color: #8ad359">
-<div class="callout-header" style="background-color: #e5f3d8">
+<div class="callout note">
+<div class="callout-header">
 <p>
 📝  Note
 </p>
@@ -571,18 +581,18 @@ metrics</li>
 <li><a
 href="https://cyanophage.github.io/playground.html?layout=qwfpbjluy%3B-arstgmneio%27zxcdvkh%2C.%2F%5C%5E&amp;mode=ergo&amp;lan=english">Cyanophage’s
 Layout Playground</a></li>
-<li><a href="https://github.com/O-X-E-Y/oxeylyzer"><img src="../../../github.svg"
-style="width:1.25em"> O-X-E-Y/oxeylyzer</a> layout optimizer</li>
-<li><a href="https://github.com/semilin/genkey"><img src="../../../github.svg"
-style="width:1.25em"> semilin/genkey</a> layout optimizer</li>
+<li><a href="https://github.com/O-X-E-Y/oxeylyzer"><img src="../../../github.svg" class="light-only" style="width:1.25em" /><img src="../../../github-dark.svg" class="dark-only" style="width:1.25em" /> O-X-E-Y/oxeylyzer</a>
+layout optimizer</li>
+<li><a href="https://github.com/semilin/genkey"><img src="../../../github.svg" class="light-only" style="width:1.25em" /><img src="../../../github-dark.svg" class="dark-only" style="width:1.25em" /> semilin/genkey</a>
+layout optimizer</li>
 </ul>
 <h3 id="macro-key">Macro key</h3>
 <p>A <strong>macro key</strong> is a key that, when pressed, sends a
 predefined sequence of keys such as typing your email address. Or used
 more broadly, a macro describes a key having some customized
 function.</p>
-<div class="callout" style="border-left-color: #e49f34">
-<div class="callout-header" style="background-color: #fdebd5">
+<div class="callout warning">
+<div class="callout-header">
 <p>
 ⚠  Warning
 </p>
@@ -716,10 +726,10 @@ columns. These columns are adjusted closer to the body to account for
 the shorter length of the pinky fingers. An “aggressive pinky stagger”
 describes a large offset.</p>
 <figure>
-<img src="pinky-stagger.svg"
-alt="Pinky stagger on the left half of a columnar keyboard." />
-<figcaption aria-hidden="true">Pinky stagger on the left half of a
-columnar keyboard.</figcaption>
+<img src="pinky-stagger.svg" class="white-bg-svg" alt="Pinky stagger on the left half of a columnar keyboard." />
+<figcaption aria-hidden="true">
+Pinky stagger on the left half of a columnar keyboard.
+</figcaption>
 </figure>
 <h3 id="polling-rate">Polling rate</h3>
 <p><strong>Polling rate</strong> refers to how frequently the keyboard
@@ -832,10 +842,10 @@ direction of the fingers. This further helps reduce <a
 href="#ulnar-deviation-radial-deviation">ulnar deviation</a> and makes
 off-home rows easier to reach.</p>
 <figure>
-<img src="keyboard-stagger.svg"
-alt="Different staggers illustrated for the left half of a keyboard." />
-<figcaption aria-hidden="true">Different staggers illustrated for the
-left half of a keyboard.</figcaption>
+<img src="keyboard-stagger.svg" class="white-bg-svg" alt="Different staggers illustrated for the left half of a keyboard." />
+<figcaption aria-hidden="true">
+Different staggers illustrated for the left half of a keyboard.
+</figcaption>
 </figure>
 <h3 id="same-finger-bigram-sfb">Same-finger bigram (SFB)</h3>
 <p>A <strong>same-finger bigram</strong> or <strong>SFB</strong> is a
@@ -927,10 +937,10 @@ Keyboard with adjustable splay (Goldtouch V2).
 href="#row-staggered-ortholinear-column-staggered">columnar layout</a>
 designs include a splay angle between the columns.</p>
 <figure>
-<img src="column-splay.svg"
-alt="Layout with splay between the columns." />
-<figcaption aria-hidden="true">Layout with splay between the
-columns.</figcaption>
+<img src="column-splay.svg" class="white-bg-svg" alt="Layout with splay between the columns." />
+<figcaption aria-hidden="true">
+Layout with splay between the columns.
+</figcaption>
 </figure>
 <h3 id="split-keyboard">Split keyboard</h3>
 <p>A <strong>true split keyboard</strong> is split in two separate
@@ -976,10 +986,10 @@ tip-ring-ring-sleeve connectors or similarly a <strong>TRS
 cable</strong> (tip-ring-sleeve). It provides data synchronization and
 power delivery between the two sides.</p>
 <figure>
-<img src="trrs-trs.svg"
-alt="Left: TRRS tip-ring-ring-connector. Right: TRS tip-ring-connector." />
-<figcaption aria-hidden="true">Left: TRRS tip-ring-ring-connector.
-Right: TRS tip-ring-connector.</figcaption>
+<img src="trrs-trs.svg" class="white-bg-svg" alt="Left: TRRS tip-ring-ring-connector. Right: TRS tip-ring-connector." />
+<figcaption aria-hidden="true">
+Left: TRRS tip-ring-ring-connector. Right: TRS tip-ring-connector.
+</figcaption>
 </figure>
 <p>Caution: <strong>do not connect or disconnect the TRRS cable while
 the keyboard is powered.</strong> Doing so may create a <a

@@ -86,6 +86,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../../../index.html">Home</a>
   <a href="../../../papers/index.html">Papers</a>
   <a href="../../../posts/index.html">Posts</a>
+  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -118,7 +119,7 @@ id="toc-acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <p><a href="../index.html">← More about keyboards</a></p>
-<div class="callout">
+<div class="callout important">
 <div class="callout-header">
 <p>
 🚀  Launched
@@ -130,7 +131,7 @@ href="https://docs.qmk.fm/newbs_git_using_your_master_branch#updating-your-maste
 your QMK set up</a> and see <a
 href="https://docs.qmk.fm/tap_hold#flow-tap">Flow Tap</a>.</p>
 </div>
-<div class="callout">
+<div class="callout important">
 <div class="callout-header">
 <p>
 🚀  Launched
@@ -140,7 +141,7 @@ href="https://docs.qmk.fm/tap_hold#flow-tap">Flow Tap</a>.</p>
 Find it under Oryx’s Advanced Configuration Settings (<a
 href="https://blog.zsa.io/tap-flow/">announcement</a>).</p>
 </div>
-<div class="callout">
+<div class="callout important">
 <div class="callout-header">
 <p>
 🚀  Launched
@@ -163,10 +164,11 @@ idle,</strong> for tap-hold keys in QMK. It is particularly useful for
 the preceding key, the tapping behavior is triggered. This basically
 disables HRMs during fast typing.</p>
 <figure>
-<img src="typing-events.svg"
-alt="A fast typing sequence of taps has short duration between successive key events" />
-<figcaption aria-hidden="true">A fast typing sequence of taps has short
-duration between successive key events</figcaption>
+<img src="typing-events.svg" class="white-bg-svg" alt="A fast typing sequence of taps has short duration between successive key events" />
+<figcaption aria-hidden="true">
+A fast typing sequence of taps has short duration between successive key
+events
+</figcaption>
 </figure>
 <p>The assumption is that only the tap function of tap-hold keys is
 desired for regular typing (though perhaps with an exception for Shift
@@ -176,10 +178,11 @@ Said another way, Tap Flow puts hold functions behind a speed bump. To
 invoke a hold function, you must pause at least briefly before pressing
 the tap-hold key.</p>
 <figure>
-<img src="hold-event.svg"
-alt="A longer duration “speed bump” is required preceding the use of a hold function." />
-<figcaption aria-hidden="true">A longer duration “speed bump” is
-required preceding the use of a hold function.</figcaption>
+<img src="hold-event.svg" class="white-bg-svg" alt="A longer duration 'speed bump' is required preceding the use of a hold function." />
+<figcaption aria-hidden="true">
+A longer duration “speed bump” is required preceding the use of a hold
+function.
+</figcaption>
 </figure>
 <p>The implementation is based on and inspired by <span class="citation"
 data-cites="filterpaper">@filterpaper</span>’s elegant <a
