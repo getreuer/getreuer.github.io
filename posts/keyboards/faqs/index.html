@@ -339,7 +339,8 @@ of typing speed</a>, based on tests on their site. By this data,
 <strong>if you can type over 70 words per minute (wpm), you are faster
 than about 95% of people.</strong> But see also the caveats below.</p>
 <figure>
-<img src="wpm-hists.svg" class="white-bg-svg" alt="WPM Distributions"/>
+<img src="wpm-hists.svg" class="light-only" alt="WPM Distributions"/>
+<img src="wpm-hists-dark.svg" class="dark-only" alt="WPM Distributions"/>
 </figure>
 <p>Some people can type well over 100 wpm. A few can type over 200 wpm.
 If you include stenography, some fast stenotypists can type over
@@ -679,10 +680,11 @@ on layer 2</h2>
 <p>Reorder the switched-to layer above the layer with the layer switch
 key.</p>
 <figure>
-<img src="keymap-layers.svg"
-alt="Example: Reaching layer 3 with a layer switch on layer 0." />
-<figcaption aria-hidden="true">Example: Reaching layer 3 with a layer
-switch on layer 0.</figcaption>
+<img src="keymap-layers.svg" class="light-only" alt="Example: Reaching layer 3 with a layer switch on layer 0."/>
+<img src="keymap-layers-dark.svg" class="dark-only" alt="Example: Reaching layer 3 with a layer switch on layer 0."/>
+<figcaption aria-hidden="true">
+Example: Reaching layer 3 with a layer switch on layer 0.
+</figcaption>
 </figure>
 <p>In QMK, ZMK, and other firmware, <strong>the keymap behaves as a
 <em>stack</em> of layers in which multiple layers can be active at
@@ -835,7 +837,8 @@ href="https://docs.qmk.fm/feature_layers">layer-tap keys</a>
 href="https://docs.qmk.fm/keycodes_basic">basic keycode</a>, a keycode
 in the 0–255 range.</p>
 <figure>
-<img src="mod-tap-keycode.svg" class="white-bg-svg" alt="Encoding of a mod-tap keycode." />
+<img src="mod-tap-keycode.svg" class="light-only white-bg-svg" alt="Encoding of a mod-tap keycode." />
+<img src="mod-tap-keycode-dark.svg" class="dark-only" alt="Encoding of a mod-tap keycode." />
 <figcaption aria-hidden="true">
 Encoding of a mod-tap keycode.
 </figcaption>
@@ -1178,8 +1181,8 @@ the <a
 href="https://github.com/qmk/qmk_firmware/blob/e99d6d582cd1ebdda35b2fda1cc170d6d24ad58b/quantum/action_tapping.c#L40-L42">tap-hold
 key implementation</a>):</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">// quantum/action_tapping.c</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>__attribute__<span class="op">((</span>weak<span class="op">))</span> <span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                                                  keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>__attribute__<span class="op">((</span>weak<span class="op">))</span> <span class="dt">bool</span> get_tapping_force_hold<span class="op">(</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The user can override it by making a “strong” redefinition of the
