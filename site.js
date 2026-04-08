@@ -1,12 +1,20 @@
-var prevScrollpos = window.pageYOffset;
-window.onscroll = function() {
-  var currentScrollPos = window.pageYOffset;
-  document.getElementById("navbar").style.top = 
-      (prevScrollpos > currentScrollPos ? "0" : "-75px");
-  prevScrollpos = currentScrollPos;
-}
+// Hide navbar on scroll down, show on scroll up.
+let prevScrollY = window.scrollY;
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      const currentScrollY = window.scrollY;
+      document.getElementById('navbar').style.top =
+          (prevScrollY > currentScrollY ? '0' : '-75px');
+      prevScrollY = currentScrollY;
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
 
-// Theme toggle logic
+// Theme toggle logic.
 const themes = ['auto', 'dark', 'light'];
 const icons = {
   'auto': 'brightness_6',
@@ -27,10 +35,6 @@ function applyTheme(theme) {
   }
 }
 
-// Apply theme immediately to avoid flash
-const currentTheme = getTheme();
-applyTheme(currentTheme);
-
 function updateButton(theme) {
   const button = document.getElementById('theme-toggle');
   if (button) {
@@ -39,16 +43,14 @@ function updateButton(theme) {
 }
 
 function cycleTheme() {
-  const currentTheme = getTheme();
-  const currentIndex = themes.indexOf(currentTheme);
-  const nextIndex = (currentIndex + 1) % themes.length;
-  const nextTheme = themes[nextIndex];
-  localStorage.setItem('theme', nextTheme);
-  applyTheme(nextTheme);
-  updateButton(nextTheme);
+  const current = getTheme();
+  const next = themes[(themes.indexOf(current) + 1) % themes.length];
+  localStorage.setItem('theme', next);
+  applyTheme(next);
+  updateButton(next);
 }
 
-// Setup event listener on load
+// Setup event listener on load.
 document.addEventListener('DOMContentLoaded', () => {
   updateButton(getTheme());
   const button = document.getElementById('theme-toggle');
