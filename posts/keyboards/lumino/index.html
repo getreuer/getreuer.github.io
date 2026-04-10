@@ -7,7 +7,10 @@
     (function(){var t=localStorage.getItem('theme');
     if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
   </script>
-  <meta name="author" content="Pascal Getreuer, 2025-11-01 (updated 2025-11-29)">
+  <meta name="author" content="Pascal Getreuer">
+  <meta name="description" content="Lumino provides minimal, opinionated
+RGB matrix control for QMK, cycling brightness between 3 states and
+turning off automatically when idle.">
   <title>Lumino: opinionated RGB Matrix light control</title>
   <style>code{white-space: pre;}</style>
   <style>
@@ -134,8 +137,8 @@ scheme for RGB matrix lighting:</p>
 between 3 states: off, 40%, and 100%. The set brightness is saved
 persistently to EEPROM.</p>
 <div style="text-align: center;">
-<p><img src="./lumino.svg" class="light-only" alt="Lumino" />
-<img src="./lumino-dark.svg" class="dark-only" alt="Lumino" /></p>
+<p><img src="./lumino.svg" class="light-only" alt="Lumino cycling between off, 40%, and 100% brightness" width="804" height="198" />
+<img src="./lumino-dark.svg" class="dark-only" alt="Lumino cycling between off, 40%, and 100% brightness" width="804" height="198" /></p>
 </div></li>
 <li><p>Lighting turns off when idle. The normal timeout is 2 minutes of
 inactivity. However, if the keyboard had few key strokes since it last
@@ -211,9 +214,9 @@ you may find it convenient to express them as
 <code>(1000 * 60 *</code> <em>&lt;minutes&gt;</em><code>)</code> for
 tuning in units of seconds or minutes rather than milliseconds.
 Example:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_LONG_TIMEOUT  </span><span class="dv">1000</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="dv">60</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="dv">5</span><span class="pp">  </span><span class="co">// = 5 minutes.</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_SOON_TIMEOUT  </span><span class="dv">1000</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="dv">12</span><span class="pp">      </span><span class="co">// = 12 seconds.</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_TRANSITION    </span><span class="dv">750</span><span class="pp">            </span><span class="co">// = 750 ms.</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_LONG_TIMEOUT  </span><span class="op">(</span><span class="dv">1000</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="dv">60</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="dv">5</span><span class="op">)</span><span class="pp">  </span><span class="co">// = 5 minutes.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_SOON_TIMEOUT  </span><span class="op">(</span><span class="dv">1000</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="dv">12</span><span class="op">)</span><span class="pp">      </span><span class="co">// = 12 seconds.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_TRANSITION    </span><span class="dv">750</span><span class="pp">              </span><span class="co">// = 750 ms.</span></span></code></pre></div>
 <p>Another example, where lighting never turns off:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_LONG_TIMEOUT  </span><span class="dv">0</span><span class="pp">              </span><span class="co">// Never time out.</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LUMINO_SOON_TIMEOUT  </span><span class="dv">0</span><span class="pp">              </span><span class="co">// Never time out.</span></span>
