@@ -7,7 +7,10 @@
     (function(){var t=localStorage.getItem('theme');
     if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
   </script>
-  <meta name="author" content="Pascal Getreuer, 2023-12-31 (updated 2025-11-01)">
+  <meta name="author" content="Pascal Getreuer">
+  <meta name="description" content="Orbital Mouse is an alternative QMK
+mouse control scheme using tank controls (heading and steering) for more
+intuitive keyboard-based mouse navigation.">
   <title>Orbital Mouse</title>
   <style>code{white-space: pre;}</style>
   <style>
@@ -152,7 +155,8 @@ real mouse or trackball hardware.</p>
 pointer moves according to a heading direction. Two keys move forward
 and backward along that direction while another two keys steer.</p>
 <figure>
-<img src="orbital-mouse.gif" alt="Orbital Mouse movement." />
+<img src="orbital-mouse.gif" width="636" height="236"
+alt="Orbital Mouse movement." />
 <figcaption aria-hidden="true">Orbital Mouse movement.</figcaption>
 </figure>
 <p><em>Figures have been enlarged and annotated in blue for sake of
@@ -162,13 +166,18 @@ annotations.</em></p>
 href="https://en.wikipedia.org/wiki/Tank_controls">tank controls</a>,
 like the player movement in earlier Resident Evil and Tomb Raiders
 games, but no monsters chasing your cursor.</p>
-<p><img src="path.png" /></p>
+<figure>
+<img src="path.png" width="562" height="327"
+alt="Illustration of the cursor path when steering." />
+<figcaption aria-hidden="true">Illustration of the cursor path when
+steering.</figcaption>
+</figure>
 <p>When steering, the cursor rotates (orbits!) around a circle to
 indicate change in heading direction. This rotation effect is
 additionally useful as a means of fine-scale control, good for hitting
 small targets like menu items and toolbar buttons.</p>
 <figure>
-<img src="fine-selection.png"
+<img src="fine-selection.png" width="376" height="258"
 alt="Through rotation, any of these three menu items are reachable." />
 <figcaption aria-hidden="true">Through rotation, any of these three menu
 items are reachable.</figcaption>
@@ -195,7 +204,8 @@ layout is:</p>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>OM_W_D <span class="op">,</span> OM_L   <span class="op">,</span> OM_D   <span class="op">,</span> OM_R   <span class="op">,</span> OM_SLOW<span class="op">,</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>OM_RELS<span class="op">,</span> OM_HLDS<span class="op">,</span> OM_SEL1<span class="op">,</span> OM_SEL2<span class="op">,</span> OM_SEL3<span class="op">,</span></span></code></pre></div>
 <figure>
-<img src="layout.png" alt="A suggested right-handed layout." />
+<img src="layout.png" width="323" height="218"
+alt="A suggested right-handed layout." />
 <figcaption aria-hidden="true">A suggested right-handed
 layout.</figcaption>
 </figure>
@@ -227,8 +237,8 @@ there.</p>
 “<code>MOUSEKEYS_ENABLE = no</code>” to save some firmware space.</p>
 <p><strong>Step 3:</strong> Include the orbital_mouse header by adding
 near the top of <code>keymap.c</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/orbital_mouse.h&quot;</span><span class="pp">`</span></span></code></pre></div>
-<p><strong>Step 3:</strong> Still in <code>keymap.c</code>, handle
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/orbital_mouse.h&quot;</span></span></code></pre></div>
+<p><strong>Step 4:</strong> Still in <code>keymap.c</code>, handle
 Orbital Mouse by defining (or adding to)
 <code>process_record_user()</code> and
 <code>housekeeping_task_user()</code> as</p>
@@ -244,7 +254,7 @@ Orbital Mouse by defining (or adding to)
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks ...</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><strong>Step 4:</strong> Use the Orbital Mouse keycodes in your
+<p><strong>Step 5:</strong> Use the Orbital Mouse keycodes in your
 layout in <code>keymap.c</code>.</p>
 <h2 id="keycodes">Keycodes</h2>
 <p>Orbital Mouse is controlled with the following keycodes.</p>
@@ -409,8 +419,8 @@ speed of 66, for large-scale motions:</p>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">//     |               |               |               |           |</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">// t = 0.000           1.024           2.048           3.072       3.840 s</span></span></code></pre></div>
 <div style="text-align: center;">
-<p><img src="default-curve.svg" class="light-only" alt="The default speed curve." />
-<img src="default-curve-dark.svg" class="dark-only" alt="The default speed curve." /></p>
+<p><img src="default-curve.svg" class="light-only" alt="The default speed curve." width="630" height="248" />
+<img src="default-curve-dark.svg" class="dark-only" alt="The default speed curve." width="630" height="248" /></p>
 </div>
 <p>Define <code>ORBITAL_MOUSE_SPEED_CURVE</code> in your config.h to use
 a different speed curve. You can represent just about any speed curve
@@ -447,44 +457,45 @@ Time (s)
 </p>
 </div>
 <script>
+(function() {
 // Copyright 2023 Google LLC.
 // SPDX-License-Identifier: Apache-2.0
-var s0Slider = document.getElementById("slider-s0");
-var s0SliderText = document.getElementById("slider-s0-text");
-var sfSlider = document.getElementById("slider-sf");
-var sfSliderText = document.getElementById("slider-sf-text");
-var tfSlider = document.getElementById("slider-tf");
-var tfSliderText = document.getElementById("slider-tf-text");
-var expSlider = document.getElementById("slider-exp");
-var expSliderText = document.getElementById("slider-exp-text");
-var speedCurveCode = document.getElementById("speed-curve-code");
-var canvas = document.getElementById("speed-canvas");
-var speedCurve = new Float32Array(16);
-var context = canvas.getContext("2d");
+const s0Slider = document.getElementById("slider-s0");
+const s0SliderText = document.getElementById("slider-s0-text");
+const sfSlider = document.getElementById("slider-sf");
+const sfSliderText = document.getElementById("slider-sf-text");
+const tfSlider = document.getElementById("slider-tf");
+const tfSliderText = document.getElementById("slider-tf-text");
+const expSlider = document.getElementById("slider-exp");
+const expSliderText = document.getElementById("slider-exp-text");
+const speedCurveCode = document.getElementById("speed-curve-code");
+const canvas = document.getElementById("speed-canvas");
+const speedCurve = new Float32Array(16);
+const context = canvas.getContext("2d");
 
 function drawCurve(context, yData, color) {
-  var canvas = context.canvas;
-  var measure = context.measureText("0.0");
-  var xMargin = measure.width / 2;
-  var yMargin = measure.fontBoundingBoxAscent + 9;
-  var xScale = (canvas.width - 2 * xMargin) / (yData.length - 1);
-  var yScale = (canvas.height - yMargin) / 101;
+  const canvas = context.canvas;
+  const measure = context.measureText("0.0");
+  const xMargin = measure.width / 2;
+  const yMargin = measure.fontBoundingBoxAscent + 9;
+  const xScale = (canvas.clientWidth - 2 * xMargin) / (yData.length - 1);
+  const yScale = (canvas.clientHeight - yMargin) / 101;
   context.strokeStyle = color;
   context.fillStyle = color;
   context.lineWidth = 2.2;
   context.beginPath();
   context.moveTo(xMargin, yScale * (101 - yData[0]));
   for (let n = 1; n < yData.length; n++) {
-    var x = xMargin + xScale * n;
-    var y = yScale * (101 - yData[n]);
+    const x = xMargin + xScale * n;
+    const y = yScale * (101 - yData[n]);
     context.lineTo(x, y);
   }
   context.stroke();
 
-  var radius = 2.5;
+  const radius = 2.5;
   for (let n = 0; n < yData.length; n++) {
-    var x = xMargin + xScale * n;
-    var y = yScale * (101 - yData[n]);
+    const x = xMargin + xScale * n;
+    const y = yScale * (101 - yData[n]);
     context.beginPath();
     context.ellipse(x, y, radius, radius, 0, 0, 2 * Math.PI);
     context.fill();
@@ -492,32 +503,33 @@ function drawCurve(context, yData, color) {
 }
 
 function drawAxis(context) {
-  var canvas = context.canvas;
-  var measure = context.measureText("0.0");
-  var xMargin = measure.width / 2;
-  var yMargin = measure.fontBoundingBoxAscent + 9;
-  var axisY = canvas.height - yMargin;
-  var xScale = (canvas.width - 2 * xMargin) / 3.84;
+  const canvas = context.canvas;
+  const measure = context.measureText("0.0");
+  const xMargin = measure.width / 2;
+  const yMargin = measure.fontBoundingBoxAscent + 9;
+  const axisY = canvas.clientHeight - yMargin;
+  const xScale = (canvas.clientWidth - 2 * xMargin) / 3.84;
 
   context.lineWidth = 1;
   const color = 
     getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim() || "#000";
   context.strokeStyle = color;
   context.fillStyle = color;
+  context.beginPath();
   context.moveTo(xMargin + 0.5, axisY);
-  context.lineTo(canvas.width - xMargin + 1, axisY);
+  context.lineTo(canvas.clientWidth - xMargin + 1, axisY);
 
   for (let n = 0; n <= 3; n++) {
-    var x = 0.5 + xMargin + xScale * n;
+    const x = 0.5 + xMargin + xScale * n;
     context.moveTo(x, axisY);
     context.lineTo(x, axisY + 6);
   }
   context.stroke();
 
   for (let n = 0; n <= 3; n++) {
-    var x = 0.5 + xMargin + xScale * n;
-    var label = n;
-    context.fillText(label, x, canvas.height - 1);
+    const x = 0.5 + xMargin + xScale * n;
+    const label = n;
+    context.fillText(label, x, canvas.clientHeight - 1);
   }
 }
 
@@ -526,11 +538,11 @@ function drawPlot() {
   const sf = Number(sfSlider.value); 
   const tf = 0.0384 * Number(tfSlider.value);
   const p = Number(expSlider.value) / 50;
-  var code = "";
+  let code = "";
 
   for (let n = 0; n < 16; n++) {
-    var t = 0.256 * n;
-    var s = Math.round(
+    const t = 0.256 * n;
+    const s = Math.round(
         s0 + (sf - s0) * Math.pow(Math.min(t / tf, 1), p));
     speedCurve[n] = s;
     code += (n === 0 ? "" : ", ") + (s > 9 ? "" : " ") + s.toString();
@@ -542,9 +554,8 @@ function drawPlot() {
   expSliderText.innerText = `${p.toFixed(2)}`;
   speedCurveCode.innerText = `      {${code}}`;
 
-  context.reset();
-  context.clearRect(0, 0, canvas.width, canvas.height);
-  context.font = "85% serif";
+  context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+  context.font = "14px serif";
   context.textAlign = "center";
   context.lineJoin = "bevel";
 
@@ -555,8 +566,10 @@ function drawPlot() {
 }
 
 function resizePlot() {
-  canvas.width = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = canvas.clientWidth * dpr;
+  canvas.height = canvas.clientHeight * dpr;
+  context.setTransform(dpr, 0, 0, dpr, 0, 0);
   drawPlot();
 }
 
@@ -564,7 +577,11 @@ s0Slider.addEventListener("input", drawPlot, false);
 sfSlider.addEventListener("input", drawPlot, false);
 tfSlider.addEventListener("input", drawPlot, false);
 expSlider.addEventListener("input", drawPlot, false);
-window.addEventListener("resize", resizePlot);
+const resizeObserver = new ResizeObserver(() => {
+  resizePlot();
+});
+resizeObserver.observe(canvas);
+
 const observer = new MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
     if (mutation.type === "attributes" && mutation.attributeName === "data-theme") {
@@ -573,7 +590,7 @@ const observer = new MutationObserver((mutations) => {
   });
 });
 observer.observe(document.documentElement, { attributes: true });
-resizePlot();
+})();
 </script>
 <h3 id="options">Options</h3>
 <p>Orbital Mouse can be further customized by tuning the following
@@ -599,10 +616,10 @@ turning speed when holding <code>OM_SLOW</code>. Must be in [0, 1].
 Default is <code>0.5</code>.</p>
 <p><code>ORBITAL_MOUSE_FAST_MOVE_FACTOR</code> is the factor applied to
 forward/backward movement speed when holding <code>OM_FAST</code>. Must
-be in [0, 1]. Default is <code>3.0</code>.</p>
+be ≥ 0. Default is <code>3.0</code>.</p>
 <p><code>ORBITAL_MOUSE_FAST_TURN_FACTOR</code> is the factor applied to
-turning speed when holding <code>OM_FAST</code>. Must be in [0, 1].
-Default is <code>2.0</code>.</p>
+turning speed when holding <code>OM_FAST</code>. Must be ≥ 0. Default is
+<code>2.0</code>.</p>
 <p><code>ORBITAL_MOUSE_WHEEL_SPEED</code> is the mouse wheel speed in
 units per 16-ms interval, specified as a double value. Must be in [0,
 3.99]. Default is <code>0.2</code>.</p>
