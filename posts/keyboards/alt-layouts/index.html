@@ -7,7 +7,10 @@
     (function(){var t=localStorage.getItem('theme');
     if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
   </script>
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2026-02-21)">
+  <meta name="author" content="Pascal Getreuer">
+  <meta name="description" content="A comprehensive guide to alternative
+keyboard layouts (Dvorak, Colemak, Gallium, etc.), how to learn them,
+and tips for programming and Vim.">
   <title>A guide to alt keyboard layouts (why, how, which one?)</title>
   <style>code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css">
@@ -130,6 +133,7 @@ use; higher is better for <a
 href="../glossary/index.html#roll">rolls</a>.</p>
 <div class="eqscroll">
 <table class="metrics">
+<thead>
 <tr>
 <th>
 Layout
@@ -153,9 +157,11 @@ Redir
 Pinky off
 </th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>
-<a href="https://en.wikipedia.org/wiki/QWERTY"target="_blank">QWERTY
+<a href="https://en.wikipedia.org/wiki/QWERTY" target="_blank" rel="noopener noreferrer">QWERTY
 (1873)</a>
 </td>
 <td class="cmap31">
@@ -179,7 +185,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://en.wikipedia.org/wiki/Dvorak_keyboard_layout"target="_blank">Dvorak
+<a href="https://en.wikipedia.org/wiki/Dvorak_keyboard_layout" target="_blank" rel="noopener noreferrer">Dvorak
 (1936)</a>
 </td>
 <td class="cmap31">
@@ -203,7 +209,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="http://www.pvv.org/~hakonhal/main.cgi/keyboard"target="_blank">Arensito
+<a href="http://www.pvv.org/~hakonhal/main.cgi/keyboard" target="_blank" rel="noopener noreferrer">Arensito
 (2001)</a>
 </td>
 <td class="cmap25">
@@ -227,7 +233,8 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://colemak.com/"target="_blank">Colemak (2006)</a>
+<a href="https://colemak.com/" target="_blank" rel="noopener noreferrer">Colemak
+(2006)</a>
 </td>
 <td class="cmap21">
 0.91%
@@ -250,7 +257,8 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://workmanlayout.org/"target="_blank">Workman (2010)</a>
+<a href="https://workmanlayout.org/" target="_blank" rel="noopener noreferrer">Workman
+(2010)</a>
 </td>
 <td class="cmap31">
 1.97%
@@ -273,7 +281,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://mathematicalmulticore.wordpress.com/the-keyboard-layout-project/"target="_blank">MTGAP
+<a href="https://mathematicalmulticore.wordpress.com/the-keyboard-layout-project/" target="_blank" rel="noopener noreferrer">MTGAP
 (2010)</a>
 </td>
 <td class="cmap22">
@@ -297,7 +305,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://colemakmods.github.io/mod-dh/"target="_blank">Colemak-DH
+<a href="https://colemakmods.github.io/mod-dh/" target="_blank" rel="noopener noreferrer">Colemak-DH
 (2014)</a>
 </td>
 <td class="cmap21">
@@ -321,7 +329,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://github.com/MadRabbit/halmak"target="_blank">Halmak
+<a href="https://github.com/MadRabbit/halmak" target="_blank" rel="noopener noreferrer">Halmak
 (2016)</a>
 </td>
 <td class="cmap31">
@@ -345,7 +353,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://cyanophage.github.io/playground.html?layout=qyouzwdnck-hiea%2Cgtrsp%3Bj%27%2F.xvmlfb%5C%5E&mode=ergo&lan=english"target="_blank">BEAKL19bis
+<a href="https://cyanophage.github.io/playground.html?layout=qyouzwdnck-hiea%2Cgtrsp%3Bj%27%2F.xvmlfb%5C%5E&mode=ergo&lan=english" target="_blank" rel="noopener noreferrer">BEAKL19bis
 (2020)</a>
 </td>
 <td class="cmap24">
@@ -369,7 +377,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://sites.google.com/alanreiser.com/handsdown"target="_blank">Handsdown
+<a href="https://sites.google.com/alanreiser.com/handsdown" target="_blank" rel="noopener noreferrer">Handsdown
 Neu (2021)</a>
 </td>
 <td class="cmap11">
@@ -393,7 +401,8 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://engram.dev/"target="_blank">Engram (2021)</a>
+<a href="https://engram.dev/" target="_blank" rel="noopener noreferrer">Engram
+(2021)</a>
 </td>
 <td class="cmap28">
 1.01%
@@ -416,7 +425,8 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://semilin.github.io/"target="_blank">Semimak (2021)</a>
+<a href="https://semilin.github.io/" target="_blank" rel="noopener noreferrer">Semimak
+(2021)</a>
 </td>
 <td class="cmap0">
 0.59%
@@ -439,7 +449,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/Apsu/APT#aptv3-layout"target="_blank">APTv3
+<a href="https://github.com/Apsu/APT#aptv3-layout" target="_blank" rel="noopener noreferrer">APTv3
 (2021)</a>
 </td>
 <td class="cmap14">
@@ -463,7 +473,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://www.reddit.com/r/KeyboardLayouts/comments/tpwyjc/sertain_nerts_nerps_low_redirect_low_sfb_low/"target="_blank">Nerps
+<a href="https://www.reddit.com/r/KeyboardLayouts/comments/tpwyjc/sertain_nerts_nerps_low_redirect_low_sfb_low/" target="_blank" rel="noopener noreferrer">Nerps
 (2022)</a>
 </td>
 <td class="cmap17">
@@ -487,7 +497,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/Apsu/Canary"target="_blank">Canary
+<a href="https://github.com/Apsu/Canary" target="_blank" rel="noopener noreferrer">Canary
 (2022)</a>
 </td>
 <td class="cmap4">
@@ -511,7 +521,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://o-x-e-y.github.io/layouts/sturdy/index.html"target="_blank">Sturdy
+<a href="https://o-x-e-y.github.io/layouts/sturdy/index.html" target="_blank" rel="noopener noreferrer">Sturdy
 (2022)</a>
 </td>
 <td class="cmap2">
@@ -535,7 +545,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/GalileoBlues/Gallium"target="_blank">Gallium
+<a href="https://github.com/GalileoBlues/Gallium" target="_blank" rel="noopener noreferrer">Gallium
 (2023)</a>
 </td>
 <td class="cmap2">
@@ -559,7 +569,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/rdavison/graphite-layout"target="_blank">Graphite
+<a href="https://github.com/rdavison/graphite-layout" target="_blank" rel="noopener noreferrer">Graphite
 (2023)</a>
 </td>
 <td class="cmap6">
@@ -583,7 +593,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/GalileoBlues/Recurva"target="_blank">Recurva
+<a href="https://github.com/GalileoBlues/Recurva" target="_blank" rel="noopener noreferrer">Recurva
 (2023)</a>
 </td>
 <td class="cmap0">
@@ -607,7 +617,7 @@ Neu (2021)</a>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/Keyhabit/Focal-keyboard-layout/"target="_blank">Focal
+<a href="https://github.com/Keyhabit/Focal-keyboard-layout/" target="_blank" rel="noopener noreferrer">Focal
 (2024)</a>
 </td>
 <td class="cmap0">
@@ -629,6 +639,7 @@ Neu (2021)</a>
 2.09%
 </td>
 </tr>
+</tbody>
 </table>
 </div>
 <ul>
@@ -737,8 +748,7 @@ used to remove the top SFBs and type common n-grams. It’s a magical
 typing experience!</p>
 <figure>
 <div>
-<p><img src="magic-sturdy-layout.svg"
-alt="Ikcelaks’ Magic Sturdy layout plus a few tweaks of my own." /></p>
+<p><img src="magic-sturdy-layout.svg" alt="Magic Sturdy keyboard layout" /></p>
 <div
 style="font-size:85%; display:flex; flex-wrap: wrap; margin: 0 0 1em 0.5em; text-align:left">
 <p style="flex:1; min-width:8em">
@@ -767,15 +777,15 @@ style="font-size:85%; display:flex; flex-wrap: wrap; margin: 0 0 1em 0.5em; text
 </p>
 </div>
 </div>
-<figcaption style="clear:both" aria-hidden="true">
+<figcaption style="clear:both">
 Ikcelaks’ Magic Sturdy layout plus a few tweaks of my own. ★ is the
 magic key.
 </figcaption>
 </figure>
 <p>The magic key is implemented in QMK using the <a
 href="https://docs.qmk.fm/features/repeat_key#alternate-repeating">Alternate
-Repeat Key</a>. Or in Kanata, one can implement magic keys using Kanta’s
-<a href="https://jtroo.github.io/config.html#switch">switch and
+Repeat Key</a>. Or in Kanata, one can implement magic keys using
+Kanata’s <a href="https://jtroo.github.io/config.html#switch">switch and
 key-history</a> constructs.</p>
 <p>More magic: <a href="https://rafaelromao.github.io/romak/">Magic
 Romak</a>, <a
@@ -861,7 +871,7 @@ debatable whether that’s historically accurate</a>.</p>
 <picture> <source type="image/webp" srcset="remington.webp">
 <source type="image/jpeg" srcset="remington.jpg">
 <img src="remington.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<figcaption>
 1930s Remington portable typewriter with QWERTY layout. Photo by
 Mariochs, distributed under a <a
 href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">CC BY-SA
@@ -928,6 +938,7 @@ Down Promethium</a>.</p>
 <p>Metrics for a few such layouts:</p>
 <div class="eqscroll">
 <table class="metrics">
+<thead>
 <tr>
 <th>
 Layout
@@ -951,9 +962,11 @@ Redir
 Pinky off
 </th>
 </tr>
+</thead>
+<tbody>
 <tr>
 <td>
-<a href="https://en.wikipedia.org/wiki/Maltron#Layouts"target="_blank">Maltron
+<a href="https://en.wikipedia.org/wiki/Maltron#Layouts" target="_blank" rel="noopener noreferrer">Maltron
 (1977)</a>
 </td>
 <td class="cmap4">
@@ -977,7 +990,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://xsznix.wordpress.com/2016/05/16/introducing-the-rsthd-layout/"target="_blank">RSTHD
+<a href="https://xsznix.wordpress.com/2016/05/16/introducing-the-rsthd-layout/" target="_blank" rel="noopener noreferrer">RSTHD
 (2016)</a>
 </td>
 <td class="cmap7">
@@ -1001,7 +1014,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://sites.google.com/alanreiser.com/handsdown/home/hands-down-neu"target="_blank">Vibranium
+<a href="https://sites.google.com/alanreiser.com/handsdown/home/hands-down-neu" target="_blank" rel="noopener noreferrer">Vibranium
 (2023)</a>
 </td>
 <td class="cmap0">
@@ -1025,7 +1038,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://www.reddit.com/r/KeyboardLayouts/comments/1g66ivi/hands_down_promethium_snth_meets_hd_silverengram/"target="_blank">Promethium
+<a href="https://www.reddit.com/r/KeyboardLayouts/comments/1g66ivi/hands_down_promethium_snth_meets_hd_silverengram/" target="_blank" rel="noopener noreferrer">Promethium
 (2024)</a>
 </td>
 <td class="cmap0">
@@ -1049,7 +1062,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://www.reddit.com/r/KeyboardLayouts/comments/1g895nx/comment/lsyw81b/"target="_blank">Caster
+<a href="https://www.reddit.com/r/KeyboardLayouts/comments/1g895nx/comment/lsyw81b/" target="_blank" rel="noopener noreferrer">Caster
 (2024)</a>
 </td>
 <td class="cmap2">
@@ -1073,7 +1086,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://github.com/empressabyss/nordrassil"target="_blank">Nordrassil
+<a href="https://github.com/empressabyss/nordrassil" target="_blank" rel="noopener noreferrer">Nordrassil
 (2024)</a>
 </td>
 <td class="cmap12">
@@ -1097,7 +1110,7 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://luminespire.github.io/night/home.html"target="_blank">Night
+<a href="https://luminespire.github.io/night/home.html" target="_blank" rel="noopener noreferrer">Night
 (2024)</a>
 </td>
 <td class="cmap0">
@@ -1121,8 +1134,8 @@ Pinky off
 </tr>
 <tr>
 <td>
-<a href="https://github.com/sunaku/enthium"target="_blank">Enthium v10
-(2025)</a>
+<a href="https://github.com/sunaku/enthium" target="_blank" rel="noopener noreferrer">Enthium
+v10 (2025)</a>
 </td>
 <td class="cmap0">
 0.42%
@@ -1143,6 +1156,7 @@ Pinky off
 3.31%
 </td>
 </tr>
+</tbody>
 </table>
 </div>
 <p>Many other thumb key layouts are catalogued and discussed in
@@ -1153,7 +1167,7 @@ removing conflicts with bigrams involving <code>E</code> for significant
 improvement in SFBs, as well as other metrics. A downside is that such
 layouts are not usable (without creativity) on conventional keyboards.
 Another potential concern is the extra load on the thumbs—<a
-href=".../thumb-ergo/index.html">PSA: Thumbs can get overuse
+href="../thumb-ergo/index.html">PSA: Thumbs can get overuse
 injuries</a>.</p>
 <h3 id="one-handed-typing-devices-and-layouts">One-handed typing devices
 and layouts</h3>
@@ -1371,11 +1385,11 @@ speed.</p></li>
 <li><p><a href="https://entertrained.app/">Entertrained</a> has you pick
 a book (among a selection of famous works like <em>Dracula</em> and
 <em>Crime and Punishment</em>), then essentially, you type the book as
-typing practice. To make this manageable, the each paragraph is
-considered its own exercise, after which you may pause and rest before
-beginning the next paragraph, and all progress is saved. Entertrained is
-my latest favorite typing practice site. It’s more fun than typing
-random words.</p></li>
+typing practice. To make this manageable, each paragraph is considered
+its own exercise, after which you may pause and rest before beginning
+the next paragraph, and all progress is saved. Entertrained is my latest
+favorite typing practice site. It’s more fun than typing random
+words.</p></li>
 </ul>
 <h2 id="what-about-languages-other-than-english">What about languages
 other than English?</h2>
@@ -1416,7 +1430,7 @@ href="https://www.reddit.com/r/KeyboardLayouts/comments/1oazi45/galliumnl_a_more
 <td>
 English + Dutch
 </td>
-<tr>
+</tr>
 <tr>
 <td>
 <a href="https://ergol.org/">Ergo-L</a>
@@ -1424,7 +1438,7 @@ English + Dutch
 <td>
 English + French
 </td>
-<tr>
+</tr>
 <tr>
 <td>
 <a href="https://dariogoetz.github.io/noted-layout/">Noted</a>
@@ -1432,7 +1446,7 @@ English + French
 <td>
 English + German
 </td>
-<tr>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/rpnfan/Anymak">Anymak:END</a>
@@ -1440,7 +1454,7 @@ English + German
 <td>
 English + German + Dutch
 </td>
-<tr>
+</tr>
 <tr>
 <td>
 <a href="https://www.kordos.com/keyboard.html">Kordos</a>
@@ -1448,7 +1462,7 @@ English + German + Dutch
 <td>
 English + Polish
 </td>
-<tr>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/christoofar/canaria">Canaria</a>
@@ -1456,7 +1470,7 @@ English + Polish
 <td>
 English + Spanish
 </td>
-<tr>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/rollbear/keyboard-layout">Fahller</a>
@@ -1464,7 +1478,7 @@ English + Spanish
 <td>
 English + Swedish
 </td>
-<tr>
+</tr>
 <tr>
 <td>
 <a href="https://bepo.fr/wiki/Accueil">Bépo</a>
@@ -1472,7 +1486,7 @@ English + Swedish
 <td>
 French
 </td>
-<tr>
+</tr>
 <tr>
 <td>
 <a href="https://www.neo-layout.org/">Neo</a>
@@ -1480,7 +1494,7 @@ French
 <td>
 German
 </td>
-<tr>
+</tr>
 <tr>
 <td>
 <a href="https://engram-layouts.xyz/engram-es/">Engram-es</a>
