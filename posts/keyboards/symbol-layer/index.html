@@ -7,7 +7,10 @@
     (function(){var t=localStorage.getItem('theme');
     if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
   </script>
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2025-11-02)">
+  <meta name="author" content="Pascal Getreuer">
+  <meta name="description" content="Design principles and examples for
+creating an optimized symbol layer on a programmable keyboard,
+considering bigrams and character frequencies.">
   <title>Designing a Symbol Layer</title>
   <style>code{white-space: pre;}</style>
   <style>
@@ -146,8 +149,8 @@ frequencies</a></li>
 those symbols that didn’t fit on the base layer, especially with smaller
 boards.</p>
 <figure>
-<img src="my-layer-v2.png" alt="A symbol layer." />
-<figcaption aria-hidden="true">A symbol layer.</figcaption>
+<img src="my-layer-v2.png" alt="An optimized symbol layer." />
+<figcaption aria-hidden="true">An optimized symbol layer.</figcaption>
 </figure>
 <p>A lot of effort has gone into optimizing the layout of the alpha
 keys—Dvorak, Colemak, MTGAP, BEAKL, RSTHD, to name a few (see <a
@@ -189,7 +192,6 @@ keys can be on the home row and not all bigrams can be inward rolls. We
 need to make compromises.</p>
 <h3 id="automatic-optimization">Automatic optimization?</h3>
 <p>There are keyboard layout optimizer tools (like <a
-href="http://mkweb.bcgsc.ca/carpalx/">Carpalx</a>, <a
 href="https://github.com/xsznix/keygen">xsznix/keygen</a>, <a
 href="https://github.com/semilin/genkey">semilin/genkey</a>, and <a
 href="https://github.com/O-X-E-Y/oxeylyzer">O-X-E-Y/oxeylyzer</a>) that
@@ -427,7 +429,8 @@ important to learn your keyboard layers.</p>
 <figure>
 <picture> <source type="image/webp" srcset="reminder-note.webp">
 <source type="image/jpeg" srcset="reminder-note.jpg">
-<img src="reminder-note.jpg" alt=""> </picture>
+<img src="reminder-note.jpg" alt="Handwritten reminder note that I keep below my monitor." loading="lazy">
+</picture>
 <figcaption aria-hidden="true">
 A reminder note with a symbol layer.
 </figcaption>
@@ -492,7 +495,7 @@ For instance in Vim, many symbol keys are hotkeys in normal mode, like
 <ul>
 <li><p><code>.</code> and <code>,</code> are extremely frequent. You
 probably want them as unshifted keys on the base layer. In code,
-<code>_</code> is also near the top, so I put a <kbd>∗</kbd> key on my
+<code>_</code> is also near the top, so I put a <kbd>_</kbd> key on my
 base layer.</p></li>
 <li><p>Digits <code>0 1 2</code> are more frequent than the other
 digits, an observation known as <a
