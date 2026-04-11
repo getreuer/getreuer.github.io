@@ -7,7 +7,10 @@
     (function(){var t=localStorage.getItem('theme');
     if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
   </script>
-  <meta name="author" content="Pascal Getreuer, 2022-05-15 (updated 2026-04-05)">
+  <meta name="author" content="Pascal Getreuer">
+  <meta name="description" content="Frequently asked questions about
+ergonomic keyboards, covering shopping tips, touch typing, home row
+mods, debouncing, input lag, and QMK fixes.">
   <title>Keyboard FAQs</title>
   <style>code{white-space: pre;}</style>
   <style>
@@ -187,8 +190,8 @@ popular examples are the Lily58, Sofle, and Corne split keyboards.</p>
 <figure>
 <picture> <source type="image/webp" srcset="../moonlander.webp">
 <source type="image/jpeg" srcset="../moonlander.jpg">
-<img src="../moonlander.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../moonlander.jpg" alt="" width="800" height="344"> </picture>
+<figcaption>
 ZSA Moonlander
 </figcaption>
 </figure>
@@ -203,12 +206,13 @@ href="https://www.reddit.com/r/mechmarket/">r/mechmarket</a>.</p>
 <picture>
 <source type="image/webp" srcset="../thumb-ergo/test-fit.webp">
 <source type="image/jpeg" srcset="../thumb-ergo/test-fit.jpg">
-<img src="../thumb-ergo/test-fit.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../thumb-ergo/test-fit.jpg" alt="" width="519" height="360" loading="lazy">
+</picture>
+<figcaption>
 Trying my hand on a print of the Lily58.
 </figcaption>
 </figure>
-<p>If you are thinking to buy a keyboard, look it up on <a
+<p>If you are thinking of buying a keyboard, look it up on <a
 href="https://jhelvy.shinyapps.io/splitkbcompare/">Splitkbcompare</a>,
 which contains the layouts for many popular split models, and make a 1:1
 paper print to test how it fits your hand. Printing tips: check the
@@ -218,7 +222,7 @@ since that is where the fit issues are most troublesome.</p>
 <p><strong>A few notes to give fair warning…</strong></p>
 <ul>
 <li><p>Expect to pay $250 USD or more for a prebuilt custom keyboard.
-Yes, that’s a lot compared to a basic keyboard. Split ergo keyboard are
+Yes, that’s a lot compared to a basic keyboard. Split ergo keyboards are
 more work to assemble and are a small niche, unfortunately against the
 economies of scale. However, if typing is essential to your livelihood,
 what price would you pay to type pain free? It’s not that much among
@@ -262,10 +266,10 @@ on Wrist/Palm Supports</a>:</p>
 <ul>
 <li>Performing keying tasks without a wrist rest may increase the angle
 to which users’ wrists are bent. Increasing the angle of bend increases
-the contact stress and irritation on tendons and tendon sheathes. This
-is especially true with high repetition or prolonged keying tasks.
-Keying without a wrist rest can also increase contact stress between the
-users wrist and hard or sharp workstation components.</li>
+the contact stress and irritation on tendons and tendon sheaths. This is
+especially true with high repetition or prolonged keying tasks. Keying
+without a wrist rest can also increase contact stress between the users
+wrist and hard or sharp workstation components.</li>
 <li>Resting the wrist/palm on a support while typing may inhibit motion
 of the wrist and could increase <a
 href="https://www.osha.gov/etools/computer-workstations/components/keyboards#accordion-70073-collapse3">awkward
@@ -343,8 +347,8 @@ of typing speed</a>, based on tests on their site. By this data,
 <strong>if you can type over 70 words per minute (wpm), you are faster
 than about 95% of people.</strong> But see also the caveats below.</p>
 <figure>
-<img src="wpm-hists.svg" class="light-only" alt="WPM Distributions"/>
-<img src="wpm-hists-dark.svg" class="dark-only" alt="WPM Distributions"/>
+<img src="wpm-hists.svg" class="light-only" alt="WPM Distributions" width="447" height="384" loading="lazy"/>
+<img src="wpm-hists-dark.svg" class="dark-only" alt="WPM Distributions" width="447" height="384" loading="lazy"/>
 </figure>
 <p>Some people can type well over 100 wpm. A few can type over 200 wpm.
 If you include stenography, some fast stenotypists can type over
@@ -441,12 +445,13 @@ Quantum tab for your home row keys. Don’t use Tap Dances for that. Under
 the QMK Settings tab, supposing you have Vial 0.7.4 or newer, check
 <strong>Permissive Hold</strong> and <strong>Chordal Hold</strong>, and
 ensure that <strong>Hold On Other Key Press</strong> is
-<em>unchecked</em>.</p>
+<em>unchecked</em>.</p></li>
+</ul>
 <figure>
-<img src="./vial-tap-hold-options.png"
-alt="Suggested Vial tap-hold configuration." />
-<figcaption aria-hidden="true">Suggested Vial tap-hold
-configuration.</figcaption>
+<img src="./vial-tap-hold-options.png" alt="Suggested Vial tap-hold configuration" width="306" height="277" loading="lazy"/>
+<figcaption>
+Suggested Vial tap-hold configuration.
+</figcaption>
 </figure>
 <p><em>Vial pre-0.7.4:</em> Older versions of Vial use different naming
 and don’t expose Chordal Hold. Make sure <strong>Permissive
@@ -459,7 +464,8 @@ row mods in mind. I recommend this. Tap Dances use a separate, simpler
 implementation to track when keys are tapped or held. This is less
 suited for home row mods. The point of it is to support different
 actions on double tap, tap-then-hold, or patterns with even more taps,
-which is beyond the scope of what mod-tap keys do.</p></li>
+which is beyond the scope of what mod-tap keys do.</p>
+<ul>
 <li><p><strong>ZMK firmware:</strong> Follow the <a
 href="https://zmk.dev/docs/keymaps/behaviors/hold-tap?examples=home_row_mods#custom-hold-tap-examples">Homerow
 Mods example</a> configuration. Particularly, set
@@ -479,9 +485,9 @@ configuration guide</a> for a sophisticated Kanata implementation of
 Timeless Home Row Mods.</p></li>
 </ul>
 <p><strong>In addition to good configuration, I suggest you may need a
-couple months to get used to home row mods.</strong> Everyone’s typing
-habits are a little different. I struggled badly when I started with
-accidental mod triggers, despite using Precondition’s recommended
+couple of months to get used to home row mods.</strong> Everyone’s
+typing habits are a little different. I struggled badly when I started
+with accidental mod triggers, despite using Precondition’s recommended
 settings. But after a couple months of persistence, my typing adapted.
 Now I use home row mods with confidence.</p>
 <p><strong>Other tips:</strong></p>
@@ -584,8 +590,9 @@ wells</a>.</p>
 <figure>
 <picture> <source type="image/webp" srcset="../dactyl-ergodox.webp">
 <source type="image/jpeg" srcset="../dactyl-ergodox.jpg">
-<img src="../dactyl-ergodox.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../dactyl-ergodox.jpg" alt="" width="800" height="344" loading="lazy">
+</picture>
+<figcaption>
 Dactyl Ergodox
 </figcaption>
 </figure>
@@ -609,10 +616,10 @@ contacts are usually springy material. When the switch is pressed, the
 contacts bounce, making and breaking contact for some milliseconds
 before settling to a steady contact. So rather than a clean 0 to 1
 transition, the raw digital reading bounces between 0 and 1.</p>
-<div style="text-align: center;">
-<p><img src="bounce.svg" class="light-only" alt="Bounce" />
-<img src="bounce-dark.svg" class="dark-only" alt="Bounce" /></p>
-</div>
+<figure style="text-align: center;">
+<img src="bounce.svg" class="light-only" alt="Bounce" width="207" height="79" loading="lazy"/>
+<img src="bounce-dark.svg" class="dark-only" alt="Bounce" width="207" height="79" loading="lazy"/>
+</figure>
 <p>A similar bouncing problem occurs in the other direction when the key
 is released. The settling time depends on the kind of switch and may be
 different for press vs. release. Additionally, the settling time tends
@@ -650,7 +657,8 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=10</code></pre></li>
 <li><p>For KMK firmware: the debounce time is set by the
 <code>interval</code> arg in the constructor of
 <code>MatrixScanner</code> (or similar key scanner), defaulting to
-20 ms. See the <a href="http://kmkfw.io/docs/scanners">Scanners
+20 ms. See the <a
+href="https://github.com/KMKfw/kmk_firmware/blob/main/docs/en/scanners.md">Scanners
 documentation</a>.</p></li>
 </ul>
 <p><strong>Hardware troubleshooting:</strong></p>
@@ -684,9 +692,9 @@ on layer 2</h2>
 <p>Reorder the switched-to layer above the layer with the layer switch
 key.</p>
 <figure>
-<img src="keymap-layers.svg" class="light-only" alt="Example: Reaching layer 3 with a layer switch on layer 0."/>
-<img src="keymap-layers-dark.svg" class="dark-only" alt="Example: Reaching layer 3 with a layer switch on layer 0."/>
-<figcaption aria-hidden="true">
+<img src="keymap-layers.svg" class="light-only" alt="Example: Reaching layer 3 with a layer switch on layer 0." width="468" height="138" loading="lazy"/>
+<img src="keymap-layers-dark.svg" class="dark-only" alt="Example: Reaching layer 3 with a layer switch on layer 0." width="468" height="138" loading="lazy"/>
+<figcaption>
 Example: Reaching layer 3 with a layer switch on layer 0.
 </figcaption>
 </figure>
@@ -729,14 +737,14 @@ Stapelberg’s investigation</a> for deeper discussion:</p>
 <li><p><strong>Matrix scanning</strong> continually checks the
 keyboard’s <a href="../glossary/index.html#matrix-circuit">matrix
 circuit</a> for changes in key state. The time between successive scans
-in on the order of 0.2–2 ms. A faster keyboard <a
+is on the order of 0.2–2 ms. A faster keyboard <a
 href="../glossary/index.html#microcontroller-unit-mcu">microcontroller</a>
 can improve this.</p></li>
 <li><p><a
 href="../glossary/index.html#debouncing"><strong>Debouncing</strong></a>
 is applied to clean up the matrix changes. As a key is pressed, the
-electrical contacts typically make and breaking contact several times.
-By default, QMK debounces the signal by waiting for a debounce time of
+electrical contacts typically make and break contact several times. By
+default, QMK debounces the signal by waiting for a debounce time of
 5 ms, while some keyboards are configured for a longer debounce time.
 Setting an <a
 href="https://docs.qmk.fm/feature_debounce_type?id=types-of-debounce-algorithms">“eager”
@@ -841,9 +849,9 @@ href="https://docs.qmk.fm/feature_layers">layer-tap keys</a>
 href="https://docs.qmk.fm/keycodes_basic">basic keycode</a>, a keycode
 in the 0–255 range.</p>
 <figure>
-<img src="mod-tap-keycode.svg" class="light-only white-bg-svg" alt="Encoding of a mod-tap keycode." />
-<img src="mod-tap-keycode-dark.svg" class="dark-only" alt="Encoding of a mod-tap keycode." />
-<figcaption aria-hidden="true">
+<img src="mod-tap-keycode.svg" class="light-only white-bg-svg" alt="Encoding of a mod-tap keycode." width="342" height="32" loading="lazy"/>
+<img src="mod-tap-keycode-dark.svg" class="dark-only" alt="Encoding of a mod-tap keycode." width="342" height="32" loading="lazy"/>
+<figcaption>
 Encoding of a mod-tap keycode.
 </figcaption>
 </figure>
@@ -1038,13 +1046,12 @@ href="../non-english/index.html">Typing non-English letters</a>.</p>
 href="https://docs.qmk.fm/keycodes_magic">Magic keys</a> and a related
 <a href="https://docs.qmk.fm/features/command">Command feature</a> are
 capable of dynamically disabling GUI keys, swapping Ctrl ↔︎ Caps Lock,
-Alt ↔︎ GUI, and a few other similar such things. A common source of
-confusion is when these settings are changed unintentionally.
-Furthermore, magic settings are <a
-href="../glossary/index.html#eeprom">saved to EEPROM</a>, so they
-stubbornly survive even when the keyboard is flashed with new firmware.
-The way to fix this is to clear the EEPROM, which resets any magic
-settings. Two ways to do that:</p>
+Alt ↔︎ GUI, and a few other similar things. A common source of confusion
+is when these settings are changed unintentionally. Furthermore, magic
+settings are <a href="../glossary/index.html#eeprom">saved to
+EEPROM</a>, so they stubbornly survive even when the keyboard is flashed
+with new firmware. The way to fix this is to clear the EEPROM, which
+resets any magic settings. Two ways to do that:</p>
 <ul>
 <li><p>Hold down the Space and Backspace keys while plugging in the
 keyboard.</p></li>
@@ -1177,7 +1184,7 @@ a single <code>case</code> in a <code>switch</code> statement:</p>
 class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> KC_A <span class="op">...</span> KC_Z<span class="op">:</span>  <span class="co">// Keycodes KC_A through KC_Z.</span></span></code></pre></div></li>
 <li><p><a href="https://en.wikipedia.org/wiki/Weak_symbol">Weak
 symbols</a> is a GNU extension where a function definition annotated
-with <code>__attribute__((weak))</code> can can be overridden by another
+with <code>__attribute__((weak))</code> can be overridden by another
 definition at linking time. This is useful to allow the user to
 customize some aspect of a library through redefining a function. The
 default definition of the function is annotated as weak (example is from
