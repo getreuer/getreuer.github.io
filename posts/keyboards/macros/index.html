@@ -7,7 +7,10 @@
     (function(){var t=localStorage.getItem('theme');
     if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
   </script>
-  <meta name="author" content="Pascal Getreuer, 2021-10-30 (updated 2024-10-16)">
+  <meta name="author" content="Pascal Getreuer">
+  <meta name="description" content="An introductory guide to QMK macros
+with practical examples like typing common strings, responding to
+modifiers, and performing complex actions.">
   <title>QMK macros 1: intro and assortment of practical examples</title>
   <style>code{white-space: pre;}</style>
   <style>
@@ -173,7 +176,7 @@ interesting events</a></li>
 effects</a></li>
 </ol>
 <p>One of QMK’s most empowering features is the ability to define macro
-buttons: a button, that when pressed, types a sequence of keys. This
+buttons: a button that, when pressed, types a sequence of keys. This
 page is an assortment of practical QMK macros, collected from real
 users’ keymaps.</p>
 <h3 id="license">License</h3>
@@ -304,7 +307,7 @@ href="../glossary/index.html#matrix-circuit">key matrix</a> to watch for
 changes. When a button is pressed or released, a “keyrecord”
 representing the event is generated. The keyrecord enters a pipeline of
 handlers. A handler function runs for each QMK feature (Mod-Tap, Combos,
-Auto Shift, Tap Dance, …), one after another, so that each feature a
+Auto Shift, Tap Dance, …), one after another, so that each feature has a
 chance to react. Additionally, handlers may return <code>false</code> to
 block later handlers from running. The
 <code>process_record_user()</code> function is one such handler in the
@@ -405,7 +408,7 @@ from the mod state. Or, we could turn off all mods temporarily with</p>
 <h3 id="braces-macro-types-or">Braces macro, types [], {}, or
 &lt;&gt;</h3>
 <p>From <a
-href="https://github.com/qmk/qmk_firmware/blob/master/users/draevin">draevin’s
+href="https://github.com/qmk/qmk_firmware/blob/user-keymaps-still-present/users/draevin">draevin’s
 user directory</a>, the following types <code>[</code>, then
 <code>]</code>, and taps the left arrow to position the cursor between
 the <code>[]</code>. Or if shift is held, it does the same but with
@@ -471,7 +474,7 @@ milliseconds between the clicks.</p>
 <h3 id="select-word-macro">Select word macro</h3>
 <p>Most text editors support Ctrl+left / Ctrl+right to move the cursor
 by words. From <a
-href="https://github.com/qmk/qmk_firmware/tree/master/users/ajp10304">ajp10304’s
+href="https://github.com/qmk/qmk_firmware/tree/user-keymaps-still-present/users/ajp10304">ajp10304’s
 user directory</a>, this macro selects the current word. It types
 Ctrl+right to move to the end of the word, then Ctrl+Shift+left to
 select to the beginning of the word:</p>
@@ -556,7 +559,7 @@ the next sentence:</p>
 href="https://github.com/precondition/dactyl-manuform-keymap">precondition’s
 keymap</a>: there, the next sentence is triggered by double tapping the
 period button through a QMK tap dance, rather than using a macro.</p>
-<p>And see also <a href="../sentence-case/index.html">Sentence Case</a>,
+<p>See also <a href="../sentence-case/index.html">Sentence Case</a>,
 which detects and capitalizes the first letter of sentences
 automatically.</p>
 <h3 id="multi-codepoint-emoji">Multi-codepoint emoji</h3>
