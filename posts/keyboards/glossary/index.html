@@ -7,7 +7,10 @@
     (function(){var t=localStorage.getItem('theme');
     if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
   </script>
-  <meta name="author" content="Pascal Getreuer, 2024-08-04 (updated 2026-03-17)">
+  <meta name="author" content="Pascal Getreuer">
+  <meta name="description" content="A comprehensive glossary of keyboard
+terms, covering internet slang, technical jargon, and anatomical terms
+related to ergonomic typing.">
   <title>Glossary of keyboard terms</title>
   <style>code{white-space: pre;}</style>
 <link rel="stylesheet" href="../../../site.css">
@@ -128,8 +131,8 @@ number of keys on a keyboard, relative to 100% being a standard keyboard
 <figure>
 <picture> <source type="image/webp" srcset="../voyager.webp">
 <source type="image/jpeg" srcset="../voyager.jpg">
-<img src="../voyager.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../voyager.jpg" alt="" width="800" height="344"> </picture>
+<figcaption>
 Example of a “50%” keyboard, having 52 keys (ZSA Voyager).
 </figcaption>
 </figure>
@@ -206,9 +209,9 @@ retinaculum</a> connective tissue. The flexor tendons to the fingers and
 the <a href="https://en.wikipedia.org/wiki/Median_nerve">median
 nerve</a> pass through the carpal tunnel.</p>
 <figure>
-<img src="../thumb-ergo/carpal-tunnel.svg" class="light-only" alt="Median nerve passing through the carpal tunnel." />
-<img src="../thumb-ergo/carpal-tunnel-dark.svg" class="dark-only" alt="Median nerve passing through the carpal tunnel." />
-<figcaption aria-hidden="true">
+<img src="../thumb-ergo/carpal-tunnel.svg" class="light-only" alt="Median nerve passing through the carpal tunnel." loading="lazy" />
+<img src="../thumb-ergo/carpal-tunnel-dark.svg" class="dark-only" alt="Median nerve passing through the carpal tunnel." loading="lazy" />
+<figcaption>
 Median nerve passing through the carpal tunnel.
 </figcaption>
 </figure>
@@ -226,8 +229,8 @@ contacts bounce, causing a phenomenon called contact bounce or chatter
 where the raw digital reading bounces between 0 and 1 before settling to
 a steady contact.</p>
 <div style="text-align: center;">
-<p><img src="../faqs/bounce.svg" class="light-only" alt="Bounce" />
-<img src="../faqs/bounce-dark.svg" class="dark-only" alt="Bounce" /></p>
+<p><img src="../faqs/bounce.svg" class="light-only" alt="Bounce" loading="lazy" />
+<img src="../faqs/bounce-dark.svg" class="dark-only" alt="Bounce" loading="lazy" /></p>
 </div>
 <ul>
 <li><a
@@ -242,7 +245,7 @@ Debouncing</a></li>
 <p><strong>EEPROM</strong> or <strong>electrically erasable programmable
 read-only memory</strong> is a small amount of rewritable memory that
 persists even without power (non-volatile memory). Some keyboards save
-certain settings in EEPROM, such <a
+certain settings in EEPROM, such as <a
 href="https://docs.qmk.fm/keycodes_magic">magic settings</a> on
 QMK-based keyboards. These settings are retained when the keyboard is
 unpowered and even when new <a href="#firmware">firmware</a> is
@@ -385,8 +388,9 @@ wells.</p>
 <figure>
 <picture> <source type="image/webp" srcset="../dactyl-ergodox.webp">
 <source type="image/jpeg" srcset="../dactyl-ergodox.jpg">
-<img src="../dactyl-ergodox.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../dactyl-ergodox.jpg" alt="" loading="lazy" width="800" height="344">
+</picture>
+<figcaption>
 A keyboard with concave key wells (Dactyl Ergodox).
 </figcaption>
 </figure>
@@ -398,8 +402,9 @@ extremely low finger movement.</p>
 <figure>
 <picture> <source type="image/webp" srcset="../svalboard.webp">
 <source type="image/jpeg" srcset="../svalboard.jpg">
-<img src="../svalboard.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../svalboard.jpg" alt="" loading="lazy" width="776" height="380">
+</picture>
+<figcaption>
 A keyboard where each finger has a key well (Svalboard Lightly).
 </figcaption>
 </figure>
@@ -413,22 +418,22 @@ href="https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf">HID
 Keyboard/Keypad Usage Page (0x07) spec</a>. The mods state is
 represented as an 8-bit bitfield:</p>
 <figure>
-<img src="8-bit-mods.svg" class="light-only white-bg-svg" alt="8-bit Mods"/>
-<img src="8-bit-mods-dark.svg" class="dark-only" alt="8-bit Mods"/>
+<img src="8-bit-mods.svg" class="light-only white-bg-svg" alt="8-bit Mods" loading="lazy"/>
+<img src="8-bit-mods-dark.svg" class="dark-only" alt="8-bit Mods" loading="lazy"/>
 </figure>
 <p>Typically, the report has capacity to represent up to 6 held keys at
 once, implementing <a href="#key-rollover-6kro-nkro">6-key
 rollover</a>:</p>
 <figure>
-<img src="keyboard-report-6kro.svg" class="light-only white-bg-svg" alt="6KRO Keyboard Report"/>
-<img src="keyboard-report-6kro-dark.svg" class="dark-only" alt="6KRO Keyboard Report"/>
+<img src="keyboard-report-6kro.svg" class="light-only white-bg-svg" alt="6KRO Keyboard Report" loading="lazy"/>
+<img src="keyboard-report-6kro-dark.svg" class="dark-only" alt="6KRO Keyboard Report" loading="lazy"/>
 </figure>
 <p>For <a href="#key-rollover-6kro-nkro">N-key rollover</a>, the report
 is extended with a 120-bit bitfield to represent the state of all 120
 supported keys:</p>
 <figure>
-<img src="keyboard-report-6kro.svg" class="light-only white-bg-svg" alt="6KRO Keyboard Report"/>
-<img src="keyboard-report-6kro-dark.svg" class="dark-only" alt="6KRO Keyboard Report"/>
+<img src="keyboard-report-nkro.svg" class="light-only white-bg-svg" alt="NKRO Keyboard Report" loading="lazy"/>
+<img src="keyboard-report-nkro-dark.svg" class="dark-only" alt="NKRO Keyboard Report" loading="lazy"/>
 </figure>
 <h3 id="keycap">Keycap</h3>
 <p>The <strong>keycap</strong> is the flesh-facing part of the key that
@@ -460,16 +465,16 @@ Summary comparison:</p></li>
 <tr>
 <th>
  
-</td>
+</th>
 <th>
 ABS
-</td>
+</th>
 <th>
 PBT
-</td>
+</th>
 <th>
 POM
-</td>
+</th>
 </tr>
 <tr>
 <td>
@@ -589,9 +594,9 @@ metrics</li>
 <li><a
 href="https://cyanophage.github.io/playground.html?layout=qwfpbjluy%3B-arstgmneio%27zxcdvkh%2C.%2F%5C%5E&amp;mode=ergo&amp;lan=english">Cyanophage’s
 Layout Playground</a></li>
-<li><a href="https://github.com/O-X-E-Y/oxeylyzer"><img src="../../../github.svg" class="light-only" style="width:1.25em" /><img src="../../../github-dark.svg" class="dark-only" style="width:1.25em" /> O-X-E-Y/oxeylyzer</a>
+<li><a href="https://github.com/O-X-E-Y/oxeylyzer"><img src="../../../github.svg" class="light-only" style="width:1.25em" loading="lazy" /><img src="../../../github-dark.svg" class="dark-only" style="width:1.25em" loading="lazy" /> O-X-E-Y/oxeylyzer</a>
 layout optimizer</li>
-<li><a href="https://github.com/semilin/genkey"><img src="../../../github.svg" class="light-only" style="width:1.25em" /><img src="../../../github-dark.svg" class="dark-only" style="width:1.25em" /> semilin/genkey</a>
+<li><a href="https://github.com/semilin/genkey"><img src="../../../github.svg" class="light-only" style="width:1.25em" loading="lazy" /><img src="../../../github-dark.svg" class="dark-only" style="width:1.25em" loading="lazy" /> semilin/genkey</a>
 layout optimizer</li>
 </ul>
 <h3 id="macro-key">Macro key</h3>
@@ -734,8 +739,8 @@ columns. These columns are adjusted closer to the body to account for
 the shorter length of the pinky fingers. An “aggressive pinky stagger”
 describes a large offset.</p>
 <figure>
-<img src="pinky-stagger.svg" class="white-bg-svg" alt="Pinky stagger on the left half of a columnar keyboard." />
-<figcaption aria-hidden="true">
+<img src="pinky-stagger.svg" class="white-bg-svg" alt="Pinky stagger on the left half of a columnar keyboard." loading="lazy" />
+<figcaption>
 Pinky stagger on the left half of a columnar keyboard.
 </figcaption>
 </figure>
@@ -780,7 +785,7 @@ keyboards are <a href="#tenting">tented</a> to reduce pronation.</p>
 sequence of three keys typed by one hand that changes <a
 href="#roll">roll direction</a> from inward to outward or vice versa.
 How frequently redirects occur is often considered in <a
-href="#alpha-layout">layout design</a>. Redirects are generally
+href="#layout-design">layout design</a>. Redirects are generally
 undesirable, as they tend to be more difficult to type quickly compared
 to sequences that alternate hands or maintain the same roll
 direction.</p>
@@ -792,8 +797,8 @@ terminology varies.</p>
 <ul>
 <li><code>SAD</code> is a redirect: <kbd>S</kbd> → <kbd>A</kbd> rolls
 outward, and <kbd>A</kbd> → <kbd>D</kbd> rolls inward.</li>
-<li><code>ARE</code> is a weak redirect, with <kbd>R</kbd> is typed by
-left index finger.</li>
+<li><code>ARE</code> is a weak redirect, where <kbd>R</kbd> is typed by
+the left index finger.</li>
 <li><code>NOW</code> is <em>not</em> a redirect, since it is not a
 one-handed typing sequence.</li>
 </ul>
@@ -802,9 +807,9 @@ one-handed typing sequence.</li>
 by one hand, where the fingers move sequentially across the keyboard,
 like drumming your fingers.</p>
 <figure>
-<video autoplay loop muted playsinline>
+<video autoplay loop muted playsinline preload="metadata">
 <source src="finger-drumming.mp4" type="video/mp4">
-</video>
+Your browser does not support embedded video. </video>
 </figure>
 <p>According to the direction, a roll is either an <strong>inward
 roll</strong>, moving pinky → ring → middle → index, or an
@@ -834,12 +839,14 @@ the type hammers that strike the paper.</p>
 <picture>
 <source type="image/webp" srcset="../alt-layouts/remington.webp">
 <source type="image/jpeg" srcset="../alt-layouts/remington.jpg">
-<img src="../alt-layouts/remington.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../alt-layouts/remington.jpg" alt="" loading="lazy" width="478" height="480">
+</picture>
+<figcaption>
 The connecting levers are visible between the keys of this 1930s
 Remington portable typewriter. Photo by Mariochs, distributed under a <a
 href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">CC BY-SA
 4.0 International</a> license.
+</figcaption>
 </figure>
 <p>An <strong>ortholinear</strong> or <strong>matrix</strong>
 arrangement removes the stagger and places all keys in a regular grid.
@@ -850,8 +857,8 @@ direction of the fingers. This further helps reduce <a
 href="#ulnar-deviation-radial-deviation">ulnar deviation</a> and makes
 off-home rows easier to reach.</p>
 <figure>
-<img src="keyboard-stagger.svg" class="white-bg-svg" alt="Different staggers illustrated for the left half of a keyboard." />
-<figcaption aria-hidden="true">
+<img src="keyboard-stagger.svg" class="white-bg-svg" alt="Different staggers illustrated for the left half of a keyboard." loading="lazy" />
+<figcaption>
 Different staggers illustrated for the left half of a keyboard.
 </figcaption>
 </figure>
@@ -936,8 +943,9 @@ href="#ulnar-deviation-radial-deviation">ulnar deviation</a>.</p>
 <figure>
 <picture> <source type="image/webp" srcset="../goldtouch.webp">
 <source type="image/jpeg" srcset="../goldtouch.jpg">
-<img src="../goldtouch.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../goldtouch.jpg" alt="" loading="lazy" width="656" height="302">
+</picture>
+<figcaption>
 Keyboard with adjustable splay (Goldtouch V2).
 </figcaption>
 </figure>
@@ -945,8 +953,8 @@ Keyboard with adjustable splay (Goldtouch V2).
 href="#row-staggered-ortholinear-column-staggered">columnar layout</a>
 designs include a splay angle between the columns.</p>
 <figure>
-<img src="column-splay.svg" class="white-bg-svg" alt="Layout with splay between the columns." />
-<figcaption aria-hidden="true">
+<img src="column-splay.svg" class="white-bg-svg" alt="Layout with splay between the columns." loading="lazy" />
+<figcaption>
 Layout with splay between the columns.
 </figcaption>
 </figure>
@@ -961,8 +969,9 @@ be adjusted as well.</p>
 <figure>
 <picture> <source type="image/webp" srcset="../moonlander.webp">
 <source type="image/jpeg" srcset="../moonlander.jpg">
-<img src="../moonlander.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../moonlander.jpg" alt="" loading="lazy" width="800" height="344">
+</picture>
+<figcaption>
 Example of a true split keyboard (ZSA Moonlander).
 </figcaption>
 </figure>
@@ -982,8 +991,9 @@ simpler assembly.</p>
 <figure>
 <picture> <source type="image/webp" srcset="../goldtouch.webp">
 <source type="image/jpeg" srcset="../goldtouch.jpg">
-<img src="../goldtouch.jpg" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="../goldtouch.jpg" alt="" loading="lazy" width="656" height="302">
+</picture>
+<figcaption>
 Example of a unibody split keyboard (Goldtouch V2).
 </figcaption>
 </figure>
@@ -994,8 +1004,8 @@ tip-ring-ring-sleeve connectors or similarly a <strong>TRS
 cable</strong> (tip-ring-sleeve). It provides data synchronization and
 power delivery between the two sides.</p>
 <figure>
-<img src="trrs-trs.svg" class="white-bg-svg" alt="Left: TRRS tip-ring-ring-connector. Right: TRS tip-ring-connector." />
-<figcaption aria-hidden="true">
+<img src="trrs-trs.svg" class="white-bg-svg" alt="Left: TRRS tip-ring-ring-connector. Right: TRS tip-ring-connector." loading="lazy" />
+<figcaption>
 Left: TRRS tip-ring-ring-connector. Right: TRS tip-ring-connector.
 </figcaption>
 </figure>
@@ -1017,8 +1027,8 @@ mechanism.</p>
 <figure>
 <picture> <source type="image/webp" srcset="tenting.webp">
 <source type="image/gif" srcset="tenting.gif">
-<img src="tenting.gif" alt=""> </picture>
-<figcaption aria-hidden="true">
+<img src="tenting.gif" alt="" loading="lazy"> </picture>
+<figcaption>
 An example tenting a keyboard (ZSA Moonlander).
 </figcaption>
 </figure>
@@ -1034,23 +1044,23 @@ side.</p>
 <p><picture style="display: inline-block; width: 8.4em; height: 17em; overflow: hidden">
 <source type="image/webp" srcset="../voyager.webp">
 <source type="image/jpeg" srcset="../voyager.jpg">
-<img src="../voyager.jpg" alt=""
+<img src="../voyager.jpg" alt="" loading="lazy" width="800" height="344"
   style="width: 100%; height: 100%; object-fit: cover; object-position: 81% center;
   transform-origin: 81% center; transform: scale(1.14);"> </picture>
 <picture style="display: inline-block; width: 8.4em; height: 17em; overflow: hidden">
 <source type="image/webp" srcset="../moonlander.webp">
 <source type="image/jpeg" srcset="../moonlander.jpg">
-<img src="../moonlander.jpg" alt=""
+<img src="../moonlander.jpg" alt="" loading="lazy" width="800" height="344"
   style="width: 100%; height: 100%; object-fit: cover; object-position: 78% center;
   transform-origin: 78% center; transform: scale(1.14);"> </picture>
 <picture style="display: inline-block; width: 8.4em; height: 17em; overflow: hidden">
 <source type="image/webp" srcset="../dactyl-ergodox.webp">
 <source type="image/jpeg" srcset="../dactyl-ergodox.jpg">
-<img src="../dactyl-ergodox.jpg" alt=""
+<img src="../dactyl-ergodox.jpg" alt="" loading="lazy" width="800" height="344"
   style="width: 100%; height: 100%; object-fit: cover; object-position: 74% center;
   transform-origin: 74% center; transform: scale(1.14);"> </picture></p>
 </div>
-<figcaption aria-hidden="true">
+<figcaption>
 Right-hand thumb clusters on a few different keyboards.
 </figcaption>
 </figure>
