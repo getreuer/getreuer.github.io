@@ -7,6 +7,7 @@
     (function(){var t=localStorage.getItem('theme');
     if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
   </script>
+  <meta name="author" content="Pascal Getreuer">
   <meta name="description" content="Personal website of Pascal Getreuer,
 a software engineer at Google DeepMind. Features projects on keyboards,
 research papers, and open-source code.">
@@ -37,7 +38,7 @@ research papers, and open-source code.">
 <div style="float: left; margin-right: 1.25em; max-width: 40%">
 <picture> <source type="image/webp" srcset="pascal.webp">
 <source type="image/jpeg" srcset="pascal.jpg">
-<img src="pascal.jpg" alt=""> </picture>
+<img src="pascal.jpg" alt="" width="327" height="448"> </picture>
 </div>
 <p>I am an applied mathematician and currently a software engineer in
 Google DeepMind. I conduct research in sound and image processing,
@@ -58,10 +59,14 @@ style="display:inline-block;vertical-align:middle; width:35%;text-align:right">
 </div>
 <div
 style="float: left; margin-right: 1.25em; max-width: 50%;text-align:center">
-<picture>
+<picture class="light-only">
 <source type="image/webp" srcset="posts/keyboards/qmk-community-modules/banner.webp">
 <source type="image/jpeg" srcset="posts/keyboards/qmk-community-modules/banner.jpg">
-<img src="posts/keyboards/qmk-community-modules/banner.jpg" alt="">
+<img src="posts/keyboards/qmk-community-modules/banner.jpg" alt="" width="720" height="426" loading="lazy">
+</picture> <picture class="dark-only">
+<source type="image/webp" srcset="posts/keyboards/qmk-community-modules/banner-dark.webp">
+<source type="image/jpeg" srcset="posts/keyboards/qmk-community-modules/banner.jpg">
+<img src="posts/keyboards/qmk-community-modules/banner.jpg" alt="" width="720" height="426" loading="lazy">
 </picture>
 </div>
 <p>Split, programmable keyboards are <a
@@ -69,7 +74,7 @@ href="posts/keyboards/tour/index.html">great for comfortable typing</a>.
 I’m a contributor to <a href="https://docs.qmk.fm/">QMK keyboard
 firmware</a>.</p>
 <p>My keymap:
-<a href="https://github.com/getreuer/qmk-keymap"><img src="./github.svg" class="light-only" style="width:1.25em" /><img src="./github-dark.svg" class="dark-only" style="width:1.25em" /> getreuer/qmk-keymap</a></p>
+<a href="https://github.com/getreuer/qmk-keymap"><img src="./github.svg" class="light-only" alt="" style="width:1.25em" /><img src="./github-dark.svg" class="dark-only" alt="" style="width:1.25em" /> getreuer/qmk-keymap</a></p>
 <p style="clear: both">
  
 </p>

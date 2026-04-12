@@ -5,8 +5,10 @@ window.addEventListener('scroll', () => {
   if (!ticking) {
     requestAnimationFrame(() => {
       const currentScrollY = window.scrollY;
-      document.getElementById('navbar').style.top =
-          (prevScrollY > currentScrollY ? '0' : '-75px');
+      const navbar = document.getElementById('navbar');
+      if (navbar) {
+        navbar.classList.toggle('nav-hidden', prevScrollY <= currentScrollY);
+      }
       prevScrollY = currentScrollY;
       ticking = false;
     });

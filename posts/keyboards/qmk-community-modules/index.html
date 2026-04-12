@@ -102,9 +102,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="author">Pascal Getreuer, 2025-03-09 (updated 2025-09-07)</h2>
 </div>
 <p>
-<picture> <source type="image/webp" srcset="banner.webp">
+<picture class="light-only">
+<source type="image/webp" srcset="banner.webp">
 <source type="image/jpeg" srcset="banner.jpg">
-<img src="banner.jpg" alt=""> </picture>
+<img src="banner.jpg" alt="" width="720" height="426"> </picture>
+<picture class="dark-only">
+<source type="image/webp" srcset="banner-dark.webp">
+<source type="image/jpeg" srcset="banner.jpg">
+<img src="banner.jpg" alt="" width="720" height="426"> </picture>
 </p>
 <p><a href="../index.html">← More about keyboards</a></p>
 <p>QMK’s 2025 Q1 release added support for <a

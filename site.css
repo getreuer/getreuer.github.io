@@ -277,8 +277,12 @@ input[type="range"] {
   margin: 0;
   padding: 0;
   width: 100vw;
-  transition: top 0.3s;
+  transition: transform 0.3s;
   z-index: 1;
+}
+
+#navbar.nav-hidden {
+  transform: translateY(-100%);
 }
 
 #navhold {
@@ -377,6 +381,7 @@ img,
 video,
 textarea {
   max-width: 100%;
+  height: auto;
 }
 
 h1,
