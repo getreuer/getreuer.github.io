@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>
+    (function(){var t=localStorage.getItem('theme');
+    if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
+  </script>
+  <meta name="author" content="Pascal Getreuer">
+  <meta name="date" content="2026-04-30">
+  <meta name="description" content="A thorough guide to Vial keyboard
+firmware, ranging from first-time installation and use, customized
+builds, and contributing to the project.">
+  <title>Guide to Vial keyboard firmware</title>
+  <style>code{white-space: pre;}</style>
+  <style>
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css">
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap">
+<script src="../../../site.js" defer></script>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<div id="site-header">
+<div id="site-headerhold">
+<nav class="breadcrumb" aria-label="Breadcrumb"><ol itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../../index.html" aria-label="Home"><span class="material-symbols-outlined home-icon">home</span><span itemprop="name" hidden>Home</span></a><meta itemprop="position" content="1"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../index.html"><span itemprop="name">Posts</span></a><meta itemprop="position" content="2"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../index.html"><span itemprop="name">Keyboards</span></a><meta itemprop="position" content="3"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">Guide to Vial keyboard firmware</span><meta itemprop="position" content="4"></li></ol></nav>
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">Guide to Vial keyboard firmware</h1>
+<h2 class="author">Pascal Getreuer, 2026-04-30</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#what-is-vial" id="toc-what-is-vial">What is Vial?</a></li>
+<li><a href="#install-vial-on-your-keyboard"
+id="toc-install-vial-on-your-keyboard">Install Vial on your keyboard</a>
+<ul>
+<li><a href="#set-up-your-build-environment"
+id="toc-set-up-your-build-environment">Set up your build
+environment</a></li>
+<li><a href="#build-and-flash-the-firmware"
+id="toc-build-and-flash-the-firmware">Build and flash the
+firmware</a></li>
+</ul></li>
+<li><a href="#using-vial" id="toc-using-vial">Using Vial</a>
+<ul>
+<li><a href="#assigning-a-key" id="toc-assigning-a-key">Assigning a
+key</a></li>
+<li><a href="#arbitrary-or-any-keycode-entry"
+id="toc-arbitrary-or-any-keycode-entry">Arbitrary or “Any” keycode
+entry</a></li>
+<li><a href="#qmk-settings" id="toc-qmk-settings">QMK Settings</a></li>
+<li><a href="#configuring-home-row-mods"
+id="toc-configuring-home-row-mods">Configuring home row mods</a></li>
+<li><a href="#unicode-input" id="toc-unicode-input">Unicode
+input</a></li>
+</ul></li>
+<li><a href="#customize-your-vial-build"
+id="toc-customize-your-vial-build">Customize your Vial build</a>
+<ul>
+<li><a href="#change-max-number-of-layers-and-feature-limits"
+id="toc-change-max-number-of-layers-and-feature-limits">Change max
+number of layers and feature limits</a></li>
+<li><a href="#custom-keycodes-and-macros"
+id="toc-custom-keycodes-and-macros">Custom keycodes and macros</a></li>
+<li><a href="#additional-qmk-features"
+id="toc-additional-qmk-features">Additional QMK features</a></li>
+<li><a href="#a-note-on-keycodes" id="toc-a-note-on-keycodes">A note on
+keycodes</a></li>
+<li><a href="#qmk-community-modules" id="toc-qmk-community-modules">QMK
+Community Modules</a></li>
+</ul></li>
+<li><a href="#how-vial-works" id="toc-how-vial-works">How Vial
+works</a></li>
+<li><a href="#developing-vial" id="toc-developing-vial">Developing
+Vial</a></li>
+<li><a href="#further-reading" id="toc-further-reading">Further
+reading</a></li>
+</ul>
+</div>
+<h2 id="what-is-vial">What is Vial?</h2>
+<p><a href="https://get.vial.today/">Vial is</a> a keyboard <a
+href="../glossary/index.html#firmware">firmware</a> and a companion <a
+href="../glossary/index.html#configurator">configurator GUI</a>. Its
+main value proposition is dynamic, on-the-fly keymap changes through the
+configurator, as well as editing macros, combos, and other features.</p>
+<figure>
+<img src="vial-editor.webp" width="830" height="823"
+alt="Vial configurator main keymap view, connected with a ZSA Voyager." />
+<figcaption aria-hidden="true">Vial configurator main keymap view,
+connected with a ZSA Voyager.</figcaption>
+</figure>
+<h4 id="how-does-vial-relate-to-qmk">How does Vial relate to QMK?</h4>
+<p>Vial is a fork of the widely used <a href="https://qmk.fm/">QMK
+firmware</a>, short for Quantum Mechanical Keyboard firmware. However,
+unlike mainline QMK, where updating your keymap requires editing a
+keymap.c source file + recompiling + reflashing to the keyboard, Vial
+allows you to modify your keymap instantly.</p>
+<ul>
+<li><p><strong>On-the-fly editing</strong>: Edits made in the
+configurator apply instantly to the keyboard.</p></li>
+<li><p><strong>No host software required</strong>: Your keymap and
+settings are stored directly in the flash memory of the keyboard’s <a
+href="../glossary/index.html#microcontroller-unit-mcu">microcontroller</a>.
+Once configured, the keyboard remembers its settings and works with any
+USB-compatible device.</p></li>
+</ul>
+<p><em>Feature limitations:</em> Vial provides QMK’s layers, combos,
+tap-hold keys, one-shot keys, Tap Dance, Key Overrides, and then
+some—see the <a href="https://get.vial.today/manual/">Vial user
+manual</a>. But not all QMK features are exposed. As of this writing in
+April 2026, Vial notably lacks <a
+href="https://docs.qmk.fm/tap_hold">per-key tap-hold settings</a>, <a
+href="https://docs.qmk.fm/features/autocorrect">Autocorrect</a>, <a
+href="https://docs.qmk.fm/features/key_lock">Key Lock</a>, <a
+href="https://docs.qmk.fm/features/leader_key">Leader Key</a>, <a
+href="https://docs.qmk.fm/features/os_detection">OS Detection</a>, <a
+href="https://docs.qmk.fm/features/swap_hands">Swap Hands</a>, and <a
+href="https://docs.qmk.fm/features/unicode">Unicode input</a>. If
+needed, you can <a href="#customize-your-vial-build">customize your Vial
+build</a> to enable missing features.</p>
+<h4 id="how-does-vial-relate-to-via">How does Vial relate to VIA?</h4>
+<p><a href="https://caniusevia.com/">VIA firmware</a> another QMK-based
+firmware supporting dynamic keymap editing. While the two are
+functionally similar, Vial is an improvement over VIA in the following
+ways:</p>
+<ul>
+<li><p><strong>Expanded capabilities</strong>: Vial natively supports
+more features, including Auto Shift, Caps Word, Combos, Key Lock, Key
+Overrides, Layer Lock, Repeat Key, Tap Dance, as well as dynamic editing
+of tap-hold configurations like Permissive Hold, Quick Tap, Chordal
+Hold, and Tap Flow.</p></li>
+<li><p><strong>Active maintenance</strong>: While VIA remains partially
+closed-source and appears to have no updates since 2020, Vial is fully
+open-source and actively maintained.</p></li>
+<li><p><strong>Automated device recognition</strong>: Unlike VIA, which
+requires you to manually load a JSON definition file to recognize the
+keyboard, Vial stores this metadata directly on the keyboard and
+automatically provides it to the configurator.</p></li>
+</ul>
+<h2 id="install-vial-on-your-keyboard">Install Vial on your
+keyboard</h2>
+<p>To use Vial, your keyboard needs to be running Vial firmware. Vial is
+compatible with the vast majority of QMK-supported keyboards. Note that
+Vial is not just an “add on” to QMK, it replaces it with its own
+dynamically-enhanced flavor of the firmware.</p>
+<h3 id="set-up-your-build-environment">Set up your build
+environment</h3>
+<p>Vial firmware reuses QMK’s build system, so the steps here are
+basically to install QMK, then switch over to using Vial’s sources.</p>
+<p><strong>Instructions:</strong></p>
+<ol type="1">
+<li><p><em>Optional but encouraged</em>: If you are unfamiliar shell
+commands like <code>cd</code> and <code>ls</code>, it is suggested to <a
+href="https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line#basic_built-in_terminal_commands">read
+this primer</a>.</p></li>
+<li><p><strong>Install QMK</strong> by following <a
+href="https://docs.qmk.fm/newbs_getting_started">Setting Up Your QMK
+Environment</a>. Windows users will install the <a
+href="https://msys.qmk.fm/">QMK MSYS</a> shell environment, which is
+also used for running the shell commands in the following
+steps.</p></li>
+<li><p><strong>Get Vial’s code</strong> with the following shell
+command, cloning <a
+href="https://github.com/vial-kb/vial-qmk">vial-kb/vial-qmk</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:vial-kb/vial-qmk.git</span></code></pre></div>
+<p>The above creates a new folder <code>vial-qmk</code>. Note: do
+<em>not</em> nest the <code>vial-qmk</code> folder inside any existing
+QMK repo folder (or you will have a confusing time).</p></li>
+<li><p><strong>Enter the vial-qmk folder</strong>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> vial-qmk</span></code></pre></div></li>
+<li><p><strong>Get git submodules</strong> with this command:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> git-submodule</span></code></pre></div></li>
+<li><p><strong>Verify the environment</strong> is successfully set up
+with:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">qmk</span> doctor</span></code></pre></div></li>
+</ol>
+<p>See also the “Prepare Your Build Environment” instructions <a
+href="https://get.vial.today/docs/porting-to-vial.html">in the Vial
+documentation</a>.</p>
+<p>Next, <strong>find your keyboard’s “vial” keymap:</strong> Within the
+<code>keyboards</code> folder, find your <em>(exact!)</em> keyboard
+model. This folder mirrors upstream QMK, and QMK’s <a
+href="https://browse.qmk.fm">keyboard browser</a> is handy to search for
+a specific model. If you cannot find it, ask your keyboard vendor.</p>
+<figure>
+<div style="margin: 0 auto; width:20rem;">
+<ul class="tree">
+<li>
+<div class="node">
+<span class="icon">folder_open</span>vial-qmk
+</div>
+<ul>
+<li>
+<div class="node">
+<span class="icon">folder_open</span>keyboards
+</div>
+<ul>
+<li>
+ (more keyboards…)
+</li>
+<li>
+<div class="node">
+<span class="icon">folder_open</span>zsa
+</div>
+<ul>
+<li>
+<div class="node">
+<span class="icon">folder</span>moonlander
+</div>
+</li>
+<li>
+<div class="node">
+<span class="icon">folder</span>planck_ez
+</div>
+</li>
+<li>
+<div class="node">
+<span class="icon">folder_open</span>voyager
+</div>
+<ul>
+<li>
+<div class="node">
+<span class="icon">folder_open</span>keymaps
+</div>
+<ul>
+<li>
+<div class="node">
+<span class="icon">folder</span>default
+</div>
+</li>
+<li>
+<div class="node target">
+<span class="icon">folder_check</span>vial
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+ (more keyboards…)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<figcaption>
+Location of the “<code>vial</code>” keymap folder for the ZSA Voyager.
+</figcaption>
+</figure>
+<p>Within your keyboard’s folder, look for <code>keymaps/vial</code>. If
+this folder exists, Vial is already supported. If not, refer to <a
+href="https://get.vial.today/docs/porting-to-vial.html">Vial’s porting
+guide</a> on how to port a QMK keyboard to Vial.</p>
+<h3 id="build-and-flash-the-firmware">Build and flash the firmware</h3>
+<p><strong>Build Vial:</strong> To build Vial firmware for the keyboard
+under <code>keyboards/&lt;kb&gt;</code>, run the shell command from the
+root <code>vial-qmk</code> directory:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="op">&lt;</span>kb<span class="op">&gt;</span>:vial</span></code></pre></div>
+<p>Replace the “<code>&lt;kb&gt;</code>” bit with the path for your
+keyboard, but omitting “<code>keyboards/</code>” and without a leading
+slash “<code>/</code>.” For example, the command
+“<code>make zsa/voyager:vial</code>” builds Vial for keyboard
+<code>keyboards/zsa/voyager</code>.</p>
+<p><strong>Flash Vial:</strong> The final step is flashing the firmware
+to the keyboard.</p>
+<div class="callout warning">
+<div class="callout-header">
+<p>
+⚠  Warning
+</p>
+</div>
+<p>Do not unplug the keyboard or otherwise interrupt the flashing
+process while the firmware is being written.</p>
+</div>
+<p>With the keyboard connected to the computer, put the keyboard into
+DFU (device firmware update) mode, for instance by pressing the “Reset”
+(or “Bootloader”) button on the keyboard. There are several other ways
+it might be done, <a href="https://docs.qmk.fm/newbs_flashing">see this
+page</a>.</p>
+<p>Then, run this command to write the firmware to the keyboard, again
+replacing “<code>&lt;kb&gt;</code>” according to your keyboard
+model:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="op">&lt;</span>kb<span class="op">&gt;</span>:vial:flash</span></code></pre></div>
+<p><strong>Troubleshooting</strong>: If building or flashing fail, the
+“<code>qmk doctor</code>” command may show suggestions to fix common
+problems.</p>
+<h2 id="using-vial">Using Vial</h2>
+<p><strong>To use Vial, you must first <a
+href="#install-vial-on-your-keyboard">install Vial firmware</a> on the
+keyboard.</strong></p>
+<p>Once Vial firmware is running on your keyboard, use the Vial
+configurator to edit the keymap and settings. There are two options:</p>
+<ul>
+<li><p>Vial web app, <a
+href="https://vial.rocks/">https://vial.rocks</a>: I suggest this is the
+preferable option. It requires no installation and ensures you’re using
+the most up-to-date version of the configurator.</p></li>
+<li><p>Vial desktop standalone application (<a
+href="https://get.vial.today/download/">dowload page</a>).</p></li>
+</ul>
+<p><em>Linux users:</em> You must create <a
+href="https://get.vial.today/manual/linux-udev.html">a udev rules
+file</a> to grant the configurator the necessary permissions to
+interface with your keyboard.</p>
+<h3 id="assigning-a-key">Assigning a key</h3>
+<p>Vial makes it easy to assign what a key does. In the top area of the
+configurator window, click the key you would like to change, then in the
+bottom area, select from the palette what to assign to it. The palette
+has multiple tabs for different kinds of keys.</p>
+<p>Vial’s documentation is limited. Refer to <a
+href="https://docs.qmk.fm/">QMK’s documentation</a>, which is much more
+detailed, if you need further explanation of a key or feature.</p>
+<figure>
+<img src="vial-quantum-tab.webp" loading="lazy" width="864" height="620"
+alt="The Quantum tab hosts many advanced QMK features." />
+<figcaption aria-hidden="true">The Quantum tab hosts many advanced QMK
+features.</figcaption>
+</figure>
+<p>An incomplete inventory:</p>
+<ul>
+<li><p><strong>Basic</strong> tab: the letter keys A–Z, digits and most
+other keys that you would find on a regular keyboard, what QMK calls the
+“basic keycodes” (<a href="https://docs.qmk.fm/keycodes_basic">QMK
+docs</a>).</p></li>
+<li><p><strong>Layers</strong> tab: layer switch keys like
+<kbd>MO(<i>layer</i>)</kbd>, <kbd>OSL(<i>layer</i>)</kbd>, and <kbd>LT
+<i>layer</i> (kc)</kbd> for <a
+href="https://get.vial.today/manual/layers.html">switching between
+layers</a> (<a href="https://docs.qmk.fm/feature_layers">QMK
+docs</a>).</p></li>
+<li><p><strong>Quantum</strong> tab:</p>
+<ul>
+<li><p><kbd>OSM <i>mod</i></kbd>: one-shot modifiers, aka sticky keys
+(<a href="https://docs.qmk.fm/one_shot_keys">QMK docs</a>).</p></li>
+<li><p><kbd>LSft(kc)</kbd>, <kbd>LCtl(kc)</kbd>, and other <em>mod</em>
++ <em>keycode</em> combinations (<a
+href="https://docs.qmk.fm/feature_advanced_keycodes">QMK
+docs</a>).</p></li>
+<li><p><kbd>LSft_T(kc)</kbd>, <kbd>LCtl_T(kc)</kbd>, etc. (note
+“<code>_T</code>” suffix): mod-tap keys (<a
+href="https://docs.qmk.fm/mod_tap">QMK docs</a>).</p></li>
+<li><p><kbd>~ Esc</kbd>: Grave Escape (<a
+href="https://docs.qmk.fm/features/grave_esc">QMK docs</a>).</p></li>
+<li><p><kbd>LS (</kbd>, <kbd>RS )</kbd>, etc.: Space Cadet (<a
+href="https://docs.qmk.fm/features/space_cadet">QMK docs</a>).</p></li>
+<li><p><kbd>Swap Ctrl Caps</kbd>, etc.: “Magic Keys” functionality (<a
+href="https://docs.qmk.fm/keycodes_magic">QMK docs</a>).</p></li>
+<li><p><kbd>Caps Word</kbd>: Caps Word, capitalize until end of current
+word (<a href="https://docs.qmk.fm/features/caps_word">QMK
+docs</a>).</p></li>
+<li><p><kbd>Repeat</kbd>, <kbd>Alt Repeat</kbd>: Repeat last key (<a
+href="https://docs.qmk.fm/features/repeat_key">QMK docs</a>).</p></li>
+</ul></li>
+<li><p><strong>App, Media, and Mouse</strong> tab:</p>
+<ul>
+<li><p><kbd>Vol +</kbd>, <kbd>Media Play</kbd>, etc.: keys for media
+playback.</p></li>
+<li><p><kbd>Browser Back</kbd>, etc.: web browser navigation.</p></li>
+<li><p><kbd>Mouse Up</kbd>, <kbd>Mouse 1</kbd>, etc.: Mouse Keys (<a
+href="https://docs.qmk.fm/features/mouse_keys">QMK docs</a>).</p></li>
+</ul></li>
+<li><p><strong>Backlight</strong> tab: keys for backlighting (<a
+href="https://docs.qmk.fm/features/backlight">QMK docs</a>) and RGB
+matrix light (<a href="https://docs.qmk.fm/features/rgb_matrix">QMK
+docs</a>).</p></li>
+<li><p><strong>MIDI</strong> tab: MIDI note keys (<a
+href="https://docs.qmk.fm/features/midi">QMK docs</a>).</p></li>
+<li><p><strong>Tap Dance</strong> tab: see <a
+href="https://get.vial.today/manual/tap-dance.html">Vial’s Tap Dance
+docs</a>.</p></li>
+<li><p><strong>Macro</strong> tab: see <a
+href="https://get.vial.today/manual/macros.html">Vial’s Macros
+docs</a>.</p></li>
+</ul>
+<p>Some advanced keys, like <kbd>LSft(kc)</kbd>, <kbd>LSft_T(kc)</kbd>,
+and <kbd>LT 1 (kc)</kbd>, are compounds taking a “<code>kc</code>” basic
+keycode as a parameter. To assign such keys, first select the advanced
+keycode. When placed, the key will show smaller placeholder area nested
+within it. Select this area, then pick a key from the Basic tab to
+complete the key. The “<code>kc</code>” must be a basic key; this is <a
+href="https://docs.qmk.fm/mod_tap#caveats">a QMK limitation</a>.</p>
+<figure>
+<video autoplay loop muted playsinline preload="metadata">
+<source src="compound-key.mp4" type="video/mp4">
+Your browser does not support embedded video. </video>
+<figcaption>
+Assigning <code>LCtl_T(F)</code> to a key.
+</figcaption>
+</figure>
+<h3 id="arbitrary-or-any-keycode-entry">Arbitrary or “Any” keycode
+entry</h3>
+<p>Vial’s Basic tab has a special <kbd>Any</kbd> key. This is a
+low-level escape hatch, useful to assign keys <strong>known to be
+supported in the firmware</strong> yet not otherwise accessible in the
+configurator. Assigning “Any” to a key opens a dialog box where you can
+entry an arbitrary keycode. Alternatively, double click a keymap key to
+open this dialog.</p>
+<h4 id="textual-entry">Textual entry</h4>
+<p>In the edit box, you can type the QMK name or C code syntax for the
+keycode, as how one would refer to the key in editing their layout in
+<code>keymap.c</code> (see the <a
+href="https://docs.qmk.fm/keycodes">full list of keycodes</a>).</p>
+<p>Example: “<code>MT(MOD_LCTL | MOD_LSFT, KC_GRV)</code>” defines a
+mod-tap key that sends Ctrl + Shift when held and grave ` when
+tapped.</p>
+<h4 id="numerical-entry">Numerical entry</h4>
+<p>If the key isn’t recognized by name, enter its 16-bit numerical
+keycode. The source file <a
+href="https://github.com/vial-kb/vial-qmk/blob/vial/quantum/keycodes.h">quantum/keycodes.h</a>
+is a useful reference for the keycodes as numerical values. It’s a
+tedious process, but it does work to assign keys that would be otherwise
+unavailable. See <a href="#a-note-on-keycodes">a note on keycodes</a>
+below for an in-depth example.</p>
+<p>Again, for all of this to work, the firmware needs to be built to
+support the keycode being assigned. Otherwise, likely, the key will do
+nothing.</p>
+<h3 id="qmk-settings">QMK Settings</h3>
+<p>The <strong>QMK Settings</strong> tab exposes many (though not all)
+of QMK’s settings for various features. Here too, Vial’s documentation
+is minimal, and users are referred to QMK’s documentation.</p>
+<p>The QMK Settings tab includes select options from:</p>
+<ul>
+<li>Magic Key (<a href="https://docs.qmk.fm/keycodes_magic">QMK
+docs</a>).</li>
+<li>Grave Escape (<a href="https://docs.qmk.fm/features/grave_esc">QMK
+docs</a>).</li>
+<li>Tap-hold configuration (<a href="https://docs.qmk.fm/tap_hold">QMK
+docs</a>).</li>
+<li>Auto Shift (<a href="https://docs.qmk.fm/features/auto_shift">QMK
+docs</a>).</li>
+<li>Combos (<a href="https://docs.qmk.fm/features/combo">QMK
+docs</a>).</li>
+<li>One Shot Keys (<a
+href="https://docs.qmk.fm/features/one_shot_keys">QMK docs</a>).</li>
+<li>Mouse Keys (<a href="https://docs.qmk.fm/features/mouse_keys">QMK
+docs</a>).</li>
+</ul>
+<h3 id="configuring-home-row-mods">Configuring home row mods</h3>
+<p><em>See also <a
+href="../faqs/index.html#home-row-mods-are-hard-to-use">Home row mods
+are hard to use</a>.</em></p>
+<p>A frequent question is what is an effective Vial configuration for <a
+href="../glossary/index.html#home-row-mods-hrms">home row mods</a>. Here
+is my recommendation:</p>
+<ul>
+<li><p>Use the <kbd>LCtl_T</kbd>, <kbd>LSft_T</kbd>, etc. mod-tap keys
+under the Quantum tab for your home row keys. Don’t use Tap Dances for
+that.</p></li>
+<li><p>Under the QMK Settings tab, supposing you have Vial 0.7.4 or
+newer, check <strong>Permissive Hold</strong> and <strong>Chordal
+Hold</strong>, and ensure that <strong>Hold On Other Key Press</strong>
+is <em>unchecked</em>.</p></li>
+<li><p>Don’t set the tapping term too small. Start with a value of
+250 ms and adjust from there. Many unintended mod holds? ⇒ increase the
+tapping term. Or conversely, getting tapping keys when the hold was
+intended? ⇒ decrease the tapping term.</p></li>
+</ul>
+<figure>
+<img src="../faqs/vial-tap-hold-options.png" alt="Suggested Vial tap-hold configuration" width="306" height="277" loading="lazy"/>
+<figcaption>
+Suggested Vial tap-hold configuration.
+</figcaption>
+</figure>
+<p><em>Vial pre-0.7.4:</em> Older versions of Vial use different naming
+and don’t expose Chordal Hold. Make sure <strong>Permissive
+Hold</strong> and <strong>Ignore Mod Tap Interrupt</strong> are both
+checked. Or better yet, <a
+href="#install-vial-on-your-keyboard">reinstall Vial firmware</a> to get
+the latest.</p>
+<p><em>Why not Tap Dance?</em> Mod-tap keys <kbd>*_T</kbd> use <a
+href="https://docs.qmk.fm/tap_hold">an elaborate set of rules</a> to
+decide when the key is tapped vs. held, much of this designed with home
+row mods in mind. Tap Dances use a separate, simpler implementation to
+track when keys are tapped or held, which is poorly suited for home row
+mods.</p>
+<h3 id="unicode-input">Unicode input</h3>
+<p>QMK’s <a href="https://docs.qmk.fm/features/unicode">Unicode input
+feature</a> enables you to type Unicode symbol, such as a non-English
+letter or emoji, by pressing a key. While Vial lacks direct support for
+this feature, it’s possible to hack it through macros. Arguably, QMK’s
+implementation is itself a hack.</p>
+<p>Each major OS has an input method where the user may type a Unicode
+symbol by manually entering its code point number. Example: on Linux,
+the symbol 好 (U+597D) can be typed as “Ctrl+Shift+U, 5, 9, 7, D,
+space.” QMK literally sends such a key sequence to type each Unicode
+character. We can do the same in Vial with macros.</p>
+<p>First, get the Unicode code point hex number for the symbol you want
+to produce. This should be a sequence of (usually) four digits or
+letters in A–F. There are many online references and tools that can
+help, like <a href="https://unicodelookup.com/">unicodelookup.com</a>.
+I’ve collected a few <a
+href="../non-english/index.html#appendix-unicode-codepoints">in this
+appendix</a>.</p>
+<p><em>Linux users:</em></p>
+<ol type="1">
+<li><p>Go to the Macros tab in the configurator and select a macro to
+configure (say, M0).</p></li>
+<li><p>Click the “Add action” button to add a key to the macro. In the
+dropdown that appears, select “Tap.” Then click the “+” button. A
+placeholder with a ▽ symbol appears.</p>
+<figure>
+<img src="vial-unicode-init.webp"
+alt="Editing the macro, just after clicking “+.”" />
+<figcaption aria-hidden="true">Editing the macro, just after clicking
+“+.”</figcaption>
+</figure></li>
+<li><p>Click the ▽ placeholder and assign the initial key. For Linux
+this should be the Ctrl+Shift+U hotkey used to initiate Unicode input.
+To enter that in Vial, use <code>LCA(kc)</code> under the Quantum tab,
+followed by <code>U</code> from the Basic tab.</p></li>
+<li><p>Clicking “+” again to add more keys to the macro sequence. Define
+these keys to tap the hex digits of the code point to produce, then
+finally, the Space key.</p>
+<figure>
+<img src="vial-unicode-597d.webp"
+alt="Completed macro for “好” (U+597D)." />
+<figcaption aria-hidden="true">Completed macro for “好”
+(U+597D).</figcaption>
+</figure></li>
+<li><p>Click the Save button in the bottom right.</p></li>
+<li><p>Finally, switch back to the keymap tab and assign the macro to a
+key.</p></li>
+</ol>
+<p>For systems other than Linux, adjustments are needed since hotkeys
+differ, but the idea is the same.</p>
+<ul>
+<li><p><em>Mac users:</em> You must enable Unicode Hex input on your Mac
+(System Preferences → Keyboard → Input Sources). Then, Unicode input can
+be done by holding Left Alt (⌥), typing the code point hex digits, and
+finally releasing Left Alt. Use the “Down” and “Up” actions to hold and
+release the Left Alt key.</p>
+<figure>
+<img src="vial-unicode-mac.webp" alt="Mac macro for “好” (U+597D)." />
+<figcaption aria-hidden="true">Mac macro for “好” (U+597D).</figcaption>
+</figure></li>
+<li><p><em>Windows users (WinCompose):</em> It is suggested to install
+<a href="https://github.com/samhocevar/wincompose">WinCompose</a> to
+enable Unicode input. You can then produce a Unicode symbol by tapping
+in sequence Right Alt and <code>U</code> followed by the code point hex
+digits, and finally tap the Escape key.</p></li>
+<li><p><em>Windows users (native):</em> This method is less reliable and
+only supports code points up to U+FFFF. Windows users can produce
+Unicode by holding Left Alt, typing the code point hex digits, and
+finally releasing Left Alt. Note, for this method, you must use the
+numeric keypad to type numbers, and make sure numlock is on.</p></li>
+</ul>
+<p>Refer to <a href="https://get.vial.today/manual/macros.html">Vial’s
+macros docs</a> and <a href="https://docs.qmk.fm/features/unicode">QMK’s
+Unicode input feature</a> for more details on each.</p>
+<h2 id="customize-your-vial-build">Customize your Vial build</h2>
+<p>You can extend a stock Vial build to tune feature entry limits,
+enable otherwise unexposed QMK features, and add third-party community
+modules. The workflow for this is generally:</p>
+<ol type="1">
+<li><p><a href="#set-up-your-build-environment">Set up your build
+environment.</a></p></li>
+<li><p>Implement your customizations by editing the
+<code>config.h</code>, <code>rules.mk</code>, <code>keymap.c</code>
+files in your <code>vial</code> keymap folder.</p></li>
+<li><p><a href="#build-and-flash-the-firmware">Rebuild and flash</a> the
+customized firmware to your keyboard:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="op">&lt;</span>kb<span class="op">&gt;</span>:vial:flash</span></code></pre></div>
+<p><em>Tip:</em> Use the configurator to save your current Vial keymap
+to .vil file before flashing (File → Save current layout). Then after
+flashing, load the saved keymap to restore it. This spares you the chore
+of recreating your keymap.</p></li>
+<li><p>Test (and return to step 2 as needed).</p></li>
+</ol>
+<p>Before changing any source files, I suggest checking that building
+firmware with command “<code>qmk &lt;kb&gt;:vial</code>” completes
+without errors (replacing the “<code>&lt;kb&gt;</code>” with the path
+for your keyboard model). This verifies that your keyboard model has
+been ported to Vial and that your environment can successfully build
+it.</p>
+<h3 id="change-max-number-of-layers-and-feature-limits">Change max
+number of layers and feature limits</h3>
+<p>You can increase (or for recovering memory, decrease) the Vial’s max
+number of layers, number of combo entries, and other feature limits.
+This is done by editing the following definitions (or adding them if not
+already present) in the <code>config.h</code> file in your
+<code>vial</code> keymap folder:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define DYNAMIC_KEYMAP_LAYER_COUNT </span><span class="dv">16</span><span class="pp">   </span><span class="co">// # Layers.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define DYNAMIC_KEYMAP_MACRO_COUNT </span><span class="dv">32</span><span class="pp">   </span><span class="co">// # Macros.</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define VIAL_TAP_DANCE_ENTRIES </span><span class="dv">32</span><span class="pp">       </span><span class="co">// # Tap Dances.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define VIAL_COMBO_ENTRIES </span><span class="dv">32</span><span class="pp">           </span><span class="co">// # Combos.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define VIAL_KEY_OVERRIDE_ENTRIES </span><span class="dv">32</span><span class="pp">    </span><span class="co">// # Key Overrides.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define VIAL_ALT_REPEAT_KEY_ENTRIES </span><span class="dv">32</span><span class="pp">  </span><span class="co">// # Alt Repeat entries.</span></span></code></pre></div>
+<p>Rebuild and flash the firmware to apply the updated limits to your
+keyboard.</p>
+<p>The max possible layers supported is 32 (QMK’s limit). For
+per-feature entry limits, Vial’s default logic scales each as far as 32
+entries, but you can set limits beyond that provide your MCU has the
+memory for it.</p>
+<h3 id="custom-keycodes-and-macros">Custom keycodes and macros</h3>
+<p>Vial supports user-defined keycodes that appear in the configurator,
+under the <strong>User</strong> tab, allowing you to assign them in the
+keymap just like standard keys. See Vial’s <a
+href="https://get.vial.today/docs/custom_keycode.html">Custom keycode
+documentation</a> for details. As in mainline QMK, handle your custom
+keys in <code>process_record_user()</code> in <code>keymap.c</code>. See
+my <a href="../macros/index.html">QMK macros series</a> for how to do
+that.</p>
+<h3 id="additional-qmk-features">Additional QMK features</h3>
+<p>You can enable additional core QMK features in Vial as you would in
+mainline QMK, through the <code>config.h</code> and
+<code>rules.mk</code> files within your <code>vial</code> keymap folder.
+If these files don’t already exist, you can add them and they’ll be
+picked up automatically in the build.</p>
+<div class="callout note">
+<div class="callout-header">
+<p>
+📝  Note
+</p>
+</div>
+<p><strong>While enabling additional QMK features is generally
+compatible, Vial offers no support to use them.</strong> They won’t
+support dynamic configuration. They won’t appear visually in the Vial
+configurator. Be prepared to use such features in the regular QMK
+way.</p>
+</div>
+<p>A couple examples:</p>
+<ul>
+<li><p>To enable <a
+href="https://docs.qmk.fm/features/autocorrect">Autocorrect</a>, add
+this line in <code>rules.mk</code>:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode mk"><code class="sourceCode makefile"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">AUTOCORRECT_ENABLE</span> <span class="ch">=</span><span class="st"> yes</span></span></code></pre></div></li>
+<li><p>To enable <a
+href="https://docs.qmk.fm/tap_hold#speculative-hold">Speculative
+Hold</a>, add this line in <code>config.h</code>:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SPECULATIVE_HOLD</span></span></code></pre></div></li>
+</ul>
+<p><strong>Troubleshooting</strong>: If the build fails with a message
+like “firmware is too large!,” too many features are enabled to fit in
+flash memory. Sadly, you will need to be selective in which features to
+enable. These guides may help:</p>
+<ul>
+<li><a href="https://get.vial.today/docs/firmware-size.html">Vial
+firmware size troubleshooting</a></li>
+<li><a href="https://docs.qmk.fm/squeezing_avr">Squeezing the most out
+of AVR</a></li>
+<li><a
+href="https://getreuer.info/posts/keyboards/faqs/index.html#firmware-is-too-large">Firmware
+is too large</a></li>
+</ul>
+<h3 id="a-note-on-keycodes">A note on keycodes</h3>
+<p>Some features define keys specific to using that feature.
+Unfortunately, Vial is unaware of features outside of what it explicitly
+supports and won’t show their keys in the configurator. How to assign
+such keys? The easiest solution to this is to edit <code>keymap.c</code>
+in the <code>vial</code> folder to use these keys somewhere in the
+<code>keymap</code> array—then, those keys will be assigned in the
+keymap by default after freshly flashing the firmware.</p>
+<p>Example: For the ZSA Voyager, the
+<a href="https://github.com/vial-kb/vial-qmk/blob/vial/keyboards/zsa/voyager/keymaps/vial/keymap.c"><tt><span
+class="wide-only">keyboards/zsa/voyager/keymaps/</span>vial/keymap.c</tt></a>
+defines the default keymap:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> <span class="dt">uint16_t</span> PROGMEM keymaps<span class="op">[][</span>MATRIX_ROWS<span class="op">][</span>MATRIX_COLS<span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        KC_ESC<span class="op">,</span>  KC_1<span class="op">,</span>    KC_2<span class="op">,</span>    KC_3<span class="op">,</span>    KC_4<span class="op">,</span>    KC_5<span class="op">,</span>                         KC_6<span class="op">,</span>    KC_7<span class="op">,</span>    KC_8<span class="op">,</span>    KC_9<span class="op">,</span>    KC_0<span class="op">,</span>    KC_MINS<span class="op">,</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        CW_TOGG<span class="op">,</span> KC_Q<span class="op">,</span>    KC_W<span class="op">,</span>    KC_E<span class="op">,</span>    KC_R<span class="op">,</span>    KC_T<span class="op">,</span>                         KC_Y<span class="op">,</span>    KC_U<span class="op">,</span>    KC_I<span class="op">,</span>    KC_O<span class="op">,</span>    KC_P<span class="op">,</span>    KC_BSLS<span class="op">,</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        SFT_T<span class="op">(</span>KC_BSPC<span class="op">),</span>KC_A<span class="op">,</span> KC_S<span class="op">,</span> KC_D<span class="op">,</span>    KC_F<span class="op">,</span>    KC_G<span class="op">,</span>                         KC_H<span class="op">,</span>    KC_J<span class="op">,</span>    KC_K<span class="op">,</span>    KC_L<span class="op">,</span>    KC_SCLN<span class="op">,</span> RSFT_T<span class="op">(</span>KC_QUOT<span class="op">),</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        KC_LGUI<span class="op">,</span> ALT_T<span class="op">(</span>KC_Z<span class="op">),</span>KC_X<span class="op">,</span> KC_C<span class="op">,</span>    KC_V<span class="op">,</span>    KC_B<span class="op">,</span>                         KC_N<span class="op">,</span>    KC_M<span class="op">,</span>    KC_COMMA<span class="op">,</span>KC_DOT<span class="op">,</span>  RALT_T<span class="op">(</span>KC_SLSH<span class="op">),</span> KC_RCTL<span class="op">,</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                                LT<span class="op">(</span><span class="dv">1</span><span class="op">,</span>KC_ENT<span class="op">),</span> CTL_T<span class="op">(</span>KC_TAB<span class="op">),</span>           SFT_T<span class="op">(</span>KC_BSPC<span class="op">),</span> LT<span class="op">(</span><span class="dv">2</span><span class="op">,</span>KC_SPC<span class="op">)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">),</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// More layers...</span></span></code></pre></div>
+<p>Suppose I have enabled the <a
+href="https://docs.qmk.fm/features/swap_hands">Swap Hands</a> feature,
+which Vial doesn’t natively support, by adding
+“<code>SWAP_HANDS_ENABLE = yes</code>” in <code>vial/rules.mk</code>.
+Swap Hands has several feature-specific keycodes, none of which Vial
+knows, including</p>
+<ul>
+<li><code>SH_MON</code>: Swap Hands momentary on</li>
+<li><code>SH_OS</code>: Swap Hands one-shot</li>
+<li><code>SH_T(kc)</code>: momentary swap when held, <code>kc</code>
+when tapped</li>
+</ul>
+<p>Let’s put these in the upper-left corner of the base keymap (anywhere
+in the keymap would work). For the <code>SH_T(kc)</code> key, I’ll set
+the “<code>kc</code>” tapping key to <code>KC_A</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> LAYOUT<span class="op">(</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    SH_MON<span class="op">,</span> SH_OS<span class="op">,</span> SH_T<span class="op">(</span>KC_A<span class="op">),</span> KC_3<span class="op">,</span>    KC_4<span class="op">,</span>    KC_5<span class="op">,</span>  </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other keys same as before ...</span></span></code></pre></div>
+<p>After rebuilding and flashing, the <code>SH_MON</code>,
+<code>SH_OS</code>, <code>SH_T(KC_A)</code> keys trigger the Swap Hands
+feature as expected. Yet here is how the keymap looks in the Vial
+configurator…</p>
+<figure>
+<img src="vial-swap-hands.webp" loading="lazy" width="725" height="356"
+alt="Vial configurator displaying Swap Hands keys in the top left corner." />
+<figcaption aria-hidden="true">Vial configurator displaying Swap Hands
+keys in the top left corner.</figcaption>
+</figure>
+<p>Vial doesn’t know these keys, so it displays keycodes numerically as
+<a href="https://en.wikipedia.org/wiki/Hexadecimal">hexadecimal
+values</a>:</p>
+<ul>
+<li><code>SH_MON = 0x56f2</code></li>
+<li><code>SH_OS = 0x56f6</code></li>
+<li><code>SH_T(KC_A) = 0x5604</code></li>
+</ul>
+<div class="callout note">
+<div class="callout-header">
+<p>
+📝  Note
+</p>
+</div>
+<p>The numerical values of the keycodes may differ between different
+versions of QMK. Verify keycode values for your version of the
+firmware.</p>
+</div>
+<p>Knowing these values, we can use <a
+href="#arbitrary-or-any-keycode-entry">“Any” keycode entry</a> to assign
+them to other keys. To make another <code>SH_MON</code> key for
+instance, assign “Any” to a keymap key or double click it to open the
+“Assign arbitrary keycode” dialog box, then enter
+<code>0x56f2</code>.</p>
+<h4 id="alternative-go-to-the-source">Alternative: go to the source</h4>
+<p>As noted earlier, another way we could deduced these numerical
+keycodes is by referring to the <a
+href="https://github.com/vial-kb/vial-qmk/blob/vial/quantum/keycodes.h#L325-L331">quantum/keycodes.h</a>
+source file:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>QK_SWAP_HANDS_TOGGLE <span class="op">=</span> <span class="bn">0x56F0</span><span class="op">,</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>QK_SWAP_HANDS_TAP_TOGGLE <span class="op">=</span> <span class="bn">0x56F1</span><span class="op">,</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>QK_SWAP_HANDS_MOMENTARY_ON <span class="op">=</span> <span class="bn">0x56F2</span><span class="op">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>QK_SWAP_HANDS_MOMENTARY_OFF <span class="op">=</span> <span class="bn">0x56F3</span><span class="op">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>QK_SWAP_HANDS_OFF <span class="op">=</span> <span class="bn">0x56F4</span><span class="op">,</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>QK_SWAP_HANDS_ON <span class="op">=</span> <span class="bn">0x56F5</span><span class="op">,</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>QK_SWAP_HANDS_ONE_SHOT <span class="op">=</span> <span class="bn">0x56F6</span><span class="op">,</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span></code></pre></div>
+<p>This method successfully reveals the same codes as above,
+<code>0x56f2</code> for <code>SH_MON</code> (aka
+<code>QK_SWAP_HANDS_MOMENTARY_ON</code>) and <code>0x56f6</code> for
+<code>SH_OS</code> (aka <code>QK_SWAP_HANDS_ONE_SHOT</code>).</p>
+<p>But what about <code>SH_T(KC_A)</code>? Since <code>SH_T(KC_A)</code>
+is a compound key, determining its keycode is tricker. The
+“<code>SH_T(kc)</code>” part is defined as a preprocessor macro in <a
+href="https://github.com/vial-kb/vial-qmk/blob/a69c7a1681f49d7b187974bd7f093d65f4300c44/quantum/quantum_keycodes.h#L194">quantum/quantum_keycodes.h</a>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SH_T</span><span class="op">(</span><span class="pp">kc</span><span class="op">)</span><span class="pp"> </span><span class="op">(</span><span class="pp">QK_SWAP_HANDS </span><span class="op">|</span><span class="pp"> </span><span class="op">((</span><span class="pp">kc</span><span class="op">)&amp;</span><span class="bn">0xFF</span><span class="op">))</span></span></code></pre></div>
+<p>in which <code>QK_SWAP_HANDS = 0x5600</code>. Other compound keycodes
+are defined this way in the same file. For the “<code>kc</code>”
+argument, we supplied <code>KC_A</code>, whose keycode is
+<code>0x0004</code>. The complete keycode for <code>SH_T(KC_A)</code> is
+composed by their bitwise-or, <code>0x5604</code>, just like we found
+previously.</p>
+<h3 id="qmk-community-modules">QMK Community Modules</h3>
+<p>You can use third-party <a
+href="../qmk-community-modules/index.html">QMK community modules</a> in
+Vial:</p>
+<ol type="1">
+<li>Put the modules under <code>vial-qmk/modules/</code>
+<em>&lt;author_name&gt;</em> <code>/</code>
+<em>&lt;module_name&gt;</em>.</li>
+<li>Within your <code>vial</code> keymap folder, create a
+<code>keymap.json</code> file (or if it exists, add to it) to define
+which modules to enable in the build.</li>
+<li>Follow the module’s documentation for any further setup
+instructions.</li>
+<li>Build and flash the firmware.</li>
+</ol>
+<p>Example: Put <a href="../sentence-case/index.html">Sentence Case</a>
+under <code>vial-qmk/modules/getreuer/sentence_case</code>.</p>
+<ul class="tree">
+<li>
+<div class="node">
+<span class="icon">folder</span>vial-qmk
+</div>
+<ul>
+<li>
+<div class="node">
+<span class="icon">folder</span>modules
+</div>
+<ul>
+<li>
+<div class="node">
+<span class="icon">folder</span>getreuer
+</div>
+<ul>
+<li>
+<div class="node">
+<span class="icon">folder</span>sentence_case
+</div>
+<ul>
+<li>
+<div class="node">
+<span class="icon">draft</span>qmk_module.json
+</div>
+</li>
+<li>
+<div class="node">
+<span class="icon">draft</span>sentence_case.c
+</div>
+</li>
+<li>
+ (more files …)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Then enable Sentence Case by writing a file <code>keymap.json</code>
+in your <code>vial</code> keymap folder with the content</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/sentence_case&quot;</span><span class="ot">]</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>Some modules define new keys. Again, Vial is unaware of modules, and
+the configurator won’t show their keys. <a href="#a-note-on-keycodes">As
+suggested above</a>, the easiest way to assign these keys is to edit
+<code>keymap.c</code> and use them somewhere in the <code>keymaps</code>
+array.</p>
+<h2 id="how-vial-works">How Vial works</h2>
+<p>Vial does a lot under the hood to enable dynamic configuration. Here
+is an overview.</p>
+<p><img src="vial-memory.svg" class="light-only" alt="Diagram showing how Vial stores keymaps and settings in RAM and EEPROM for dynamic editing." width="760" height="270" loading="lazy" />
+<img src="vial-memory-dark.svg" class="dark-only" alt="Diagram showing how Vial stores keymaps and settings in RAM and EEPROM for dynamic editing." width="760" height="270" loading="lazy" /></p>
+<h4 id="memory">Memory</h4>
+<p>In mainline QMK, most settings are frozen at compile time. For memory
+efficiency, as much as possible is stored in flash memory (PROGMEM) and
+<code>#ifdef</code>’d to conditionally exclude unused functionality.
+This is essential to supporting low-end AVR chips.</p>
+<p>In Vial on the other hand, the keymap and many settings are dynamic.
+To support on-the-fly edits, the active keymap and settings are stored
+in RAM. For persistence across reboots, they are also backed in <a
+href="../glossary/index.html#eeprom">EEPROM</a> (or EEPROM emulated by
+flash memory). Vial additionally stores metadata about the keyboard in
+<code>vial.json</code> in the keyboard’s flash memory (in a compressed
+form) and transmits it upon connection, enabling the configurator to
+visualize the keymap and communicate properly. Consequently, Vial
+firmware tends to have a larger footprint. On keyboards running on AVR
+chips, the default Vial build may disable some features to fit within
+flash memory.</p>
+<h4 id="communication">Communication</h4>
+<p>Vial relies on <a href="https://docs.qmk.fm/features/rawhid">Raw
+HID</a> communication to bridge the keyboard and the configurator. The
+keyboard firmware serializes your active settings into a byte stream and
+sends them to the configurator. When you make an edit, the updated
+settings are serialized and sent back. The firmware decodes the incoming
+Raw HID packets, applies the changes to RAM, and commits them to EEPROM
+for persistence.</p>
+<h4 id="where-are-my-configurations-stored">Where are my configurations
+stored?</h4>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">What</th>
+<th style="text-align: left;">Where is it configured</th>
+<th style="text-align: left;">Storage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Active keymap</td>
+<td style="text-align: left;">Configurator keymap tab</td>
+<td style="text-align: left;">RAM*</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Active settings</td>
+<td style="text-align: left;">Configurator QMK Settings</td>
+<td style="text-align: left;">RAM*</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Compile-time configuration</td>
+<td style="text-align: left;"><code>vial/config.h</code></td>
+<td style="text-align: left;">Flash</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Default keymap</td>
+<td style="text-align: left;"><code>vial/keymap.c</code></td>
+<td style="text-align: left;">Flash</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Supported features</td>
+<td style="text-align: left;"><code>vial/rules.mk</code></td>
+<td style="text-align: left;">Flash</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Keyboard metadata</td>
+<td style="text-align: left;"><code>vial/vial.json</code></td>
+<td style="text-align: left;">Flash</td>
+</tr>
+</tbody>
+</table>
+<p>∗ and backed in EEPROM</p>
+<h2 id="developing-vial">Developing Vial</h2>
+<p>Contributing to Vial generally involves coordinated pull requests
+across three repos:</p>
+<ul>
+<li><p><img src="../../../github.svg" class="light-only" style="width:1.25em" /><img
+src="../../../github-dark.svg" class="dark-only" style="width:1.25em"
+/> <a href="https://github.com/vial-kb/vial-qmk">vial-kb/vial-qmk</a>:
+The firmware, fork of mainline QMK.</p></li>
+<li><p><img src="../../../github.svg" class="light-only" style="width:1.25em" /><img
+src="../../../github-dark.svg" class="dark-only" style="width:1.25em"
+/> <a href="https://github.com/vial-kb/vial-gui">vial-kb/vial-gui</a>:
+Desktop application and the web app UI, written in Python in the <a
+href="https://build-system.fman.io/">fbs (fman build system)</a> GUI
+framework.</p></li>
+<li><p><img src="../../../github.svg" class="light-only" style="width:1.25em" /><img
+src="../../../github-dark.svg" class="dark-only" style="width:1.25em"
+/> <a
+href="https://github.com/vial-kb/vial-kb.github.io">vial-kb/vial-kb.github.io</a>:
+The official Vial documentation.</p></li>
+</ul>
+<p>An example past PR: Add Repeat Key and Alt Repeat Key to Vial<br>
+(fw: <a
+href="https://github.com/vial-kb/vial-qmk/pull/906">vial-qmk#906</a>,
+gui: <a
+href="https://github.com/vial-kb/vial-gui/pull/334">vial-gui#334</a>,
+docs: <a
+href="https://github.com/vial-kb/vial-kb.github.io/pull/64">vial-kb.github.io#64</a>).</p>
+<p>Vial maintainers prioritize minimizing merge conflicts. Because Vial
+closely tracks the mainline QMK repo, changes to the core code are kept
+to a minimum. If a feature would require changing QMK core code, get
+those changes merged into QMK first (see my notes on <a
+href="../developing-qmk-features/index.html#qmk-core-features">contributing
+to QMK</a>). Then wait for Vial to pull those upstream changes.</p>
+<h4 id="being-dynamic">Being dynamic</h4>
+<p>In Vial, options are (of course!) expected to be dynamic. This is
+typically achieved by designing QMK core features with a user callback
+function API, then in Vial, leveraging that callback to plumb the
+dynamic setting.</p>
+<p><em>Example:</em> In mainline QMK, the <code>TAPPING_TERM</code> for
+tap-hold keys is a compile-time constant. To make the tapping term
+dynamically configurable, Vial uses the <code>get_tapping_term()</code>
+callback to <a
+href="https://github.com/vial-kb/vial-qmk/blob/df7378eb3bab077d450f46cb21a58bf903a0b3cb/quantum/vial.c#L529-L542">plumb
+the dynamic value</a> of the tapping term.</p>
+<p>Besides callbacks, QMK core defines certain functions as
+“<code>__attribute__((weak))</code>” weak symbols, including some that
+aren’t necessarily presented as user APIs. This enables Vial to override
+them with a redefinition for dynamic editing.</p>
+<p><em>Example:</em> In mainline QMK, function
+<code>keycode_at_keymap_location()</code> is weakly defined to perform
+look-up on the read-only <code>keymaps</code> array in PROGMEM. Vial <a
+href="https://github.com/vial-kb/vial-qmk/blob/a69c7a1681f49d7b187974bd7f093d65f4300c44/quantum/dynamic_keymap.c#L194-L199">overrides
+this</a> to defer to <a
+href="https://github.com/vial-kb/vial-qmk/blob/a69c7a1681f49d7b187974bd7f093d65f4300c44/quantum/nvm/eeprom/nvm_dynamic_keymap.c#L128-L135">a
+function</a> performing look-up on a rewritable array in EEPROM memory
+instead.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://get.vial.today/manual/">Vial user manual</a></li>
+<li><a href="https://get.vial.today/docs/porting-to-vial.html">Vial
+porting guide</a></li>
+<li><a href="https://docs.qmk.fm/">QMK documentation</a></li>
+<li><a href="../developing-qmk-features/index.html">Developing QMK
+features</a></li>
+<li><a href="../macros/index.html">QMK macros 1: intro and assortment of
+practical examples</a></li>
+</ul>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+<a href="https://www.linkedin.com/in/pascalgetreuer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
