@@ -88,12 +88,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </head>
 <body>
 <a href="#content" class="skip-link">Skip to content</a>
-<div id="navbar">
-<div id="navhold">
-  <a href="../../../index.html">Home</a>
-  <a href="../../../papers/index.html">Papers</a>
-  <a href="../../../posts/index.html">Posts</a>
-  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
+<div id="site-header">
+<div id="site-headerhold">
+<nav class="breadcrumb" aria-label="Breadcrumb"><ol itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../../index.html" aria-label="Home"><span class="material-symbols-outlined home-icon">home</span><span itemprop="name" hidden>Home</span></a><meta itemprop="position" content="1"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../index.html"><span itemprop="name">Posts</span></a><meta itemprop="position" content="2"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../index.html"><span itemprop="name">Keyboards</span></a><meta itemprop="position" content="3"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">PaletteFx</span><meta itemprop="position" content="4"></li></ol></nav>
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -142,7 +140,7 @@ Acknowledgements</a></li>
 </div>
 <style>
 .preview-menu {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
   background-color: #000;
@@ -150,6 +148,7 @@ Acknowledgements</a></li>
   border: none;
   user-select: none;
   font-size: 90%;
+  width: 100%;
 }
 
 .preview-menu button {
@@ -175,6 +174,21 @@ Acknowledgements</a></li>
   display: inline-grid;
   grid-template-columns: repeat(2, 17em);
   justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .palette-menu {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  
+  .effect-menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    max-width: 19em;
+    margin: auto;
+  }
 }
 
 .palette-menu button {
@@ -765,7 +779,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 })();
 </script>
-<p><a href="../index.html">← More about keyboards</a></p>
 <div style="color: #ccc; background-color: #000; margin:auto; padding: 1em; text-align:center">
 <video autoplay loop muted playsinline style="width:100%">
 <source src="afterburn-vortex.mp4" type="video/mp4">
@@ -1275,7 +1288,6 @@ colormap</a> is by Stéfan van der Walt and Nathaniel Smith, distributed
 under <a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0
 license</a>.</p></li>
 </ul>
-<p><a href="../index.html">← More about keyboards</a></p>
 </div>
 
 <div id="footer">

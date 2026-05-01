@@ -1,21 +1,3 @@
-// Hide navbar on scroll down, show on scroll up.
-let prevScrollY = window.scrollY;
-let ticking = false;
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      const currentScrollY = window.scrollY;
-      const navbar = document.getElementById('navbar');
-      if (navbar) {
-        navbar.classList.toggle('nav-hidden', prevScrollY <= currentScrollY);
-      }
-      prevScrollY = currentScrollY;
-      ticking = false;
-    });
-    ticking = true;
-  }
-});
-
 // Theme toggle logic.
 const themes = ['auto', 'dark', 'light'];
 const icons = {

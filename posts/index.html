@@ -19,12 +19,10 @@
 </head>
 <body>
 <a href="#content" class="skip-link">Skip to content</a>
-<div id="navbar">
-<div id="navhold">
-  <a href="../index.html">Home</a>
-  <a href="../papers/index.html">Papers</a>
-  <a href="../posts/index.html">Posts</a>
-  <button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
+<div id="site-header">
+<div id="site-headerhold">
+<nav class="breadcrumb" aria-label="Breadcrumb"><ol itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../index.html" aria-label="Home"><span class="material-symbols-outlined home-icon">home</span><span itemprop="name" hidden>Home</span></a><meta itemprop="position" content="1"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">Posts</span><meta itemprop="position" content="2"></li></ol></nav>
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
 </div>
 </div>
 <div id="content">
@@ -33,7 +31,94 @@
 </div>
 <ul>
 <li><p><a href="keyboards/index.html">QMK and Keyboards</a><br> Keyboard
-layouts and QMK firmware tricks.</p></li>
+layouts and QMK firmware tricks.</p>
+<ul>
+<li><strong>General</strong>
+<ul>
+<li><a href="keyboards/alt-layouts/index.html">Alt keyboard
+layouts</a><br> Switching from QWERTY to an alternative keyboard
+layout.</li>
+<li><a href="keyboards/symbol-layer/index.html">Designing a symbol
+layer</a><br> Ergonomic and character frequency considerations.</li>
+<li><a href="keyboards/thumb-ergo/index.html">PSA: Thumbs can get
+overuse injuries</a><br> Anecdotes, common injuries,
+countermeasures.</li>
+<li><a href="keyboards/40-percent-ergo/index.html">Questioning the
+ergonomics of 40% keyboards</a><br> Smaller ≠ better.</li>
+</ul></li>
+<li><strong>Vial</strong>
+<ul>
+<li><a href="keyboards/vial/index.html">Guide to Vial firmware</a><br>
+First-time use, customization, development.</li>
+</ul></li>
+<li><strong>QMK modules</strong>
+<ul>
+<li><a href="keyboards/custom-shift-keys/index.html">Custom shift
+keys</a><br> They’re surprisingly tricky to get right; here is my
+approach.</li>
+<li><a href="keyboards/cyclotab/index.html">Cyclotab</a><br> A swapper
+implementation for easier Alt+Tabbing.</li>
+<li><a href="keyboards/lumino/index.html">Lumino</a><br> A minimal,
+opinionated control scheme for RGB matrix lighting.</li>
+<li><a href="keyboards/mouse-turbo-click/index.html">Mouse Turbo
+Click</a><br> Macro that clicks the mouse rapidly.</li>
+<li><a href="keyboards/orbital-mouse/index.html">Orbital Mouse</a><br> A
+polar approach to mouse key control.</li>
+<li><a href="keyboards/palettefx/index.html">PaletteFx</a><br>
+Palette-based RGB matrix lighting effects.</li>
+<li><a href="keyboards/select-word/index.html">Select Word</a><br> Macro
+for convenient word or line selection.</li>
+<li><a href="keyboards/sentence-case/index.html">Sentence Case</a><br>
+Automatically capitalize the first letter of sentences.</li>
+<li><a href="keyboards/socd-cleaner/index.html">SOCD Cleaner</a><br>
+Enhance WASD for fast inputs for gaming.</li>
+<li><a href="keyboards/achordion/index.html">Achordion</a><br> Userspace
+predecessor of QMK’s Chordal Hold.</li>
+<li><a href="keyboards/autocorrection/index.html">Autocorrection</a><br>
+Userspace version of QMK’s Autocorrect.</li>
+<li><a href="keyboards/caps-word/index.html">Caps Word</a><br> Userspace
+version of QMK’s Caps Word.</li>
+<li><a href="keyboards/layer-lock/index.html">Layer Lock key</a><br>
+Userspace version of QMK’s Layer Lock.</li>
+<li><a href="keyboards/repeat-key/index.html">Repeat Key</a><br>
+Userspace version of QMK’s Repeat Key.</li>
+<li><a href="keyboards/speculative-hold/index.html">Speculative
+Hold</a><br> Userspace version of QMK’s Speculative Hold.</li>
+<li><a href="keyboards/tap-flow/index.html">Tap Flow</a><br> Userspace
+predecessor of QMK’s Flow Tap.</li>
+</ul></li>
+<li><strong>QMK</strong>
+<ul>
+<li><a href="keyboards/qmk-community-modules/index.html">QMK Community
+Modules</a><br> Reduce the friction to add third-party features.</li>
+<li><a href="keyboards/non-english/index.html">Typing non-English
+letters</a><br> Several approaches to type symbols like ä, ç, λ.</li>
+<li><a href="keyboards/qmk-song-player/index.html">QMK song
+player</a><br> Play QMK song code in your browser.</li>
+<li><a href="keyboards/macros/index.html">QMK Macros 1: intro and
+assortment of practical examples</a><br> An introductory guide to QMK
+macros with practical examples.</li>
+<li><a href="keyboards/triggers/index.html">QMK Macros 2: triggers,
+reacting to interesting events</a><br> A guide to implementing various
+triggers in QMK macros.</li>
+<li><a href="keyboards/macros3/index.html">QMK Macros 3: advanced
+effects</a><br> Advanced QMK macro techniques including timing
+effects.</li>
+<li><a href="keyboards/developing-qmk-features/index.html">Developing
+QMK features</a><br> Userspace libraries and contributing to QMK.</li>
+<li><a href="keyboards/keycode-string/index.html">Keycode String</a><br>
+Format keycodes as human-readable strings.</li>
+</ul></li>
+<li><strong>Reference</strong>
+<ul>
+<li><a href="keyboards/faqs/index.html">Keyboard FAQs</a><br> Thoughts
+on topics that come up regularly.</li>
+<li><a href="keyboards/glossary/index.html">Glossary</a><br>
+Keyboard-related slang, technical jargon, and anatomical terms.</li>
+<li><a href="keyboards/links/index.html">Links about keyboards</a><br>
+Interesting links about keyboards and related topics.</li>
+</ul></li>
+</ul></li>
 <li><p><a href="randmt/index.html">randmt: MT19937 pseudorandom number
 generator</a><br> C/C++ code for pseudorandom number generation from
 several distributions.</p></li>
