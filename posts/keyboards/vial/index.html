@@ -8,7 +8,6 @@
     if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
   </script>
   <meta name="author" content="Pascal Getreuer">
-  <meta name="date" content="2026-04-30">
   <meta name="description" content="A thorough guide to Vial keyboard
 firmware, ranging from first-time installation and use, customized
 builds, and contributing to the project.">
@@ -98,7 +97,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Guide to Vial keyboard firmware</h1>
-<h2 class="author">Pascal Getreuer, 2026-04-30</h2>
+<h2 class="author">Pascal Getreuer, 2026-04-30 (updated 2026-05-23)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -145,9 +144,23 @@ Community Modules</a></li>
 works</a></li>
 <li><a href="#developing-vial" id="toc-developing-vial">Developing
 Vial</a></li>
+<li><a href="#acknowledgements"
+id="toc-acknowledgements">Acknowledgements</a></li>
 <li><a href="#further-reading" id="toc-further-reading">Further
 reading</a></li>
 </ul>
+</div>
+<div class="callout important">
+<div class="callout-header">
+<p>
+🚀  Upstreamed
+</p>
+</div>
+<p><strong>Portions of this guide have been upstreamed to the official
+Vial docs!</strong> See the new content on e.g. <a
+href="https://get.vial.today/manual/quantum.html">the Quantum tab</a>
+and <a href="https://get.vial.today/about/">contributing to
+Vial</a>.</p>
 </div>
 <h2 id="what-is-vial">What is Vial?</h2>
 <p><a href="https://get.vial.today/">Vial is</a> a keyboard <a
@@ -256,7 +269,13 @@ documentation</a>.</p>
 <code>keyboards</code> folder, find your <em>(exact!)</em> keyboard
 model. This folder mirrors upstream QMK, and QMK’s <a
 href="https://browse.qmk.fm">keyboard browser</a> is handy to search for
-a specific model. If you cannot find it, ask your keyboard vendor.</p>
+a specific model.</p>
+<p>The typical form of the keyboard path is
+“<code>vial-qmk/keyboards/</code> <em><vendor></em> <code>/</code>
+<em><model></em>.” Some models with multiple variants or revisions have
+a path like “<code>vial-qmk/keyboards/</code> <em><vendor></em>
+<code>/</code> <em><model></em> <code>/</code> <em><variant></em>.” If
+you cannot find it, ask your keyboard vendor.</p>
 <figure>
 <div style="margin: 0 auto; width:20rem;">
 <ul class="tree">
@@ -586,8 +605,9 @@ alt="Editing the macro, just after clicking “+.”" />
 </figure></li>
 <li><p>Click the ▽ placeholder and assign the initial key. For Linux
 this should be the Ctrl+Shift+U hotkey used to initiate Unicode input.
-To enter that in Vial, use <code>LCA(kc)</code> under the Quantum tab,
-followed by <code>U</code> from the Basic tab.</p></li>
+To enter that in Vial, select <code>LCS(kc)</code> under the Quantum
+tab, then select <code>U</code> from the Basic tab for the
+<code>kc</code> inner part.</p></li>
 <li><p>Clicking “+” again to add more keys to the macro sequence. Define
 these keys to tap the hex digits of the code point to produce, then
 finally, the Space key.</p>
@@ -647,7 +667,7 @@ of recreating your keymap.</p></li>
 <li><p>Test (and return to step 2 as needed).</p></li>
 </ol>
 <p>Before changing any source files, I suggest checking that building
-firmware with command “<code>qmk &lt;kb&gt;:vial</code>” completes
+firmware with command “<code>make &lt;kb&gt;:vial</code>” completes
 without errors (replacing the “<code>&lt;kb&gt;</code>” with the path
 for your keyboard model). This verifies that your keyboard model has
 been ported to Vial and that your environment can successfully build
@@ -832,8 +852,7 @@ href="../qmk-community-modules/index.html">QMK community modules</a> in
 Vial:</p>
 <ol type="1">
 <li>Put the modules under <code>vial-qmk/modules/</code>
-<em>&lt;author_name&gt;</em> <code>/</code>
-<em>&lt;module_name&gt;</em>.</li>
+<em><author></em> <code>/</code> <em>&lt;module_name&gt;</em>.</li>
 <li>Within your <code>vial</code> keymap folder, create a
 <code>keymap.json</code> file (or if it exists, add to it) to define
 which modules to enable in the build.</li>
@@ -1026,6 +1045,11 @@ this</a> to defer to <a
 href="https://github.com/vial-kb/vial-qmk/blob/a69c7a1681f49d7b187974bd7f093d65f4300c44/quantum/nvm/eeprom/nvm_dynamic_keymap.c#L128-L135">a
 function</a> performing look-up on a rewritable array in EEPROM memory
 instead.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Thank you to GitHub user <span class="citation"
+data-cites="TweetyDaBird">@TweetyDaBird</span> and Reddit user
+u/Xander65 for helpful feedback and suggestions to improve this
+guide.</p>
 <h2 id="further-reading">Further reading</h2>
 <ul>
 <li><a href="https://get.vial.today/manual/">Vial user manual</a></li>
