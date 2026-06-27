@@ -14,8 +14,9 @@ editing faster and more convenient.">
   <title>Select word QMK module</title>
   <style>code{white-space: pre;}</style>
   <style>
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -26,7 +27,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -113,9 +114,9 @@ id="toc-acknowledgements">Acknowledgements</a></li>
 </ul>
 </div>
 <h2 id="overview">Overview</h2>
-<p>This post describes a QMK macro for a button that selects the current
-word, assuming conventional text editing hotkeys. Press it again to
-extend the selection to the following word. The effect is similar to
+<p>This post describes a QMK module for a button that selects the
+current word, assuming conventional text editing hotkeys. Press it again
+to extend the selection to the following word. The effect is similar to
 word selection (<code>W</code>) in the <a
 href="https://kakoune.org">Kakoune editor</a>.</p>
 <figure>
@@ -152,29 +153,29 @@ selections programmatically.</p>
 <col style="width: 62%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Keycode</th>
 <th>Short alias</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>SELECT_WORD</code></td>
 <td><code>SELWORD</code></td>
 <td>Forward word selection. Or with Shift, line selection.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>SELECT_WORD_BACK</code></td>
 <td><code>SELWBAK</code></td>
 <td>Backward word selection.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>SELECT_LINE</code></td>
 <td><code>SELLINE</code></td>
 <td>Downward line selection.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>SELECT_LINE_UP</code></td>
 <td><code>SELLUP</code></td>
 <td>Upward line selection.</td>
@@ -233,21 +234,21 @@ from a tap dance.</p>
 <col style="width: 58%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Function</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>select_word_register(action)</code></td>
 <td>Register (press) selection <code>action</code>.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>select_word_unregister()</code></td>
 <td>Unregister (release) selection hotkey.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>select_word_tap(action)</code></td>
 <td>Register and unregister selection <code>action</code>.</td>
 </tr>

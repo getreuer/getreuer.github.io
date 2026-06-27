@@ -14,8 +14,9 @@ modifiers, and performing complex actions.">
   <title>QMK macros 1: intro and assortment of practical examples</title>
   <style>code{white-space: pre;}</style>
   <style>
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -26,7 +27,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -482,8 +483,8 @@ select to the beginning of the word:</p>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// SEND_STRING(SS_LALT(SS_TAP(X_RGHT) SS_LSFT(SS_TAP(X_LEFT))));</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span></code></pre></div>
-<p>See also my <a href="../select-word/index.html">Word Selection</a>
-post for an elaborated version of this macro.</p>
+<p>See also my <a href="../select-word/index.html">Select Word</a> post
+for an elaborated version of this macro.</p>
 <h3 id="select-line-macro">Select line macro</h3>
 <p>This macro selects the current line, by tapping the home key and then
 Shift+End:</p>
