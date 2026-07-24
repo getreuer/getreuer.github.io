@@ -14,8 +14,9 @@ mods, debouncing, input lag, and QMK fixes.">
   <title>Keyboard FAQs</title>
   <style>code{white-space: pre;}</style>
   <style>
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -26,7 +27,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -97,7 +98,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Keyboard FAQs</h1>
-<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2026-04-05)</h2>
+<h2 class="author">Pascal Getreuer, 2022-05-15 (updated 2026-07-24)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -411,19 +412,23 @@ Kanata</a>. While it’s not the only approach, it’s a highly effective
 solution. urob introduces his configuration incrementally, explaining
 how each option solves a problem—worth a read, even if you don’t use
 ZMK.</p>
-<p><strong>Suggested settings:</strong></p>
+<h4 id="suggested-settings-for-hrms">Suggested settings for HRMs</h4>
 <ul>
 <li><p><strong>QMK firmware:</strong> Start with these settings in your
 <code>config.h</code> file:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM </span><span class="dv">250</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CHORDAL_HOLD</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PERMISSIVE_HOLD</span></span></code></pre></div>
-<p>Read my post on <a
+<p>The above is essentially a simplified version of urob’s timeless home
+row mods, ported to QMK. Read my post on <a
 href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1q1jo3c/urobs_zmk_timeless_home_row_mods_ported_to_native/">Timeless
 Home Row Mods in QMK</a> for a longer configuration guide exploring
 additional options. See the <a
 href="https://docs.qmk.fm/tap_hold">Tap-Hold documentation</a> for full
-details on what these options mean.</p></li>
+details on what these options mean.</p>
+<p>See also <a
+href="https://docs.qmk.fm/tap_hold#configuring-home-row-mods">Configuring
+Home Row Mods</a> in the QMK documentation.</p></li>
 <li><p><strong>ZSA Oryx</strong> (where QMK is under the hood): Make
 these settings under Advanced Configuration Settings (gear icon on the
 upper right):</p>
@@ -442,12 +447,11 @@ Quantum tab for your home row keys. Don’t use Tap Dances for that. Under
 the QMK Settings tab, supposing you have Vial 0.7.4 or newer, check
 <strong>Permissive Hold</strong> and <strong>Chordal Hold</strong>, and
 ensure that <strong>Hold On Other Key Press</strong> is
-<em>unchecked</em>.</p></li>
-</ul>
+<em>unchecked</em>.</p>
 <figure>
-<img src="./vial-tap-hold-options.png" alt="Suggested Vial tap-hold configuration" width="306" height="277" loading="lazy"/>
+<p><img src="./vial-tap-hold-options.png" alt="Suggested Vial tap-hold configuration" width="306" height="277" loading="lazy"/></p>
 <figcaption>
-Suggested Vial tap-hold configuration.
+<p>Suggested Vial tap-hold configuration.</p>
 </figcaption>
 </figure>
 <p><em>Vial pre-0.7.4:</em> Older versions of Vial use different naming
@@ -462,7 +466,9 @@ implementation to track when keys are tapped or held. This is less
 suited for home row mods. The point of it is to support different
 actions on double tap, tap-then-hold, or patterns with even more taps,
 which is beyond the scope of what mod-tap keys do.</p>
-<ul>
+<p>See also the Vial documentation on <a
+href="https://get.vial.today/manual/quantum.html#setting-up-home-row-mods">Setting
+up home row mods</a>.</p></li>
 <li><p><strong>ZMK firmware:</strong> Follow the <a
 href="https://zmk.dev/docs/keymaps/behaviors/hold-tap?examples=home_row_mods#custom-hold-tap-examples">Homerow
 Mods example</a> configuration. Particularly, set
@@ -481,13 +487,27 @@ class="citation" data-cites="ldebritto">@ldebritto</span>’s
 configuration guide</a> for a sophisticated Kanata implementation of
 Timeless Home Row Mods.</p></li>
 </ul>
+<h4 id="tuning-hrms">Tuning HRMs</h4>
+<p><strong>Tapping term tuning:</strong> Setting the tapping term is a
+balance. “Timeless home row mods”-like configuration aims to make the
+behavior less sensitive to the exact choice of tapping term. Still, it
+may need tuning:</p>
+<ul>
+<li><p>If you get many accidental mod triggers, increase the tapping
+term.</p></li>
+<li><p>Or, if you often intend the mod but get the tapping keys,
+decrease the tapping term.</p></li>
+<li><p>Try <a
+href="https://rpnfan.github.io/keyboard-heaven/how-to/tap-timeout-calibrator/">rpnfan’s
+tap-timeout calibrator</a> web app to tune the tapping term for your
+typing.</p></li>
+</ul>
 <p><strong>In addition to good configuration, I suggest you may need a
 couple of months to get used to home row mods.</strong> Everyone’s
 typing habits are a little different. I struggled badly when I started
-with accidental mod triggers, despite using Precondition’s recommended
-settings. But after a couple months of persistence, my typing adapted.
-Now I use home row mods with confidence.</p>
-<p><strong>Other tips:</strong></p>
+with accidental mod triggers. But after a couple months of persistence,
+my typing adapted. Now I use home row mods with confidence.</p>
+<h4 id="hrms-related-tips">HRMs-related tips</h4>
 <ul>
 <li><p><strong>Flow Tap</strong>: Use <a
 href="https://docs.qmk.fm/tap_hold#flow-tap">Flow Tap</a> to disable
@@ -540,9 +560,9 @@ data-cites="rafaelromao">@rafaelromao</span> for this idea. An
 implementation in QMK is <a href="#one-shot-mod-tap-osm-mt">described
 below</a>.</p></li>
 </ul>
-<p><strong>Alternatives:</strong> If home row mods are not for you, here
-are several alternative approaches to modifiers that you might
-consider.</p>
+<h4 id="hrms-alternatives">HRMs alternatives</h4>
+<p>If home row mods are not for you, here are several alternative
+approaches to modifiers that you might consider.</p>
 <ul>
 <li><p>Bottom row mods: move the mod-taps down to <kbd>Z</kbd>
 <kbd>X</kbd> <kbd>C</kbd> <kbd>V</kbd> and <kbd>M</kbd> <kbd>,</kbd>
