@@ -32,7 +32,7 @@ related to ergonomic typing.">
 <div id="content">
 <div id="header">
 <h1 class="title">Glossary of keyboard terms</h1>
-<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2026-03-17)</h2>
+<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2026-08-16)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -47,7 +47,10 @@ tunnel</a></li>
 <li><a href="#eeprom" id="toc-eeprom">EEPROM</a></li>
 <li><a href="#esd-and-short-circuits"
 id="toc-esd-and-short-circuits">ESD and short circuits</a></li>
+<li><a href="#finger-usage" id="toc-finger-usage">Finger usage</a></li>
 <li><a href="#firmware" id="toc-firmware">Firmware</a></li>
+<li><a href="#hand-alternation" id="toc-hand-alternation">Hand
+alternation</a></li>
 <li><a href="#home-row-mods-hrms" id="toc-home-row-mods-hrms">Home row
 mods (HRMs)</a></li>
 <li><a href="#homing-keycaps" id="toc-homing-keycaps">Homing
@@ -273,6 +276,15 @@ gets close enough for a static arc to bridge the gap.</p>
 typically implemented with SRV05-4 chips or other TVS (Transient Voltage
 Suppression) diode arrays, which shunt voltage spikes to ground before
 they can damage the microcontroller.</p>
+<h3 id="finger-usage">Finger usage</h3>
+<p>In <a href="#layout-design">layout design</a>, <strong>finger
+usage</strong> or <strong>finger workload</strong> is the percentage of
+keystrokes typed by each finger, effectively a typing heatmap
+distributed over the fingers. These metrics are useful if one has
+ergonomic concerns with specific fingers.</p>
+<p><strong>Pinky usage</strong> is the percentage of keystrokes typed by
+the pinky fingers. Layouts with reduced pinky usage are often
+desired.</p>
 <h3 id="firmware">Firmware</h3>
 <p>A keyboard’s <strong>firmware</strong> is software that runs on the
 <a href="#microcontroller-unit-mcu">microcontroller</a>. This software
@@ -286,6 +298,17 @@ processes features such as layers, <a href="#macro-key">macros</a>, and
 <a href="#mod-tap-key">mod-taps</a>. Well-known firmware for
 programmable keyboards include <a href="https://docs.qmk.fm">QMK
 firmware</a> and <a href="https://zmk.dev">ZMK firmware</a>.</p>
+<h3 id="hand-alternation">Hand alternation</h3>
+<p>In <a href="#layout-design">layout design</a>, <strong>hand
+alternation</strong> counts sequences of three keys (trigrams) where the
+hands alternate on each key: “left, right, left” or “right, left,
+right.” For instance <code>FOR</code> and <code>THEIR</code> exhibit
+hand alternation when typed on QWERTY.</p>
+<p>As introduced by the Dvorak layout, some layouts optimize for high
+alternation. This is an effective way to reduce <a
+href="#redirect">redirects</a>. Other layouts aim instead for high <a
+href="#roll">rolls</a>. Whether high alternation or high rolls is
+desirable is a matter of personal preference.</p>
 <h3 id="home-row-mods-hrms">Home row mods (HRMs)</h3>
 <p><strong>Home row mods or HRMs</strong> is a scheme of using <a
 href="#mod-tap-key">mod-taps</a> on the home row, as popularized by
@@ -568,9 +591,12 @@ arranging or mapping keys.</p>
 </div>
 <p>Designing a good layout involves more than simply putting the most
 frequent letters in the best positions. Multiple competing metrics are
-considered, such as <a href="#same-finger-bigram-sfb">SFBs</a>, <a
-href="#scissor">scissors</a>, <a href="#redirect">redirects</a>, and <a
-href="#roll">rolls</a>. See also <a
+considered, including <a href="#finger-usage">finger usage</a>, <a
+href="#hand-alternation">hand alternation</a>, <a
+href="#redirect">redirects</a>, <a href="#roll">rolls</a>, <a
+href="#same-finger-bigram-sfb">same finger bigrams (SFBs)</a>, and <a
+href="#scissor">scissors</a>.</p>
+<p>See also <a
 href="../alt-layouts/index.html#is-it-really-that-hard-to-arrange-30-keys">Is
 it really that hard to arrange 30 keys</a>.</p>
 <p>Layouts are often created using a <strong>layout optimizer</strong>,
@@ -779,7 +805,7 @@ circulation. This can lead to fatigue and injury. Many ergonomic
 keyboards are <a href="#tenting">tented</a> to reduce pronation.</p>
 <h3 id="redirect">Redirect</h3>
 <p>A <strong>redirect</strong> or <strong>roll reversal</strong> is a
-sequence of three keys typed by one hand that changes <a
+sequence of three keys (trigram) typed by one hand that changes <a
 href="#roll">roll direction</a> from inward to outward or vice versa.
 How frequently redirects occur is often considered in <a
 href="#layout-design">layout design</a>. Redirects are generally
@@ -892,11 +918,12 @@ ring finger types <kbd>W</kbd> and <kbd>S</kbd>, and the pinky types
 “same finger skip-1-gram.”</p>
 <h3 id="scissor">Scissor</h3>
 <p>In <a href="#layout-design">layout design</a>, a
-<strong>scissor</strong> is a two-key sequence where one finger extends
-to reach a key at the same time as an adjacent, longer finger flexes to
-reach a key in a lower row. Scissors are distinguished by vertical
-distance. A <strong>full scissor</strong> has a 2-row separation between
-the keys. A <strong>half scissor</strong> has a 1-row separation.</p>
+<strong>scissor</strong> is a two-key sequence (bigram) where one finger
+extends to reach a key at the same time as an adjacent, longer finger
+flexes to reach a key in a lower row. Scissors are distinguished by
+vertical distance. A <strong>full scissor</strong> has a 2-row
+separation between the keys. A <strong>half scissor</strong> has a 1-row
+separation.</p>
 <p>Scissors are considered undesirable. How tolerable or awkward a
 particular scissor pattern feels may depend on personal factors like
 finger dexterity, proportions of finger lengths, as well as whether the
