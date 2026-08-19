@@ -32,7 +32,7 @@ related to ergonomic typing.">
 <div id="content">
 <div id="header">
 <h1 class="title">Glossary of keyboard terms</h1>
-<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2026-08-16)</h2>
+<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2026-08-18)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -279,12 +279,26 @@ they can damage the microcontroller.</p>
 <h3 id="finger-usage">Finger usage</h3>
 <p>In <a href="#layout-design">layout design</a>, <strong>finger
 usage</strong> or <strong>finger workload</strong> is the percentage of
-keystrokes typed by each finger, effectively a typing heatmap
-distributed over the fingers. These metrics are useful if one has
-ergonomic concerns with specific fingers.</p>
-<p><strong>Pinky usage</strong> is the percentage of keystrokes typed by
-the pinky fingers. Layouts with reduced pinky usage are often
-desired.</p>
+keystrokes typed by each finger, effectively a typing heatmap over the
+fingers. QWERTY heavily uses the indexes and left middle fingers. Modern
+alternative layouts like <a
+href="https://github.com/GalileoBlues/Gallium">Gallium</a> tend to
+spread the work more evenly.</p>
+<figure>
+<img src="finger-use-light.svg" class="light-only" width="480px" alt="QWERTY: 8.2%, 8.3%, 18.5%, 21.7%, 18.7%, 8.9%, 12.8%, 2.9%. Gallium: 8.5%, 10.3%, 15.0%, 14.5%, 11.7%, 16.1%, 14.7%, 9.3%." loading="lazy" />
+<img src="finger-use-dark.svg" class="dark-only" width="480px" alt="QWERTY: 8.2%, 8.3%, 18.5%, 21.7%, 18.7%, 8.9%, 12.8%, 2.9%. Gallium: 8.5%, 10.3%, 15.0%, 14.5%, 11.7%, 16.1%, 14.7%, 9.3%." loading="lazy" />
+<figcaption>
+Finger usage on QWERTY and Gallium.
+</figcaption>
+</figure>
+<p>Typing should be distributed so that no one finger is overworked,
+arguably close to uniform but with the more dexterous index and middle
+fingers bearing a bit more of the load. These metrics are also useful if
+one has ergonomic concerns with specific fingers.</p>
+<p><strong>Pinky usage</strong> particularly is the workload on the
+pinky fingers. Layouts with reduced pinky usage are often desired (<a
+href="../alt-layouts/index.html#table">see this table</a>, and sort by
+the “Pinky” column).</p>
 <h3 id="firmware">Firmware</h3>
 <p>A keyboard’s <strong>firmware</strong> is software that runs on the
 <a href="#microcontroller-unit-mcu">microcontroller</a>. This software
