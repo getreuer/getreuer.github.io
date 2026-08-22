@@ -21,8 +21,42 @@
   const isStatsPage = window.location.pathname.includes('stats.html');
   pageState.mode = isStatsPage ? 'full' : 'short';
 
+  // Initialize selected metrics based on default mode
+  function resetMetricsToDefault() {
+    pageState.selectedMetrics.clear();
+    for (const [key, def] of Object.entries(METRIC_DEFS)) {
+      if (pageState.mode === 'short' && def.defaultShort) {
+        pageState.selectedMetrics.add(key);
+      } else if (pageState.mode === 'full' && def.defaultStats) {
+        pageState.selectedMetrics.add(key);
+      }
+    }
+  }
+  resetMetricsToDefault();
+
+  // Color index calculation (0 to 31)
+  function getCmapClass(metricKey, value) {
+    const limits = (typeof METRIC_LIMITS !== 'undefined' && METRIC_LIMITS[metricKey]) || [0, 100];
+    const [vmin, vmax] = limits;
+    let v = (value - vmin) / (vmax - vmin);
+    v = Math.max(0, Math.min(1, v));
+    if (METRIC_DEFS[metricKey].better === 'higher' || metricKey === 'alternation' || metricKey === 'roll_out') {
+      v = 1.0 - v; // Higher / higher alternation / higher out-rolls -> cool colors (0)
+    }
+    const idx = Math.round(v * 31);
+    return `cmap${Math.max(0, Math.min(31, idx))}`;
+  }
+
+  // Widget instance manager
   const widgets = [];
-  let configDialog = null;
+
+  function syncAllMenus() {
+    widgets.forEach(w => w.syncMenu());
+  }
+
+  function updateAllWidgets() {
+    widgets.forEach(w => w.renderTable());
+  }
 
   class LayoutTableWidget {
     constructor(container) {
@@ -30,7 +64,7 @@
       this.mode = container.dataset.mode || pageState.mode;
       this.thumbOnly = container.dataset.thumb === 'true';
       this.standardOnly = container.dataset.thumb === 'false';
-      this.sortKey = 'year';
+      this.sortKey = 'year'; // Initial sort: year ascending
       this.sortAsc = true;
 
       this.init();
@@ -49,29 +83,194 @@
       this.controlsContainer = document.createElement('div');
       this.controlsContainer.className = 'metrics-controls';
 
-      const defaultBtn = document.createElement('button');
-      defaultBtn.type = 'button';
-      defaultBtn.className = 'btn-utility metrics-btn-default';
-      defaultBtn.title = 'Reset to default metrics and sort order';
-      defaultBtn.setAttribute('aria-label', 'Reset to default metrics and sort order');
-      defaultBtn.innerHTML = '<span class="material-symbols-outlined">reset_settings</span>';
-      defaultBtn.addEventListener('click', () => {
-        resetToDefault();
-      });
-      this.controlsContainer.appendChild(defaultBtn);
+      this.menuWrap = document.createElement('div');
+      this.menuWrap.className = 'metrics-menu-wrap';
 
-      const customizeBtn = document.createElement('button');
-      customizeBtn.type = 'button';
-      customizeBtn.className = 'btn-utility metrics-btn-customize';
-      customizeBtn.title = 'Customize metrics';
-      customizeBtn.setAttribute('aria-label', 'Customize metrics');
-      customizeBtn.innerHTML = '<span class="material-symbols-outlined">tune</span>';
-      customizeBtn.addEventListener('click', () => {
-        openConfigDialog();
-      });
-      this.controlsContainer.appendChild(customizeBtn);
+      this.customizeBtn = document.createElement('button');
+      this.customizeBtn.type = 'button';
+      this.customizeBtn.className = 'btn-utility metrics-btn-customize';
+      this.customizeBtn.title = 'Columns';
+      this.customizeBtn.setAttribute('aria-label', 'Columns');
+      this.customizeBtn.setAttribute('aria-expanded', 'false');
+      this.customizeBtn.setAttribute('aria-haspopup', 'menu');
+      this.customizeBtn.innerHTML = '<span class="material-symbols-outlined">view_column</span>';
 
+      this.customizeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleMenu();
+      });
+
+      this.customizeBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.openMenu(true);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          this.openMenu(true);
+          const checkboxes = Array.from(this.menu.querySelectorAll('input[type="checkbox"]'));
+          if (checkboxes.length) checkboxes[checkboxes.length - 1].focus();
+        }
+      });
+
+      this.menu = document.createElement('div');
+      this.menu.className = 'metrics-menu';
+      this.menu.setAttribute('role', 'menu');
+      this.menu.setAttribute('hidden', '');
+
+      // Special "All" tri-state item
+      const allLabel = document.createElement('label');
+      allLabel.className = 'metrics-menu-item metrics-menu-item-all';
+
+      this.allCheckbox = document.createElement('input');
+      this.allCheckbox.type = 'checkbox';
+      this.allCheckbox.className = 'metrics-cb-all';
+
+      this.allCheckbox.addEventListener('change', () => {
+        if (this.allCheckbox.checked) {
+          for (const key of Object.keys(METRIC_DEFS)) {
+            pageState.selectedMetrics.add(key);
+          }
+        } else {
+          pageState.selectedMetrics.clear();
+        }
+        syncAllMenus();
+        updateAllWidgets();
+      });
+
+      const allText = document.createElement('span');
+      allText.className = 'metrics-menu-text';
+      allText.style.fontWeight = '600';
+      allText.textContent = 'All';
+
+      allLabel.appendChild(this.allCheckbox);
+      allLabel.appendChild(allText);
+      this.menu.appendChild(allLabel);
+
+      const divider = document.createElement('div');
+      divider.className = 'metrics-menu-divider';
+      this.menu.appendChild(divider);
+
+      // Metric items
+      for (const [key, def] of Object.entries(METRIC_DEFS)) {
+        const itemLabel = document.createElement('label');
+        itemLabel.className = 'metrics-menu-item';
+
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.dataset.metric = key;
+        cb.checked = pageState.selectedMetrics.has(key);
+
+        cb.addEventListener('change', () => {
+          if (cb.checked) {
+            pageState.selectedMetrics.add(key);
+          } else {
+            pageState.selectedMetrics.delete(key);
+          }
+          syncAllMenus();
+          updateAllWidgets();
+        });
+
+        const textSpan = document.createElement('span');
+        textSpan.className = 'metrics-menu-text';
+        textSpan.textContent = def.title || def.label;
+
+        itemLabel.appendChild(cb);
+        itemLabel.appendChild(textSpan);
+        this.menu.appendChild(itemLabel);
+      }
+
+      this.menu.addEventListener('keydown', (e) => {
+        const checkboxes = Array.from(this.menu.querySelectorAll('input[type="checkbox"]'));
+        const currentIndex = checkboxes.indexOf(document.activeElement);
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % checkboxes.length : 0;
+          checkboxes[nextIndex].focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prevIndex = currentIndex >= 0 ? (currentIndex - 1 + checkboxes.length) % checkboxes.length : checkboxes.length - 1;
+          checkboxes[prevIndex].focus();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          if (checkboxes.length) checkboxes[0].focus();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          if (checkboxes.length) checkboxes[checkboxes.length - 1].focus();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          this.closeMenu(true);
+        } else if (e.key === 'Tab') {
+          setTimeout(() => {
+            if (!this.menuWrap.contains(document.activeElement)) {
+              this.closeMenu();
+            }
+          }, 0);
+        }
+      });
+
+      this.syncMenu();
+
+      this.menuWrap.appendChild(this.customizeBtn);
+      this.menuWrap.appendChild(this.menu);
+      this.controlsContainer.appendChild(this.menuWrap);
       this.container.appendChild(this.controlsContainer);
+    }
+
+    openMenu(focusFirst = false) {
+      widgets.forEach(other => {
+        if (other !== this) other.closeMenu();
+      });
+      this.menu.removeAttribute('hidden');
+      this.customizeBtn.setAttribute('aria-expanded', 'true');
+      this.syncMenu();
+      if (focusFirst) {
+        const firstInput = this.menu.querySelector('input[type="checkbox"]');
+        if (firstInput) firstInput.focus();
+      }
+    }
+
+    closeMenu(restoreFocus = false) {
+      if (this.menu.hasAttribute('hidden')) return;
+      this.menu.setAttribute('hidden', '');
+      this.customizeBtn.setAttribute('aria-expanded', 'false');
+      if (restoreFocus) {
+        this.customizeBtn.focus();
+      }
+    }
+
+    toggleMenu() {
+      if (this.isMenuOpen()) {
+        this.closeMenu();
+      } else {
+        this.openMenu();
+      }
+    }
+
+    isMenuOpen() {
+      return this.customizeBtn.getAttribute('aria-expanded') === 'true';
+    }
+
+    syncMenu() {
+      if (!this.menu) return;
+      const metricCbs = this.menu.querySelectorAll('input[data-metric]');
+      metricCbs.forEach(cb => {
+        cb.checked = pageState.selectedMetrics.has(cb.dataset.metric);
+      });
+      if (this.allCheckbox) {
+        const total = Object.keys(METRIC_DEFS).length;
+        const count = pageState.selectedMetrics.size;
+        if (count === 0) {
+          this.allCheckbox.checked = false;
+          this.allCheckbox.indeterminate = false;
+        } else if (count === total) {
+          this.allCheckbox.checked = true;
+          this.allCheckbox.indeterminate = false;
+        } else {
+          this.allCheckbox.checked = false;
+          this.allCheckbox.indeterminate = true;
+        }
+      }
     }
 
     getFilteredData() {
@@ -189,185 +388,23 @@
     }
   }
 
-  // Initialize selected metrics based on default mode
-  function resetMetricsToDefault() {
-    pageState.selectedMetrics.clear();
-    for (const [key, def] of Object.entries(METRIC_DEFS)) {
-      if (pageState.mode === 'short' && def.defaultShort) {
-        pageState.selectedMetrics.add(key);
-      } else if (pageState.mode === 'full' && def.defaultStats) {
-        pageState.selectedMetrics.add(key);
-      }
-    }
-  }
-  resetMetricsToDefault();
-
-  // Reset metrics and sort order to defaults across all widgets
-  function resetToDefault() {
-    resetMetricsToDefault();
-    updateDialogCheckboxes();
+  document.addEventListener('click', (e) => {
     widgets.forEach(w => {
-      w.sortKey = 'year';
-      w.sortAsc = true;
-      w.renderTable();
+      if (w.menuWrap && !w.menuWrap.contains(e.target)) {
+        w.closeMenu(false);
+      }
     });
-  }
+  });
 
-  // Color index calculation (0 to 31)
-  function getCmapClass(metricKey, value) {
-    const limits = (typeof METRIC_LIMITS !== 'undefined' && METRIC_LIMITS[metricKey]) || [0, 100];
-    const [vmin, vmax] = limits;
-    let v = (value - vmin) / (vmax - vmin);
-    v = Math.max(0, Math.min(1, v));
-    if (METRIC_DEFS[metricKey].better === 'higher' || metricKey === 'alternation' || metricKey === 'roll_out') {
-      v = 1.0 - v; // Higher / higher alternation / higher out-rolls -> cool colors (0)
-    }
-    const idx = Math.round(v * 31);
-    return `cmap${Math.max(0, Math.min(31, idx))}`;
-  }
-
-  function getOrCreateDialog() {
-    if (configDialog) return configDialog;
-
-    const dialog = document.createElement('dialog');
-    dialog.className = 'dialog';
-
-    dialog.innerHTML = `
-      <div class="dialog-content">
-        <div class="dialog-header">
-          <h3><span class="material-symbols-outlined">tune</span> Customize</h3>
-          <button type="button" class="dialog-close-icon" title="Close dialog" aria-label="Close">&times;</button>
-        </div>
-        <div class="dialog-list"></div>
-        <div class="dialog-footer">
-          <div class="dialog-presets">
-            <button type="button" class="btn-utility metrics-preset-none" title="Select none" aria-label="Select none"><span class="material-symbols-outlined">clear_all</span><span class="dialog-preset-btn-text"> Select none</span></button>
-            <button type="button" class="btn-utility metrics-preset-all" title="Select all" aria-label="Select all"><span class="material-symbols-outlined">select_all</span><span class="dialog-preset-btn-text"> Select all</span></button>
-          </div>
-          <button type="button" class="btn-action dialog-done-btn">Done</button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(dialog);
-
-    const listContainer = dialog.querySelector('.dialog-list');
-    for (const [key, def] of Object.entries(METRIC_DEFS)) {
-      const row = document.createElement('div');
-      row.className = 'dialog-row';
-
-      const label = document.createElement('label');
-      label.className = 'dialog-label';
-
-      const cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.value = key;
-      cb.checked = pageState.selectedMetrics.has(key);
-      cb.addEventListener('change', () => {
-        if (cb.checked) {
-          pageState.selectedMetrics.add(key);
-        } else {
-          pageState.selectedMetrics.delete(key);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      widgets.forEach(w => {
+        if (w.isMenuOpen()) {
+          w.closeMenu(true);
         }
-        updateAllWidgets();
       });
-
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'dialog-name';
-      nameSpan.textContent = def.title || def.label;
-
-      label.appendChild(cb);
-      label.appendChild(nameSpan);
-      row.appendChild(label);
-
-      if (def.glossary) {
-        const glossaryLink = document.createElement('a');
-        glossaryLink.href = def.glossary;
-        glossaryLink.target = '_blank';
-        glossaryLink.rel = 'noopener noreferrer';
-        glossaryLink.className = 'dialog-glossary-link';
-        glossaryLink.title = 'Open glossary entry in a new tab';
-        glossaryLink.setAttribute('aria-label', 'Open glossary entry in a new tab');
-        glossaryLink.textContent = 'Glossary ↗';
-        row.appendChild(glossaryLink);
-      }
-
-      listContainer.appendChild(row);
     }
-
-    dialog.querySelector('.metrics-preset-none').addEventListener('click', () => {
-      pageState.selectedMetrics.clear();
-      updateDialogCheckboxes();
-      updateAllWidgets();
-    });
-
-    dialog.querySelector('.metrics-preset-all').addEventListener('click', () => {
-      for (const key of Object.keys(METRIC_DEFS)) {
-        pageState.selectedMetrics.add(key);
-      }
-      updateDialogCheckboxes();
-      updateAllWidgets();
-    });
-
-    const closeDialog = () => {
-      if (dialog.open) {
-        dialog.close();
-      }
-    };
-
-    dialog.querySelector('.dialog-close-icon').addEventListener('click', closeDialog);
-    dialog.querySelector('.dialog-done-btn').addEventListener('click', closeDialog);
-
-    // Prevent background page scrolling when dialog is open.
-    dialog.addEventListener('close', () => {
-      document.documentElement.classList.remove('dialog-open');
-      document.body.classList.remove('dialog-open');
-    });
-
-    // Close when clicking outside dialog on backdrop.
-    dialog.addEventListener('click', (e) => {
-      const rect = dialog.getBoundingClientRect();
-      const inDialog =
-        rect.top <= e.clientY &&
-        e.clientY <= rect.top + rect.height &&
-        rect.left <= e.clientX &&
-        e.clientX <= rect.left + rect.width;
-      if (!inDialog) {
-        dialog.close();
-      }
-    });
-
-    configDialog = dialog;
-    return dialog;
-  }
-
-  function updateDialogCheckboxes() {
-    if (!configDialog) return;
-    const checkboxes = configDialog.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(cb => {
-      const isChecked = pageState.selectedMetrics.has(cb.value);
-      cb.checked = isChecked;
-      if (isChecked) {
-        cb.setAttribute('checked', '');
-      } else {
-        cb.removeAttribute('checked');
-      }
-    });
-  }
-
-  function openConfigDialog() {
-    const dialog = getOrCreateDialog();
-    updateDialogCheckboxes();
-    document.documentElement.classList.add('dialog-open');
-    document.body.classList.add('dialog-open');
-    dialog.showModal();
-  }
-
-  function updateAllWidgets() {
-    widgets.forEach(w => {
-      w.renderTable();
-    });
-  }
+  });
 
   function initWidgets() {
     const containers = document.querySelectorAll('.layout-metrics-widget');
@@ -380,7 +417,6 @@
   function init() {
     if (initialized) return;
     initialized = true;
-    getOrCreateDialog();
     initWidgets();
   }
 
@@ -393,3 +429,4 @@
     }
   }
 })();
+

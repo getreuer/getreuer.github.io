@@ -25,7 +25,26 @@ research papers, and open-source code.">
 <a href="#content" class="skip-link">Skip to content</a>
 <div id="site-header">
 <div id="site-headerhold">
-<button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
+<div class="theme-menu-wrap">
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Select theme" aria-expanded="false" aria-haspopup="menu" aria-controls="theme-menu">brightness_6</button>
+<div id="theme-menu" class="theme-menu" role="menu" hidden aria-labelledby="theme-toggle">
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="light" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">light_mode</span>
+<span class="theme-menu-text">Light</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="dark" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">dark_mode</span>
+<span class="theme-menu-text">Dark</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="auto" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">brightness_6</span>
+<span class="theme-menu-text">System</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+</div>
+</div>
 </div>
 </div>
 <div id="content">

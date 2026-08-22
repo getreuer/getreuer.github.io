@@ -11,8 +11,9 @@
   <title>QMK: Repeat Key</title>
   <style>code{white-space: pre;}</style>
   <style>
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -23,7 +24,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -88,7 +89,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="site-header">
 <div id="site-headerhold">
 <nav class="breadcrumb" aria-label="Breadcrumb"><ol itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../../index.html" aria-label="Home"><span class="material-symbols-outlined home-icon">home</span><span itemprop="name" hidden>Home</span></a><meta itemprop="position" content="1"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../index.html"><span itemprop="name">Posts</span></a><meta itemprop="position" content="2"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../index.html"><span itemprop="name">Keyboards</span></a><meta itemprop="position" content="3"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">QMK: Repeat Key</span><meta itemprop="position" content="4"></li></ol></nav>
-<button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
+<div class="theme-menu-wrap">
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Select theme" aria-expanded="false" aria-haspopup="menu" aria-controls="theme-menu">brightness_6</button>
+<div id="theme-menu" class="theme-menu" role="menu" hidden aria-labelledby="theme-toggle">
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="light" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">light_mode</span>
+<span class="theme-menu-text">Light</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="dark" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">dark_mode</span>
+<span class="theme-menu-text">Dark</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="auto" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">brightness_6</span>
+<span class="theme-menu-text">System</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+</div>
+</div>
 </div>
 </div>
 <div id="content">
@@ -330,41 +350,41 @@ Arrow.</p>
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Keycodes</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>KC_LEFT</code> ↔︎ <code>KC_RGHT</code></td>
 <td>Left ↔︎ Right Arrow</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>KC_UP</code> ↔︎ <code>KC_DOWN</code></td>
 <td>Up ↔︎ Down Arrow</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>KC_HOME</code> ↔︎ <code>KC_END</code></td>
 <td>Home ↔︎ End</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>KC_PGUP</code> ↔︎ <code>KC_PGDN</code></td>
 <td>Page Up ↔︎ Page Down</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>MS_L</code> ↔︎ <code>MS_R</code></td>
 <td>Mouse Cursor Left ↔︎ Right</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>MS_U</code> ↔︎ <code>MS_D</code></td>
 <td>Mouse Cursor Up ↔︎ Down</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>KC_WH_L</code> ↔︎ <code>KC_WH_R</code></td>
 <td>Mouse Wheel Left ↔︎ Right</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>KC_WH_U</code> ↔︎ <code>KC_WH_D</code></td>
 <td>Mouse Wheel Up ↔︎ Down</td>
 </tr>
@@ -377,21 +397,21 @@ Arrow.</p>
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Keycodes</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>KC_BSPC</code> ↔︎ <code>KC_DEL</code></td>
 <td>Backspace ↔︎ Delete</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>KC_LBRC</code> ↔︎ <code>KC_RBRC</code></td>
 <td><code>[</code> ↔︎ <code>]</code></td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>KC_LCBR</code> ↔︎ <code>KC_RCBR</code></td>
 <td><code>{</code> ↔︎ <code>}</code></td>
 </tr>
@@ -404,29 +424,29 @@ Arrow.</p>
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Keycodes</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>KC_WBAK</code> ↔︎ <code>KC_WFWD</code></td>
 <td>Browser Back ↔︎ Forward</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>KC_MNXT</code> ↔︎ <code>KC_MPRV</code></td>
 <td>Next ↔︎ Previous Media Track</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>KC_MFFD</code> ↔︎ <code>KC_MRWD</code></td>
 <td>Fast Forward ↔︎ Rewind Media</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>KC_VOLU</code> ↔︎ <code>KC_VOLD</code></td>
 <td>Volume Up ↔︎ Down</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>KC_BRIU</code> ↔︎ <code>KC_BRID</code></td>
 <td>Brightness Up ↔︎ Down</td>
 </tr>
@@ -439,41 +459,41 @@ Arrow.</p>
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Keycodes</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>mod + <code>KC_F</code> ↔︎ mod + <code>KC_B</code></td>
 <td>Forward ↔︎ Backward</td>
 </tr>
-<tr class="even">
+<tr>
 <td>mod + <code>KC_D</code> ↔︎ mod + <code>KC_U</code></td>
 <td>Down ↔︎ Up</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>mod + <code>KC_N</code> ↔︎ mod + <code>KC_P</code></td>
 <td>Next ↔︎ Previous</td>
 </tr>
-<tr class="even">
+<tr>
 <td>mod + <code>KC_A</code> ↔︎ mod + <code>KC_E</code></td>
 <td>Home ↔︎ End</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>mod + <code>KC_O</code> ↔︎ mod + <code>KC_I</code></td>
 <td>Vim Jumplist Older ↔︎ Newer</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>KC_J</code> ↔︎ <code>KC_K</code></td>
 <td>Down ↔︎ Up</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>KC_H</code> ↔︎ <code>KC_L</code></td>
 <td>Left ↔︎ Right</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>KC_W</code> ↔︎ <code>KC_B</code></td>
 <td>Forward ↔︎ Backward by Word</td>
 </tr>
@@ -660,42 +680,42 @@ repeating:</p>
 <col style="width: 58%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Function</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>get_last_keycode()</code></td>
 <td>The last keycode, the key to be repeated.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>get_last_mods()</code></td>
 <td>Mods to apply when repeating.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>set_last_keycode(kc)</code></td>
 <td>Set the keycode to be repeated.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>set_last_mods(mods)</code></td>
 <td>Set the mods to apply when repeating.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>get_repeat_key_count()</code></td>
 <td>Signed count of times the key has been repeated or alternate
 repeated.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>repeat_key_register()</code></td>
 <td>Press down the Repeat Key.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>repeat_key_unregister()</code></td>
 <td>Release the Repeat Key.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>repeat_key_tap()</code></td>
 <td>Tap the Repeat Key.</td>
 </tr>
@@ -709,26 +729,26 @@ repeated.</td>
 <col style="width: 58%" />
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Function</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>get_alt_repeat_key_keycode()</code></td>
 <td>Keycode used for alternate repeating, or <code>KC_NO</code> if the
 last key has no alternate.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>alt_repeat_key_register()</code></td>
 <td>Press down the Alternate Repeat Key.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>alt_repeat_key_unregister()</code></td>
 <td>Release the Alternate Repeat Key.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>alt_repeat_key_tap()</code></td>
 <td>Tap the Alternate Repeat Key.</td>
 </tr>

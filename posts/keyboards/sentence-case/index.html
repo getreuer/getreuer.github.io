@@ -14,8 +14,9 @@ Shift keys and improving typing flow.">
   <title>Sentence Case: automatically capitalize sentences</title>
   <style>code{white-space: pre;}</style>
   <style>
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -26,7 +27,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -91,7 +92,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="site-header">
 <div id="site-headerhold">
 <nav class="breadcrumb" aria-label="Breadcrumb"><ol itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../../index.html" aria-label="Home"><span class="material-symbols-outlined home-icon">home</span><span itemprop="name" hidden>Home</span></a><meta itemprop="position" content="1"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../index.html"><span itemprop="name">Posts</span></a><meta itemprop="position" content="2"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../index.html"><span itemprop="name">Keyboards</span></a><meta itemprop="position" content="3"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">Sentence Case</span><meta itemprop="position" content="4"></li></ol></nav>
-<button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
+<div class="theme-menu-wrap">
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Select theme" aria-expanded="false" aria-haspopup="menu" aria-controls="theme-menu">brightness_6</button>
+<div id="theme-menu" class="theme-menu" role="menu" hidden aria-labelledby="theme-toggle">
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="light" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">light_mode</span>
+<span class="theme-menu-text">Light</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="dark" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">dark_mode</span>
+<span class="theme-menu-text">Dark</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="auto" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">brightness_6</span>
+<span class="theme-menu-text">System</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+</div>
+</div>
 </div>
 </div>
 <div id="content">
@@ -345,33 +365,33 @@ never times out.</p>
 <div class="eqscroll">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>Function</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>sentence_case_on()</code></td>
 <td>Enables Sentence Case.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>sentence_case_off()</code></td>
 <td>Disables Sentence Case.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>sentence_case_toggle()</code></td>
 <td>Toggles Sentence Case.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>is_sentence_case_on()</code></td>
 <td>Gets whether currently enabled.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>is_sentence_case_primed()</code></td>
 <td>Gets whether in primed state.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>sentence_case_clear()</code></td>
 <td>Clears Sentence Case to initial state.</td>
 </tr>
@@ -550,29 +570,29 @@ machine. It matches things like “<code>a. a</code>” and
 “<code>a.a. a</code>”. The states are</p>
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>State</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>INIT</code></td>
 <td>Initial enabled state.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>WORD</code></td>
 <td>Within a word.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>ABBREV</code></td>
 <td>Within an abbreviation like “e.g.”.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>ENDING</code></td>
 <td>Sentence ended.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>PRIMED</code></td>
 <td>“Primed” state, in the space following an ending.</td>
 </tr>

@@ -14,8 +14,9 @@ intuitive keyboard-based mouse navigation.">
   <title>Orbital Mouse</title>
   <style>code{white-space: pre;}</style>
   <style>
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -26,7 +27,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -94,7 +95,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="site-header">
 <div id="site-headerhold">
 <nav class="breadcrumb" aria-label="Breadcrumb"><ol itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../../index.html" aria-label="Home"><span class="material-symbols-outlined home-icon">home</span><span itemprop="name" hidden>Home</span></a><meta itemprop="position" content="1"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../index.html"><span itemprop="name">Posts</span></a><meta itemprop="position" content="2"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../index.html"><span itemprop="name">Keyboards</span></a><meta itemprop="position" content="3"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">Orbital Mouse</span><meta itemprop="position" content="4"></li></ol></nav>
-<button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
+<div class="theme-menu-wrap">
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Select theme" aria-expanded="false" aria-haspopup="menu" aria-controls="theme-menu">brightness_6</button>
+<div id="theme-menu" class="theme-menu" role="menu" hidden aria-labelledby="theme-toggle">
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="light" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">light_mode</span>
+<span class="theme-menu-text">Light</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="dark" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">dark_mode</span>
+<span class="theme-menu-text">Dark</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="auto" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">brightness_6</span>
+<span class="theme-menu-text">System</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+</div>
+</div>
 </div>
 </div>
 <div id="content">
@@ -205,69 +225,69 @@ layout.</figcaption>
 <p>Orbital Mouse is controlled with the following keycodes.</p>
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>Keycode</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>OM_U</code></td>
 <td>Move forward.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>OM_D</code></td>
 <td>Move backward.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>OM_L</code></td>
 <td>Steer left (counter-clockwise).</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>OM_R</code></td>
 <td>Steer right (clockwise).</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>OM_CS_U</code></td>
 <td>Move up.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>OM_CS_D</code></td>
 <td>Move down.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>OM_CS_L</code></td>
 <td>Move left.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>OM_CS_R</code></td>
 <td>Move right.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>OM_SLOW</code></td>
 <td>Slow mode. Movement is slower while held.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>OM_FAST</code></td>
 <td>Fast mode. Faster movement while held.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>OM_BTN</code><em>n</em></td>
 <td>Press mouse button <em>n</em>, for <em>n</em> = 1, …, 8.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>OM_W_U</code></td>
 <td>Mouse wheel up.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>OM_W_D</code></td>
 <td>Mouse wheel down.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>OM_W_L</code></td>
 <td>Mouse wheel left.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>OM_W_R</code></td>
 <td>Mouse wheel right.</td>
 </tr>
@@ -304,29 +324,29 @@ used to click mouse buttons 1 through 8, the following keycodes may be
 preferred for more detailed control.</p>
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>Keycode</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>OM_SEL</code><em>n</em></td>
 <td>Select mouse button <em>n</em>, for <em>n</em> = 1, …, 8.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>OM_BTNS</code></td>
 <td>Press the selected mouse button.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>OM_DBLS</code></td>
 <td>Double click the selected mouse button.</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>OM_HLDS</code></td>
 <td>Hold the selected mouse button.</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>OM_RELS</code></td>
 <td>Release the selected mouse button.</td>
 </tr>

@@ -14,8 +14,9 @@ language-specific headers, and the Unicode input feature.">
   <title>Typing non-English letters</title>
   <style>code{white-space: pre;}</style>
   <style>
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -26,7 +27,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -91,7 +92,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="site-header">
 <div id="site-headerhold">
 <nav class="breadcrumb" aria-label="Breadcrumb"><ol itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../../index.html" aria-label="Home"><span class="material-symbols-outlined home-icon">home</span><span itemprop="name" hidden>Home</span></a><meta itemprop="position" content="1"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../index.html"><span itemprop="name">Posts</span></a><meta itemprop="position" content="2"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../index.html"><span itemprop="name">Keyboards</span></a><meta itemprop="position" content="3"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">Typing non-English letters</span><meta itemprop="position" content="4"></li></ol></nav>
-<button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
+<div class="theme-menu-wrap">
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Select theme" aria-expanded="false" aria-haspopup="menu" aria-controls="theme-menu">brightness_6</button>
+<div id="theme-menu" class="theme-menu" role="menu" hidden aria-labelledby="theme-toggle">
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="light" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">light_mode</span>
+<span class="theme-menu-text">Light</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="dark" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">dark_mode</span>
+<span class="theme-menu-text">Dark</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="auto" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">brightness_6</span>
+<span class="theme-menu-text">System</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+</div>
+</div>
 </div>
 </div>
 <div id="content">
@@ -146,7 +166,7 @@ href="https://github.com/qmk/qmk_firmware/blob/master/quantum/keymap_extras/keym
 keycodes</a> in your keymap. Incomplete list:</p>
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>Keycode</th>
 <th>Symbol</th>
 <th>Keycode</th>
@@ -154,49 +174,49 @@ keycodes</a> in your keymap. Incomplete list:</p>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>EU_AACU</code></td>
 <td>á</td>
 <td><code>EU_AE</code></td>
 <td>æ</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>EU_EACU</code></td>
 <td>é</td>
 <td><code>EU_CCED</code></td>
 <td>ç</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>EU_IACU</code></td>
 <td>í</td>
 <td><code>EU_NTIL</code></td>
 <td>ñ</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>EU_OACU</code></td>
 <td>ó</td>
 <td><code>EU_OSTR</code></td>
 <td>ø</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>EU_UACU</code></td>
 <td>ú</td>
 <td><code>EU_SS</code></td>
 <td>ß</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>EU_ADIA</code></td>
 <td>ä</td>
 <td><code>EU_EURO</code></td>
 <td>€</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>EU_ODIA</code></td>
 <td>ö</td>
 <td><code>EU_IQUE</code></td>
 <td>¿</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>EU_UDIA</code></td>
 <td>ü</td>
 <td><code>EU_IEXL</code></td>
@@ -219,7 +239,7 @@ keycode definitions</a> for the additional symbols that US-International
 can type. An incomplete list:</p>
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>Keycode</th>
 <th>Symbol</th>
 <th>Keycode</th>
@@ -227,49 +247,49 @@ can type. An incomplete list:</p>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code>US_AACU</code></td>
 <td>á</td>
 <td><code>US_AE</code></td>
 <td>æ</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>US_EACU</code></td>
 <td>é</td>
 <td><code>US_CCED</code></td>
 <td>ç</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>US_IACU</code></td>
 <td>í</td>
 <td><code>US_NTIL</code></td>
 <td>ñ</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>US_OACU</code></td>
 <td>ó</td>
 <td><code>US_OSTR</code></td>
 <td>ø</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>US_UACU</code></td>
 <td>ú</td>
 <td><code>US_SS</code></td>
 <td>ß</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>US_ADIA</code></td>
 <td>ä</td>
 <td><code>US_EURO</code></td>
 <td>€</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code>US_ODIA</code></td>
 <td>ö</td>
 <td><code>US_IQUE</code></td>
 <td>¿</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code>US_UDIA</code></td>
 <td>ü</td>
 <td><code>US_IEXL</code></td>
@@ -468,33 +488,33 @@ href="https://unicodelookup.com/">unicodelookup.com</a>.</p>
 <p><strong>Punctuations</strong></p>
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>Symbol</th>
 <th>Codepoint</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>¿</td>
 <td>U+00BF</td>
 </tr>
-<tr class="even">
+<tr>
 <td>¡</td>
 <td>U+00A1</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>«</td>
 <td>U+00AB</td>
 </tr>
-<tr class="even">
+<tr>
 <td>»</td>
 <td>U+00BB</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>– (en dash)</td>
 <td>U+2013</td>
 </tr>
-<tr class="even">
+<tr>
 <td>— (em dash)</td>
 <td>U+2014</td>
 </tr>
@@ -504,7 +524,7 @@ href="https://unicodelookup.com/">unicodelookup.com</a>.</p>
 <div class="eqscroll">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>Symbol</th>
 <th>Codepoint</th>
 <th>Symbol</th>
@@ -512,61 +532,61 @@ href="https://unicodelookup.com/">unicodelookup.com</a>.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>Á</td>
 <td>U+00C1</td>
 <td>á</td>
 <td>U+00E1</td>
 </tr>
-<tr class="even">
+<tr>
 <td>É</td>
 <td>U+00C9</td>
 <td>é</td>
 <td>U+00E9</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Í</td>
 <td>U+00CD</td>
 <td>í</td>
 <td>U+00ED</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Ó</td>
 <td>U+00D3</td>
 <td>ó</td>
 <td>U+00F3</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Ú</td>
 <td>U+00DA</td>
 <td>ú</td>
 <td>U+00FA</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Ä</td>
 <td>U+00C4</td>
 <td>ä</td>
 <td>U+00E4</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Ë</td>
 <td>U+00CB</td>
 <td>ë</td>
 <td>U+00EB</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Ï</td>
 <td>U+00CF</td>
 <td>ï</td>
 <td>U+00EF</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Ö</td>
 <td>U+00D6</td>
 <td>ö</td>
 <td>U+00F6</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Ü</td>
 <td>U+00DC</td>
 <td>ü</td>
@@ -579,7 +599,7 @@ href="https://unicodelookup.com/">unicodelookup.com</a>.</p>
 <div class="eqscroll">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>Symbol</th>
 <th>Codepoint</th>
 <th>Symbol</th>
@@ -587,25 +607,25 @@ href="https://unicodelookup.com/">unicodelookup.com</a>.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>Ç</td>
 <td>U+00C7</td>
 <td>ç</td>
 <td>U+00E7</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Ñ</td>
 <td>U+00D1</td>
 <td>ñ</td>
 <td>U+00F1</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>ẞ</td>
 <td>U+1E9E</td>
 <td>ß</td>
 <td>U+00DF</td>
 </tr>
-<tr class="even">
+<tr>
 <td>£</td>
 <td>U+00A3</td>
 <td>€</td>
@@ -618,7 +638,7 @@ href="https://unicodelookup.com/">unicodelookup.com</a>.</p>
 <div class="eqscroll">
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>Symbol</th>
 <th>Codepoint</th>
 <th>Symbol</th>
@@ -626,145 +646,145 @@ href="https://unicodelookup.com/">unicodelookup.com</a>.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>Α</td>
 <td>U+0391</td>
 <td>α</td>
 <td>U+03B1</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Β</td>
 <td>U+0392</td>
 <td>β</td>
 <td>U+03B2</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Γ</td>
 <td>U+0393</td>
 <td>γ</td>
 <td>U+03B3</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Δ</td>
 <td>U+0394</td>
 <td>δ</td>
 <td>U+03B4</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Ε</td>
 <td>U+0395</td>
 <td>ε</td>
 <td>U+03B5</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Ζ</td>
 <td>U+0396</td>
 <td>ζ</td>
 <td>U+03B6</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Η</td>
 <td>U+0397</td>
 <td>η</td>
 <td>U+03B7</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Θ</td>
 <td>U+0398</td>
 <td>θ</td>
 <td>U+03B8</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Ι</td>
 <td>U+0399</td>
 <td>ι</td>
 <td>U+03B9</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Κ</td>
 <td>U+039A</td>
 <td>κ</td>
 <td>U+03BA</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Λ</td>
 <td>U+039B</td>
 <td>λ</td>
 <td>U+03BB</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Μ</td>
 <td>U+039C</td>
 <td>μ</td>
 <td>U+03BC</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Ν</td>
 <td>U+039D</td>
 <td>ν</td>
 <td>U+03BD</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Ξ</td>
 <td>U+039E</td>
 <td>ξ</td>
 <td>U+03BE</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Ο</td>
 <td>U+039F</td>
 <td>ο</td>
 <td>U+03BF</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Π</td>
 <td>U+03A0</td>
 <td>π</td>
 <td>U+03C0</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Ρ</td>
 <td>U+03A1</td>
 <td>ρ</td>
 <td>U+03C1</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Σ</td>
 <td>U+03A3</td>
 <td>σ</td>
 <td>U+03C3</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Τ</td>
 <td>U+03A4</td>
 <td>τ</td>
 <td>U+03C4</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Υ</td>
 <td>U+03A5</td>
 <td>υ</td>
 <td>U+03C5</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Φ</td>
 <td>U+03A6</td>
 <td>φ</td>
 <td>U+03C6</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Χ</td>
 <td>U+03A7</td>
 <td>χ</td>
 <td>U+03C7</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Ψ</td>
 <td>U+03A8</td>
 <td>ψ</td>
 <td>U+03C8</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Ω</td>
 <td>U+03A9</td>
 <td>ω</td>

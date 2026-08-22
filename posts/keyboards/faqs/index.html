@@ -92,7 +92,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="site-header">
 <div id="site-headerhold">
 <nav class="breadcrumb" aria-label="Breadcrumb"><ol itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../../index.html" aria-label="Home"><span class="material-symbols-outlined home-icon">home</span><span itemprop="name" hidden>Home</span></a><meta itemprop="position" content="1"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../index.html"><span itemprop="name">Posts</span></a><meta itemprop="position" content="2"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../index.html"><span itemprop="name">Keyboards</span></a><meta itemprop="position" content="3"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">FAQs</span><meta itemprop="position" content="4"></li></ol></nav>
-<button id="theme-toggle" class="material-symbols-outlined" aria-label="Toggle theme">brightness_6</button>
+<div class="theme-menu-wrap">
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Select theme" aria-expanded="false" aria-haspopup="menu" aria-controls="theme-menu">brightness_6</button>
+<div id="theme-menu" class="theme-menu" role="menu" hidden aria-labelledby="theme-toggle">
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="light" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">light_mode</span>
+<span class="theme-menu-text">Light</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="dark" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">dark_mode</span>
+<span class="theme-menu-text">Dark</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="auto" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">brightness_6</span>
+<span class="theme-menu-text">System</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+</div>
+</div>
 </div>
 </div>
 <div id="content">
@@ -149,14 +168,11 @@ id="toc-what-is-this-weird-c-syntax-qmk">What is this weird C syntax
 </div>
 <p>Certain topics come up pretty regularly on <a
 href="https://www.reddit.com/r/olkb/">r/olkb</a>, so I’ve collected some
-thoughts here. Each section includes a section link 🔗 for easy
-sharing.</p>
-<p>If you don’t find what you are looking for here, try also the <a
-href="https://docs.qmk.fm/faq_keymap">Keymap FAQ</a> in the QMK
+thoughts here. If you don’t find what you are looking for here, try also
+the <a href="https://docs.qmk.fm/faq_keymap">Keymap FAQ</a> in the QMK
 documentation and <a href="../links/index.html">Links about
 keyboards</a>.</p>
 <h2 id="meta-how-to-ask-for-help">Meta: How to ask for help</h2>
-<p><a href="#meta-how-to-ask-for-help">🔗 Link</a></p>
 <p><a href="https://www.reddit.com/r/olkb/">r/olkb</a> and <a
 href="https://www.reddit.com/r/ErgoMechKeyboards/">r/ErgoMechKeyboards</a>
 are great places to ask for keyboard troubleshooting help. Here are some
@@ -176,7 +192,6 @@ Gist</a>.</p></li>
 </ul>
 <p>Good luck!</p>
 <h2 id="keyboard-shopping-tips">Keyboard shopping tips</h2>
-<p><a href="#keyboard-shopping-tips">🔗 Link</a></p>
 <p>For typing comfort, I highly recommend a keyboard that is <strong><a
 href="../glossary/index.html#split-keyboard">split</a>, <a
 href="../glossary/index.html#row-staggered-ortholinear-column-staggered">columnar</a>,
@@ -235,7 +250,6 @@ href="#how-long-to-get-used-to-a-split-columnar-keyboard">around a
 couple weeks</a> for many people.</p></li>
 </ul>
 <h2 id="should-i-use-a-wrist-rest">Should I use a wrist rest?</h2>
-<p><a href="#should-i-use-a-wrist-rest">🔗 Link</a></p>
 <p>Wrist rests are not necessary for good ergonomics. I don’t use them
 myself. If anything, <strong>a wrist rest should support the heel or
 palm of the hand, not the wrists.</strong> Pressure on the soft area of
@@ -306,7 +320,6 @@ vs. Myth: Do wrist rests prevent carpal tunnel syndrome?</a></p></li>
 </ul>
 <h2 id="should-i-learn-how-to-touch-type">Should I learn how to touch
 type?</h2>
-<p><a href="#should-i-learn-how-to-touch-type">🔗 Link</a></p>
 <p>Do you want better speed, accuracy, and typing comfort? Then the
 answer is yes. Learning proper touch typing technique helps all of
 that.</p>
@@ -338,7 +351,6 @@ href="https://medium.com/@mantasd/touch-typing-how-long-does-it-take-to-reach-10
 Typing: how long does it take to reach 100 WPM?</a></li>
 </ul>
 <h2 id="i-type-xxx-wpm-is-that-fast">I type XXX wpm – Is that fast?</h2>
-<p><a href="#i-type-xxx-wpm-is-that-fast">🔗 Link</a></p>
 <p>How fast is “fast”? The typing site onlinetyping.org published <a
 href="https://onlinetyping.org/blog/average-typing-speed.php">distributions
 of typing speed</a>, based on tests on their site. By this data,
@@ -382,7 +394,6 @@ href="https://en.wikipedia.org/wiki/Typing#Alphanumeric_entry">Wikipedia
 </ul>
 <h2 id="home-row-mods-are-hard-to-use">Home row mods are hard to
 use</h2>
-<p><a href="#home-row-mods-are-hard-to-use">🔗 Link</a></p>
 <p>It’s not just you. <a
 href="../glossary/index.html#home-row-mods-hrms">Home row mods</a> (aka
 HRMs) are tricky for most people. <strong>Configuration is critical, and
@@ -595,8 +606,6 @@ use-cases</a> for similar behavior.</p></li>
 </ul>
 <h2 id="how-long-to-get-used-to-a-split-columnar-keyboard">How long to
 get used to a split columnar keyboard?</h2>
-<p><a href="#how-long-to-get-used-to-a-split-columnar-keyboard">🔗
-Link</a></p>
 <p><strong>It took me a couple weeks of use to adapt to typing on a <a
 href="../glossary/index.html#split-keyboard">split</a> <a
 href="../glossary/index.html#row-staggered-ortholinear-column-staggered">columnar</a>
@@ -625,7 +634,6 @@ shoulder width apart. It’s the most effective change I’ve made for my
 typing comfort.</p>
 <h2 id="pressing-a-key-sometimes-types-it-twice">Pressing a key
 sometimes types it twice</h2>
-<p><a href="#pressing-a-key-sometimes-types-it-twice">🔗 Link</a></p>
 <p>When you press a key once, does it sometimes type twice (or more)? A
 common cause is contact bounce (or chatter) in the <a
 href="../glossary/index.html#key-switch">key switch</a>. Electrical
@@ -705,7 +713,6 @@ other configurations for minimal latency</p></li>
 </ul>
 <h2 id="mo1-key-not-working-when-on-layer-2">MO(1) key not working when
 on layer 2</h2>
-<p><a href="#mo1-key-not-working-when-on-layer-2">🔗 Link</a></p>
 <p>Reorder the switched-to layer above the layer with the layer switch
 key.</p>
 <figure>
@@ -734,7 +741,6 @@ and <a href="https://blog.zsa.io/layout-buffet-layers/">Layout Buffet -
 Layers</a>.</p>
 <h2 id="how-much-lag-do-custom-keyboards-have">How much lag do custom
 keyboards have?</h2>
-<p><a href="#how-much-lag-do-custom-keyboards-have">🔗 Link</a></p>
 <p>And related question, are custom keyboards good for gaming? I’ll
 focus on keyboards running QMK firmware, but this is probably
 representative in general since other keyboard firmwares work similarly
@@ -820,7 +826,6 @@ href="https://pcmonitors.info/articles/factors-affecting-pc-monitor-responsivene
 Affecting PC Monitor Responsiveness</a></p></li>
 </ul>
 <h2 id="firmware-is-too-large">Firmware is too large!</h2>
-<p><a href="#firmware-is-too-large">🔗 Link</a></p>
 <p>A build error like “<code>firmware is too large! X bytes over</code>”
 means the compiled <a
 href="../glossary/index.html#firmware">firmware</a> is too large to fit
@@ -857,7 +862,6 @@ the most out of AVR</a> (applicable also with non-AVR MCUs) for further
 tips.</p>
 <h2 id="mt-doesnt-work-with-this-keycode-qmk">MT doesn’t work with this
 keycode (QMK)</h2>
-<p><a href="#mt-doesnt-work-with-this-keycode-qmk">🔗 Link</a></p>
 <p>With <a href="https://docs.qmk.fm/mod_tap">mod-tap keys</a>
 <code>MT(mod, kc)</code> and <a
 href="https://docs.qmk.fm/feature_layers">layer-tap keys</a>
@@ -1052,13 +1056,11 @@ applied, and the tap function is <code>KC_DEL</code>.</p>
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h2 id="how-to-type-non-english-letters-qmk">How to type non-English
 letters (QMK)</h2>
-<p><a href="#how-to-type-non-english-letters-qmk">🔗 Link</a></p>
 <p>There is a good solution for typing most symbols in major Western
 European languages by using the US-International layout. For other
 symbols, a possibility is QMK’s Unicode input feature. See <a
 href="../non-english/index.html">Typing non-English letters</a>.</p>
 <h2 id="some-keys-are-swapped-qmk">Some keys are swapped (QMK)</h2>
-<p><a href="#some-keys-are-swapped-qmk">🔗 Link</a></p>
 <p><strong>Magic keys:</strong> <a
 href="https://docs.qmk.fm/keycodes_magic">Magic keys</a> and a related
 <a href="https://docs.qmk.fm/features/command">Command feature</a> are
@@ -1088,7 +1090,6 @@ unexpected results. See <a
 href="../non-english/index.html#using-non-us-layouts">Using non-US
 layouts</a>.</p>
 <h2 id="send_string-doesnt-work-qmk">SEND_STRING doesn’t work (QMK)</h2>
-<p><a href="#send_string-doesnt-work-qmk">🔗 Link</a></p>
 <p>There are some gotchas with <code>SEND_STRING()</code>:</p>
 <ul>
 <li><p>String literals in C are defined by surrounding a sequence of
@@ -1126,7 +1127,6 @@ class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11
 </ul>
 <h2 id="what-is-this-weird-c-syntax-qmk">What is this weird C syntax
 (QMK)</h2>
-<p><a href="#what-is-this-weird-c-syntax-qmk">🔗 Link</a></p>
 <p>QMK code is embedded code written in C11, the 2011 standard of the C
 programming language, with nonstandard GNU extensions. You may run into
 some unfamiliar syntax even if you are otherwise well-versed in
