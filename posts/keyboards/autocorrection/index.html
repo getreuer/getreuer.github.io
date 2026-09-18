@@ -114,7 +114,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Autocorrection with QMK</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2022-11-28)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2026-09-17)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -234,35 +234,35 @@ movement.</p></li>
 </ul>
 <h2 id="add-autocorrection-to-your-keymap">Add autocorrection to your
 keymap</h2>
-<p>There are a few steps to the implementation. Please bear with me.</p>
-<p><strong>Step 1:</strong> In the directory containing your
-<code>keymap.c</code>, create a <code>features</code> subdirectory and
-copy the following files there:</p>
-<ul>
-<li><a
-href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/autocorrection.c">autocorrection.c</a>:
-the autocorrection engine.</li>
-<li><a
-href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/autocorrection.h">autocorrection.h</a>:
-corresponding header file.</li>
-<li><a
-href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/autocorrection_data.h">autocorrection_data.h</a>:
-file encoding the typos to be corrected. This is a practical example,
-but it can be changed; see below for details.</li>
-</ul>
-<p><strong>Step 2:</strong> In your <code>keymap.c</code> file, call
-autocorrection from your <code>process_record_user()</code> function
-as</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/autocorrection.h&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_autocorrection<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros...</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><strong>Step 3:</strong> In your <code>rules.mk</code>, add</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC</span> <span class="ch">+=</span><span class="st"> features/autocorrection.c</span></span></code></pre></div>
+<p>Install my <a href="../qmk-community-modules/index.html">community
+modules</a>. Then enable module <a
+href="https://github.com/getreuer/qmk-modules/tree/main/autocorrection">getreuer/autocorrection</a>
+in your <code>keymap.json</code> file. Or if <code>keymap.json</code>
+does not exist, create it with the following content:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/autocorrection&quot;</span><span class="ot">]</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<div class="callout note">
+<div class="callout-header">
+<p>
+📝  Tip
+</p>
+</div>
+<p>Alternatively, use <span class="citation"
+data-cites="drashna">@drashna</span>’s module: <a
+href="https://github.com/drashna/qmk_modules/tree/main/autocorrect">drashna/autocorrect</a>.
+This implementation is enhanced with support for larger dictionaries,
+increasing the max data size from 64 KB to 16 MB. It also auto-generates
+the dictionary data when compiling.</p>
+</div>
+<p>To avoid conflict, do <em>not</em> enable QMK’s built-in
+autocorrection feature. Remove any line of
+<code>AUTOCORRECT_ENABLED = yes</code> in <code>rules.mk</code>.</p>
+<p>The module is now set up. An example autocorrection dictionary of 71
+typos is configured by default. <a
+href="#changing-the-autocorrection-dictionary">Changing the
+dictionary</a> is possible; see below for details.</p>
 <h3 id="taking-autocorrection-for-a-test-drive">Taking autocorrection
 for a test drive</h3>
 <p>With the above flashed to your keyboard, try for instance typing the
@@ -424,13 +424,18 @@ href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/make_a
 Python script to process the dictionary. Put
 <code>autocorrection_dict.txt</code> in the same directory as the Python
 script and run</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python3 make_autocorrection_data.py</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Processed</span> 71 autocorrection entries to table with 1120 bytes.</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> python3 make_autocorrection_data.py</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Processed</span> 71 autocorrection entries to table with 1120 bytes.</span></code></pre></div>
 <p>The script arranges the entries in
 <code>autocorrection_dict.txt</code> into a trie and generates
 <code>autocorrection_data.h</code> with the serialized trie embedded as
 an array. The .h file will be written in the same directory.</p></li>
-<li><p>Finally, recompile and flash your keymap.</p></li>
+<li><p>Recompile your keymap. The compilation output should include a
+message like</p>
+<pre><code>getreuer/autocorrection: Using custom dictionary (71 entries, 1120 bytes).</code></pre>
+<p>If not, force a clean build by running <code>qmk clean</code>, then
+compiling.</p></li>
+<li><p>Flash the firmware to the keyboard.</p></li>
 </ol>
 <p>The generated C header looks like this:</p>
 <p><strong>autocorrection_data.h</strong></p>
