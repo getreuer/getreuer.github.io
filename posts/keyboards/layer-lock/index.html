@@ -114,7 +114,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">QMK: Layer Lock key</h1>
-<h2 class="author">Pascal Getreuer, 2022-02-01 (updated 2025-07-24)</h2>
+<h2 class="author">Pascal Getreuer, 2022-02-01 (updated 2026-09-17)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -203,43 +203,20 @@ Additionally, when a layer is “locked,” other layer keys such as
 lock,” which refers to a bugged keymap in which it is impossible to
 switch layers.)</p>
 <h2 id="add-it-to-your-keymap">Add it to your keymap</h2>
-<p>If you are new to QMK macros, see my <a
-href="../macros/index.html">macro buttons</a> post for an intro.</p>
-<p><strong>Step 1:</strong> In your <code>keymap.c</code>, add a custom
-keycode for the Layer Lock key and use the new keycode somewhere in your
-layout. I’ll name it <code>LLOCK</code>, but you can call it anything
-you like.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> custom_keycodes <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  LLOCK <span class="op">=</span> SAFE_RANGE<span class="op">,</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other custom keys...</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
-<p><strong>Step 2:</strong> Handle Layer Lock from your
-<code>process_record_user()</code> function by calling
-<code>process_layer_lock()</code>, passing your custom keycode as the
-third argument:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;features/layer_lock.h&quot;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_layer_lock<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> LLOCK<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Your macros ...</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
-<p><strong>Step 3:</strong> In your <code>rules.mk</code> file, add</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode mk"><code class="sourceCode makefile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">SRC</span> <span class="ch">+=</span><span class="st"> features/layer_lock.c</span></span></code></pre></div>
-<p><strong>Step 4:</strong> In the directory containing your
-<code>keymap.c</code>, create a <code>features</code> subdirectory and
-copy <a
-href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/layer_lock.h">layer_lock.h</a>
-and <a
-href="https://raw.githubusercontent.com/getreuer/qmk-keymap/main/features/layer_lock.c">layer_lock.c</a>
-there.</p>
-<p><strong>Troubleshooting:</strong> If your keymap fails to build, a
-likely reason is that your QMK installation needs to be updated. If you
-have the qmk_firmware git repo cloned locally, do a
-<code>git pull</code>. Or see <a
-href="https://docs.qmk.fm/newbs_git_using_your_master_branch#updating-your-master-branch">Updating
-your master branch</a> for more details.</p>
+<p>Install my <a href="../qmk-community-modules/index.html">community
+modules</a>. Then enable module <a
+href="https://github.com/getreuer/qmk-modules/tree/main/layer_lock">getreuer/layer_lock</a>
+in your <code>keymap.json</code> file. Or if <code>keymap.json</code>
+does not exist, create it with the following content:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modules&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;getreuer/layer_lock&quot;</span><span class="ot">]</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>Then use the Layer Lock keycode <code>QK_LAYER_LOCK</code> (short
+alias <code>QK_LLCK</code>) somewhere in your layout.</p>
+<p><strong>Note:</strong> Do not enable both this module and built-in
+QMK Layer Lock implementations at the same time, as they define the same
+symbols.</p>
 <h2 id="example-use">Example use</h2>
 <p>Consider a keymap with the following base layer.</p>
 <figure>
@@ -274,13 +251,13 @@ on.</p>
 keyboard is idle for some time. This is useful to avoid confusion if you
 get interrupted and step away from your desk while a layer is locked. In
 your config.h, define <code>LAYER_LOCK_IDLE_TIMEOUT</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LAYER_LOCK_IDLE_TIMEOUT </span><span class="dv">60000</span><span class="pp">  </span><span class="co">// Turn off after 60 seconds.</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define LAYER_LOCK_IDLE_TIMEOUT </span><span class="dv">60000</span><span class="pp">  </span><span class="co">// Turn off after 60 seconds.</span></span></code></pre></div>
 <p>where the time is in units of milliseconds. Then in your keymap.c,
 define (or add to) <code>housekeeping_task_user()</code> as</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> housekeeping_task_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  layer_lock_task<span class="op">();</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks...</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> housekeeping_task_user<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  layer_lock_task<span class="op">();</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Other tasks...</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>The default behavior (when <code>LAYER_LOCK_IDLE_TIMEOUT</code> isn’t
 set, or set to 0) is that Layer Lock never times out, and in this case
 it isn’t necessary to call <code>layer_lock_task()</code>.</p>
@@ -321,9 +298,9 @@ current Layer Lock state</h3>
 gets called when a layer is locked or unlocked. This is useful to
 represent the current lock state for instance by setting an LED. In your
 keymap, define</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> layer_lock_set_user<span class="op">(</span>layer_state_t locked_layers<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Do something like `set_led(is_layer_locked(NAV));`</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> layer_lock_set_user<span class="op">(</span>layer_state_t locked_layers<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Do something like `set_led(is_layer_locked(NAV));`</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="combine-layer-lock-with-a-mod-tap">Combine Layer Lock with a
 mod-tap</h3>
 <p>You may want to combine the Layer Lock key with a <a
@@ -337,28 +314,28 @@ effect can nevertheless be achieved through <a
 href="https://docs.qmk.fm/mod_tap#changing-tap-function">changing the
 tap function</a>. The following demonstrates a <code>SFTLLCK</code> key
 that acts as Shift on hold and Layer Lock on tap:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SFTLLCK </span>LSFT_T<span class="op">(</span><span class="pp">KC_0</span><span class="op">)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Use SFTLLCK in your keymap...</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_layer_lock<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> KC_NO<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> SFTLLCK<span class="op">:</span>  <span class="co">// Shift on hold, Layer Lock on tap.</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>          <span class="co">// Toggle the lock on the highest layer.</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>          layer_lock_invert<span class="op">(</span>get_highest_layer<span class="op">(</span>layer_state<span class="op">));</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Skip default handling on tap.</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// Continue default handling on hold.</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SFTLLCK </span>LSFT_T<span class="op">(</span><span class="pp">KC_0</span><span class="op">)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Use SFTLLCK in your keymap...</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>process_layer_lock<span class="op">(</span>keycode<span class="op">,</span> record<span class="op">,</span> KC_NO<span class="op">))</span> <span class="op">{</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> SFTLLCK<span class="op">:</span>  <span class="co">// Shift on hold, Layer Lock on tap.</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>          <span class="co">// Toggle the lock on the highest layer.</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>          layer_lock_invert<span class="op">(</span>get_highest_layer<span class="op">(</span>layer_state<span class="op">));</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Skip default handling on tap.</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// Continue default handling on hold.</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Other macros...</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>In the above, <code>KC_0</code> is an arbitrary placeholder for the
 tapping keycode. This keycode will never be sent, so any basic keycode
 will do. In <code>process_record_user()</code>, the tap press event is
@@ -375,17 +352,17 @@ layer</h3>
 lockable by Layer Lock. The <a
 href="https://docs.qmk.fm/ref_functions#update-tri-layer-state-state-x-y-z">update_tri_layer_state</a>
 function is usually called from keymap.c in the form</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> update_tri_layer_state<span class="op">(</span>state<span class="op">,</span> _LOWER<span class="op">,</span> _RAISE<span class="op">,</span> _ADJUST<span class="op">);</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> update_tri_layer_state<span class="op">(</span>state<span class="op">,</span> _LOWER<span class="op">,</span> _RAISE<span class="op">,</span> _ADJUST<span class="op">);</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Change this to update the state only when the third layer is
 unlocked:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>is_layer_locked<span class="op">(</span>_ADJUST<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> update_tri_layer_state<span class="op">(</span>state<span class="op">,</span> _LOWER<span class="op">,</span> _RAISE<span class="op">,</span> _ADJUST<span class="op">);</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> state<span class="op">;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>layer_state_t layer_state_set_user<span class="op">(</span>layer_state_t state<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(!</span>is_layer_locked<span class="op">(</span>_ADJUST<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> update_tri_layer_state<span class="op">(</span>state<span class="op">,</span> _LOWER<span class="op">,</span> _RAISE<span class="op">,</span> _ADJUST<span class="op">);</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> state<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h2 id="compared-to-dflayer">Compared to <code>DF(layer)</code></h2>
 <p>Another way to set a layer to be always on is to set it as the
 default layer with <a href="https://docs.qmk.fm/feature_layers">the
