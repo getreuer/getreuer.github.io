@@ -51,7 +51,7 @@ related to ergonomic typing.">
 <div id="content">
 <div id="header">
 <h1 class="title">Glossary of keyboard terms</h1>
-<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2026-08-18)</h2>
+<h2 class="author">Pascal Getreuer, 2024-08-04 (updated 2026-10-04)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -76,6 +76,7 @@ mods (HRMs)</a></li>
 keycaps</a></li>
 <li><a href="#hot-swappable-switches"
 id="toc-hot-swappable-switches">Hot-swappable switches</a></li>
+<li><a href="#input-lag" id="toc-input-lag">Input lag</a></li>
 <li><a href="#key-rollover-6kro-nkro"
 id="toc-key-rollover-6kro-nkro">Key rollover (6KRO, NKRO)</a></li>
 <li><a href="#key-switch" id="toc-key-switch">Key switch</a></li>
@@ -374,6 +375,38 @@ easily changed using a key puller tool. The switch snaps into a
 <strong>swappable keysocket</strong> without using solder. In contrast,
 switches in a non-swappable mechanical keyboard are soldered to the
 PCB.</p>
+<h3 id="input-lag">Input lag</h3>
+<p><strong>Input lag</strong> is the time between physically pressing a
+key and the computer registering it. For wired USB keyboards with a <a
+href="#polling-rate">polling rate</a> of 125 Hz or better, this time is
+typically around 10 milliseconds. This is less than one 60 fps video
+frame, which is imperceptible and negligible for most purposes.</p>
+<p>Some effects can greatly increase input lag:</p>
+<ul>
+<li><p>Wireless connectivity has somewhat higher input lag, typically
+around 8–25 ms for Bluetooth. However, the lag can get much worse with
+strong RF inference in the environment or when the keyboard has low
+battery.</p></li>
+<li><p>Certain firmware features, namely <a
+href="#mod-tap-key">mod-taps</a>, Tap Dance, Auto Shift, and combos, add
+~50–250 ms to input lag because they <strong>buffer</strong> input
+events to distinguish held keys.</p></li>
+<li><p>There is delay in the hand off between the OS’s HID stack and the
+application, due to scheduling overhead and queueing in the event loop
+message pump. This is typically 5–10 ms, but may grow to hundreds of
+milliseconds under heavy system load.</p></li>
+</ul>
+<p>See also:</p>
+<ul>
+<li><a
+href="../faqs/index.html#how-much-lag-do-custom-keyboards-have">How much
+lag do custom keyboards have?</a></li>
+<li><a href="../hrms-are-hard/index.html#do-hrms-add-input-lag">Do HRMs
+add input lag?</a></li>
+<li><a
+href="https://michael.stapelberg.ch/posts/2021-05-08-keyboard-input-latency-qmk-kinesis/#results">Michael
+Stapelberg’s investigation of input lag</a></li>
+</ul>
 <h3 id="key-rollover-6kro-nkro">Key rollover (6KRO, NKRO)</h3>
 <p><strong>Key rollover</strong> is the max number of simultaneously key
 presses that can be correctly <a href="#keyboard-report">reported</a>.
@@ -492,6 +525,23 @@ supported keys:</p>
 <p>The <strong>keycap</strong> is the flesh-facing part of the key that
 is pressed with the finger. On mechanical keyboards, it mounts on the
 <strong>stem</strong> of the <a href="#key-switch">key switch</a>.</p>
+<p>Keycaps come in different shapes and colors. The example below
+shows</p>
+<ul>
+<li>Main rows: KLP Lamé keycaps. The strongly tilted profile emulates a
+shallow <a href="#key-wells">key well</a>.</li>
+<li>Top row: Tai-Hao Thin keycaps, having a uniform profile.</li>
+<li>Thumb key: one Tai-Hao Thin keycap in “Blaze Orange.”</li>
+</ul>
+<figure>
+<picture>
+<img src="klp-lame.webp" alt="" loading="lazy" width="1000" height="600" />
+</picture>
+<figcaption>
+Three different kinds of Choc v1 keycaps, viewed from the side on a ZSA
+Voyager.
+</figcaption>
+</figure>
 <p>Some keycap terminology:</p>
 <ul>
 <li><p><strong>Keycap profile</strong> is the shape of the top surface
@@ -803,10 +853,10 @@ Pinky stagger on the left half of a columnar keyboard.
 <h3 id="polling-rate">Polling rate</h3>
 <p><strong>Polling rate</strong> refers to how frequently the keyboard
 sends <a href="#keyboard-report">keyboard reports</a> to the host
-computer. A higher rate reduces <strong>input lag</strong> and improves
-responsiveness. A typical keyboard has a polling rate of at least
-125 Hz, or once every 8 milliseconds. This is so fast that polling delay
-is visually imperceptible, less than one frame of 60 fps video
+computer. A higher rate reduces <a href="#input-lag">input lag</a> and
+improves responsiveness. A typical keyboard has a polling rate of at
+least 125 Hz, or once every 8 milliseconds. This is so fast that polling
+delay is visually imperceptible, less than one frame of 60 fps video
 (16.7 ms).</p>
 <p>See also: <a
 href="../faqs/index.html#how-much-lag-do-custom-keyboards-have">How much

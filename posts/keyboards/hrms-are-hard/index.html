@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>
+    (function(){var t=localStorage.getItem('theme');
+    if(t&&t!=='auto')document.documentElement.setAttribute('data-theme',t);})();
+  </script>
+  <meta name="author" content="Pascal Getreuer">
+  <meta name="date" content="2026-10-04">
+  <meta name="description" content="Dicussion, tips, and suggested
+configurations for home row mods (HRMs) and home row layers (HRLs).">
+  <title>Home row mods are hard to use</title>
+  <style>code{white-space: pre;}</style>
+  <style>
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="../../../site.css">
+<link rel="icon" href="../../../favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@350&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap">
+<script src="../../../site.js" defer></script>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<div id="site-header">
+<div id="site-headerhold">
+<nav class="breadcrumb" aria-label="Breadcrumb"><ol itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../../index.html" aria-label="Home"><span class="material-symbols-outlined home-icon">home</span><span itemprop="name" hidden>Home</span></a><meta itemprop="position" content="1"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../../index.html"><span itemprop="name">Posts</span></a><meta itemprop="position" content="2"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="../index.html"><span itemprop="name">Keyboards</span></a><meta itemprop="position" content="3"></li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">HRMs</span><meta itemprop="position" content="4"></li></ol></nav>
+<div class="theme-menu-wrap">
+<button id="theme-toggle" class="material-symbols-outlined" aria-label="Select theme" aria-expanded="false" aria-haspopup="menu" aria-controls="theme-menu">brightness_6</button>
+<div id="theme-menu" class="theme-menu" role="menu" hidden aria-labelledby="theme-toggle">
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="light" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">light_mode</span>
+<span class="theme-menu-text">Light</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="dark" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">dark_mode</span>
+<span class="theme-menu-text">Dark</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+<button class="theme-menu-item" role="menuitemradio" aria-checked="false" data-theme-value="auto" type="button">
+<span class="material-symbols-outlined theme-menu-icon" aria-hidden="true">brightness_6</span>
+<span class="theme-menu-text">System</span>
+<span class="material-symbols-outlined theme-menu-check" aria-hidden="true">check</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div id="content">
+<div id="header">
+<h1 class="title">Home row mods are hard to use</h1>
+<h2 class="author">Pascal Getreuer, 2026-10-04</h2>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#making-hrms-work-for-you"
+id="toc-making-hrms-work-for-you">Making HRMs work for you</a>
+<ul>
+<li><a href="#qmk-firmware" id="toc-qmk-firmware">QMK firmware</a></li>
+<li><a href="#vial" id="toc-vial">Vial</a></li>
+<li><a href="#zsa-oryx" id="toc-zsa-oryx">ZSA Oryx</a></li>
+<li><a href="#zmk-firmware" id="toc-zmk-firmware">ZMK firmware</a></li>
+<li><a href="#dygma-bazecor" id="toc-dygma-bazecor">Dygma
+Bazecor</a></li>
+<li><a href="#kanata" id="toc-kanata">Kanata</a></li>
+<li><a href="#tuning-hrms" id="toc-tuning-hrms">Tuning HRMs</a></li>
+</ul></li>
+<li><a href="#hrms-related-tips-and-features"
+id="toc-hrms-related-tips-and-features">HRMs-related tips and
+features</a></li>
+<li><a href="#do-hrms-add-input-lag" id="toc-do-hrms-add-input-lag">Do
+HRMs add input lag?</a></li>
+<li><a href="#are-hrms-only-for-slow-typists"
+id="toc-are-hrms-only-for-slow-typists">Are HRMs only for slow
+typists?</a></li>
+<li><a href="#home-row-layers" id="toc-home-row-layers">Home row
+<em>layers</em></a>
+<ul>
+<li><a href="#hrls-motivation" id="toc-hrls-motivation">HRLs
+motivation</a></li>
+<li><a href="#hrms-and-hrls-can-be-used-together"
+id="toc-hrms-and-hrls-can-be-used-together">HRMs and HRLs can be used
+together!</a></li>
+<li><a href="#hrls-design-thoughts" id="toc-hrls-design-thoughts">HRLs
+design thoughts</a></li>
+</ul></li>
+<li><a href="#its-not-for-me-hrms-alternatives"
+id="toc-its-not-for-me-hrms-alternatives">It’s not for me; HRMs
+alternatives</a></li>
+<li><a href="#further-reading" id="toc-further-reading">Further
+reading</a></li>
+</ul>
+</div>
+<h2 id="overview">Overview</h2>
+<p>“Home row mods” or “HRMs” are a much talked about scheme to eliminate
+awkward reaches and hand contortions. The modifier keys—Ctrl, Shift,
+Alt, GUI—are mapped directly on the home row as <a
+href="../glossary/index.html#mod-tap-key">mod-tap keys</a>. The
+ergonomic appeal is that this reduces finger travel and awkward hand
+positions.</p>
+<figure>
+<img src="../glossary/home-row-mods.svg"
+alt="An example of HRMs. The F key for instance types “f” when tapped and acts as Ctrl when held." />
+<figcaption aria-hidden="true">An example of HRMs. The <kbd>F</kbd> key
+for instance types “f” when tapped and acts as Ctrl when
+held.</figcaption>
+</figure>
+<p>I wrote this guide because I want to make HRMs easier to get into. I
+hope to demystify the (often technical and subtle) tap-hold
+configuration options that matter for HRMs. Making HRMs better is a goal
+I’ve personally put a lot of effort into, including contributed multiple
+features to QMK, Vial, and ZSA Oryx that improve the HRMs experience.
+I’ll describe these, too. When it clicks, using HRMs is a joy.</p>
+<h2 id="making-hrms-work-for-you">Making HRMs work for you</h2>
+<p>Despite their ergo benefits and popularity, there’s a problem. Home
+row mods are hard to use, at least at first, for most people. It’s not
+just you. So, let’s talk about how to fix home row mods.
+<strong>Configuration is critical, and it takes time to get used to
+it.</strong></p>
+<p>The main challenge with HRMs is that one needs to avoid triggering
+the mod actions accidentally during fast typing. You might think of
+normal typing as pressing and releasing one key at a time like
+“<kbd>A</kbd> ↓, <kbd>A</kbd> ↑, <kbd>S</kbd> ↓, <kbd>S</kbd> ↑.” But
+fast typing is often <a href="../glossary/index.html#roll">“rolled”</a>,
+pressing the next key before the current one is released, like
+“<kbd>A</kbd> ↓, <kbd>S</kbd> ↓, <kbd>A</kbd> ↑, <kbd>S</kbd> ↑.” This
+happens especially over adjacent keys like <code>as</code> in QWERTY.
+There’s also the complementary problem of failing to trigger a mod when
+it was intended.</p>
+<p><a
+href="https://github.com/urob/zmk-config?tab=readme-ov-file#timeless-homerow-mods">urob’s
+“Timeless Home Row Mods”</a> is a popular HRMs configuration originally
+written for ZMK, which has since been <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1q1jo3c/urobs_zmk_timeless_home_row_mods_ported_to_native/">ported
+to QMK</a> and <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1qosvc0/a_try_on_urobs_timeless_home_row_mods_for_kanata/">to
+Kanata</a>. While it’s not the only approach, it’s a highly effective
+solution. urob introduces his configuration incrementally, explaining
+how each option solves a problem—worth a read, even if you don’t use
+ZMK.</p>
+<p>Another excellent resource is <a
+href="https://precondition.github.io/home-row-mods">Precondition’s guide
+to home row mods</a>. It explains a bunch of tap-hold configurations and
+variations to mitigate these problems.</p>
+<h3 id="qmk-firmware">QMK firmware</h3>
+<p>Define HRMs as “<code>MT(mod,kc)</code>” <a
+href="https://docs.qmk.fm/mod_tap">mod-tap keys</a> in your layout. <a
+href="#tap-dance">Don’t use Tap Dances</a> for that.</p>
+<div
+style="border: 1px solid var(--table-border); padding: 0.5rem 1rem">
+<p><em>Technical limitation:</em> The <code>kc</code> “tapping key” in
+<code>MT(mod,kc)</code> is limited to <a
+href="https://docs.qmk.fm/keycodes_basic">basic keycodes</a>. If needed,
+you can work around this limitation through a bit of custom handling
+code in <code>process_record_user()</code> to intercept the tapping
+events. See <a
+href="../faqs/index.html#mt-doesnt-work-with-this-keycode-qmk">MT
+doesn’t work with this keycode</a> for examples of this technique.</p>
+</div>
+<p>Additionally, I recommend these tap-hold settings in your
+<code>config.h</code> as a starting point:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define TAPPING_TERM </span><span class="dv">250</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define CHORDAL_HOLD</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define PERMISSIVE_HOLD</span></span></code></pre></div>
+<p>The above is essentially a simplified version of urob’s timeless home
+row mods, ported to QMK. Read my post on <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1q1jo3c/urobs_zmk_timeless_home_row_mods_ported_to_native/">Timeless
+Home Row Mods in QMK</a> for a longer configuration guide exploring
+additional options. See the <a
+href="https://docs.qmk.fm/tap_hold">Tap-Hold documentation</a> for full
+details on what these options mean.</p>
+<p>See also <a
+href="https://docs.qmk.fm/tap_hold#configuring-home-row-mods">Configuring
+Home Row Mods</a> in the QMK documentation.</p>
+<h3 id="vial">Vial</h3>
+<p>Vial is a fork of QMK. Use the <kbd>LCtl_T</kbd>, <kbd>LSft_T</kbd>,
+etc. mod-tap keys under the Quantum tab for your home row keys. <a
+href="#tap-dance">Don’t use Tap Dances</a> for that. Under the QMK
+Settings tab, supposing you have Vial 0.7.4 or newer, check
+<strong>Permissive Hold</strong> and <strong>Chordal Hold</strong>, and
+ensure that <strong>Hold On Other Key Press</strong> is
+<em>unchecked</em>.</p>
+<figure>
+<img src="../faqs/vial-tap-hold-options.png" alt="Suggested Vial tap-hold configuration" width="306" height="277" loading="lazy"/>
+<figcaption>
+Suggested Vial tap-hold configuration.
+</figcaption>
+</figure>
+<p><em>Vial pre-0.7.4:</em> Older versions of Vial use different naming
+and don’t expose Chordal Hold. Make sure <strong>Permissive
+Hold</strong> and <strong>Ignore Mod Tap Interrupt</strong> are both
+checked.</p>
+<p>See also the Vial documentation on <a
+href="https://get.vial.today/manual/quantum.html#setting-up-home-row-mods">Setting
+up home row mods</a>.</p>
+<h3 id="zsa-oryx">ZSA Oryx</h3>
+<p>Oryx uses QMK under the hood. Implement your HRMs by assigning
+(letter) <em>“when tapped”</em> and (modifier) <em>“when held”</em>
+functions to the home row keys. Make sure that both <em>“when double
+tapped”</em> and <em>“tapped, then held”</em> are clear (<a
+href="#tap-dance">don’t use Tap Dances</a>).</p>
+<p>Additionally, start with these settings under Advanced Configuration
+Settings (accessed in Oryx through the gear icon on the upper
+right):</p>
+<ul>
+<li>Set <strong>Tapping term</strong> to 250 (Tapping tab).</li>
+<li>Check <strong>Permissive Hold</strong> (Tapping Dual-Functions
+tab).</li>
+<li>Check <strong>Chordal Hold</strong> (Holding tab).</li>
+</ul>
+<p>See also ZSA’s blog post <a
+href="https://blog.zsa.io/layout-buffet-home-row-mods/">Layout Buffet –
+Home-row mods</a>.</p>
+<div id="tap-dance">
+
+</div>
+<div class="callout note">
+<div class="callout-header">
+<p>
+📝  Note for QMK, Vial, and Oryx users
+</p>
+</div>
+<p><strong>Don’t use Tap Dances for HRMs keys!</strong></p>
+<p>QMK’s Tap Dance is poorly suited for HRMs. It uses a simplified
+decision logic, separate from QMK’s mod-tap implementation, that lacks
+roll protection and essential tap-hold options like Permissive Hold.</p>
+<p>Use QMK’s mod-tap keys instead. Mod-taps (and similarly layer-tap
+keys) use <a href="https://docs.qmk.fm/tap_hold">an elaborate set of
+rules</a> to decide when the key is tapped vs. held, much of this
+designed with HRMs in mind. I recommend this:</p>
+<ul>
+<li><strong>QMK:</strong> use the <code>MT(mod,kc)</code> <a
+href="https://docs.qmk.fm/mod_tap">mod-tap keycodes</a>.</li>
+<li><strong>Vial:</strong> use the <code>*_T</code> keys under <a
+href="https://get.vial.today/manual/quantum.html">the Quantum
+tab</a>.</li>
+<li><strong>Oryx:</strong> assign <em>“when tapped”</em> and <em>“when
+held”</em>. Ensure that both <em>“when double tapped”</em> and
+<em>“tapped, then held”</em> are clear.</li>
+</ul>
+</div>
+<h3 id="zmk-firmware">ZMK firmware</h3>
+<p>ZMK users should read urob’s <a
+href="https://github.com/urob/zmk-config?tab=readme-ov-file#timeless-homerow-mods">Timeless
+Home Row Mods</a> description, which is written for ZMK. You may also
+follow the <a
+href="https://zmk.dev/docs/keymaps/behaviors/hold-tap?examples=home_row_mods#custom-hold-tap-examples">Homerow
+Mods example</a> in the ZMK documentation, particularly with
+<code>flavor = "balanced"</code> (similar to Permissive Hold) and <a
+href="https://zmk.dev/docs/keymaps/behaviors/hold-tap?examples=home_row_mods#positional-hold-tap-and-hold-trigger-key-positions">positional
+hold taps</a> (similar to Chordal Hold).</p>
+<h3 id="dygma-bazecor">Dygma Bazecor</h3>
+<p>See Dygma’s blog posts:</p>
+<ul>
+<li><a
+href="https://dygma.com/blogs/ergonomics/how-to-set-up-home-row-modifiers">How
+to Set up Home Row Modifiers on your Keyboard</a></li>
+<li><a
+href="https://dygma.com/blogs/ergonomics/home-row-modifiers-vs-thumbkeys">Stop
+twisting your fingers! Home-row mods vs. Thumbkeys</a></li>
+</ul>
+<h3 id="kanata">Kanata</h3>
+<p>Follow <a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1qosvc0/a_try_on_urobs_timeless_home_row_mods_for_kanata/"><span
+class="citation" data-cites="ldebritto">@ldebritto</span>’s
+configuration guide</a> for a sophisticated Kanata implementation of
+Timeless Home Row Mods.</p>
+<p>See also the HRMs tutorial configurations in</p>
+<ul>
+<li><a
+href="https://github.com/jtroo/kanata/blob/main/cfg_samples/home-row-mod-basic.kbd">home-row-mod-basic.kbd</a></li>
+<li><a
+href="https://github.com/jtroo/kanata/blob/main/cfg_samples/home-row-mod-advanced.kbd">home-row-mod-advanced.kbd</a></li>
+</ul>
+<h3 id="tuning-hrms">Tuning HRMs</h3>
+<p><strong>Tapping term tuning:</strong> Setting the tapping term is a
+balance. “Timeless home row mods”-like configuration aims to make the
+behavior less sensitive to the exact choice of tapping term. Still, it
+may need tuning:</p>
+<ul>
+<li><p>If you get many accidental mod triggers, increase the tapping
+term.</p></li>
+<li><p>Or, if you often intend the mod but get the tapping keys,
+decrease the tapping term.</p></li>
+<li><p>Try <a
+href="https://rpnfan.github.io/keyboard-heaven/how-to/tap-timeout-calibrator/">rpnfan’s
+tap-timeout calibrator</a> to tune the tapping term for your
+typing.</p></li>
+</ul>
+<p><strong>In addition to good configuration, I suggest you may need a
+couple of months to get used to HRMs.</strong> Everyone’s typing habits
+are different. In piano terms, my typing used to be very “legato,” with
+my fingers often lingering on preceding keys, which produced a lot of
+accidental mod triggers.</p>
+<p>After a couple months of persistence, my typing adapted. My brain
+eventually rewired to typing in a more staccato style. I have far fewer
+accidental mod triggers, though I do still have one every once in a
+while.</p>
+<h2 id="hrms-related-tips-and-features">HRMs-related tips and
+features</h2>
+<h4 id="more-hrm-options">More HRM options</h4>
+<p>Here are a few other tap-hold options that might improve your HRMs
+experience.</p>
+<ul>
+<li><p><strong>Flow Tap</strong>: Use <a
+href="https://docs.qmk.fm/tap_hold#flow-tap">Flow Tap</a> in QMK-based
+firmware to disable HRMs during fast typing. When a tap-hold key is
+pressed within the flow tap term of the <em>previous</em> key, it is
+settled immediately as tapped. This option is extremely effective for
+some users in curbing accidental mod triggers. For ZMK, use <a
+href="https://zmk.dev/docs/config/behaviors#devicetree-2">require-prior-idle-ms</a>.
+For Kanata, see <a
+href="https://github.com/jtroo/kanata/discussions/1425">gerhard-h’s
+automatic fast typing layer</a> and <a
+href="https://github.com/jtroo/kanata/discussions/1455">argenkiwi’s
+implementation</a>.</p></li>
+<li><p><strong>Speculative Hold</strong>: Use <a
+href="https://docs.qmk.fm/tap_hold#speculative-hold">Speculative
+Hold</a> to apply mod-tap mods immediately on key down. This is
+particularly useful to remove lag when using mod-taps together with an
+external mouse. For ZMK, use <a
+href="https://zmk.dev/docs/keymaps/behaviors/hold-tap#hold-while-undecided">hold-while-undecided</a>.</p></li>
+<li><p><strong>Quick Tap</strong>: A little known feature! If you
+quickly tap and then hold the key, its tap action is repeated. In QMK,
+this is enabled by default and disabled by setting <a
+href="https://docs.qmk.fm/tap_hold#quick-tap-term">QUICK_TAP_TERM</a> to
+zero. In ZMK, it is enabled with <a
+href="https://zmk.dev/docs/behaviors/hold-tap/#quick-tap-ms">quick-tap-ms</a>.</p>
+<p>Or instead of tap-holding, use a repeat key: <a
+href="https://docs.qmk.fm/features/repeat_key">Repeat key in QMK</a>, <a
+href="https://zmk.dev/docs/behaviors/key-repeat">Repeat key in ZMK</a>,
+<a
+href="https://github.com/jtroo/kanata/blob/main/docs/config.adoc#repeat-key">Repeat
+key in Kanata</a>.</p></li>
+<li><p><strong>Retro Tapping</strong>: Normally, holding and releasing a
+mod-tap key produces no typing. With <a
+href="https://docs.qmk.fm/tap_hold#retro-tapping">QMK Retro Tapping</a>
+or <a
+href="https://zmk.dev/docs/keymaps/behaviors/hold-tap#retro-tap">ZMK
+retro-tap</a>, doing so sends the tapping keycode, even if the key is
+released outside the tapping term. I don’t recommend this option in a
+“timeless home row mods” approach (I’d suggest first increasing the
+tapping term), but this option can be helpful if your taps sometimes
+exceed the tapping term.</p></li>
+<li><p><strong>Per-key configuration</strong>: QMK’s tap-hold options
+may be configured per key. This helps with fine-tuning settings for
+slower pinkies or exceptionally handling certain keys or key chords.</p>
+<ul>
+<li>Tapping term: <a
+href="https://docs.qmk.fm/tap_hold#tapping-term">TAPPING_TERM_PER_KEY</a></li>
+<li>Permissive Hold: <a
+href="https://docs.qmk.fm/tap_hold#permissive-hold">PERMISSIVE_HOLD_PER_KEY</a></li>
+<li>Quick Tap: <a
+href="https://docs.qmk.fm/tap_hold#quick-tap-term">QUICK_TAP_TERM_PER_KEY</a></li>
+<li>Flow Tap: <a
+href="https://docs.qmk.fm/tap_hold#is-flow-tap-key">is_flow_tap_key</a>,
+<a
+href="https://docs.qmk.fm/tap_hold#get-flow-tap-term">get_flow_tap_term</a></li>
+<li>Chordal Hold: <a
+href="https://docs.qmk.fm/tap_hold#chordal-hold-handedness">chordal_hold_handedness</a>,
+<a
+href="https://docs.qmk.fm/tap_hold#per-chord-customization">get_chordal_hold</a></li>
+<li>Retro Tapping: <a
+href="https://docs.qmk.fm/tap_hold#retro-tapping">RETRO_TAPPING_PER_KEY</a></li>
+<li>Speculative Hold: <a
+href="https://docs.qmk.fm/tap_hold#speculative-hold">get_speculative_hold</a></li>
+</ul>
+<p>Oryx supports <a
+href="https://blog.zsa.io/per-key-dynamic-tapping-terms/">per-key
+tapping terms</a>. ZMK and Kanata have their own means for per-key HRMs
+configuration.</p></li>
+</ul>
+<h4 id="easing-the-shift-hrm">Easing the Shift HRM</h4>
+<p>Of all the mods, Shift is often said to be the most troublesome, the
+“Achilles heel of HRMs,” because of shifting to capitalize during fast
+typing. Some features can help:</p>
+<ul>
+<li><p><strong>Typing ALL_CAPS words:</strong> Typing in all-caps is
+awkward with home row Shifts. We either perform finger gymnastics or
+need to stop typing in the middle of the word and trade off shifting
+with the other hand. Use a Caps Word implementation to get around this:
+<a href="https://docs.qmk.fm/features/caps_word">Caps Word in QMK</a>,
+<a href="https://zmk.dev/docs/behaviors/caps-word/">Caps Word in
+ZMK</a>, <a
+href="https://github.com/jtroo/kanata/blob/main/docs/config.adoc#caps-word">Caps
+Word in Kanata</a>. Caps Word is like the standard Caps Lock, but turns
+off automatically at the end of the word. This is useful for typing
+abbreviations like “QMK” and all-caps identifiers in code like
+“<code>KC_LSFT</code>.”</p></li>
+<li><p><strong>Sentence capitalization:</strong> My <a
+href="../sentence-case/index.html">Sentence Case</a> community module is
+another way to avoid Shift, which automatically detects and capitalizes
+the first letter of sentences. Or for an explicit approach, consider a
+macro that types period, space, and sets a one-shot Shift mod to
+capitalize the next letter (<a
+href="../macros/index.html#next-sentence-macro">QMK
+implementation</a>).</p></li>
+</ul>
+<h4 id="customized-hrms-tricks-qmk">Customized HRMs tricks (QMK)</h4>
+<ul>
+<li><p><strong>One-shot home row mods:</strong> You may find it helpful
+to make some or all of your home row mods behave like one-shot mods.
+Thanks to <span class="citation"
+data-cites="rafaelromao">@rafaelromao</span> for this idea. An
+implementation in QMK is <a
+href="../faqs/index.html#one-shot-mod-tap-osm-mt">described
+here</a>.</p></li>
+<li><p>You can <a
+href="https://docs.qmk.fm/mod_tap#intercepting-mod-taps">intercept
+tap-hold events</a> in <code>process_record_user()</code> for custom
+handling. Supposing for instance you have a <kbd>LSFT_T(KC_D)</kbd> key,
+intercept its events with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> process_record_user<span class="op">(</span><span class="dt">uint16_t</span> keycode<span class="op">,</span> keyrecord_t<span class="op">*</span> record<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> <span class="op">(</span>keycode<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> LSFT_T<span class="op">(</span>KC_D<span class="op">):</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>tap<span class="op">.</span>count <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span>  <span class="co">// Settled as tapped.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span> <span class="co">/*Tap ↓*/</span> <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> <span class="co">/*Tap ↑*/</span> <span class="op">}</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span>  <span class="co">// Settled as held.</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>record<span class="op">-&gt;</span>event<span class="op">.</span>pressed<span class="op">)</span> <span class="op">{</span> <span class="co">/*Hold ↓*/</span> <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> <span class="co">/*Hold ↑*/</span> <span class="op">}</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span>  <span class="co">// Skip default handling.</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// More macros...</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span>  <span class="co">// Continue default handling.</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>The <code>record-&gt;tap.count</code> field tells whether the key is
+tapped vs. held. Note, its value is only set meaningfully for mod-taps,
+layer-taps, and a few other types of keys.</p></li>
+</ul>
+<h2 id="do-hrms-add-input-lag">Do HRMs add input lag?</h2>
+<p>HRMs add input lag. Configuration can substantially reduce it, though
+not fully remove it.</p>
+<div class="callout note">
+<div class="callout-header">
+<p>
+📝  Note
+</p>
+</div>
+<p><strong>Avoid HRMs when gaming!</strong> It’s not possible to remove
+HRMs lag completely. Add a separate layer to your keymap for gaming, and
+avoid mod-taps, layer-taps, tap dance, combos features on that layer for
+lag-free keys.</p>
+</div>
+<p><strong>Input lag</strong> is the time between pressing a key and the
+computer registering the input. On QMK-based firmware, tap-holds
+increase input lag by <strong>as much as the tapping term</strong>.
+Depending on circumstances, the tap-hold decision can be settled before
+the tapping term, reducing lag. Configuration can help significantly in
+this respect to enable early decisions and improve responsiveness.</p>
+<p><em>Why don’t they just remove the lag?!</em><br>This is not a bug or
+quality of implementation issue, but an inherent limit. Whether the key
+is being tapped vs. held depends (among other rules) on whether the key
+is released before the tapping term. At the instant you press the key,
+the firmware does not know when you will release it—that hasn’t happened
+yet! The firmware does not send the key to the computer until it
+concludes whether the key is tapped vs. held.</p>
+<figure>
+<img src="mt-sequence-light.svg" class="light-only" alt="" width="681" height="612" loading="lazy"/>
+<img src="mt-sequence-dark.svg" class="dark-only" alt="" width="681" height="612" loading="lazy"/>
+<figcaption>
+Decision logic for a “<code>F</code> on tap, Ctrl on hold” mod-tap key.
+</figcaption>
+</figure>
+<p><strong>Reduce the lag</strong> with one or more of the following
+options, which enable early decision in certain circumstances:</p>
+<ul>
+<li><p>Use QMK’s <a href="https://docs.qmk.fm/tap_hold#flow-tap">Flow
+Tap</a> or ZMK’s <a
+href="https://zmk.dev/docs/config/behaviors#devicetree-2">require-prior-idle-ms</a>:
+during fast typing, tap-hold keys settle immediately as tapped, fully
+removing the usual tap-hold decision lag.</p></li>
+<li><p>Use QMK’s <a
+href="https://docs.qmk.fm/tap_hold#speculative-hold">Speculative
+Hold</a> or ZMK’s <a
+href="https://zmk.dev/docs/keymaps/behaviors/hold-tap#hold-while-undecided">hold-while-undecided</a>
+to apply mods on key down while mod-taps are undecided. Particularly for
+Shift+click with an external mouse, this option makes mod-taps instantly
+responsive.</p></li>
+<li><p>Use QMK’s <a
+href="https://docs.qmk.fm/tap_hold#chordal-hold">Chordal Hold</a> or
+ZMK’s <a
+href="https://zmk.dev/docs/keymaps/behaviors/hold-tap?examples=home_row_mods#positional-hold-tap-and-hold-trigger-key-positions">positional
+hold taps</a>. If a tap-hold key is pressed and then, before the tapping
+term, another key is pressed on the same hand, the tap-hold key is
+immediately settled as tapped.</p></li>
+</ul>
+<p>Considering lag more generally, I suggest checking the <a
+href="https://en.wikipedia.org/wiki/Display_lag">display lag</a> of your
+monitor, using <a
+href="https://getreuer.info/posts/keyboards/glossary/index.html#key-switch">key
+switches</a> with short pre-travel, and using an “eager” debounce
+strategy (<a
+href="https://docs.qmk.fm/feature_debounce_type?id=types-of-debounce-algorithms">QMK
+debounce algorithms</a>). See also: <a
+href="../faqs/index.html#how-much-lag-do-custom-keyboards-have">How much
+lag do custom keyboards have?</a></p>
+<p>Speaking for myself, HRMs lag might become more tolerable with
+experience. It’s just something that I’ve gotten used to. During normal
+use, I don’t think about or notice it.</p>
+<h2 id="are-hrms-only-for-slow-typists">Are HRMs only for slow
+typists?</h2>
+<p>A common misconception is that HRMs can <em>only</em> be used if
+typing slowly, particularly to trigger the mod hold actions. This is not
+the case.</p>
+<p>The essential option to enable HRMs in fast typing is
+<strong>Permissive Hold</strong>, aka ZMK’s “balanced” flavor. This
+option makes it possible to trigger mod actions quickly, without having
+to wait out the tapping term. If you press a tap-hold key <kbd>A</kbd>,
+press and release another key <kbd>B</kbd>, then release <kbd>A</kbd> (a
+“nested” press like “<kbd>A</kbd> ↓, <kbd>B</kbd> ↓, <kbd>B</kbd> ↑,
+<kbd>A</kbd> ↑”), then <kbd>A</kbd> is settled as held even when the
+full sequence completes within the tapping term.</p>
+<div class="callout note">
+<div class="callout-header">
+<p>
+📝  Note
+</p>
+</div>
+<p>You may want to disable <strong>Quick Tap</strong> and <strong>Flow
+Tap</strong> on HRMs where the mod is desired during fast typing, as
+these options promote the tapping action instead.</p>
+</div>
+<p>In principle, there is no limit how fast one could type with HRMs.
+Still, there is some truth to HRMs slowing down typing. In my experience
+at least, a lasting issue is that my top speed is ~15 wpm slower with
+HRMs than without. That’s a fair deal for me in exchange for the typing
+comfort.</p>
+<h2 id="home-row-layers">Home row <em>layers</em></h2>
+<p>Can’t get enough of HRMs? While home row mods spark a lot of
+discussion, a less talked about yet appealing possibility is
+<strong>home row</strong> <strong><em>layers</em></strong> (“HRLs”?):
+layer-tap keys on home row. These keys type a letter when tapped, and
+momentarily switch to a layer when held.</p>
+<h3 id="hrls-motivation">HRLs motivation</h3>
+<p>Switching layers this way is in contrast to the conventional keymap
+design of using thumb keys for layer switching. A couple points in
+favor:</p>
+<ul>
+<li><p><strong>Ergonomics:</strong> Like the other fingers, <a
+href="https://getreuer.info/posts/keyboards/thumb-ergo/index.html">thumbs
+can get overuse injuries</a>. If you experience thumb discomfort,
+offloading layering work to other fingers is something to
+consider.</p></li>
+<li><p><strong>Typing stability:</strong> As the <a
+href="https://github.com/qmk/qmk_firmware/tree/master/keyboards/ferris/keymaps/default">Ferris
+keyboard default keymap</a> design notes say, “unhoming of the thumbs
+was a frequent source of typos for me when I used more than one thumb
+key frequently.”</p></li>
+</ul>
+<h3 id="hrms-and-hrls-can-be-used-together">HRMs and HRLs can be used
+together!</h3>
+<p>Modifiers <em>are</em> layers in a conceptual sense, so why not have
+a mix of both. However, there is a complication: in a typical HRMs
+scheme, all eight non-thumb fingers are already occupied with (some
+permutation of) <kbd>Ctrl</kbd>, <kbd>Shift</kbd>, <kbd>Alt</kbd>,
+<kbd>GUI</kbd> on the home row of each hand. Many users additionally
+need <kbd>AltGr</kbd> (right Alt) as a fifth mod-tap per hand, as this
+key has a distinct function from left Alt outside the US.</p>
+<p>You’d need a lot of fingers to get all the mods and layers on home
+row…</p>
+<figure>
+<img src="many-fingers.svg" alt="" width="798" height="533" loading="lazy"/>
+<figcaption>
+This does not work for most humans.
+</figcaption>
+</figure>
+<p>To resolve that, some of these keys must demote to the bottom row (or
+top row, if you prefer). So, they’re not literally <em>“home row”</em>
+mods/layers, but “tap-hold keys among the alphas.” I recommend the same
+<a href="#making-hrms-work-for-you">configuration above</a> for this
+generalization of HRMs.</p>
+<p>Here’s how I arranged them in my keymap:</p>
+<figure>
+<img src="two-row-hrms.svg" alt="" width="615" height="212" loading="lazy"/>
+<figcaption>
+My scheme for home row mods + layers.
+</figcaption>
+</figure>
+<p>I can access my four most-used layers as well as the four mods on
+each hand, arranged in a modified <a
+href="https://precondition.github.io/home-row-mods#gasc">“GASC”
+order</a> and with a few bottom-row keys to spare.</p>
+<h3 id="hrls-design-thoughts">HRLs design thoughts</h3>
+<p>Not all mods and layers need be handled as tap-hold keys. I include
+only my most-used layers, and access lesser-used layers by other
+means.</p>
+<p>You probably want mods in the same positions across most keymap
+layers for sake of consistency, as one normally does with HRMs. This is
+convenient for holding mod+layer combinations, so that they work equally
+independent of the order in which keys are held. However, it is probably
+unnecessary to reproduce layers switches in the same positions as the
+HRLs on base layer. You could use those free keys to place some mods
+more comfortably, though at the price that this design is order
+dependent—the layer-tap must then be held first before the mod.</p>
+<p><strong>Finger occupancy:</strong> Inevitably, some combinations of
+mods and layers are on the same finger, which are awkward to hold
+(unless, perhaps, you have have light switches and steno keycaps).
+Consider which mod- and layer-tap keys are unlikely to be held at the
+same time. These are good candidates for keys to put in the same
+column.</p>
+<ul>
+<li><p>While mod+mod and mod+layer are common, layer+layer is not. So
+multiple layer-taps in the same column is no problem (though <a
+href="https://docs.qmk.fm/features/tri_layer">Tri Layers</a> is an
+exception).</p></li>
+<li><p>Certain mod+mod combos might be rare. I don’t need to use Alt and
+GUI together, so I put those mod-taps in the same column.</p></li>
+<li><p>Depending on the layer, combining with certain mods might be
+rare. I don’t use mods on my symbol layer, for instance.</p></li>
+<li><p>In my keymap, <kbd>SYM</kbd> + <kbd>NAV</kbd> switches to the
+<code>NAV</code> layer with Ctrl held (done through some bespoke custom
+handling). This solves my <kbd>NAV</kbd> and <kbd>Ctrl</kbd> keys being
+in the same column.</p></li>
+</ul>
+<h2 id="its-not-for-me-hrms-alternatives">It’s not for me; HRMs
+alternatives</h2>
+<p>If home row mods are not for you, that’s Ok. Here are several
+alternative approaches to modifiers that you might consider.</p>
+<ul>
+<li><p><strong>Consider a mix of HRMs and regular mod keys.</strong>
+HRMs don’t have to be all-or-nothing. As mentioned earlier, Shift is
+probably the most troublesome as an HRM because of shifting to
+capitalize in fast typing. Many users find it effective to use a regular
+key for Shift instead of a dual-role HRM key. Or, have Shift as
+<em>both</em> a dedicated key and HRM, using the HRM for sake of
+chording multi-mod hotkeys like Ctrl+Shift+V. You can consider a partial
+or hybrid approach to HRMs with the other mods as well.</p></li>
+<li><p><strong>Bottom row mods:</strong> move the mod-taps down to
+<kbd>Z</kbd> <kbd>X</kbd> <kbd>C</kbd> <kbd>V</kbd> and <kbd>M</kbd>
+<kbd>,</kbd> <kbd>.</kbd> <kbd>/</kbd> QWERTY positions on the row below
+home row. The bottom row keys tend to be used a lot less than the home
+row, making accidental mod triggers less of a problem. Several other
+variations are suggested in <a
+href="https://precondition.github.io/home-row-mods#alternatives">precondition’s
+guide</a>.</p></li>
+<li><p><a
+href="https://github.com/callum-oakley/qmk_firmware/tree/master/users/callum"><strong>Callum
+Oakley’s mods</strong></a> (callum-style mods) are sticky (one-shot)
+mods on the home row of a separate layer. No timers are involved so that
+mod keys can be tapped as fast as you like. A similar idea is in <a
+href="https://stevep99.github.io/seniply/">SteveP’s Seniply keymap</a>,
+with sticky mods on the Extend layer, inspired by the use of mods in <a
+href="https://dreymar.colemak.org/layers-extend.html">DreymaR’s original
+Extend layer</a>. Among small keyboard users, Callum mods are a popular
+alternative to HRMs.</p></li>
+<li><p><a href="https://docs.qmk.fm/features/auto_shift"><strong>QMK’s
+Auto Shift</strong></a> is a scheme where long-pressing a key types the
+shifted version of the key, preferred by some as an alternative to HRM
+Shift. For ZMK, see the Autoshift example in the <a
+href="https://zmk.dev/docs/behaviors/hold-tap#example-use-cases">Hold-Tap
+use-cases</a> for similar behavior.</p></li>
+</ul>
+<h2 id="further-reading">Further reading</h2>
+<p>Documentation</p>
+<ul>
+<li><a href="https://docs.qmk.fm/tap_hold">QMK Tap-Hold
+documentation</a></li>
+<li><a href="https://zmk.dev/docs/keymaps/behaviors/hold-tap">ZMK
+Hold-tap documentation</a></li>
+<li><a href="https://get.vial.today/manual/quantum.html">Vial Quantum
+tab documentation</a></li>
+</ul>
+<p>Configuration guides</p>
+<ul>
+<li><a href="https://precondition.github.io/home-row-mods">A guide to
+home row mods</a> – <span class="citation"
+data-cites="precondition">@precondition</span>’s epic HRMs guide</li>
+<li><a
+href="https://github.com/urob/zmk-config?tab=readme-ov-file#timeless-homerow-mods">urob’s
+Timeless Home Row Mods</a></li>
+<li><a
+href="https://rpnfan.github.io/keyboard-heaven/how-to/tap-timeout-calibrator/">The
+tap-timeout calibrator</a> by <span class="citation"
+data-cites="rpnfan">@rpnfan</span></li>
+<li><a
+href="https://www.reddit.com/r/ErgoMechKeyboards/comments/1qosvc0/a_try_on_urobs_timeless_home_row_mods_for_kanata/">A
+try on urob’s timeless home row mods for kanata</a> by <span
+class="citation" data-cites="ldebritto">@ldebritto</span></li>
+<li><a href="https://blog.zsa.io/layout-buffet-home-row-mods/">ZSA blog
+– Layout Buffet – Home-row mods</a></li>
+<li><a
+href="https://dygma.com/blogs/ergonomics/how-to-set-up-home-row-modifiers">Dygma
+blog – How to Set up Home Row Modifiers on your Keyboard</a></li>
+</ul>
+<p>Related</p>
+<ul>
+<li><a href="https://dreymar.colemak.org/layers-extend.html">DreymaR’s
+Extend layer</a></li>
+<li><a
+href="https://github.com/jgandert/qmk_modules/tree/main/predictive_tap_hold">Predictive
+Tap-Hold for QMK</a> – <span class="citation"
+data-cites="jgandert">@jgandert</span>’s learned decision tree for
+mod-taps</li>
+<li><a href="https://github.com/stasmarkin/sm_td">SM_TD QMK library</a>
+– <span class="citation" data-cites="stasmarkin">@stasmarkin</span>’s
+implementation of HRMs and tap dance</li>
+<li><a
+href="https://www.justinmklam.com/posts/2025/07/36-key-layout/">Transitioning
+to a 36-Key Layout</a> by <span class="citation"
+data-cites="justinmklam">@justinmklam</span></li>
+</ul>
+</div>
+
+<div id="footer">
+<p style="text-align:right">
+<a href="https://scholar.google.com/citations?user=G8Yjd9AAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+<a href="https://www.linkedin.com/in/pascalgetreuer" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+</p>
+</div>
+</body>
+</html>
