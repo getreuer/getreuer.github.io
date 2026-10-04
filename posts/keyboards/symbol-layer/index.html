@@ -117,7 +117,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="content">
 <div id="header">
 <h1 class="title">Designing a Symbol Layer</h1>
-<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2025-11-02)</h2>
+<h2 class="author">Pascal Getreuer, 2021-10-30 (updated 2026-10-04)</h2>
 </div>
 <div id="TOC">
 <ul>
@@ -503,11 +503,6 @@ email and other plain text files. “Mixed” is a mixed corpus.</p>
 #28  ?  0.020    &quot;  0.251    \  0.057    |  0.248    6  0.087    9  0.087
 #29  @  0.018    7  0.247    &lt;  0.057    %  0.204    +  0.075    +  0.083
 #30  ~  0.017    \  0.186    {  0.057    }  0.187    8  0.071    &gt;  0.079</code></pre>
-<p><strong>Caveat:</strong> What we actually care about are keys
-<em>typed</em>. But considering editor hotkeys, that’s not necessarily
-the same as characters <em>written</em>, which is what the above counts.
-For instance in Vim, many symbol keys are hotkeys in normal mode, like
-<code>/</code> for search.</p>
 <p>Some observations from these stats:</p>
 <ul>
 <li><p><code>.</code> and <code>,</code> are extremely frequent. You
@@ -541,6 +536,14 @@ characters occur. Use it like</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> count_chars.py input.txt</span></code></pre></div>
 <p>Or to compute counts across multiple files, do</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> count_chars.py file1.cpp file2.py file3.sh</span></code></pre></div>
+<p><strong>Caveat:</strong> What we really care about are <em>keys
+pressed</em>. But considering editor hotkeys, that’s not necessarily the
+same as <em>characters written</em>, which is what the above counts. For
+instance in Vim, many symbol keys are hotkeys in normal mode, like
+<code>/</code> for search. See also <a
+href="https://www.justinmklam.com/posts/2025/07/optimizing-symbols-layer/#making-a-keylogger">justinmklam’s
+approach</a> using a minimal keylogger to count your actual key
+presses.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>We can apply principles from alpha key layout optimization to
 designing good symbol layers. The frequency of different symbol
